@@ -1,0 +1,662 @@
+{
+  "163": {
+    "1": {
+      "val": "1",
+      "txt": "General student visa (Tier 4) "
+    },
+    "2": {
+      "val": "2",
+      "txt": "Child student visa (Tier 4) "
+    },
+    "3": {
+      "val": "3",
+      "txt": "General work visa (Tier 2) "
+    },
+    "4": {
+      "val": "4",
+      "txt": "Intra-company Transfer visa (Tier 2) "
+    },
+    "5": {
+      "val": "5",
+      "txt": "Minister of Religion visa (Tier 2) "
+    },
+    "6": {
+      "val": "6",
+      "txt": "Sportsperson visa (Tier 2) "
+    },
+    "7": {
+      "val": "7",
+      "txt": "Temporary Worker - Charity Worker visa (Tier 5) "
+    },
+    "8": {
+      "val": "8",
+      "txt": "Temporary Worker - Creative and Sporting visa (Tier 5) "
+    },
+    "9": {
+      "val": "9",
+      "txt": "Temporary Worker - Government Authorised Exchange visa (Tier 5) "
+    },
+    "10": {
+      "val": "10",
+      "txt": "Temporary Worker - International Agreement visa (Tier 5) "
+    },
+    "11": {
+      "val": "11",
+      "txt": "Temporary Worker - Religious Worker visa (Tier 5) "
+    },
+    "12": {
+      "val": "12",
+      "txt": "Youth Mobility Scheme visa (Tier 5) "
+    },
+    "13": {
+      "val": "13",
+      "txt": "Entrepreneur visa (Tier 1) "
+    },
+    "14": {
+      "val": "14",
+      "txt": "Exceptional Talent visa (Tier 1)"
+    },
+    "15": {
+      "val": "15",
+      "txt": "Graduate Entrepreneur visa (Tier 1) "
+    },
+    "16": {
+      "val": "16",
+      "txt": "Investor visa (Tier 1) "
+    }
+  },
+  "164": {
+    "17": {
+      "val": "17",
+      "txt": "A-1 Foreign Diplomatic Personnel"
+    },
+    "18": {
+      "val": "18",
+      "txt": "A-2 Dependent Foreign Diplomatic Personnel"
+    },
+    "19": {
+      "val": "19",
+      "txt": "A-3 Employee of Foreign Gov Office"
+    },
+    "20": {
+      "val": "20",
+      "txt": "B-2 Tourist"
+    },
+    "21": {
+      "val": "21",
+      "txt": "E-2 Dependent of Treaty Investor"
+    },
+    "22": {
+      "val": "22",
+      "txt": "F-1 Student"
+    },
+    "23": {
+      "val": "23",
+      "txt": "F-2 Dependent of F-1 Student"
+    },
+    "24": {
+      "val": "24",
+      "txt": "G-1 Representative of Intl. Org."
+    },
+    "25": {
+      "val": "25",
+      "txt": "G-2 Dependent of Representative of Intl. Org."
+    },
+    "26": {
+      "val": "26",
+      "txt": "G-3 Dependent of Representative of Intl. Org."
+    },
+    "27": {
+      "val": "27",
+      "txt": "G-4 Dependent of Representative of Intl. Org."
+    },
+    "28": {
+      "val": "28",
+      "txt": "H-4 Dependent of H Visa Holder"
+    },
+    "29": {
+      "val": "29",
+      "txt": "J-1 Exchange Visitor"
+    },
+    "30": {
+      "val": "30",
+      "txt": "J-2 Dependent of J-1 Visa Holder"
+    },
+    "31": {
+      "val": "31",
+      "txt": "L-2 Dependent of L-1 Visa Holder"
+    },
+    "32": {
+      "val": "32",
+      "txt": "R-2 Dependent of R-1 Visa Holder"
+    },
+    "33": {
+      "val": "33",
+      "txt": "Other Visa Type"
+    }
+  },
+  "27": {
+    "34": {
+      "val": "34",
+      "txt": "Temporary Resident Visa \u2013 TRV"
+    },
+    "35": {
+      "val": "35",
+      "txt": "V-1 Visitor visa"
+    },
+    "36": {
+      "val": "36",
+      "txt": "V-1(S) Single Entry Visa"
+    },
+    "37": {
+      "val": "37",
+      "txt": "V-1 (M) Multiple Entry Visa"
+    },
+    "38": {
+      "val": "38",
+      "txt": "S-1 Study Permit"
+    },
+    "39": {
+      "val": "39",
+      "txt": "SX-1: Student excused from the condition to acquire a study permit"
+    },
+    "40": {
+      "val": "40",
+      "txt": "SW-1: Student visa with a Work Permit"
+    },
+    "41": {
+      "val": "41",
+      "txt": "S-2 Family Members"
+    },
+    "42": {
+      "val": "42",
+      "txt": "PG-1 Parent \/ Grandparent Super Visa"
+    },
+    "43": {
+      "val": "43",
+      "txt": "W-1 work permit"
+    },
+    "44": {
+      "val": "44",
+      "txt": "R-1 PRTD"
+    },
+    "45": {
+      "val": "45",
+      "txt": "VH-1 Transit Visa"
+    }
+  },
+  "7": {
+    "46": {
+      "val": "46",
+      "txt": "\ufeffElectronic Travel Authority (subclass 601)"
+    },
+    "47": {
+      "val": "47",
+      "txt": "eVisitor (subclass 651)"
+    },
+    "48": {
+      "val": "48",
+      "txt": "Transit visa (subclass 771)"
+    },
+    "49": {
+      "val": "49",
+      "txt": "Visitor (subclass 600)"
+    },
+    "50": {
+      "val": "50",
+      "txt": "Work and Holiday visa (subclass 462)"
+    },
+    "51": {
+      "val": "51",
+      "txt": "Working Holiday visa (subclass 417)"
+    },
+    "52": {
+      "val": "52",
+      "txt": "Business Innovation and Investment (permanent) visa (subclass 888)"
+    },
+    "53": {
+      "val": "53",
+      "txt": "Business Innovation and Investment (provisional) visa (subclass 188)"
+    },
+    "54": {
+      "val": "54",
+      "txt": "Business Owner (subclass 890)"
+    },
+    "55": {
+      "val": "55",
+      "txt": "Business Talent (Permanent) visa (subclass 132)"
+    },
+    "56": {
+      "val": "56",
+      "txt": "Distinguished Talent visa (subclass 124)"
+    },
+    "57": {
+      "val": "57",
+      "txt": "Distinguished Talent visa (subclass 858)"
+    },
+    "58": {
+      "val": "58",
+      "txt": "Employer Nomination Scheme (subclass 186)"
+    },
+    "59": {
+      "val": "59",
+      "txt": "Investor Retirement (subclass 405)"
+    },
+    "60": {
+      "val": "60",
+      "txt": "Investor visa (subclass 891)"
+    },
+    "61": {
+      "val": "61",
+      "txt": "Regional Sponsor Migration Scheme (subclass 187)"
+    },
+    "62": {
+      "val": "62",
+      "txt": "Skilled Independent visa (subclass 189)"
+    },
+    "63": {
+      "val": "63",
+      "txt": "Skilled Nominated visa (subclass 190)"
+    },
+    "64": {
+      "val": "64",
+      "txt": "Skilled Recognition Graduate visa (subclass 476)"
+    },
+    "65": {
+      "val": "65",
+      "txt": "Skilled Regional (provisional) visa (subclass 489)"
+    },
+    "66": {
+      "val": "66",
+      "txt": "Skilled Regional visa (subclass 887)"
+    },
+    "67": {
+      "val": "67",
+      "txt": "State or Territory Sponsored Business Owner visa (subclass 892)"
+    },
+    "68": {
+      "val": "68",
+      "txt": "State or Territory Sponsored Investor visa (subclass 893)"
+    },
+    "69": {
+      "val": "69",
+      "txt": "Temporary Activity visa (subclass 408)"
+    },
+    "70": {
+      "val": "70",
+      "txt": "Temporary Graduate visa (subclass 485)"
+    },
+    "71": {
+      "val": "71",
+      "txt": "Temporary Work (International Relations) visa (subclass 403)"
+    },
+    "72": {
+      "val": "72",
+      "txt": "Temporary Work (Short Stay Specialist) visa (subclass 400)"
+    },
+    "73": {
+      "val": "73",
+      "txt": "Temporary Skill Shortage visa (subclass 482)  "
+    },
+    "74": {
+      "val": "74",
+      "txt": "Student visa (subclass 500)"
+    },
+    "75": {
+      "val": "75",
+      "txt": "Student Guardian visa (subclass 590)"
+    },
+    "76": {
+      "val": "76",
+      "txt": "Training visa (subclass 407)"
+    },
+    "77": {
+      "val": "77",
+      "txt": "Adoption visa (subclass 102)"
+    },
+    "78": {
+      "val": "78",
+      "txt": "Aged Dependent Relative visa (subclass 114)"
+    },
+    "79": {
+      "val": "79",
+      "txt": "Aged Dependent Relative visa (subclass 838)"
+    },
+    "80": {
+      "val": "80",
+      "txt": "Aged Parent visa (subclass 804)"
+    },
+    "81": {
+      "val": "81",
+      "txt": "Carer visa (subclass 836)"
+    },
+    "82": {
+      "val": "82",
+      "txt": "Carer visa (subclass 116)"
+    },
+    "83": {
+      "val": "83",
+      "txt": "Child visa (subclass 101)"
+    },
+    "84": {
+      "val": "84",
+      "txt": "Child visa (subclass 802)"
+    },
+    "85": {
+      "val": "85",
+      "txt": "Contributory Aged Parent (Temporary) visa (subclass 884)"
+    },
+    "86": {
+      "val": "86",
+      "txt": "Contributory Aged Parent visa (subclass 864)"
+    },
+    "87": {
+      "val": "87",
+      "txt": "Contributory Parent (Temporary) visa (subclass 173)"
+    },
+    "88": {
+      "val": "88",
+      "txt": "Contributory Parent visa (subclass 143)"
+    },
+    "89": {
+      "val": "89",
+      "txt": "Dependent Child visa (subclass 445)"
+    },
+    "90": {
+      "val": "90",
+      "txt": "New Zealand Citizen Family Relationship (temporary) visa (subclass 461)"
+    },
+    "91": {
+      "val": "91",
+      "txt": "Orphan Relative (subclass 117)"
+    },
+    "92": {
+      "val": "92",
+      "txt": "Orphan Relative (subclass 837)"
+    },
+    "93": {
+      "val": "93",
+      "txt": "Parent visa (subclass 103)"
+    },
+    "94": {
+      "val": "94",
+      "txt": "Partner (Provisional and Migrant) visa (subclass 309 100)"
+    },
+    "95": {
+      "val": "95",
+      "txt": "Partner visa (subclass 801 820)"
+    },
+    "96": {
+      "val": "96",
+      "txt": "Prospective Marriage visa (subclass 300)"
+    },
+    "97": {
+      "val": "97",
+      "txt": "Remaining Relative visa (subclass 115)"
+    },
+    "98": {
+      "val": "98",
+      "txt": "Remaining Relative visa (subclass 835)"
+    },
+    "99": {
+      "val": "99",
+      "txt": "Global Special Humanitarian (subclass 202)"
+    },
+    "100": {
+      "val": "100",
+      "txt": "Protection visa (subclass 866)"
+    },
+    "101": {
+      "val": "101",
+      "txt": "Refugee visas (subclass 200, 201, 203 and 204)"
+    },
+    "102": {
+      "val": "102",
+      "txt": "Bridging visa A \u2013 BVA - (subclass 010)"
+    },
+    "103": {
+      "val": "103",
+      "txt": "Bridging visa B \u2013 BVB \u2013 (subclass 020)"
+    },
+    "104": {
+      "val": "104",
+      "txt": "Bridging visa C \u2013 BVC \u2013 (subclass 030)"
+    },
+    "105": {
+      "val": "105",
+      "txt": "Bridging visa D \u2013 BVD \u2013 (subclass 040 and 041)"
+    },
+    "106": {
+      "val": "106",
+      "txt": "Bridging visa E \u2013 BVE \u2013 (subclass 050 and 051)"
+    },
+    "107": {
+      "val": "107",
+      "txt": "Crew Travel Authority visa (subclass 942)"
+    },
+    "108": {
+      "val": "108",
+      "txt": "Former Resident visa (subclass 151)"
+    },
+    "109": {
+      "val": "109",
+      "txt": "Maritime Crew visa (subclass 988)"
+    },
+    "110": {
+      "val": "110",
+      "txt": "Medical Treatment visa (subclass 602)"
+    },
+    "111": {
+      "val": "111",
+      "txt": "Resident Return visa (subclass 155 157)"
+    },
+    "112": {
+      "val": "112",
+      "txt": "Special Category visa (subclass 444)"
+    },
+    "113": {
+      "val": "113",
+      "txt": "Special Purpose visa"
+    },
+    "114": {
+      "val": "114",
+      "txt": "Sponsored Business Visitor (Short Stay) visa (subclass 459)"
+    },
+    "115": {
+      "val": "115",
+      "txt": "Business (Short Stay) visa (subclass 456)"
+    },
+    "116": {
+      "val": "116",
+      "txt": "Business Skills (Provisional) visa (subclass 160 and 165)"
+    },
+    "117": {
+      "val": "117",
+      "txt": "Domestic Worker (Temporary) Diplomatic and Consular visa (subclass 426)"
+    },
+    "118": {
+      "val": "118",
+      "txt": "Domestic Worker (Temporary) Executive visa (subclass 427)"
+    },
+    "119": {
+      "val": "119",
+      "txt": "Electronic Travel Authority (Business Entrant) visa (subclass 956 and 977)"
+    },
+    "120": {
+      "val": "120",
+      "txt": "Electronic Travel Authority (Business Entrant) visa (subclass 956 and 977)"
+    },
+    "121": {
+      "val": "121",
+      "txt": "Electronic Travel Authority (Visitor) visa (subclass 976)  "
+    },
+    "122": {
+      "val": "122",
+      "txt": "Employer Nomination Scheme (subclass 121 and 856)"
+    },
+    "123": {
+      "val": "123",
+      "txt": "Established Business in Australia visa (subclass 845)"
+    },
+    "124": {
+      "val": "124",
+      "txt": "Exchange visa (subclass 411)"
+    },
+    "125": {
+      "val": "125",
+      "txt": "Foreign Government Agency (subclass 415)"
+    },
+    "126": {
+      "val": "126",
+      "txt": "Government Agreement visa (subclass 406)"
+    },
+    "127": {
+      "val": "127",
+      "txt": "Labour Agreement visa (subclass 120)"
+    },
+    "128": {
+      "val": "128",
+      "txt": "Labour Agreement visa (subclass 855)"
+    },
+    "129": {
+      "val": "129",
+      "txt": "Media and Film Staff visa (subclass 423)"
+    },
+    "130": {
+      "val": "130",
+      "txt": "Medical Practitioner visa (subclass 422)"
+    },
+    "131": {
+      "val": "131",
+      "txt": "Medical Treatment (Short Stay) visa (subclass 675)"
+    },
+    "132": {
+      "val": "132",
+      "txt": "Medical Treatment Long Stay visa (subclass 685)"
+    },
+    "133": {
+      "val": "133",
+      "txt": "Regional Sponsor Migration Scheme (subclass 119 and 857)"
+    },
+    "134": {
+      "val": "134",
+      "txt": "Religious Worker visa (subclass 428)"
+    },
+    "135": {
+      "val": "135",
+      "txt": "Retirement visa (subclass 410)"
+    },
+    "136": {
+      "val": "136",
+      "txt": "Skilled Designated Area Sponsored visa (subclass 496)"
+    },
+    "137": {
+      "val": "137",
+      "txt": "Skilled Independent Regional (Provisional) visa (subclass 495)"
+    },
+    "138": {
+      "val": "138",
+      "txt": "Skilled Independent visa (subclass 175)"
+    },
+    "139": {
+      "val": "139",
+      "txt": "Skilled Independent visa (subclass 885)"
+    },
+    "140": {
+      "val": "140",
+      "txt": "Skilled Regional Sponsored visa (subclass 475)"
+    },
+    "141": {
+      "val": "141",
+      "txt": "Skilled Regional Sponsored (subclass 487)"
+    },
+    "142": {
+      "val": "142",
+      "txt": "Skilled Sponsored visa (subclass 176)"
+    },
+    "143": {
+      "val": "143",
+      "txt": "Special Program visa (subclass 416)"
+    },
+    "144": {
+      "val": "144",
+      "txt": "Sponsored Business Visitor (Short Stay) visa (subclass 459)"
+    },
+    "145": {
+      "val": "145",
+      "txt": "Sponsored Family Visitor visa (subclass 679)"
+    },
+    "146": {
+      "val": "146",
+      "txt": "Sponsored visa (subclass 886)"
+    },
+    "147": {
+      "val": "147",
+      "txt": "Sport visa (subclass 421)"
+    },
+    "148": {
+      "val": "148",
+      "txt": "Superyacht Crew visa (subclass 488)"
+    },
+    "149": {
+      "val": "149",
+      "txt": "State or Territory Sponsored Regional Established Business in Australia visa (subclass 846)"
+    },
+    "150": {
+      "val": "150",
+      "txt": "Temporary Work (Entertainment) visa (subclass 420)"
+    },
+    "151": {
+      "val": "151",
+      "txt": "Temporary Work (Skilled) visa (subclass 457)"
+    },
+    "152": {
+      "val": "152",
+      "txt": "Tourist visa (subclass 676)"
+    },
+    "153": {
+      "val": "153",
+      "txt": "Temporary Work (long Stay Activity) visa (subclass 401)"
+    },
+    "154": {
+      "val": "154",
+      "txt": "Training and Research visa (subclass 402)"
+    },
+    "155": {
+      "val": "155",
+      "txt": "Visiting Academic visa (subclass 419)"
+    },
+    "156": {
+      "val": "156",
+      "txt": "Foreign Affairs or Defence sector visa (subclass 576)"
+    },
+    "157": {
+      "val": "157",
+      "txt": "Higher Education Sector visa (subclass 573)"
+    },
+    "158": {
+      "val": "158",
+      "txt": "Independent ELICOS Sector visa (subclass 570)"
+    },
+    "159": {
+      "val": "159",
+      "txt": "Non Award Sector visa (subclass 575)"
+    },
+    "160": {
+      "val": "160",
+      "txt": "Postgraduate Research Sector visa (subclass 574)"
+    },
+    "161": {
+      "val": "161",
+      "txt": "School Sector visa (subclass 571)"
+    },
+    "162": {
+      "val": "162",
+      "txt": "Student Guardian visa (subclass 580)"
+    },
+    "163": {
+      "val": "163",
+      "txt": "Vocational Education and Training Sector visa (Subclass 572)"
+    }
+  }
+}
