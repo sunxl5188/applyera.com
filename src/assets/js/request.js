@@ -2,8 +2,9 @@ import Vue from 'vue'
 import store from '@/vuex/Store'
 import vueCookie from 'vue-cookies'
 import 'url-search-params-polyfill'
+import axios from 'axios'
 
-class request {
+class Request {
   constructor () {
     this.baseUrl = window.ajaxBaseUrl || 'http://www.applyoversea.com'
     this.timeOut = 3000
@@ -11,6 +12,7 @@ class request {
     this.responseEncoding = 'utf8'
     // this.headers = {"X-Requested-with":"XMLHttpRequest"}
     this.headers = {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+    this.headers['token'] = vueCookie.get('token') || ''
   }
 
   setError (handler) {
@@ -85,6 +87,7 @@ class request {
             if (res.headers.hasOwnProperty('token')) {
               if (res.headers.token) {
                 sessionStorage.setItem('token', res.headers.token)
+                vueCookie.set('token', res.headers.token)
                 store.state.token = res.headers.token
               }
             }
@@ -105,5 +108,5 @@ class request {
     })
   }
 }
-
-export default request
+let db = new Request()
+export default db
