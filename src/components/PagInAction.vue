@@ -10,7 +10,7 @@
                 <li :class="{'disabled': current == 1}">
                     <a href="javascript:void(0);" @click="setCurrent(1)"> 首页 </a>
                 </li>
-                <li v-for="p in grouplist" :class="{'active': current == p.val}">
+                <li v-for="(p, i) in grouplist" :key="i" :class="{'active': current == p.val}">
                     <a href="javascript:void(0);"  @click="setCurrent(p.val)"> {{ p.text }}</a>
                 </li>
                 <li :class="{'disabled': current == page}">
@@ -62,7 +62,11 @@ export default {
       return Math.ceil(this.total / this.display)
     },
     grouplist: function () { // 获取分页页码
-      let len = this.page, temp = [], list = [], count = Math.floor(this.pagegroup / 2), center = this.current
+      let len = this.page
+      let temp = []
+      let list = []
+      let count = Math.floor(this.pagegroup / 2)
+      let center = this.current
       if (len <= this.pagegroup) {
         while (len--) {
           temp.push({text: this.page - len, val: this.page - len})

@@ -1,0 +1,712 @@
+<template>
+    <div class="container-fluid bgWhite pt-25 pb-25">
+        <div class="po_re">
+            <div id="filePicker" style="position: absolute;left: -999px;z-index: 1;"></div>
+        </div>
+        <div class="clearfix pb-30">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="headerTitle">学生公海</div>
+                </div>
+
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
+                    <div class="form-group form-search">
+                        <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
+                        <i class="iconfont handPower clearSearch" v-if="keywords" @click="keywords='';pagechange()">&#xe7f6;</i>
+                        <input type="text" v-model="keywords" class="form-control"
+                               placeholder="搜索所有内容"
+                               style="padding-left:30px;" @keyup.enter="pagechange()">
+                    </div>
+                    <div class="form-group ml-10">
+                        <button type="button" class="btn btn-default" @click="filterShow=!filterShow">
+                            <span v-if="!filterShow">收起筛选</span>
+                            <span v-if="filterShow">展开筛选</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="pl-15 pr-15 pt-15 bda filterList"
+             :style="filterShow?'height:0;padding:0;overflow:hidden;':'height:175px;'">
+            <div class="student_seas_filter">
+                <div class="student_seas_filter_left">
+                    学生类型：
+                </div>
+                <div class="student_seas_filter_right">
+                    <a href="javascript:void(0);" :class="{active:student_type===''}"
+                       @click="student_type='';pagechange()">全部</a>
+                    <a href="javascript:void(0);" :class="{active:student_type===item.id}"
+                       v-for="(item, i) in studentTypeArr.type" :key="i"
+                       @click="student_type=item.id;pagechange()">{{item.stu_type}}</a>
+                </div>
+            </div>
+            <div class="student_seas_filter">
+                <div class="student_seas_filter_left">
+                    前负责人：
+                </div>
+                <div class="student_seas_filter_right">
+                    <div class="col-sm-3">
+                        <select class="form-control selectpicker" v-model="adviser" data-live-search="true"
+                                @change="pagechange()">
+                            <option value="">请选择负责人</option>
+                            <option :value="item.id" v-for="(item, i) in adviserArr" :key="i">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="student_seas_filter">
+                <div class="student_seas_filter_left">
+                    创建时间：
+                </div>
+                <div class="student_seas_filter_right">
+                    <a href="javascript:void(0);" :class="{active:created_time===''}"
+                       @click="created_time='';pagechange()">不限</a>
+                    <a href="javascript:void(0);" :class="{active:created_time==='本周'}"
+                       @click="created_time='本周';pagechange()">本周</a>
+                    <a href="javascript:void(0);" :class="{active:created_time==='本月'}"
+                       @click="created_time='本月';pagechange()">本月</a>
+                    <a href="javascript:void(0);" :class="{active:created_time==='本季'}"
+                       @click="created_time='本季';pagechange()">本季</a>
+                    <div :class="created_time!=='' && created_time!=='本周' && created_time!=='本月' && created_time!=='本季'? 'active':''"
+                         id="times" data-placeholder="自定义时间段" contenteditable="true"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix pt-25 pb-25">
+            <div class="pull-left lh34">共 <span class="cded">{{total}}</span>名学生</div>
+            <div class="pull-right">
+                <button type="button" class="btn btn-default ml-10">领取</button>
+                <div class="dropdown ml-10" style="display: inline-block;">
+                    <button class="btn btn-default dropdown-toggle" type="button"
+                            data-toggle="dropdown">编辑
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href="#" @click="editStudent">编辑学生</a></li>
+                        <li><a href="#" @click="consultant">顾问交接</a></li>
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-default ml-10" @click="deleteInfo">删除</button>
+                <div class="dropdown ml-10" style="display: inline-block;">
+                    <button class="btn btn-default dropdown-toggle" type="button"
+                            data-toggle="dropdown">添加
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <router-link to="/archives/student/edit">新建学生</router-link>
+                        </li>
+                        <li><a href="javascript:void(0);" @click="uploadStart">模板导入</a></li>
+                        <li><a :href="siteUrl+'/Public/xls_temp/Student_profile.xlsx'"
+                               download="Student_profile.xlsx" target="_blank">下载模板</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="alert.state > 0">
+            <div :class="alert.state===1?'alert alert-primary':(alert.state===2?'alert alert-success':'alert alert-danger')">
+                {{alert.msg}}
+            </div>
+        </div>
+
+        <table class="table table-customize">
+            <thead>
+            <tr>
+                <th width="5%"></th>
+                <th width="15%">学生姓名</th>
+                <th width="10%">学生类型</th>
+                <th width="12%">前负责人</th>
+                <th width="15%">创建时间
+                    <a href="javascript:void(0);"
+                       :class="sort_by_time===0?'iconfont sort':(sort_by_time===1?'iconfont sort up':'iconfont sort down')"
+                       @click="listSort"></a>
+                </th>
+                <th>跟进动态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, i) in list" :key="i">
+                <td><input type="checkbox" name="id[]" :value="item.id" @click="setActiveId($event, item.id)"/></td>
+                <td>{{item.name}}</td>
+                <td>{{item.student_type}}</td>
+                <td>{{item.operator_name}}</td>
+                <td>{{item.create_time}}</td>
+                <td class="showMore">
+                    <span v-for="(items, k) in item.follows" :key="k">{{items.contact_content}}</span>
+                    <button type="button" class="btn btn-primary"
+                            @click="viewFollow(item.follows);sid=item.id">查看全部
+                    </button>
+                </td>
+            </tr>
+            <tr v-if="loading">
+                <td colspan="6" v-html="LoadingImg()"></td>
+            </tr>
+            <tr v-if="!loading && list.length === 0">
+                <td colspan="6" v-html="NoData()"></td>
+            </tr>
+            </tbody>
+        </table>
+        <v-pagination :total="total" :current-page='current' @pagechange="pagechange"></v-pagination>
+
+        <!--查看跟进状态-->
+        <div class="modal fade" id="recording-id">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">跟进动态</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="recordingBody">
+                            <div class="recordingContent">
+                                <div class="media" v-for="(item, i) in followObj" :key="i">
+                                    <a class="media-left" href="#">
+                                        <img src="http://placehold.it/50x50/FF5733/ffffff"
+                                             style="width:50px; height:50px;" class="img-circle">
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="clearfix media-heading">
+                                            <span class="pull-left">
+                                                <span class="div_vm">{{item.adviser_name}}</span>
+                                                <a href="javascript:void(0);"
+                                                   class="div_vm ml-10 hidden deleteBtn">删除</a>
+                                            </span>
+                                            <span class="pull-right c999">{{item.contact_time}}</span>
+                                        </div>
+                                        <div class="clearfix lh22">
+                                            {{item.contact_content}}
+                                        </div>
+                                        <div class="clearfix font12 c999">
+                                            下次跟进时间: {{item.next_contact_time}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row bdb"></div>
+                            <div class="clearfix pt-10">
+                                <textarea name="reContent" class="form-control"
+                                          placeholder="请输入跟进内容，按Enter 发布" style="border:none;" v-model="followContent"
+                                          @keyup.enter="sendFollow"></textarea>
+                            </div>
+                            <div class="clearfix pt-10">
+                                <div class="row">
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <input type="text" name="times" class="form-control" id="times1"
+                                               v-model="followTime" style="border:none;" placeholder="下次跟进时间"/>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center lh34">
+                                        <a href="javascript:void(0);" @click="sendFollow">发布</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--删除列表信息-->
+        <div class="modal fade" id="delete-id">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
+                                <i class="iconfont font60 cf90">&#xe669;</i>
+                            </div>
+                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 lh24">
+                                <p>学生删除会同时自动清除此学生关联的<span class="cded">联系人</span>状语从句：<span class="cded">申请资料</span>。该操作成功之后，将<span
+                                        class="cded">无法恢复</span>。</p>
+                                <p>如果学生已完成留学合同的支付，则无法删除该学生</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" @click="deleteAction">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--编辑学生-->
+        <div class="modal fade" id="editStudent-id">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">编辑学生</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">选择字段</label>
+                                <div class="col-sm-7">
+                                    <select name="" class="form-control">
+                                        <option value=""> 学生类型</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">批量修改为</label>
+                                <div class="col-sm-7">
+                                    <select name="" class="form-control" v-model="studentType">
+                                        <option value="">请选择</option>
+                                        <option :value="item.id" v-for="(item, i) in studentTypeArr.type" :key="i">{{item.stu_type}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" @click="saveStudent">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--转移负责人-->
+        <div class="modal fade" id="principal-id">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">转移负责人</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">新负责人</label>
+                                <div class="col-sm-7">
+                                    <select name="" class="form-control" v-model="adviserId">
+                                        <option value=""> 请选择用户</option>
+                                        <option :value="item.id" v-for="(item,i) in adviserArr" :key="i">{{item.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" @click="saveAdviser">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</template>
+
+<script>
+import 'bootstrap-select'
+import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import PagInAction from '@/components/PagInAction'
+import store from '@/vuex/Store'
+import db from '@~/js/request'
+let WebUploader = require('@@/js/webuploader/webuploader')
+
+export default {
+  name: 'Index',
+  store,
+  data () {
+    return {
+      loading: true,
+      sid: '',
+      siteUrl: window.ajaxBaseUrl,
+      activeId: [],
+      keywords: '',
+      student_type: '',
+      adviser: '',
+      created_time: '',
+      sort_by_time: 0,
+      studentTypeArr: [],
+      adviserArr: [],
+      filterShow: false,
+      current: 1,
+      total: 0,
+      list: [],
+      followObj: {},
+      followContent: '',
+      followTime: '',
+      studentType: '',
+      adviserId: '',
+      alert: {state: 0, msg: ''}
+    }
+  },
+  computed: {
+    token () {
+      return store.state.token
+    }
+  },
+  mounted () {
+    let self = this
+    self.$nextTick(() => {
+      self.laydate.render({
+        elem: '#times',
+        type: 'date',
+        range: true,
+        done: (value) => {
+          self.created_time = value
+          self.pagechange()
+        }
+      })
+      self.laydate.render({
+        elem: '#times1',
+        type: 'datetime',
+        done: (value) => {
+          self.followTime = value
+        }
+      })
+      self.pagechange()
+
+      setTimeout(function () {
+        $('.selectpicker').selectpicker()
+
+        self.createUpload()
+
+        $('#recording-id').on('hidden.bs.modal', function () {
+          self.followObj = {}
+          self.sid = ''
+        })
+      }, 1000)
+    })
+  },
+  methods: {
+    pagechange (p) {
+      let self = this
+      let params = new URLSearchParams()
+      self.loading = true
+      params.append('page', p || 1)
+      params.append('keywords', self.keywords)
+      params.append('student_type', self.student_type)
+      params.append('adviser', self.adviser)
+      params.append('created_time', self.created_time)
+      params.append('sort_by_time', self.sort_by_time)
+      db.postRequest('Institution/Student/CommonStudentList', params).then(res => {
+        if (res.status === 1) {
+          self.total = res.data.total
+          self.list = res.data.list
+          self.studentTypeArr = res.data.student_type
+          self.adviserArr = res.data.service_adviser
+        } else {
+          console.log(res.msg)
+        }
+        self.current = p || 1
+        self.loading = false
+      })
+    },
+    listSort () {
+      let self = this
+      if (self.sort_by_time === 0) {
+        self.sort_by_time = 1
+      } else if (self.sort_by_time === 1) {
+        self.sort_by_time = 2
+      } else if (self.sort_by_time === 2) {
+        self.sort_by_time = 1
+      }
+      self.pagechange()
+    },
+    // 删除列表信息
+    deleteInfo () {
+      let self = this
+      if (self.activeId.length === 0) {
+        self.layer.alert('请选择需要操作的ID', {icon: 2})
+        return false
+      }
+
+      $('#delete-id').modal({
+        backdrop: 'static',
+        show: true
+      })
+    },
+    deleteAction () {
+      let self = this
+      let params = new URLSearchParams()
+      self.activeId.map(item => {
+        params.append('student_id[]', item)
+      })
+      db.postRequest('/Institution/Student/batchDelStu', params).then(res => {
+        if (res.status === 1) {
+          self.pagechange(self.current)
+          self.cancelCheck()
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+            $('#delete-id').modal('hide')
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
+    },
+    editStudent () {
+      let self = this
+      if (self.activeId.length === 0) {
+        self.layer.alert('请选择需要操作的ID', {icon: 2})
+        return false
+      }
+      $('#editStudent-id').modal({
+        backdrop: 'static',
+        show: true
+      })
+    },
+    consultant () {
+      let self = this
+      if (self.activeId.length === 0) {
+        self.layer.alert('请选择需要操作的ID', {icon: 2})
+        return false
+      }
+      $('#principal-id').modal({
+        backdrop: 'static',
+        show: true
+      })
+    },
+    // 设置选中ID
+    setActiveId (event, id) {
+      let self = this
+      if (event.currentTarget.checked) {
+        self.activeId.push(id)
+      } else {
+        self.activeId.map((item, i) => {
+          if (item === id) {
+            self.activeId.splice(i, 1)
+          }
+        })
+      }
+    },
+    createUpload () {
+      let self = this
+      let uploader = WebUploader.create({
+        auto: true,
+        swf: 'static/js/webuploader/Uploader.swf',
+        server: window.ajaxBaseUrl + '/Institution/Upload/UploadOne',
+        fileVal: 'file',
+        pick: '#filePicker',
+        file_id: 'file_id',
+        fileNumLimit: 1,
+        fileSingleSizeLimit: 1024 * 1024 * 20,
+        duplicate: true,
+        accept: {
+          title: '',
+          extensions: 'xlsx,xls',
+          mimeTypes: '*/*'
+        },
+        formData: {func: 'student_import'}
+      })
+      uploader.on('uploadStart', function (e) {
+        self.alert = {
+          state: 1,
+          msg: '数据正在导入中..., 请稍后!'
+        }
+      })
+      uploader.on('uploadSuccess', function (file, res) {
+        if (res.status === 1) {
+          self.alert = {
+            state: 2,
+            msg: '数据导入成功！'
+          }
+        } else {
+          self.alert = {
+            state: 3,
+            msg: res.msg
+          }
+        }
+
+        setTimeout(function () {
+          self.alert = {
+            state: 0,
+            msg: ''
+          }
+        }, 3000)
+        self.pagechange(1)
+      })
+
+      uploader.on('error', function (handler) {
+        if (handler === 'Q_TYPE_DENIED') {
+          self.alert = {
+            state: 3,
+            msg: '文件类型不正确！'
+          }
+          setTimeout(function () {
+            self.alert = {
+              state: 0,
+              msg: ''
+            }
+          }, 3000)
+        }
+      })
+    },
+    uploadStart () {
+      $('#filePicker .webuploader-element-invisible').click()
+    },
+    sendFollow () {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('student_id', self.sid)
+      params.append('contact_content', self.followContent)
+      params.append('next_contact_time', self.followTime)
+      if (self.followContent === '') {
+        self.layer.alert('请输入跟进内容！', {icon: 2})
+        return false
+      }
+      db.postRequest('/Institution/Student/stuFollowSave', params).then(res => {
+        if (res.status === 1) {
+          self.layer.msg(res.msg)
+          self.pagechange(self.current)
+          self.followContent = ''
+          self.followTime = ''
+          setTimeout(function () {
+            self.list.map(item => {
+              if (item.id === self.sid) {
+                self.followObj = item.follows
+              }
+            })
+          }, 1000)
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
+    },
+    // 保存编辑学生状态
+    saveStudent () {
+      let self = this
+      let params = new URLSearchParams()
+      if (self.studentType === '') {
+        self.layer.alert('请选择状态', {icon: 2})
+        return false
+      }
+      self.activeId.map(item => {
+        params.append('student_id[]', item)
+      })
+      params.append('student_type', self.studentType)
+      db.postRequest('/Institution/Student/batchChangeType', params).then(res => {
+        if (res.status === 1) {
+          self.studentType = ''
+          self.pagechange(self.current)
+          self.cancelCheck()
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+            $('#editStudent-id').modal('hide')
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
+    },
+    // 清除选中ID与checked
+    cancelCheck () {
+      let self = this
+      setTimeout(function () {
+        self.activeId = []
+        $('.table-customize [type="checkbox"]:checked').each(function () {
+          $(this)[0].checked = false
+        })
+      }, 500)
+    },
+    // 保存转移负责人
+    saveAdviser () {
+      let self = this
+      let params = new URLSearchParams()
+      if (self.adviserId === '') {
+        self.layer.alert('请选择新负责人', {icon: 2})
+        return false
+      }
+      self.activeId.map(item => {
+        params.append('student_id[]', item)
+      })
+      params.append('adviser_id', self.adviserId)
+      db.postRequest('/Institution/Student/batchChangeAdviser', params).then(res => {
+        if (res.status === 1) {
+          self.adviserId = ''
+          self.pagechange(self.current)
+          self.cancelCheck()
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+            $('#principal-id').modal('hide')
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
+    },
+    // 查看跟进状态
+    viewFollow (obj) {
+      this.followObj = obj
+      $('#recording-id').modal('show')
+    }
+  },
+  components: {
+    'v-pagination': PagInAction
+  }
+}
+</script>
+
+<style scoped lang="scss">
+    .filterList {
+        -webkit-transition:all .3s ease 0s;-moz-transition:all .3s ease 0s;-ms-transition:all .3s ease 0s;transition:all .3s ease 0s;
+
+        & .student_seas_filter {
+            margin-bottom:15px;
+
+            &:after {content:'';width:100%;height:0;display:block;clear:both;}
+
+            & .student_seas_filter_left {
+                float:left;width:10%;text-align:right;padding-right:10px;line-height:34px;
+            }
+
+            & .student_seas_filter_right {
+                float:right;width:90%;padding:5px 0;
+
+                & > a, & > div {
+                    display:inline-block;margin-right:10px;padding:0 8px;line-height:24px;
+
+                    &.active {
+                        background-color:#39f;color:#fff;
+                    }
+                }
+            }
+        }
+    }
+
+    .showMore {
+        position:relative;word-break:break-all; word-wrap:break-word;
+
+        & .btn {
+            display:none;position:absolute;left:50%;top:50%;margin-top:-17px;margin-left:-41px;
+        }
+
+        &:hover {
+            & .btn {display:inline-block;}
+        }
+    }
+
+    .recordingBody {
+        width:100%;height:400px;
+
+        & .recordingContent {
+            width:100%;position:relative;height:260px;z-index:10;overflow-y:auto;overflow-x:hidden;padding:0 15px;
+
+        }
+
+    }
+</style>
