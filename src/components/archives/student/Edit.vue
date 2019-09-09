@@ -17,6 +17,7 @@
                                    data-target="#editConsultant">顾问变更</a>
                             </li>
                             <li><a href="#" v-if="id" @click="deleteData">删除学生</a></li>
+                            <li><a href="#" v-if="id" @click="shiftHighSeas">移至公海</a></li>
                         </ul>
                     </div>
                     <div class="clearfix pb-15">
@@ -34,11 +35,9 @@
                                         </div>
                                         <div class="clearfix lh26 c999">
                                             <span>当前状态</span><span class="ml-10">
-                                    <span v-if="header_info.sign_status===1">已签单</span>
-                                    <span v-if="header_info.sign_status===2">咨询中</span>
-                                    <span v-if="header_info.sign_status===3">待回访</span>
-                                    <span v-if="header_info.sign_status===4">已流失</span>
-                                </span>
+                                                <span v-for="(item, i) in signStatusArr" :key="i"
+                                                      v-if="item.id===header_info.sign_status">{{item.status_name}}</span>
+                                            </span>
                                         </div>
                                         <div class="clearfix lh26 c999">
                                             <span>负责顾问</span><span class="ml-10">{{header_info.user_name}}</span>
@@ -69,11 +68,13 @@
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>语言成绩</p>
-                                        <p>{{header_info.lang_score_type || "&nbsp;"}}&nbsp;&nbsp;{{header_info.lang_score || "&nbsp;"}}</p>
+                                        <p>{{header_info.lang_score_type || "&nbsp;"}}&nbsp;&nbsp;{{header_info.lang_score
+                                            || "&nbsp;"}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>学术成绩</p>
-                                        <p>{{header_info.acad_score_type || "&nbsp;"}}&nbsp;&nbsp;{{header_info.acad_score || "&nbsp;"}}</p>
+                                        <p>{{header_info.acad_score_type || "&nbsp;"}}&nbsp;&nbsp;{{header_info.acad_score
+                                            || "&nbsp;"}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>当前专业</p>
@@ -136,7 +137,7 @@
                                     <div class="panel-body">
                                         <table class="table" v-if="tab1.plan.length > 0">
                                             <tbody>
-                                            <tr v-for="(item, i) in tab1.plan" :key="i">
+                                            <tr v-for="(item,i) in tab1.plan" :key="i">
                                                 <td width="20%">{{item.create_time}}</td>
                                                 <td width="20%">{{item.ins_student_intention_country}}</td>
                                                 <td>
@@ -161,7 +162,7 @@
                                     <div class="panel-heading clearfix">
                                         <span class="pull-left">申请资料</span>
                                         <span class="pull-right">
-                                             <router-link to="/functions/applyInfo/detail">
+                                             <router-link to="/functions/initApply/add">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
@@ -169,12 +170,12 @@
                                     <div class="panel-body">
                                         <table class="table" v-if="tab1.material.length > 0">
                                             <tbody>
-                                            <tr v-for="(item, i) in tab1.material" :key="i">
+                                            <tr v-for="(item,i) in tab1.material" :key="i">
                                                 <td width="20%">{{item.created_time}}</td>
                                                 <td width="20%">{{item.status}}</td>
                                                 <td>
                                                     <router-link
-                                                            :to="{path:'/functions/applyInfo/detail',query:{id:item.apply_material_id}}"
+                                                            :to="{path:'/functions/initApply/add',query:{id:item.apply_material_id}}"
                                                             class="cded">{{item.apply_num}}
                                                     </router-link>
                                                 </td>
@@ -183,7 +184,7 @@
                                         </table>
                                         <div class="panel-noData" v-if="tab1.material.length === 0">
                                             <p class="c999">该学生还没有申请资料</p>
-                                            <router-link to="/functions/applyInfo/detail" class="cded">点击前往创建
+                                            <router-link to="/functions/initApply/add" class="cded">点击前往创建
                                             </router-link>
                                         </div>
                                     </div>
@@ -201,7 +202,7 @@
                                     <div class="panel-body">
                                         <table class="table" v-if="tab1.apply.length > 0">
                                             <tbody>
-                                            <tr v-for="(item, i) in tab1.apply" :key="i">
+                                            <tr v-for="(item,i) in tab1.apply" :key="i">
                                                 <td width="20%">{{item.time}}</td>
                                                 <td width="20%">{{item.country}}</td>
                                                 <td>
@@ -230,7 +231,7 @@
                                     <div class="panel-body">
                                         <table class="table" v-if="tab1.apply_process.length > 0">
                                             <tbody>
-                                            <tr v-for="(item, i) in tab1.apply_process" :key="i">
+                                            <tr v-for="(item,i) in tab1.apply_process" :key="i">
                                                 <td width="20%">{{item.country}}</td>
                                                 <td>{{item.school_major}}</td>
                                                 <td width="25%">
@@ -277,25 +278,53 @@
                                     <div class="panel-heading clearfix">
                                         <span class="pull-left">跟进动态</span>
                                         <span class="pull-right">
-                                            <span class="iconfont c999 handPower" data-toggle="modal"
-                                                  data-target="#dynamicModal" data-backdrop="static">&#xe73e;</span>
+                                            <!--<span class="iconfont c999 handPower" data-toggle="modal"
+                                                  data-target="#dynamicModal" data-backdrop="static">&#xe73e;</span>-->
                                         </span>
                                     </div>
-                                    <div class="panel-body panel-border-x">
-                                        <div :class="item.contact_type===1?'dynamic mobile':(item.contact_type===2)?'dynamic weChat':'dynamic qq'"
-                                             v-for="(item, i) in tab1.follow" :key="i">
-                                            <div class="clearfix lh22">
-                                                <span class="pull-left">联系人：{{item.contact_people}}</span>
-                                                <span class="pull-right">
-                                                    <i class="iconfont handPower" @click="deleteFollow(item.id)">&#xe7f6;</i>
-                                                </span>
+                                    <div class="panel-body">
+
+                                        <ul class="media-list bdb pb-15">
+                                            <div class="media" v-for="(item,i) in tab1.follow" :key="i">
+                                                <a class="media-left" href="#">
+                                                    <img :src="item.head_img || 'http://placehold.it/50x50/FF5733/ffffff'"
+                                                         style="width:50px; height:50px;" class="img-circle">
+                                                </a>
+                                                <div class="media-body">
+                                                    <div class="clearfix media-heading">
+                                            <span class="pull-left">
+                                                <span class="div_vm">{{item.adviser_name}}</span>
+                                                <a href="javascript:void(0);"
+                                                   class="div_vm ml-10 deleteBtn" @click="deleteFollow(item.id)">删除</a>
+                                            </span>
+                                                        <span class="pull-right c999">{{item.contact_time}}</span>
+                                                    </div>
+                                                    <div class="clearfix lh22" v-html="item.contact_content"></div>
+                                                    <div class="clearfix font12 c999" v-if="item.next_contact_time">
+                                                        设置跟进: {{item.next_contact_time}}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="clearfix lh22">
-                                                联系时间：{{item.contact_time}}
+                                        </ul>
+
+                                        <form action="" method="POST" class="form-horizontal" v-if="id">
+                                            <input type="hidden" name="student_id" id="student_id"/>
+                                            <div class="form-group">
+                                                <div style="margin:15px;height:60px;overflow:auto;overflow-x:hidden;"
+                                                     contenteditable="true" data-placeholder="请输入跟进内容，按Enter 发布"
+                                                     @keyup.enter="sendFollow" id="contact_content"></div>
                                             </div>
-                                            <div class="clearfix lh20 pt-10 pb-10">{{item.contact_content}}</div>
-                                            <div class="clearfix lh20">下次跟进时间：{{item.next_contact_time}}</div>
-                                        </div>
+
+                                            <div class="form-group">
+                                                <div class="col-sm-8" id="next_contact_time" contenteditable="true"
+                                                     data-placeholder="设置跟进"></div>
+                                                <div class="col-sm-4">
+                                                    <a href="javascript:void(0);" class="cded"
+                                                       @click="sendFollow">发布</a>
+                                                </div>
+                                            </div>
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -315,7 +344,7 @@
                         </div>
                         <div class="blk20"></div>
                         <div class="row">
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb-15" v-for="(item, i) in tab2.other_contacts" :key="i">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb-15" v-for="(item,i) in tab2.other_contacts" :key="i">
                                 <div class="studentZL bda pl-25 pr-25 pt-10 pb-10">
                                     <div class="clearfix text-right" style="margin-bottom: -22px;">
                                         <input type="checkbox" name="id[]" style="margin-top: 0;" :value="item.id">
@@ -412,7 +441,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(item, i) in tab4" :key="i">
+                            <tr v-for="(item,i) in tab4" :key="i">
                                 <td>{{item.time}}</td>
                                 <td>{{item.operator}}</td>
                                 <td>{{item.type}}</td>
@@ -445,9 +474,10 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">新负责人</label>
                                     <div class="col-sm-6">
-                                        <select name="adviser_id" class="form-control selectpicker" data-live-search="true" v-model="adviserId">
+                                        <select name="adviser_id" class="form-control selectpicker"
+                                                data-live-search="true" v-model="adviserId">
                                             <option value="">请选择用户</option>
-                                            <option :value="item.id" v-for="(item, i) in service_adviser_list" :key="i">
+                                            <option :value="item.id" v-for="(item,i) in service_adviser_list" :key="i">
                                                 {{item.name}}
                                             </option>
                                         </select>
@@ -477,6 +507,8 @@
                               autocomplete="off" @submit.prevent="validateBeforeSubmitStudentInfo('form1')"
                               data-vv-scope="form1">
                             <input type="hidden" name="stu_id" :value="header_info.stu_id" v-if="header_info.stu_id"/>
+                            <input type="hidden" name="is_common" :value="header_info.is_common"
+                                   v-if="header_info.is_common === 1"/>
                             <div class="modal-body pl-30 pr-30">
                                 <div class="row">
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -501,7 +533,7 @@
                                                                 v-model="header_info.stu_type"
                                                                 @change="student_types=student_type[header_info.stu_type-1].stu_type">
                                                             <option value="">请选择</option>
-                                                            <option :value="item.id" v-for="(item, i) in student_type" :key="i">
+                                                            <option :value="item.id" v-for="(item,i) in student_type" :key="i">
                                                                 {{item.stu_type}}
                                                             </option>
                                                         </select>
@@ -511,12 +543,10 @@
                                                     <label class="control-label col-sm-4">当前状态</label>
                                                     <div class="col-sm-8">
                                                         <select name="sign_status" class="form-control selectpicker"
-                                                                v-model.number="header_info.sign_status">
-                                                            <option value="">请选择</option>
-                                                            <option value="1">已签单</option>
-                                                            <option value="2">咨询中</option>
-                                                            <option value="3">待回访</option>
-                                                            <option value="4">已流失</option>
+                                                                v-model="header_info.sign_status">
+                                                            <option :value="item.id" v-for="(item, i) in signStatusArr"
+                                                                    :key="i">{{item.status_name}}
+                                                            </option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -670,7 +700,7 @@
                                                             multiple
                                                             data-live-search="true"
                                                             v-model="header_info.intention_country">
-                                                        <option :value="item.id" v-for="(item, i) in nation" :key="i">
+                                                        <option :value="item.id" v-for="(item,i) in nation" :key="i">
                                                             {{item.cn}}
                                                         </option>
                                                     </select>
@@ -724,7 +754,8 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">联系时间</label>
                                             <div class="col-sm-9">
-                                                <input type="text" name="contact_time" class="form-control" id="times2" placeholder="请选择联系时间">
+                                                <input type="text" name="contact_time" class="form-control" id="times2"
+                                                       placeholder="请选择联系时间">
 
                                             </div>
                                         </div>
@@ -903,6 +934,7 @@ export default {
       adviserId: '',
       studentSource: '',
       header_info: {
+        is_common: '',
         abroad_time: '',
         acad_score: '',
         acad_score_type: '',
@@ -935,7 +967,8 @@ export default {
       student_type: [],
       service_adviser_list: [],
       contactId: [],
-      fid: []
+      fid: [],
+      signStatusArr: []
     }
   },
   computed: {
@@ -955,6 +988,10 @@ export default {
         })
         self.laydate.render({
           elem: '#times3',
+          type: 'datetime'
+        })
+        self.laydate.render({
+          elem: '#next_contact_time',
           type: 'datetime'
         })
 
@@ -1040,6 +1077,7 @@ export default {
         if (res.status === 1) {
           self.header_info = res.data.header_info
           self.follow_type = res.data.follow_type
+          self.signStatusArr = res.data.sign_status
           self.tab1 = res.data.tab1
           self.tab2 = res.data.tab2
           self.tab3 = res.data.tab3
@@ -1067,6 +1105,7 @@ export default {
           })
         }
         self.loading = false
+        self.header_info.is_common = parseInt(self.$route.query.isCommon) || 0
         setTimeout(function () {
           if (self.id === '') {
             $('#editStudentInfo').modal('show')
@@ -1134,9 +1173,9 @@ export default {
     },
     validateBeforeSubmitStudentInfo (scope) {
       let self = this
-      let index = self.layer.load('', {shade: 0.3})
       self.$validator.validateAll(scope).then((result) => {
         if (result) {
+          let index = self.layer.load('', {shade: 0.3})
           let formData = $('#editStudentInfoForm').serializeArray()
           let params = new URLSearchParams()
           formData.map(item => {
@@ -1342,6 +1381,63 @@ export default {
           })
         }
       })
+    },
+    sendFollow () {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('student_id', self.id)
+      params.append('contact_content', $('#contact_content').html())
+      params.append('next_contact_time', $('#next_contact_time').html())
+      if (self.followContent === '') {
+        self.layer.alert('请输入跟进内容！', {icon: 2})
+        return false
+      }
+      db.postRequest('/Institution/Student/stuFollowSave', params).then(res => {
+        if (res.status === 1) {
+          self.layer.msg(res.msg)
+          self.getFollowList()
+          $('#contact_content').html('')
+          $('#next_contact_time').html('')
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
+    },
+    getFollowList () {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('student_id', self.id)
+      db.getRequest('/Institution/Student/getFollow', params).then(res => {
+        if (res.status === 1) {
+          self.tab1.follow = res.data
+        } else {
+          console.log(res.msg)
+        }
+      })
+    },
+    // 移至公海
+    shiftHighSeas () {
+      let self = this
+      let params = new URLSearchParams()
+      if (self.id === '') {
+        self.layer.alert('非法操作', {icon: 2})
+        return false
+      } else {
+        params.append('student_id[]', self.id)
+      }
+      db.postRequest('/Institution/Student/backStudent', params).then(res => {
+        if (res.status === 1) {
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+            self.pagechange(self.current)
+            self.idArr = []
+          })
+        } else {
+          self.layer.alert(res.msg, {icon: 2})
+        }
+      })
     }
   }
 }
@@ -1349,35 +1445,46 @@ export default {
 
 <style scoped lang="scss">
     .modal-lg {width:1000px;}
+
     .studentInfo {
         padding-right:15px;
+
         & .userFace {
             width:80px;height:80px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;display:block;margin:0 auto 15px auto;border:1px solid #ddd;line-height:80px;
         }
     }
+
     .row {
         display:flex;
         align-items:flex-start;
         flex-wrap:wrap;
     }
+
     .form-group {
         & > label {
             padding-left:0;padding-right:0;
         }
     }
+
     .editStudentLayer {
         & .form-group {margin-left:0;margin-right:0;}
     }
+
     .studentTabs {
         padding:30px 0;
+
         & > ul {
             border:none;text-align:center;width:600px;margin:0 auto;background-color:#fff;-webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;
+
             & > li {
                 margin:0;
+
                 & > a {
                     margin-right:0;border:none;width:150px;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
+
                     &:hover, &:focus {background-color:transparent;border:none;}
                 }
+
                 &.active {
                     & > a {
                         -webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;background-color:#428bca;color:#fff;
@@ -1386,41 +1493,22 @@ export default {
             }
         }
     }
+
     .panel.panel-default {
         -webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
+
         & .panel-heading {
             background-color:#fff;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;border:none;position:relative;text-indent:15px;line-height:22px;
+
             &:before {
                 content:'';width:2px;height:16px;position:absolute;left:15px;top:50%;margin-top:-8px;display:block;background-color:#428bca;
             }
         }
+
         & .panel-noData {
             border:1px dashed #ddd;padding:30px;text-align:center;
         }
-        & .panel-border-x {
-            position:relative;
-            &:before {
-                content:'';display:block;width:1px;position:absolute;left:25px;top:15px;bottom:30px;background-color:#ddd;z-index:1;
-            }
-            & .dynamic {
-                background-color:#f1f2f7;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;padding:15px;margin-left:25px;font-size:12px;position:relative;margin-bottom:15px;
-                &.weChat {
-                    &:before {
-                        content:'\e6a8';font-family:"iconfont";font-size:20px;display:block;position:absolute;left:-25px;top:0;color:#5db870;z-index:2;width:20px;height:20px;-webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;background-color:#fff;
-                    }
-                }
-                &.mobile {
-                    &:before {
-                        content:'\e625';font-family:"iconfont";font-size:14px;text-align:center;line-height:20px;display:block;position:absolute;left:-25px;top:0;color:#fff;z-index:2;width:20px;height:20px;-webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;background-color:#ffa852;
-                    }
-                }
-                &.qq {
-                    &:before {
-                        content:'\e638';font-family:"iconfont";font-size:20px;display:block;position:absolute;left:-25px;top:0;color:#1296db;z-index:2;width:20px;height:20px;-webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;background-color:#fff;
-                    }
-                }
-            }
-        }
+
         & .table {
             & > tbody {
                 & > tr {
@@ -1429,17 +1517,30 @@ export default {
             }
         }
     }
+
     .studentZL {
         & > div {
             & > span {
                 display:inline-block;float:left;
+
                 &:first-of-type {
                     width:25%;
                 }
+
                 &:last-of-type {
                     width:75%;padding-left:5px;
                 }
             }
+        }
+    }
+
+    .media-list {
+        max-height:500px;overflow-y:auto;
+
+        & .media-heading .pull-left {
+            .deleteBtn {display:none;}
+
+            &:hover .deleteBtn {display:inline-block;}
         }
     }
 </style>
@@ -1447,8 +1548,10 @@ export default {
     .editStudentLayer {
         .bootstrap-select {
             max-width:100%;display:block;
+
             & > .dropdown-toggle {
                 background-color:#fff !important;max-width:100%;
+
                 &:focus {outline:none !important;}
             }
         }

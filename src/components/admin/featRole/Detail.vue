@@ -381,7 +381,7 @@ export default {
           })
           db.postRequest('Institution/RoleFunc/edit', params).then(res => {
             if (res.status === 1) {
-              self.layer.alert(res.msg, {icon: 2}, function (i) {
+              self.layer.alert(res.msg, {icon: 1}, function (i) {
                 self.layer.close(i)
                 self.$router.push('/admin/featRole')
               })

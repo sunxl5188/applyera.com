@@ -64,7 +64,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item, i) in list" :key="i">
+            <tr v-for="(item,i) in list" :key="i">
                 <td>{{item.student}}</td>
                 <td>{{item.apply_type_name}}</td>
                 <td>{{item.apply_res}}</td>

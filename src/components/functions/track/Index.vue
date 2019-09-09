@@ -84,7 +84,7 @@
                     <th>申请状态</th>
                 </tr>
                 </thead>
-                <tbody v-for="(item, i) in list" :key="i">
+                <tbody v-for="(item,i) in list" :key="i">
                 <tr>
                     <td width="5%"><i class="iconfont handPower" @click="viewBtn($event)">&#xe636;</i></td>
                     <td width="10%">{{item.name}}</td>
@@ -167,7 +167,6 @@
 import PagInAction from '@/components/PagInAction'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
-require('@@/js/FileSaver')
 
 export default {
   name: 'Track',
@@ -203,16 +202,6 @@ export default {
         }
       })
       self.pagechange(1)
-
-      setTimeout(function () {
-        $(document).on('click', '.viewBtn', function () {
-          if ($(this).parents('tr').next('.infoView').is(':hidden')) {
-            $(this).parents('tr').next('.infoView').show()
-          } else {
-            $(this).parents('tr').next('.infoView').hide()
-          }
-        })
-      }, 1000)
     })
   },
   methods: {
@@ -285,20 +274,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .table > tbody{
+    .table > tbody {
         border-top:none;
-        &:nth-child(odd){
-            & > tr:first-child > td{background-color:#fff;}
+
+        &:nth-child(odd) {
+            & > tr:first-child > td {background-color:#fff;}
         }
     }
 
-    .progressX{
+    .progressX {
         position:relative;
 
-        &:after{
+        &:after {
             content:'';width:66%;height:1px;background:#ddd;position:absolute;left:50%;margin-left:-33%;top:10px;z-index:1;
         }
 
-        & > div{z-index:2;}
+        & > div {z-index:2;}
     }
 </style>

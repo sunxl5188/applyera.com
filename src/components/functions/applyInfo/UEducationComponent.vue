@@ -248,7 +248,8 @@
                     <div class="form-group">
                         <label>职位 <font class="cf00">*</font></label>
                         <input type="text" name="teacher_position" class="form-control" placeholder="请用英文输入担任职位"
-                               v-validate="'required|en:请用英文输入担任职位'" data-vv-as="职位" v-model="education.teacher_position">
+                               v-validate="'required|en:请用英文输入担任职位'" data-vv-as="职位"
+                               v-model="education.teacher_position">
                         <div class="validateTip" v-show="errors.has('teacher_position')">
                             {{ errors.first("teacher_position") }}
                         </div>
@@ -324,12 +325,12 @@
                     </div>
                 </div>
             </div>
-            <div class="clearfix text-right lh34">
-                <a href="javascript:void(0);" class="cded" @click="addHighSchool($event)">+ 继续添加高中课程</a></div>
+            <div class="clearfix text-right lh34"><a href="javascript:void(0);" class="cded"
+                                                     @click="addHighSchool($event)">+ 继续添加高中课程</a></div>
 
             <div class="clearfix lh34 font16 bdb mb-15">课外活动</div>
 
-            <div class="clearfix activity" v-for="(item, i) in education.activity" :key="'A' + i">
+            <div class="clearfix activity" v-for="(item, i) in education.activity" :key="'a'+i">
                 <div class="row">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
@@ -691,7 +692,7 @@
                         <select name="career_interest" class="form-control selectpicker" v-validate="'required'"
                                 data-vv-as="职业兴趣" v-model="education.career_interest">
                             <option value="">请选择职业兴趣</option>
-                            <option :value="item.id" v-for="(item, i) in career" :key="i">{{item.cn}}</option>
+                            <option :value="item.id" v-for="(item,i) in career" :key="i">{{item.cn}}</option>
                         </select>
                         <div class="validateTip" v-show="errors.has('career_interest')">
                             {{ errors.first("career_interest") }}
@@ -865,6 +866,10 @@ export default {
             if (thisName !== undefined) {
               self[obj][thisName] = event.currentTarget.checked ? 1 : ''
               self.RefreshSelect()
+              self.showTimeC()
+            }
+            if (thisName === 'is_graduated_plan' || thisName === 'is_other_school' || thisName === 'is_study_university') {
+              self.setIcheck()
             }
           })
         })

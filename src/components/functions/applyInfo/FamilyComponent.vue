@@ -102,7 +102,7 @@
                         <div class="checkbox" style="display: inline-block;">
                             <label>
                                 <input type="checkbox" name="brother_is" data-obj="family" data-name="brother_is"
-                                       v-model="family.brother_is" @change="showTime"> &nbsp;
+                                       v-model="family.brother_is"> &nbsp;
                             </label>
                         </div>
 
@@ -280,6 +280,7 @@ export default {
     let self = this
     self.showTime()
     self.setIcheck()
+    self.RefreshSelect()
   },
   methods: {
     showTime () {
@@ -391,6 +392,7 @@ export default {
               self[obj][thisName] = event.currentTarget.checked ? 1 : ''
               self.RefreshSelect()
               self.setIcheck()
+              self.showTime()
             }
           })
         })

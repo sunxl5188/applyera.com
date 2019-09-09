@@ -6,12 +6,14 @@
                 <div class="student_statistics_left">
                     跟进负责人：
                 </div>
-                <div class="student_statistics_right">
-                    <select class="form-control" v-model="adviser" @change="getTypeStudent()"
-                            style="display:inline-block;width:auto;">
-                        <option value="">请选择负责人</option>
-                        <option :value="item.id" v-for="(item, i) in adviserArr" :key="i">{{item.name}}</option>
-                    </select>
+                <div class="student_statistics_right" style="padding: 0;">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <select class="form-control selectpicker" data-live-search="true" v-model="adviser" @change="getTypeStudent()"
+                                style="display:inline-block;width:auto;">
+                            <option value="">请选择负责人</option>
+                            <option :value="item.id" v-for="(item,i) in adviserArr" :key="i">{{item.name}}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="student_statistics">
@@ -23,7 +25,7 @@
                        @click="sign_type='';getTypeStudent()">全部</a>
                     <a href="javascript:void(0);" :class="{active:sign_type===item.id}"
                        @click="sign_type=item.id;getTypeStudent()"
-                       v-for="(item, i) in status" :key="i">{{item.status_name}}</a>
+                       v-for="(item,i) in status" :key="i">{{item.status_name}}</a>
                 </div>
             </div>
         </div>
@@ -53,6 +55,8 @@
 </template>
 
 <script>
+import 'bootstrap-select'
+import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import echarts from 'echarts'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -92,6 +96,9 @@ export default {
             self.adviserArr = res.data.adviser
             self.status = res.data.status
             self.createChart(res.data.chart)
+            setTimeout(function () {
+              $('.selectpicker').selectpicker('refresh')
+            }, 500)
           } else {
             console.log(res.msg)
           }
@@ -100,7 +107,7 @@ export default {
     },
     createChart (data) {
       let options = {
-        color: ['#ff9f69', '#ffe168', '#5bc49f', '#32d3eb', '#60acfc', '#4bb1a6'],
+        color: data.colors, // ["#ff9f69", "#ffe168", "#5bc49f", "#32d3eb", "#60acfc", "#4bb1a6"]
         grid: {top: 20, bottom: 80, left: '5%', right: '2%'},
         tooltip: {
           trigger: 'axis',

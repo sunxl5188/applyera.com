@@ -76,7 +76,7 @@
                     <!--page2-->
                     <div>
                         <div class="font18 lh50">基本信息</div>
-                        <div class="row lh40">
+                        <div class="row lh40 baseInfo">
                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                 <div class="pull-left w30"><span>学生姓名</span></div>
                                 <div class="pull-left w70">
@@ -230,7 +230,7 @@
                     <!--page3-->
                     <div>
                         <div class="font18 lh50">推荐院校</div>
-                        <div class="table-responsive" v-if="schoolInfoTable.length > 0">
+                        <div v-if="schoolInfoTable.length > 0">
                             <table class="table table-hover table-bordered table-condensed text-center">
                                 <thead>
                                 <tr>
@@ -242,7 +242,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(item, i) in schoolInfoTable" :key="i">
+                                <tr v-for="(item,i) in schoolInfoTable" :key="i">
                                     <td>{{item.ranking}} <input type="hidden" name="recommend_table[ranking][]"
                                                                 :value="item.ranking"/></td>
                                     <td>{{item.country}}<input type="hidden" name="recommend_table[country][]"
@@ -263,10 +263,8 @@
                                     <td class="text-left">
                                         <input type="hidden" name="recommend_table[time_table][]"
                                                :value="item.time_table"/>
-                                        <select class="form-control" name="recommend_table[time_select][]">
-                                            <option :value="items" v-for="(items, k) in item.time_table" :key="k">
-                                                {{items}}
-                                            </option>
+                                        <select class="form-control selectpicker" name="recommend_table[time_select][]">
+                                            <option :value="items" v-for="(items,k) in item.time_table" :key="k">{{items}}</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -461,7 +459,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row lh40" v-for="(items, k) in item.custom" :key="k">
+                        <div class="row lh40" v-for="(items,k) in item.custom" :key="k">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="pull-left w10">
                                         <span contenteditable="true" data-placeholder="请输入字段名"
@@ -761,9 +759,6 @@ export default {
       }
 
       setTimeout(function () {
-        $('.selectpicker').selectpicker()
-        self.setShowTime()
-
         $('.fullRightContent').scroll(function () {
           $('.header-wrap').css({top: $(this).scrollTop()})
         })
@@ -779,6 +774,8 @@ export default {
           }
         })
       }, 3000)
+
+      self.setSelect()
     })
   },
   methods: {
@@ -913,26 +910,17 @@ export default {
       } else {
         this.schoolInfo.push.apply(this.schoolInfo, obj.recommend)
         this.schoolInfoTable.push.apply(this.schoolInfoTable, obj.recommend_table)
+        this.setSelect()
       }
     },
     // 费用预算回调
     budgetCallbacks (obj) {
       let self = this
-      /* for (let i = 0; i < self.budget.length; i++) {
-                  if (self.budget[i]['id'] === obj.id) {
-                    return false
-                  }
-                } */
       self.budget.push(obj)
     },
     // 考评内容回调
     evaluaCallbacks (obj) {
       let self = this
-      /* for (let i = 0; i < self.Evaluation.length; i++) {
-                  if (self.Evaluation[i]['id'] === obj.id && obj.number !== '') {
-                    return false
-                  }
-                } */
       self.Evaluation.push({
         assessId: obj.id,
         assessNumber: obj.number,
@@ -1046,6 +1034,12 @@ export default {
       if (self.applyType === 0) {
         self.$refs.schoolMajor.customData()
       }
+    },
+    // bt-select
+    setSelect () {
+      setTimeout(function () {
+        $('.selectpicker').selectpicker('refresh')
+      }, 600)
     }
   },
   components: {
@@ -1059,17 +1053,19 @@ export default {
 
         & #ElementContent{box-shadow:0 0 3px #ddd;}
 
-        .bootstrap-select{
-            vertical-align:middle;line-height:initial;margin-top:-3px;
+        & .baseInfo{
+            & .bootstrap-select{
+                vertical-align:middle;line-height:initial;margin-top:-3px;
 
-            & > .dropdown-toggle{
-                border-color:#fff !important;background-color:#fff !important;max-width:120px;padding:0;
+                & > .dropdown-toggle{
+                    border-color:#fff !important;background-color:#fff !important;max-width:120px;padding:0;
 
-                &:focus{outline:none !important;}
+                    &:focus{outline:none !important;}
+                }
             }
-        }
 
-        .filter-option-inner-inner{word-break:break-all; word-wrap:break-word;white-space:initial;}
+            & .filter-option-inner-inner{word-break:break-all; word-wrap:break-word;white-space:initial;}
+        }
 
         [data-target="#schoolMajor"],
         [data-target="#AddEvaluation"],

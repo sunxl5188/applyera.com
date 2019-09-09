@@ -1,6 +1,6 @@
 <template>
-    <div class="container-fluid">
-        <div class="clearfix pb-30">
+    <div class="container-fluid containerBody" :style="'height:'+wh+'px;'">
+        <div class="childHeader bgGray">
             <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
@@ -64,9 +64,10 @@
             </div>
         </div>
 
-        <div class="row" v-masonry transition-duration="0.3s" item-selector=".masonryItem">
-            <div v-masonry-tile v-for="(item, i) in list" :key="i"
-                 class="masonryItem col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="blk65"></div>
+
+        <div class="row" :style="'width:'+list.length * 270+'px;'">
+            <div v-for="(item, i) in list" :key="i" class="masonryItem">
                 <div class="clearfix lh24 pb-10">
                     <span>{{item.status_name}}</span>
                     <span>{{item.total}}</span>
@@ -90,9 +91,16 @@
                                                   data-toggle="dropdown" style="padding:0 6px;color: #999;"><span
                                                   class="caret"></span></button>
                                           <ul class="dropdown-menu dropdown-menu-right">
-                                            <li v-for="(sitem, n) in sign_status" :key="n"
-                                                v-if="item.status_name !== sitem.status_name">
-                                                <a href="#" @click="setStudentState(items.id, sitem.id)">{{sitem.status_name}}</a>
+                                            <li v-for="(sitem, n) in sign_status" :key="n">
+                                                <a href="#" class="active"
+                                                   v-if="item.status_name === sitem.status_name">
+                                                    {{sitem.status_name}}
+                                                    <span class="glyphicon glyphicon-ok c999"></span>
+                                                </a>
+                                                <a href="#" @click="setStudentState(items.id, sitem.id)"
+                                                   v-if="item.status_name !== sitem.status_name">
+                                                    {{sitem.status_name}}
+                                                </a>
                                             </li>
                                           </ul>
                                         </div>
@@ -185,7 +193,7 @@
                                                                  class="img-circle" width="30" height="30"/>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li v-for="(item,i) in adviserArr" :key="i" @click="adviserId=item.id"><a
+                                                            <li v-for="(item, i) in adviserArr" :key="i" @click="studentId=modalData.student_info.stu_id;adviserId=item.id;saveAdviser()"><a
                                                                     href="#">{{item.name}}</a></li>
                                                         </ul>
                                                     </div>
@@ -347,15 +355,13 @@
                                                  class="img-circle div_vm" width="30" height="30"/>
                                             <span class="div_vm">{{item.adviser_name}}</span>
                                             <a href="javascript:void(0);" class="div_vm ml-10 deleteBtn"
-                                               @click="deleteFollow(item.id, modalData.student_info.id)">删除</a>
+                                               @click="deleteFollow(item.id, modalData.student_info.stu_id)">删除</a>
                                         </span>
                                             <span class="pull-right c999">{{item.contact_time_format}}</span>
                                         </div>
-                                        <div class="clearfix pl-25 pt-5 pb-5 lh22">
-                                            {{item.contact_content}}
-                                        </div>
-                                        <div class="clearfix pl-25 font12 c999">
-                                            下次跟进时间: {{item.next_contact_time_format}}
+                                        <div class="clearfix pl-25 pt-5 pb-5 lh22" v-html="item.contact_content"></div>
+                                        <div class="clearfix pl-25 font12 c999" v-if="item.next_contact_time_format">
+                                            设置跟进: {{item.next_contact_time_format}}
                                         </div>
                                     </div>
                                 </div>
@@ -371,7 +377,7 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-8" id="next_contact_time" contenteditable="true"
-                                             data-placeholder="下次跟进时间"></div>
+                                             data-placeholder="设置跟进"></div>
                                         <div class="col-sm-4">
                                             <a href="javascript:void(0);" class="cded" @click="sendFollow">发布</a>
                                         </div>
@@ -459,6 +465,7 @@ export default {
   data () {
     return {
       loading: true,
+      wh: 0,
       nation: nation,
       // 筛选
       keywords: '',
@@ -494,6 +501,7 @@ export default {
   },
   mounted () {
     let self = this
+    self.wh = $(window).height() - 50
     self.$nextTick(() => {
       // PinYin.getCamelChars("中")
       self.pagechange()
@@ -507,9 +515,7 @@ export default {
         self.laydate.render({
           elem: '#next_contact_time',
           type: 'datetime',
-          done: (value) => {
-
-          }
+          done: (value) => {}
         })
       }, 1000)
     })
@@ -522,7 +528,6 @@ export default {
       params.append('keywords', self.keywords)
       params.append('student_type', self.student_type)
       params.append('adviser', self.adviser)
-      db.headers.token = self.token
       db.postRequest('/Institution/WorkFlow/index', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.info
@@ -554,7 +559,6 @@ export default {
       params.append('student_id', studentId)
       params.append('contact_content', contactContent)
       params.append('next_contact_time', nextContactTime)
-      db.headers.token = self.token
       db.postRequest('/Institution/Student/stuFollowSave', params).then(res => {
         if (res.status === 1) {
           $('#contact_content').html('')
@@ -577,7 +581,6 @@ export default {
         self.layer.close(i)
         let params = new URLSearchParams()
         params.append('id', id)
-        db.headers.token = self.token
         db.getRequest('/Institution/WorkFlow/deleteFollow', params).then(res => {
           if (res.status === 1) {
             self.layer.alert(res.msg, {icon: 1}, function (i) {
@@ -604,7 +607,6 @@ export default {
       }
       params.append('stu_id', id)
       params.append(field, value)
-      db.headers.token = self.token
       db.postRequest('/Institution/WorkFlow/studentSave', params).then(res => {
         console.log(res.msg)
       })
@@ -615,7 +617,6 @@ export default {
       let params = new URLSearchParams()
       params.append('student_id', id)
       params.append('student_type', type)
-      db.headers.token = self.token
       db.postRequest('/Institution/WorkFlow/changeStudentType', params).then(res => {
         if (res.status === 1) {
           self.pagechange(self.current)
@@ -632,7 +633,6 @@ export default {
       let params = new URLSearchParams()
       params.append('student_id', sid)
       params.append('sign_status', id)
-      db.headers.token = self.token
       db.postRequest('/Institution/WorkFlow/changeStudentStatus', params).then(res => {
         if (res.status === 1) {
           self.pagechange(self.current)
@@ -660,7 +660,6 @@ export default {
       }
       params.append('student_id[]', self.studentId)
       params.append('adviser_id', self.adviserId)
-      db.headers.token = self.token
       db.postRequest('/Institution/Student/batchChangeAdviser', params).then(res => {
         if (res.status === 1) {
           self.studentId = ''
@@ -695,7 +694,6 @@ export default {
       let self = this
       let params = new URLSearchParams()
       params.append('student_id[]', self.studentId)
-      db.headers.token = self.token
       db.postRequest('/Institution/Student/batchDelStu', params).then(res => {
         if (res.status === 1) {
           self.pagechange(self.current)
@@ -715,7 +713,6 @@ export default {
       let self = this
       let params = new URLSearchParams()
       params.append('id', id)
-      db.headers.token = self.token
       db.getRequest('/Institution/WorkFlow/studentDetail', params).then(res => {
         if (res.status === 1) {
           self.modalData = res.data
@@ -744,7 +741,6 @@ export default {
       }
       let params = new URLSearchParams()
       params.append('id', id)
-      db.headers.token = self.token
       db.getRequest('/Institution/WorkFlow/studentDetail', params).then(res => {
         if (res.status === 1) {
           self.modalData = res.data
@@ -767,6 +763,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+    .containerBody{
+        margin:-20px -15px;overflow:auto;
+        & .childHeader{
+            position:fixed;right: 0;top:50px;z-index: 10;width:100%;padding:15px;height:65px;
+        }
+    }
     .panel {
         &.panel-default {
             & .panel-body {
@@ -883,6 +885,11 @@ export default {
         }
     }
 
+    .dropdown .dropdown-menu > li > a {text-align:left;}
+
+    .masonryItem {
+        width:240px;margin:0 15px;float:left;
+    }
 </style>
 <style lang="scss">
     #workStudent-id {

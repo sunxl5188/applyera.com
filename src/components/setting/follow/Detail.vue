@@ -70,6 +70,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>是否展示</label>
+                                    <select name="is_statistic" class="form-control" v-model="detail.is_statistic">
+                                        <option value="">请选择</option>
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -94,7 +106,8 @@ export default {
         status: '',
         stu_type: '',
         stu_type_num: '',
-        status_color: ''
+        status_color: '',
+        is_statistic: ''
       },
       stateColor: ['#599bdf', '#2b91ce', '#3aa1d0', '#38b0d0', '#37bdd1', '#4baab7', '#41b8b1', '#5cbe9f', '#55af8f', '#8dc478', '#bed259', '#e4c249', '#e2a24e', '#e38e63', '#de7464', '#df6363', '#e36f70', '#cf5d7f', '#bf5895', '#a155a7', '#837bcc', '#6970c7', '#5967c4', '#5d80be']
     }

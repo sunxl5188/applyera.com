@@ -69,6 +69,7 @@ export default new Router({
         }
       ]
     },
+
     {
       path: '/Archives',
       name: 'Archives',
@@ -104,7 +105,15 @@ export default new Router({
             requiresAuth: true,
             title: '学生公海',
             group: ['student', 1, '']
-          }
+          },
+          children: [
+            {
+              path: 'edit',
+              name: 'studentSeasEdit',
+              component: resolve => require(['@/components/archives/student/Edit'], resolve),
+              meta: {requiresAuth: true, title: '学生详情', group: ['student', 0, 0]}
+            }
+          ]
         },
         {
           path: 'student_statistics',
@@ -140,6 +149,7 @@ export default new Router({
         }
       ]
     },
+
     {
       path: '/functions',
       name: 'functions',
@@ -291,6 +301,7 @@ export default new Router({
 
       ]
     },
+
     {
       path: '/setting',
       name: 'setting',
@@ -484,6 +495,7 @@ export default new Router({
         }
       ]
     },
+
     {
       path: '/admin',
       name: 'admin',
@@ -720,6 +732,7 @@ export default new Router({
         }
       ]
     },
+
     {
       path: '*', name: 'Error', component: resolve => require(['@/components/Error'], resolve)
     }

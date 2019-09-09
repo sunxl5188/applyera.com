@@ -1,156 +1,161 @@
 <template>
     <div class="container-fluid bgWhite pt-25 pb-25">
-        <div class="po_re">
-            <div id="filePicker" style="position: absolute;left: -999px;z-index: 1;"></div>
-        </div>
-        <div class="clearfix pb-30">
-            <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="headerTitle">学生公海</div>
-                </div>
 
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
-                    <div class="form-group form-search">
-                        <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
-                        <i class="iconfont handPower clearSearch" v-if="keywords" @click="keywords='';pagechange()">&#xe7f6;</i>
-                        <input type="text" v-model="keywords" class="form-control"
-                               placeholder="搜索所有内容"
-                               style="padding-left:30px;" @keyup.enter="pagechange()">
+        <div :class="{hidden:name!=='student_seas'}">
+            <div class="po_re">
+                <div id="filePicker" style="position: absolute;left: -999px;z-index: 1;"></div>
+            </div>
+            <div class="clearfix pb-30">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="headerTitle">学生公海</div>
                     </div>
-                    <div class="form-group ml-10">
-                        <button type="button" class="btn btn-default" @click="filterShow=!filterShow">
-                            <span v-if="!filterShow">收起筛选</span>
-                            <span v-if="filterShow">展开筛选</span>
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
+                        <div class="form-group form-search">
+                            <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
+                            <i class="iconfont handPower clearSearch" v-if="keywords" @click="keywords='';pagechange()">&#xe7f6;</i>
+                            <input type="text" v-model="keywords" class="form-control"
+                                   placeholder="搜索所有内容"
+                                   style="padding-left:30px;" @keyup.enter="pagechange()">
+                        </div>
+                        <div class="form-group ml-10">
+                            <button type="button" class="btn btn-default" @click="filterShow=!filterShow">
+                                <span v-if="!filterShow">收起筛选</span>
+                                <span v-if="filterShow">展开筛选</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="pl-15 pr-15 pt-15 bda filterList"
+                 :style="filterShow?'height:0;padding:0;overflow:hidden;':'height:175px;'">
+                <div class="student_seas_filter">
+                    <div class="student_seas_filter_left">
+                        学生类型：
+                    </div>
+                    <div class="student_seas_filter_right">
+                        <a href="javascript:void(0);" :class="{active:student_type===''}"
+                           @click="student_type='';pagechange()">全部</a>
+                        <a href="javascript:void(0);" :class="{active:student_type===item.id}"
+                           v-for="(item,i) in studentTypeArr.type" :key="i"
+                           @click="student_type=item.id;pagechange()">{{item.stu_type}}</a>
+                    </div>
+                </div>
+                <div class="student_seas_filter">
+                    <div class="student_seas_filter_left">
+                        前负责人：
+                    </div>
+                    <div class="student_seas_filter_right" style="padding: 0;">
+                        <div class="col-sm-3">
+                            <select class="form-control selectpicker" v-model="adviser" data-live-search="true"
+                                    @change="pagechange()">
+                                <option value="">请选择负责人</option>
+                                <option :value="item.id" v-for="(item,i) in adviserArr" :key="i">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="student_seas_filter">
+                    <div class="student_seas_filter_left">
+                        创建时间：
+                    </div>
+                    <div class="student_seas_filter_right">
+                        <a href="javascript:void(0);" :class="{active:created_time===''}"
+                           @click="created_time='';pagechange()">不限</a>
+                        <a href="javascript:void(0);" :class="{active:created_time==='本周'}"
+                           @click="created_time='本周';pagechange()">本周</a>
+                        <a href="javascript:void(0);" :class="{active:created_time==='本月'}"
+                           @click="created_time='本月';pagechange()">本月</a>
+                        <a href="javascript:void(0);" :class="{active:created_time==='本季'}"
+                           @click="created_time='本季';pagechange()">本季</a>
+                        <div :class="created_time!=='' && created_time!=='本周' && created_time!=='本月' && created_time!=='本季'? 'active':''"
+                             id="times" data-placeholder="自定义时间段" contenteditable="true"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix pt-25 pb-25">
+                <div class="pull-left lh34">共 <span class="cded">{{total}}</span>名学生</div>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default ml-10" @click="receive()">领取</button>
+                    <div class="dropdown ml-10" style="display: inline-block;">
+                        <button class="btn btn-default dropdown-toggle" type="button"
+                                data-toggle="dropdown">编辑
+                            <span class="caret"></span>
                         </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#" @click="editStudent">编辑学生</a></li>
+                            <li><a href="#" @click="consultant">分配顾问</a></li>
+                        </ul>
                     </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="pl-15 pr-15 pt-15 bda filterList"
-             :style="filterShow?'height:0;padding:0;overflow:hidden;':'height:175px;'">
-            <div class="student_seas_filter">
-                <div class="student_seas_filter_left">
-                    学生类型：
-                </div>
-                <div class="student_seas_filter_right">
-                    <a href="javascript:void(0);" :class="{active:student_type===''}"
-                       @click="student_type='';pagechange()">全部</a>
-                    <a href="javascript:void(0);" :class="{active:student_type===item.id}"
-                       v-for="(item, i) in studentTypeArr.type" :key="i"
-                       @click="student_type=item.id;pagechange()">{{item.stu_type}}</a>
-                </div>
-            </div>
-            <div class="student_seas_filter">
-                <div class="student_seas_filter_left">
-                    前负责人：
-                </div>
-                <div class="student_seas_filter_right">
-                    <div class="col-sm-3">
-                        <select class="form-control selectpicker" v-model="adviser" data-live-search="true"
-                                @change="pagechange()">
-                            <option value="">请选择负责人</option>
-                            <option :value="item.id" v-for="(item, i) in adviserArr" :key="i">{{item.name}}</option>
-                        </select>
+                    <button type="button" class="btn btn-default ml-10" @click="deleteInfo">删除</button>
+                    <div class="dropdown ml-10" style="display: inline-block;">
+                        <button class="btn btn-default dropdown-toggle" type="button"
+                                data-toggle="dropdown">添加
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <router-link to="/archives/student_seas/edit?isCommon=1">新建学生</router-link>
+                            </li>
+                            <li><a href="javascript:void(0);" @click="uploadStart">模板导入</a></li>
+                            <li><a :href="siteUrl+'/Public/xls_temp/Student_profile.xlsx'"
+                                   download="Student_profile.xlsx" target="_blank">下载模板</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <div class="student_seas_filter">
-                <div class="student_seas_filter_left">
-                    创建时间：
-                </div>
-                <div class="student_seas_filter_right">
-                    <a href="javascript:void(0);" :class="{active:created_time===''}"
-                       @click="created_time='';pagechange()">不限</a>
-                    <a href="javascript:void(0);" :class="{active:created_time==='本周'}"
-                       @click="created_time='本周';pagechange()">本周</a>
-                    <a href="javascript:void(0);" :class="{active:created_time==='本月'}"
-                       @click="created_time='本月';pagechange()">本月</a>
-                    <a href="javascript:void(0);" :class="{active:created_time==='本季'}"
-                       @click="created_time='本季';pagechange()">本季</a>
-                    <div :class="created_time!=='' && created_time!=='本周' && created_time!=='本月' && created_time!=='本季'? 'active':''"
-                         id="times" data-placeholder="自定义时间段" contenteditable="true"></div>
+
+            <div v-if="alert.state > 0">
+                <div :class="alert.state===1?'alert alert-primary':(alert.state===2?'alert alert-success':'alert alert-danger')">
+                    {{alert.msg}}
                 </div>
             </div>
+
+            <table class="table table-customize">
+                <thead>
+                <tr>
+                    <th width="5%"></th>
+                    <th width="15%">学生姓名</th>
+                    <th width="10%">学生类型</th>
+                    <th width="12%">前负责人</th>
+                    <th width="15%">创建时间
+                        <a href="javascript:void(0);"
+                           :class="sort_by_time===0?'iconfont sort':(sort_by_time===1?'iconfont sort up':'iconfont sort down')"
+                           @click="listSort"></a>
+                    </th>
+                    <th>跟进动态</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item,i) in list" :key="i">
+                    <td><input type="checkbox" name="id[]" :value="item.id" @click="setActiveId($event, item.id)"/></td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.student_type}}</td>
+                    <td>{{item.operator_name}}</td>
+                    <td>{{item.create_time}}</td>
+                    <td class="showMore">
+                        <span v-for="(items,k) in item.follows" :key="k">{{items.contact_content}}</span>
+                        <button type="button" class="btn btn-primary"
+                                @click="viewFollow(item.follows);sid=item.id">查看全部
+                        </button>
+                    </td>
+                </tr>
+                <tr v-if="loading">
+                    <td colspan="6" v-html="LoadingImg()"></td>
+                </tr>
+                <tr v-if="!loading && list.length === 0">
+                    <td colspan="6" v-html="NoData()"></td>
+                </tr>
+                </tbody>
+            </table>
+            <v-pagination :total="total" :current-page='current' @pagechange="pagechange"></v-pagination>
         </div>
 
-        <div class="clearfix pt-25 pb-25">
-            <div class="pull-left lh34">共 <span class="cded">{{total}}</span>名学生</div>
-            <div class="pull-right">
-                <button type="button" class="btn btn-default ml-10">领取</button>
-                <div class="dropdown ml-10" style="display: inline-block;">
-                    <button class="btn btn-default dropdown-toggle" type="button"
-                            data-toggle="dropdown">编辑
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="#" @click="editStudent">编辑学生</a></li>
-                        <li><a href="#" @click="consultant">顾问交接</a></li>
-                    </ul>
-                </div>
-                <button type="button" class="btn btn-default ml-10" @click="deleteInfo">删除</button>
-                <div class="dropdown ml-10" style="display: inline-block;">
-                    <button class="btn btn-default dropdown-toggle" type="button"
-                            data-toggle="dropdown">添加
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li>
-                            <router-link to="/archives/student/edit">新建学生</router-link>
-                        </li>
-                        <li><a href="javascript:void(0);" @click="uploadStart">模板导入</a></li>
-                        <li><a :href="siteUrl+'/Public/xls_temp/Student_profile.xlsx'"
-                               download="Student_profile.xlsx" target="_blank">下载模板</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div v-if="alert.state > 0">
-            <div :class="alert.state===1?'alert alert-primary':(alert.state===2?'alert alert-success':'alert alert-danger')">
-                {{alert.msg}}
-            </div>
-        </div>
-
-        <table class="table table-customize">
-            <thead>
-            <tr>
-                <th width="5%"></th>
-                <th width="15%">学生姓名</th>
-                <th width="10%">学生类型</th>
-                <th width="12%">前负责人</th>
-                <th width="15%">创建时间
-                    <a href="javascript:void(0);"
-                       :class="sort_by_time===0?'iconfont sort':(sort_by_time===1?'iconfont sort up':'iconfont sort down')"
-                       @click="listSort"></a>
-                </th>
-                <th>跟进动态</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(item, i) in list" :key="i">
-                <td><input type="checkbox" name="id[]" :value="item.id" @click="setActiveId($event, item.id)"/></td>
-                <td>{{item.name}}</td>
-                <td>{{item.student_type}}</td>
-                <td>{{item.operator_name}}</td>
-                <td>{{item.create_time}}</td>
-                <td class="showMore">
-                    <span v-for="(items, k) in item.follows" :key="k">{{items.contact_content}}</span>
-                    <button type="button" class="btn btn-primary"
-                            @click="viewFollow(item.follows);sid=item.id">查看全部
-                    </button>
-                </td>
-            </tr>
-            <tr v-if="loading">
-                <td colspan="6" v-html="LoadingImg()"></td>
-            </tr>
-            <tr v-if="!loading && list.length === 0">
-                <td colspan="6" v-html="NoData()"></td>
-            </tr>
-            </tbody>
-        </table>
-        <v-pagination :total="total" :current-page='current' @pagechange="pagechange"></v-pagination>
+        <router-view></router-view>
 
         <!--查看跟进状态-->
         <div class="modal fade" id="recording-id">
@@ -163,9 +168,9 @@
                     <div class="modal-body">
                         <div class="recordingBody">
                             <div class="recordingContent">
-                                <div class="media" v-for="(item, i) in followObj" :key="i">
+                                <div class="media" v-for="(item,i) in followObj" :key="i">
                                     <a class="media-left" href="#">
-                                        <img src="http://placehold.it/50x50/FF5733/ffffff"
+                                        <img :src="item.head_img || 'http://placehold.it/50x50/FF5733/ffffff'"
                                              style="width:50px; height:50px;" class="img-circle">
                                     </a>
                                     <div class="media-body">
@@ -180,7 +185,7 @@
                                         <div class="clearfix lh22">
                                             {{item.contact_content}}
                                         </div>
-                                        <div class="clearfix font12 c999">
+                                        <div class="clearfix font12 c999" v-if="item.next_contact_time">
                                             下次跟进时间: {{item.next_contact_time}}
                                         </div>
                                     </div>
@@ -261,7 +266,7 @@
                                 <div class="col-sm-7">
                                     <select name="" class="form-control" v-model="studentType">
                                         <option value="">请选择</option>
-                                        <option :value="item.id" v-for="(item, i) in studentTypeArr.type" :key="i">{{item.stu_type}}
+                                        <option :value="item.id" v-for="(item,i) in studentTypeArr.type" :key="i">{{item.stu_type}}
                                         </option>
                                     </select>
                                 </div>
@@ -324,6 +329,7 @@ export default {
   data () {
     return {
       loading: true,
+      name: 'student_seas',
       sid: '',
       siteUrl: window.ajaxBaseUrl,
       activeId: [],
@@ -353,6 +359,8 @@ export default {
   },
   mounted () {
     let self = this
+    self.name = self.$route.name
+
     self.$nextTick(() => {
       self.laydate.render({
         elem: '#times',
@@ -423,7 +431,7 @@ export default {
     deleteInfo () {
       let self = this
       if (self.activeId.length === 0) {
-        self.layer.alert('请选择需要操作的ID', {icon: 2})
+        self.layer.alert('请选择需要操作的学生', {icon: 2})
         return false
       }
 
@@ -456,7 +464,7 @@ export default {
     editStudent () {
       let self = this
       if (self.activeId.length === 0) {
-        self.layer.alert('请选择需要操作的ID', {icon: 2})
+        self.layer.alert('请选择需要操作的学生', {icon: 2})
         return false
       }
       $('#editStudent-id').modal({
@@ -467,7 +475,7 @@ export default {
     consultant () {
       let self = this
       if (self.activeId.length === 0) {
-        self.layer.alert('请选择需要操作的ID', {icon: 2})
+        self.layer.alert('请选择需要操作的学生', {icon: 2})
         return false
       }
       $('#principal-id').modal({
@@ -505,7 +513,7 @@ export default {
           extensions: 'xlsx,xls',
           mimeTypes: '*/*'
         },
-        formData: {func: 'student_import'}
+        formData: {func: 'student_import', is_common: 1}
       })
       uploader.on('uploadStart', function (e) {
         self.alert = {
@@ -653,10 +661,40 @@ export default {
     viewFollow (obj) {
       this.followObj = obj
       $('#recording-id').modal('show')
+    },
+    // 领取
+    receive () {
+      let self = this
+      if (self.activeId.length === 0) {
+        self.layer.alert('请选择要领取的学生编号', {icon: 2})
+        return false
+      }
+      let params = new URLSearchParams()
+      self.activeId.map(item => {
+        params.append('student_id[]', item)
+      })
+      db.postRequest('/Institution/Student/getStudent', params).then(res => {
+        if (res.status === 1) {
+          self.pagechange(self.current)
+          self.cancelCheck()
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
     }
   },
   components: {
     'v-pagination': PagInAction
+  },
+  watch: {
+    $route (to, from) {
+      this.name = to.name
+    }
   }
 }
 </script>

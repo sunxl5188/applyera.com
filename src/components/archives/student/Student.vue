@@ -31,7 +31,7 @@
                                                 <label>学生类型</label>
                                                 <select name="student_type" v-model="student_type" class="form-control">
                                                     <option value="">请选择</option>
-                                                    <option :value="item.id" v-for="(item, i) in student_type_list.type" :key="i">
+                                                    <option :value="item.id" v-for="(item,i) in student_type_list.type" :key="i">
                                                         {{item.stu_type}}
                                                     </option>
                                                 </select>
@@ -51,7 +51,7 @@
                                                 <label>服务顾问</label>
                                                 <select name="adviser" v-model="adviser" class="form-control">
                                                     <option value="">请选择</option>
-                                                    <option :value="item.id" v-for="(item, i) in service_adviser_list" :key="i">
+                                                    <option :value="item.id" v-for="(item,i) in service_adviser_list" :key="i">
                                                         {{item.name}}
                                                     </option>
                                                 </select>
@@ -87,6 +87,7 @@
                                            data-target="#editStudent">编辑学生</a></li>
                                     <li><a href="#" data-toggle="modal" data-target="#consultant"
                                            data-backdrop="static">顾问交接</a></li>
+                                    <li><a href="#" @click="shiftHighSeas">移至公海</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -137,7 +138,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(item, i) in list" :key="i">
+                    <tr v-for="(item,i) in list" :key="i">
                         <td><input type="checkbox" name="id[]" :value="item.id"></td>
                         <td>
                             <router-link :to="{path:'/archives/student/edit',query:{id:item.id}}" class="cded">
@@ -152,7 +153,9 @@
                         <td>{{item.adviser}}</td>
                         <td>{{item.create_time}}</td>
                         <td>
-                            <span class="label is-round" v-for="(items, i) in student_type_list.state" :key="i" v-if="items.id === item.sign_status" :style="'background-color:'+item.status_color+';'">
+                            <span class="label is-round" v-for="(items, i) in student_type_list.state" :key="i"
+                                  v-if="items.id === item.sign_status"
+                                  :style="'background-color:'+item.status_color+';'">
                                 {{items.status_name}}
                             </span>
                         </td>
@@ -216,7 +219,7 @@
                                     <select name="student_type" class="form-control" v-validate="'required'"
                                             data-vv-as="必选项">
                                         <option value="">请选择</option>
-                                        <option :value="item.id" v-for="(item, i) in student_type_list[field]" :key="i"
+                                        <option :value="item.id" v-for="(item,i) in student_type_list[field]" :key="i"
                                                 v-if="field!==''">
                                             {{item.stu_type}}
                                         </option>
@@ -254,7 +257,7 @@
                                     <select name="adviser_id" class="form-control" v-validate="'required'"
                                             data-vv-as="新负责人">
                                         <option value="">请选择用户</option>
-                                        <option :value="item.id" v-for="(item, i) in service_adviser_list" :key="i">{{item.name}}
+                                        <option :value="item.id" v-for="(item,i) in service_adviser_list" :key="i">{{item.name}}
                                         </option>
                                     </select>
                                     <div class="validateTip" v-show="errors.has('form2.adviser_id')">
@@ -411,7 +414,7 @@ export default {
         }
         if (type === 'all') {
           if (self.idArr.length === 0) {
-            self.layer.alert('请选择需要操作的ID', {icon: 2})
+            self.layer.alert('请选择需要操作的学生', {icon: 2})
             return false
           } else {
             self.idArr.map(item => {
@@ -571,6 +574,30 @@ export default {
               }
             })
           })
+        }
+      })
+    },
+    // 移至公海
+    shiftHighSeas () {
+      let self = this
+      let params = new URLSearchParams()
+      if (self.idArr.length === 0) {
+        self.layer.alert('请选择需要操作的学生', {icon: 2})
+        return false
+      } else {
+        self.idArr.map(item => {
+          params.append('student_id[]', item)
+        })
+      }
+      db.postRequest('/Institution/Student/backStudent', params).then(res => {
+        if (res.status === 1) {
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+            self.pagechange(self.current)
+            self.idArr = []
+          })
+        } else {
+          self.layer.alert(res.msg, {icon: 2})
         }
       })
     }

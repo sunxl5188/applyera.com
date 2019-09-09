@@ -6,12 +6,15 @@
                 <div class="student_statistics_left">
                     跟进负责人：
                 </div>
-                <div class="student_statistics_right">
-                    <select v-model="adviser" @change="getFollowState()" class="form-control"
-                            style="display:inline-block;width:auto;">
-                        <option value="">请选择负责人</option>
-                        <option :value="item.id" v-for="(item,i) in adviserArr" :key="i">{{item.name}}</option>
-                    </select>
+                <div class="student_statistics_right" style="padding: 0;">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <select v-model="adviser" data-live-search="true" @change="getFollowState()"
+                                class="form-control selectpicker"
+                                style="display:inline-block;width:auto;">
+                            <option value="">请选择负责人</option>
+                            <option :value="item.id" v-for="(item,i) in adviserArr" :key="i">{{item.name}}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="student_statistics">
@@ -55,7 +58,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item, i) in list" :key="i">
+            <tr v-for="(item,i) in list" :key="i">
                 <td>{{item.name}}</td>
                 <td>{{item.student_count}}</td>
                 <td>{{item.follow_count}}</td>
@@ -65,13 +68,19 @@
             </tr>
             </tbody>
         </table>
+
+        <PagInAction :total="total" :current-page='current' :display="5" @pagechange="getFollowState"></PagInAction>
+
     </div>
 </template>
 
 <script>
+import 'bootstrap-select'
+import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import echarts from 'echarts'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
+import PagInAction from '@/components/PagInAction'
 
 export default {
   name: 'Record_report',
@@ -82,9 +91,9 @@ export default {
       created_time: '',
       loading: true,
       adviserArr: [],
+      list: [],
       total: 0,
-      current: 1,
-      list: []
+      current: 1
     }
   },
   computed: {
@@ -113,26 +122,32 @@ export default {
     self.getFollowState()
   },
   methods: {
-    getFollowState () {
+    getFollowState (p) {
       let self = this
       let params = new URLSearchParams()
+      params.append('page', p || 1)
       params.append('adviser', self.adviser)
       params.append('created_time', self.created_time)
       db.postRequest('/Institution/Statistic/followStatistic', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.table
+          self.total = res.data.total
           self.adviserArr = res.data.adviser
           self.createChart(res.data.chart.legend, res.data.chart.userName, res.data.chart.series)
+          setTimeout(function () {
+            $('.selectpicker').selectpicker('refresh')
+          }, 500)
         } else {
           self.layer.alert(res.msg, {
             icon: 2
           })
         }
+        self.current = p || 1
       })
     },
     createChart (legend, userName, series) {
       let options = {
-        color: ['#60acfc', '#32d3eb', '#5bc49f'],
+        color: ['#ff9f69', '#ffe168', '#5bc49f', '#32d3eb', '#60acfc', '#4bb1a6'],
         grid: {top: 20, bottom: 80, left: '5%', right: '2%'},
         tooltip: {
           trigger: 'axis',
@@ -171,37 +186,38 @@ export default {
         myChart.setOption(options, true)
       }
     }
-  }
+  },
+  components: { PagInAction }
 }
 </script>
 
 <style scoped lang="scss">
-    .student_statistics{
+    .student_statistics {
         margin-bottom:15px;
 
-        &:after{content:'';width:100%;height:0;display:block;clear:both;}
+        &:after {content:'';width:100%;height:0;display:block;clear:both;}
 
-        & .student_statistics_left{
+        & .student_statistics_left {
             float:left;width:10%;text-align:right;padding-right:10px;line-height:34px;
         }
 
-        & .student_statistics_right{
+        & .student_statistics_right {
             float:right;width:90%;padding:5px 0;
 
-            & > a, & > div{
+            & > a, & > div {
                 display:inline-block;margin-right:10px;padding:0 8px;line-height:24px;
 
-                &.active{
+                &.active {
                     background-color:#39f;color:#fff;
                 }
             }
         }
     }
 
-    .MyChartsBody{
+    .MyChartsBody {
         width:100%;height:450px;
 
-        & #myChartsThree{
+        & #myChartsThree {
             width:100%;height:450px;margin:0 auto;
         }
     }

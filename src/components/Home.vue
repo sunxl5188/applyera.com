@@ -29,7 +29,8 @@
                             </div>
                             <div class="UpcomingContent">
                                 <div class="clearfix text-center lh80" v-if="list.length === 0">今日暂无待办</div>
-                                <div :class="item.priority===1 && item.type===1?'row state-0': item.priority===2 && item.type===1 ?'row state-1':item.priority===3 && item.type===1 ? 'row state-2':'row'" v-for="(item, i) in list" :key="i">
+                                <div :class="item.priority===1 && item.type===1?'row state-0': item.priority===2 && item.type===1 ?'row state-1':item.priority===3 && item.type===1 ? 'row state-2':'row'"
+                                     v-for="(item,i) in list" :key="i">
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                         {{item.time_format}}
                                     </div>
@@ -407,7 +408,7 @@
                                 <div class="col-sm-10">
                                     <select name="participant[]" class="form-control selectPicker" v-model="participant"
                                             multiple>
-                                        <option :value="item.id" v-for="(item, i) in PartList" :key="i">{{item.name}}</option>
+                                        <option :value="item.id" v-for="(item,i) in PartList" :key="i">{{item.name}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -712,12 +713,12 @@ export default {
             itemGap: 20,
             itemWidth: 25,
             icon: 'circle',
-            data: ['待回访', '已签单', '咨询中', '已流失'],
+            data: data.title,
             formatter: function (name) {
               let target
-              for (let i = 0; i < data.length; i++) {
-                if (data[i].name === name) {
-                  target = data[i].value
+              for (let i = 0; i < data.data.length; i++) {
+                if (data.data[i].name === name) {
+                  target = data.data[i].value
                 }
               }
               let arr = ['{b|' + target + '}', '{a|' + name + '}']
@@ -755,25 +756,18 @@ export default {
                   show: false
                 }
               },
-              data: data
+              data: data.data
             }
           ]
         }
         if (option && typeof option === 'object') {
           myChart.setOption(option, true)
           myChart.on('legendselectchanged', function (params) {
-            if (params.name === '待回访') {
-              self.$router.push('/archives/student?status=3')
-            }
-            if (params.name === '已签单') {
-              self.$router.push('/archives/student?status=1')
-            }
-            if (params.name === '咨询中') {
-              self.$router.push('/archives/student?status=2')
-            }
-            if (params.name === '已流失') {
-              self.$router.push('/archives/student?status=4')
-            }
+            data.link.map((item, i) => {
+              if (params.name === data.title[i]) {
+                self.$router.push(item)
+              }
+            })
           })
         }
       }, 500)
@@ -961,139 +955,139 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .functionList{
+    .functionList {
         padding:15px;
 
-        & .media{
+        & .media {
             margin:15px 0;position:relative;
 
-            & .media-left{display:block;position:absolute;left:0;top:0;}
+            & .media-left {display:block;position:absolute;left:0;top:0;}
 
-            & .media-body{
+            & .media-body {
                 display:block;padding-left:45px;width:100%;
 
-                & > div{white-space:nowrap;overflow:hidden;-ms-text-overflow:ellipsis;text-overflow:ellipsis;}
+                & > div {white-space:nowrap;overflow:hidden;-ms-text-overflow:ellipsis;text-overflow:ellipsis;}
             }
 
-            & .iconfont{
+            & .iconfont {
                 width:40px;height:40px;text-align:center;line-height:40px;background-color:#0094fc;color:#fff;font-size:26px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;
             }
         }
 
-        & > div{
-            &:nth-of-type(2) .iconfont{background-color:#8fcf8f;}
+        & > div {
+            &:nth-of-type(2) .iconfont {background-color:#8fcf8f;}
 
-            &:nth-of-type(3) .iconfont{background-color:#8fbdd0;}
+            &:nth-of-type(3) .iconfont {background-color:#8fbdd0;}
 
-            &:nth-of-type(4) .iconfont{background-color:#849bd0;}
+            &:nth-of-type(4) .iconfont {background-color:#849bd0;}
 
-            &:nth-of-type(5) .iconfont{background-color:#a984d0;}
+            &:nth-of-type(5) .iconfont {background-color:#a984d0;}
 
-            &:nth-of-type(6) .iconfont{background-color:#0094fc;}
+            &:nth-of-type(6) .iconfont {background-color:#0094fc;}
 
-            &:nth-of-type(7) .iconfont{background-color:#8fcf8f;}
+            &:nth-of-type(7) .iconfont {background-color:#8fcf8f;}
 
-            &:nth-of-type(8) .iconfont{background-color:#8fbdd0;}
+            &:nth-of-type(8) .iconfont {background-color:#8fbdd0;}
 
-            &:nth-of-type(9) .iconfont{background-color:#849bd0;}
+            &:nth-of-type(9) .iconfont {background-color:#849bd0;}
 
-            &:nth-of-type(10) .iconfont{background-color:#a984d0;}
+            &:nth-of-type(10) .iconfont {background-color:#a984d0;}
         }
     }
 
-    .UpcomingWrap{
+    .UpcomingWrap {
         background:#fff;height:303px;
 
-        & .UpcomingTitle{
+        & .UpcomingTitle {
             height:40px;border-bottom:1px solid #dedede;
 
-            & > span{display:block;float:left;height:40px;}
+            & > span {display:block;float:left;height:40px;}
 
-            & .UpcomingNum{
+            & .UpcomingNum {
                 width:10%;height:40px;line-height:40px;text-align:center;
             }
 
-            & .progress{
+            & .progress {
                 width:40%;height:40px;background-color:transparent;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;position:relative;margin:0 10%;
 
-                &:before{content:'';width:100%;height:6px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;display:block;position:absolute;left:0;top:17px;background-color:#ebebeb;z-index:1;}
+                &:before {content:'';width:100%;height:6px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;display:block;position:absolute;left:0;top:17px;background-color:#ebebeb;z-index:1;}
 
-                & > i{position:absolute;left:0;top:17px;z-index:2;width:50%;height:6px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;background-color:#78a95a;}
+                & > i {position:absolute;left:0;top:17px;z-index:2;width:50%;height:6px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;background-color:#78a95a;}
             }
 
-            & .setDate{
+            & .setDate {
                 width:20%;text-align:center;position:relative;line-height:40px;cursor:pointer;
 
-                & > a{
+                & > a {
                     display:block;width:20px;height:40px;line-height:40px;text-align:center;position:absolute;top:0;z-index:10;font-family:'iconfont';font-size:20px;
 
-                    &.prov{left:0;}
+                    &.prov {left:0;}
 
-                    &.next{right:0;}
+                    &.next {right:0;}
                 }
 
-                & > span{display:block;position:absolute;width:50%;height:40px;left:50%;margin-left:-25%;top:0;z-index:2;filter:Alpha(Opacity=0); opacity:0; white-space:normal;overflow:hidden;}
+                & > span {display:block;position:absolute;width:50%;height:40px;left:50%;margin-left:-25%;top:0;z-index:2;filter:Alpha(Opacity=0); opacity:0; white-space:normal;overflow:hidden;}
             }
 
-            & .addUpcoming{
+            & .addUpcoming {
                 width:10%;text-align:center;line-height:40px;
             }
         }
 
-        & .UpcomingContent{
+        & .UpcomingContent {
             padding:0 15px;height:263px;
 
-            & .row{
+            & .row {
                 height:40px;margin-top:3px;margin-bottom:4px; border-left:3px solid #fff;line-height:40px;
 
-                & .label{-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;font-weight:500;padding:3px 10px;}
+                & .label {-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;font-weight:500;padding:3px 10px;}
 
-                &.state-0{border-left-color:#a1c38e;}
+                &.state-0 {border-left-color:#a1c38e;}
 
-                &.state-1{border-left-color:#3dc0ee;}
+                &.state-1 {border-left-color:#3dc0ee;}
 
-                &.state-2{border-left-color:#f08772;}
+                &.state-2 {border-left-color:#f08772;}
 
-                & .label-default{background-color:#f8f8f8;color:#9e9ea4;}
+                & .label-default {background-color:#f8f8f8;color:#9e9ea4;}
 
-                & .label-success{background-color:#8fcf8f;color:#fff;}
+                & .label-success {background-color:#8fcf8f;color:#fff;}
 
-                & .label-warning{background-color:#f08772;color:#fff;}
+                & .label-warning {background-color:#f08772;color:#fff;}
 
-                &:hover{box-shadow:1px 1px 5px #ccc;}
+                &:hover {box-shadow:1px 1px 5px #ccc;}
             }
 
-            & .dropdown-menu{
+            & .dropdown-menu {
                 min-width:100px;left:-45px;text-align:center;
             }
         }
     }
 
-    .statistics{
+    .statistics {
         height:303px;overflow:hidden;padding:15px;position:relative;
 
-        & > a{position:absolute;right:20px;top:20px;display:block;width:100px;height:30px;line-height:30px;z-index:10;color:#999;}
+        & > a {position:absolute;right:20px;top:20px;display:block;width:100px;height:30px;line-height:30px;z-index:10;color:#999;}
 
-        & #echarts{
+        & #echarts {
             width:100%;height:270px;
         }
     }
 
-    #CreateSch{
-        & .priority{
-            & label{
+    #CreateSch {
+        & .priority {
+            & label {
                 width:20px;height:20px;display:inline-block;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;margin-right:15px;position:relative;cursor:pointer;
 
-                & input{filter:Alpha(Opacity=0); opacity:0;z-index:-1;}
+                & input {filter:Alpha(Opacity=0); opacity:0;z-index:-1;}
 
-                &.high{background-color:#f08772;}
+                &.high {background-color:#f08772;}
 
-                &.in{background-color:#3dc0ee;}
+                &.in {background-color:#3dc0ee;}
 
-                &.low{background-color:#a1c38e;}
+                &.low {background-color:#a1c38e;}
 
-                &.active{
-                    &:before{
+                &.active {
+                    &:before {
                         content:'\e607';font-family:"iconfont";width:20px;height:20px;line-height:20px;text-align:center;position:absolute;left:0;top:2px;color:#fff;
                     }
                 }

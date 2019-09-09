@@ -253,7 +253,7 @@
                                                 v-validate="'required'"
                                                 data-vv-as="国籍" v-model="personal.nationality">
                                             <option value="">请选择</option>
-                                            <option :value="item.id" v-for="(item, i) in nation" :key="i">
+                                            <option :value="item.id" v-for="(item,i) in nation" :key="i">
                                                 {{item.cn}}
                                             </option>
                                         </select>
@@ -282,8 +282,8 @@
                                         <label>出生地 <font class="cf00">*</font></label>
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bornArea">
-                                                <CitySelect p="350000"
-                                                            c="361003"
+                                                <CitySelect :p="personal.birth_province"
+                                                            :c="personal.birth_city"
                                                             pName="birth_province"
                                                             cName="birth_city"
                                                             :aDisplay="false"
@@ -327,7 +327,7 @@
                                             v-validate="'required'"
                                             data-vv-as="语言" v-model="item.name">
                                         <option value="">请选择</option>
-                                        <option :value="items.id" v-for="(items, k) in lang" :key="k">
+                                        <option :value="items.id" v-for="(items,k) in lang" :key="k">
                                             {{items.cn}}
                                         </option>
                                     </select>
@@ -546,7 +546,7 @@
                                                             class="form-control selectpicker"
                                                             v-model="personal.foreign_identity_country">
                                                         <option value="">请选择</option>
-                                                        <option :value="item.id" v-for="(item, i) in nation" :key="i">
+                                                        <option :value="item.id" v-for="(item,i) in nation" :key="i">
                                                             {{item.cn}}
                                                         </option>
                                                     </select>
@@ -561,7 +561,7 @@
                                                             class="form-control selectpicker"
                                                             v-model="personal.foreign_identity_type">
                                                         <option value="">请选择</option>
-                                                        <option :value="item.id" v-for="(item, i) in idType" :key="i">
+                                                        <option :value="item.id" v-for="(item,i) in idType" :key="i">
                                                             {{item.cn}}
                                                         </option>
                                                     </select>
@@ -603,7 +603,7 @@
                                                             class="form-control selectpicker"
                                                             v-model="personal.dual_nationality_country">
                                                         <option value="">请选择</option>
-                                                        <option :value="item.id" v-for="(item, i) in nation" :key="i">
+                                                        <option :value="item.id" v-for="(item,i) in nation" :key="i">
                                                             {{item.cn}}
                                                         </option>
                                                     </select>
@@ -644,7 +644,8 @@
                                                     <div class="form-group">
                                                         <label>国家</label>
                                                         <select name="visa_country" class="form-control selectpicker"
-                                                                v-model.number="personal.visa_country">
+                                                                v-model.number="personal.visa_country"
+                                                                @change="RefreshSelect()">
                                                             <option value="">请选择</option>
                                                             <option value="7">澳大利亚</option>
                                                             <option value="27">加拿大</option>
@@ -662,7 +663,7 @@
                                                                 v-model="personal.visa_type">
                                                             <option value="">请选择</option>
                                                             <option :value="item.val"
-                                                                    v-for="(item, i) in visaType[personal.visa_country]" :key="i">
+                                                                    v-for="(item,i) in visaType[personal.visa_country]" :key="i">
                                                                 {{item.txt}}
                                                             </option>
                                                         </select>
@@ -1021,6 +1022,14 @@ export default {
         sex: 1,
         is_married: 2,
         is_old_name: 0,
+        is_work_exp: '',
+        live_not_same: '',
+        foreign_live_is: '',
+        foreign_identity_is: '',
+        dual_nationality_is: '',
+        birth_province: '',
+        birth_city: '',
+        visa_is: '',
         full_name: '',
         last_name: '',
         first_name: '',
@@ -1103,6 +1112,13 @@ export default {
         teacher_phone: '',
         education_type: 1,
         is_highschool_boarding: 1,
+        is_not_graduated: '',
+        is_graduated_plan: '',
+        get_degree_is: '',
+        is_article: '',
+        is_scholarship: '',
+        is_drop: '',
+        is_mistake: '',
         point: '',
         graduated_plan_reason: 1,
         gpa_import: 1,
@@ -1165,7 +1181,7 @@ export default {
     if (website.indexOf('localhost') >= 0) {
       self.webSite = website
     } else {
-      self.webSite = 'http://student.' + website.split('.')[1] + '.' + website.split('.')[2]
+      self.webSite = 'https://student.' + website.split('.')[1] + '.' + website.split('.')[2]
     }
 
     self.$nextTick(() => {
@@ -1288,6 +1304,8 @@ export default {
     // 添加语言*******************************
     addLanguage () {
       this.personal.language.push({name: ''})
+      this.RefreshSelect()
+      this.setIcheck()
     },
     // 删除语言
     delLanguage (i) {
@@ -1403,7 +1421,7 @@ export default {
     setIcheck () {
       let self = this
       setTimeout(function () {
-        $('#addApply [type="checkbox"],#addApply [type="radio"]').each(function () {
+        $('#addApply [type="checkbox"]').each(function () {
           $(this).iCheck({
             labelHover: false,
             cursor: true,
@@ -1417,7 +1435,20 @@ export default {
             if (thisName !== undefined) {
               self[obj][thisName] = event.currentTarget.checked ? 1 : ''
               self.RefreshSelect()
+              self.showTimes()
             }
+            if (thisName === 'is_work_exp') {
+              self.setIcheck()
+            }
+          })
+        })
+        $('#addApply [type="radio"]').each(function () {
+          $(this).iCheck({
+            labelHover: false,
+            cursor: true,
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue',
+            increaseArea: '20%'
           })
         })
       }, 500)
@@ -1437,18 +1468,18 @@ export default {
 <style lang="scss">
     @import "../../../../node_modules/icheck/skins/all.css";
 
-    #addApply{
-        & .bornArea{
-            & .form-inline{
-                & .bootstrap-select{
+    #addApply {
+        & .bornArea {
+            & .form-inline {
+                & .bootstrap-select {
                     width:48% !important;
                 }
             }
 
         }
 
-        & .addressInline{
-            & .form-inline{display:inline-block !important;}
+        & .addressInline {
+            & .form-inline {display:inline-block !important;}
         }
     }
 
