@@ -193,8 +193,9 @@
                                                                  class="img-circle" width="30" height="30"/>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li v-for="(item, i) in adviserArr" :key="i" @click="studentId=modalData.student_info.stu_id;adviserId=item.id;saveAdviser()"><a
-                                                                    href="#">{{item.name}}</a></li>
+                                                            <li v-for="(item, i) in adviserArr" :key="i"
+                                                                 @click="studentId=modalData.student_info.stu_id;adviserId=item.id;modalData.student_info.adviser_img=item.head_img;saveAdviser()">
+                                                                <a href="#">{{item.name}}</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -665,10 +666,6 @@ export default {
           self.studentId = ''
           self.adviserId = ''
           self.pagechange(self.current)
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
-            self.layer.close(i)
-            $('#principal-id').modal('hide')
-          })
         } else {
           self.layer.alert(res.msg, {
             icon: 2

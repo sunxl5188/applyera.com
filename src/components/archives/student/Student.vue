@@ -41,10 +41,7 @@
                                                 <select name="student_status" v-model="student_status"
                                                         class="form-control">
                                                     <option value="">请选择</option>
-                                                    <option value="2">咨询中</option>
-                                                    <option value="1">已签单</option>
-                                                    <option value="3">待回访</option>
-                                                    <option value="4">已流失</option>
+                                                    <option :value="item.id" v-for="(item, i) in student_type_list.state" :key="i">{{item.status_name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">

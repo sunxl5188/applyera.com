@@ -318,7 +318,7 @@
                                             <div class="form-group">
                                                 <div class="col-sm-8" id="next_contact_time" contenteditable="true"
                                                      data-placeholder="设置跟进"></div>
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-4 text-right">
                                                     <a href="javascript:void(0);" class="cded"
                                                        @click="sendFollow">发布</a>
                                                 </div>
@@ -696,7 +696,7 @@
                                                     <label>意向国家</label>
                                                     <select name="intention_country[]" class="selectpicker"
                                                             data-width="fit"
-                                                            data-size="2"
+                                                            data-size="5"
                                                             multiple
                                                             data-live-search="true"
                                                             v-model="header_info.intention_country">
@@ -1100,9 +1100,7 @@ export default {
             }
           })
         } else {
-          self.layer.alert(res.msg, {
-            icon: 2
-          })
+          self.layer.alert(res.msg, {icon: 2})
         }
         self.loading = false
         self.header_info.is_common = parseInt(self.$route.query.isCommon) || 0

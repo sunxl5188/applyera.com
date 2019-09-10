@@ -64,7 +64,7 @@ export default new Router({
           name: 'workProcess',
           component: resolve => require(['@/components/WorkProcess'], resolve),
           meta: {
-            title: '工作流程', requiresAuth: true, group: ['home', 5, '']
+            title: '工作流', requiresAuth: true, group: ['home', 5, '']
           }
         }
       ]

@@ -133,12 +133,14 @@
                 <tbody>
                 <tr v-for="(item,i) in list" :key="i">
                     <td><input type="checkbox" name="id[]" :value="item.id" @click="setActiveId($event, item.id)"/></td>
-                    <td>{{item.name}}</td>
+                    <td>
+                        <router-link :to="{path:'/archives/student_seas/edit',query:{id:item.id,isCommon:1}}" class="cded">{{item.name}}</router-link>
+                    </td>
                     <td>{{item.student_type}}</td>
                     <td>{{item.operator_name}}</td>
                     <td>{{item.create_time}}</td>
                     <td class="showMore">
-                        <span v-for="(items,k) in item.follows" :key="k">{{items.contact_content}}</span>
+                        <span v-for="(items,k) in item.follows" :key="k" v-html="items.contact_content"></span>
                         <button type="button" class="btn btn-primary"
                                 @click="viewFollow(item.follows);sid=item.id">查看全部
                         </button>

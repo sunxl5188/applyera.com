@@ -36,9 +36,9 @@
             </div>
         </div>
         <div class="clearfix text-center pb-25">
-            <div class="col-sm-2 col-sm-offset-3">跟进学生数<br>-</div>
-            <div class="col-sm-2">跟进次数<br>-</div>
-            <div class="col-sm-2">发起申请数<br>-</div>
+            <div class="col-sm-2 col-sm-offset-3">跟进学生数<br>{{header[0]}}</div>
+            <div class="col-sm-2">跟进次数<br>{{header[1]}}</div>
+            <div class="col-sm-2">发起申请数<br>{{header[2]}}</div>
         </div>
         <div class="MyChartsBody bda">
             <div id="myChartsThree"></div>
@@ -90,6 +90,7 @@ export default {
       adviser: '',
       created_time: '',
       loading: true,
+      header: [0, 0, 0],
       adviserArr: [],
       list: [],
       total: 0,
@@ -133,6 +134,7 @@ export default {
           self.list = res.data.table
           self.total = res.data.total
           self.adviserArr = res.data.adviser
+          self.header = res.data.header
           self.createChart(res.data.chart.legend, res.data.chart.userName, res.data.chart.series)
           setTimeout(function () {
             $('.selectpicker').selectpicker('refresh')
