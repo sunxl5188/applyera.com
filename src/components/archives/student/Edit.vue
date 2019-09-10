@@ -416,7 +416,7 @@
                                 <td>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="index[]" :value="i"/>
+                                            <input type="checkbox" name="index[]" :value="item.id"/>
                                             {{item.file_name}}
                                         </label>
                                     </div>
@@ -661,20 +661,22 @@
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                                 <div class="form-group">
                                                     <label>申请学位</label>
-                                                    <select name="intention_degree" class="selectpicker"
-                                                            data-width="fit" v-model="header_info.intention_degree">
-                                                        <option value="">请选择申请学位</option>
-                                                        <option value="本科">本科</option>
-                                                        <option value="本科预科">本科预科</option>
-                                                        <option value="本硕连读">本硕连读</option>
-                                                        <option value="硕士">硕士</option>
-                                                        <option value="硕士预科">硕士预科</option>
-                                                        <option value="博士">博士</option>
-                                                        <option value="硕博连读">硕博连读</option>
-                                                        <option value="ESL(语言班)">ESL(语言班)</option>
-                                                        <option value="高中">高中</option>
-                                                        <option value="初中">初中</option>
-                                                    </select>
+                                                    <div class="clearfix">
+                                                        <select name="intention_degree" class="form-control selectpicker"
+                                                                data-width="fit" v-model="header_info.intention_degree">
+                                                            <option value="">请选择申请学位</option>
+                                                            <option value="本科">本科</option>
+                                                            <option value="本科预科">本科预科</option>
+                                                            <option value="本硕连读">本硕连读</option>
+                                                            <option value="硕士">硕士</option>
+                                                            <option value="硕士预科">硕士预科</option>
+                                                            <option value="博士">博士</option>
+                                                            <option value="硕博连读">硕博连读</option>
+                                                            <option value="ESL(语言班)">ESL(语言班)</option>
+                                                            <option value="高中">高中</option>
+                                                            <option value="初中">初中</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -694,16 +696,18 @@
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                                 <div class="form-group">
                                                     <label>意向国家</label>
-                                                    <select name="intention_country[]" class="selectpicker"
-                                                            data-width="fit"
-                                                            data-size="5"
-                                                            multiple
-                                                            data-live-search="true"
-                                                            v-model="header_info.intention_country">
-                                                        <option :value="item.id" v-for="(item,i) in nation" :key="i">
-                                                            {{item.cn}}
-                                                        </option>
-                                                    </select>
+                                                    <div class="clearfix">
+                                                        <select name="intention_country[]" class="form-control selectpicker"
+                                                                data-width="fit"
+                                                                data-size="5"
+                                                                multiple
+                                                                data-live-search="true"
+                                                                v-model="header_info.intention_country">
+                                                            <option :value="item.id" v-for="(item,i) in nation" :key="i">
+                                                                {{item.cn}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -1080,7 +1084,7 @@ export default {
           self.signStatusArr = res.data.sign_status
           self.tab1 = res.data.tab1
           self.tab2 = res.data.tab2
-          self.tab3 = res.data.tab3
+          self.tab3 = (res.data.tab3).sort(self.sortNumber('id'))
           self.tab4 = res.data.tab4
           self.student_type = res.data.student_type
           self.studentSource = res.data.tab2.more_info.student_source
@@ -1157,7 +1161,7 @@ export default {
         formData: {func: 'student_attachment', student_id: self.id}
       })
       uploader.on('uploadSuccess', function (file, res) {
-        self.tab3.push({
+        self.tab3.unshift({
           file_name: res.data.file_name,
           file_size: res.data.file_size,
           date: res.data.date
@@ -1363,13 +1367,11 @@ export default {
       })
       db.postRequest('Institution/Student/batchDelAttach', params).then(res => {
         if (res.status === 1) {
-          self.fid.map(item => {
-            self.tab3.splice(item, 1)
-          })
           self.fid = []
-          $('#tabs3 [name="index[]"]').each(function () {
-            this.checked = false
+          $('#tabs3 input').each(function () {
+            $(this)[0].checked = false
           })
+          self.tab3 = (res.data).sort(self.sortNumber('id'))
           self.layer.alert(res.msg, {icon: 1}, function (i) {
             self.layer.close(i)
           })
@@ -1436,6 +1438,23 @@ export default {
           self.layer.alert(res.msg, {icon: 2})
         }
       })
+    },
+    sortNumber (prop) {
+      return function (obj1, obj2) {
+        let val1 = obj1[prop]
+        let val2 = obj2[prop]
+        if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+          val1 = Number(val1)
+          val2 = Number(val2)
+        }
+        if (val1 < val2) {
+          return 1
+        } else if (val1 > val2) {
+          return -1
+        } else {
+          return 0
+        }
+      }
     }
   }
 }

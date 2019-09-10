@@ -128,6 +128,7 @@
                            @click="listSort"></a>
                     </th>
                     <th>跟进动态</th>
+                    <th width="5%"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -140,10 +141,23 @@
                     <td>{{item.operator_name}}</td>
                     <td>{{item.create_time}}</td>
                     <td class="showMore">
-                        <span v-for="(items,k) in item.follows" :key="k" v-html="items.contact_content"></span>
-                        <button type="button" class="btn btn-primary"
-                                @click="viewFollow(item.follows);sid=item.id">查看全部
+                        <span v-for="(items,k) in item.follows" :key="k" v-html="items.contact_content" v-if="k===0"></span>
+                        <button type="button" class="btn btn-primary" @click="viewFollow(item.follows);sid=item.id">查看全部
                         </button>
+                    </td>
+                    <td class="text-center">
+                        <div class="dropdown">
+                            <a href="javascript:void(0);" data-toggle="dropdown"><i
+                                    class="iconfont">&#xe66b;</i></a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <router-link :to="{path:'/archives/student_seas/edit',query:{id:item.id,isCommon:1}}">查看
+                                    </router-link>
+                                </li>
+                                <li><a href="javascript:void(0);" @click="activeId=[item.id];deleteInfo()">删除</a>
+                                </li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
                 <tr v-if="loading">
@@ -696,6 +710,9 @@ export default {
   watch: {
     $route (to, from) {
       this.name = to.name
+      if (this.name === 'student_seas') {
+        this.pagechange(this.current)
+      }
     }
   }
 }
