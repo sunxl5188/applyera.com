@@ -999,25 +999,28 @@ export default {
     // 判断申请学位
     setApplyType (event) {
       let self = this
+      console.log(event)
       if (event === '本科' || event === '本科预科' || event === '本硕连读') {
         self.applyType = 1
       } else if (event === '硕士' || event === '硕士预科' || event === '硕博连读') {
         self.applyType = 2
+      } else if (event === '') {
+        self.applyType = -1
       } else {
-        self.applyType = 0
+        self.applyType = 3
       }
     },
     // 弹出学校与专业窗口
     viewSchoolModal () {
       let self = this
-      if (self.applyType === -1) {
+      if (self.applyType === -1 || self.applyType === 0) {
         self.layer.alert('请选择申请学位', {icon: 2})
         return false
       }
       if (self.applyType === 1 || self.applyType === 2) {
         $('#schoolMajor').modal('show')
       }
-      if (self.applyType === 0) {
+      if (self.applyType === 3) {
         self.$refs.schoolMajor.customData()
       }
     },
