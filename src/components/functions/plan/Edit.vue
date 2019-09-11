@@ -186,7 +186,7 @@
                                 <div class="pull-left w70">
                                     <select name="ins_student_apply_degree" class="selectpicker" data-width="fit"
                                             v-model="studentInfo.ins_student_apply_degree"
-                                            @change="setApplyType($event.target.value)">
+                                            @change="setApplyType($event.target.value);schoolInfo = [];schoolInfoTable = []">
                                         <option value="">请选择</option>
                                         <option value="本科">本科</option>
                                         <option value="本科预科">本科预科</option>
@@ -228,7 +228,7 @@
                     </div>
 
                     <!--page3-->
-                    <div>
+                    <div id="page3">
                         <div class="font18 lh50">推荐院校</div>
                         <div v-if="schoolInfoTable.length > 0">
                             <table class="table table-hover table-bordered table-condensed text-center">
@@ -242,7 +242,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(item,i) in schoolInfoTable" :key="i">
+                                <tr v-for="(item,i) in schoolInfoTable" :key="'tjyx'+i">
                                     <td>{{item.ranking}} <input type="hidden" name="recommend_table[ranking][]"
                                                                 :value="item.ranking"/></td>
                                     <td>{{item.country}}<input type="hidden" name="recommend_table[country][]"
@@ -264,7 +264,7 @@
                                         <input type="hidden" name="recommend_table[time_table][]"
                                                :value="item.time_table"/>
                                         <select class="form-control selectpicker" name="recommend_table[time_select][]">
-                                            <option :value="items" v-for="(items,k) in item.time_table" :key="k">{{items}}</option>
+                                            <option :value="items" v-for="(items,k) in item.time_table" :key="'sel'+k">{{items}}</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -282,7 +282,7 @@
 
                     <div class="font18 lh50">院校及专业详情</div>
 
-                    <div class="schoolMajor" v-for="(item,i) in schoolInfo" :key="i">
+                    <div class="schoolMajor" v-for="(item,i) in schoolInfo" :key="'school'+i">
                         <a href="javascript:void(0);" class="btn-delete"
                            @click="schoolInfo.splice(i,1);schoolInfoTable.splice(i,1)"><i
                                 class="iconfont">&#xe656;</i></a>
@@ -501,7 +501,7 @@
 
                     <!--page6-->
                     <div class="font18 lh50">时间规划</div>
-                    <div class="elementWrap" v-for="(item,i) in planTime" :key="i" style="padding:0;">
+                    <div class="elementWrap" v-for="(item,i) in planTime" :key="'abc'+i" style="padding:0;">
                         <a href="javascript:void(0);" class="btn-delete" @click="planTime.splice(i, 1)"><i
                                 class="iconfont">&#xe656;</i></a>
                         <div class="row lh40">
@@ -526,7 +526,7 @@
 
                     <div class="font18 lh50">费用预算</div>
 
-                    <div class="elementWrap" v-for="(item,i) in budget" :key="i" style="padding:0;">
+                    <div class="elementWrap" v-for="(item,i) in budget" :key="'nkl'+i" style="padding:0;">
                         <a href="javascript:void(0);" class="btn-delete" @click="budget.splice(i, 1)"><i
                                 class="iconfont">&#xe656;</i></a>
                         <div class="row lh40">
@@ -655,16 +655,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="modal_loading">
-                    <div class="modal-dialog">
-                        <div class="modal-content text-center" style="width:260px;margin:0 auto;">
-                            <div class="modal-body">
-                                <img src="../../../../static/images/loading.gif" alt="">
-                                <span>请稍后，正在处理下载文件</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -878,9 +869,6 @@ export default {
         }
       })
 
-      $('[name="recommend_table[time_select][]"]').each(function () {
-        params.append('recommend_table[time_select][]', $(this).val())
-      })
       db.postRequest('/Institution/Plan/planEdit', params).then(res => {
         if (res.status === 1) {
           if (self.id === '') {
@@ -1018,8 +1006,6 @@ export default {
       } else {
         self.applyType = 0
       }
-      self.schoolInfo = []
-      self.schoolInfoTable = []
     },
     // 弹出学校与专业窗口
     viewSchoolModal () {
@@ -1123,5 +1109,8 @@ export default {
 
             & .w90{width:88%;}
         }
+    }
+    #page3{
+        & .filter-option-inner-inner{text-align:center;}
     }
 </style>

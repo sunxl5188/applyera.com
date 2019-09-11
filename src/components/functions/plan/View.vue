@@ -164,7 +164,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(item, i) in schoolInfoTable" :key="i">
+                                <tr v-for="(item, i) in schoolInfoTable" :key="'a'+i">
                                     <td>{{item.ranking}}</td>
                                     <td>{{item.country}}</td>
                                     <td>
@@ -175,7 +175,7 @@
                                         <div class="lh18">{{item.major_en}}</div>
                                         <div class="lh18">{{item.major}}</div>
                                     </td>
-                                    <td class="text-left">
+                                    <td>
                                         {{item.time_select}}
                                     </td>
                                 </tr>
@@ -188,7 +188,7 @@
 
                     <div class="font18 lh50">院校及专业详情</div>
 
-                    <div class="schoolMajor" v-for="(item, i) in schoolInfo" :key="i">
+                    <div class="schoolMajor" v-for="(item, i) in schoolInfo" :key="'b'+i">
 
                         <div v-text="item.schoolname"></div>
                         <div class="SchoolTitle"><span>基本信息</span></div>
@@ -282,7 +282,7 @@
                     <div class="blk20"></div>
 
                     <!--自定义-->
-                    <div class="schoolMajorCustom" v-for="(item, i) in customObject" :key="i">
+                    <div class="schoolMajorCustom" v-for="(item, i) in customObject" :key="'c'+i">
                         <div v-text="item.school_cn"></div>
                         <div class="SchoolTitle"><span>基本信息</span></div>
                         <div class="row lh40">
@@ -315,7 +315,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row lh40" v-for="(items, i) in item.custom" :key="i">
+                        <div class="row lh40" v-for="(items, i) in item.custom" :key="'d'+i">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="pull-left w10">
                                     <span v-text="items.field_name"></span>
@@ -331,7 +331,7 @@
 
                     <div class="font18 lh50 pl-10 pr-10">能力考评</div>
 
-                    <div class="elementWrap" v-for="(item, i) in Evaluation" :key="i" style="padding:0 10px;">
+                    <div class="elementWrap" v-for="(item, i) in Evaluation" :key="'e'+i" style="padding:0 10px;">
                         <div class="row lh40">
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <span v-text="item.assessTitle"></span>
@@ -345,7 +345,7 @@
 
                     <!--page6-->
                     <div class="font18 lh50 pl-10 pr-10">时间规划</div>
-                    <div class="elementWrap" v-for="(item,i) in planTime" :key="i" style="padding:0 10px;">
+                    <div class="elementWrap" v-for="(item,i) in planTime" :key="'f'+i" style="padding:0 10px;">
                         <div class="row lh40">
                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                 <span v-text="item.time"></span>
@@ -360,7 +360,7 @@
 
                     <div class="font18 lh50 pl-10 pr-10">费用预算</div>
 
-                    <div class="elementWrap" v-for="(item,i) in budget" :key="i" style="padding:0 10px;">
+                    <div class="elementWrap" v-for="(item,i) in budget" :key="'g'+i" style="padding:0 10px;">
                         <div class="row lh40">
                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                 <span v-text="item.item"></span>
