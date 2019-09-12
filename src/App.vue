@@ -121,6 +121,13 @@
               </router-link>
             </div>
           </li>
+          <li class="list-group-item">
+            <a href="javascript:void(0);"><i class="iconfont">&#xe600;</i><span>营销</span></a>
+            <div class="list-group">
+              <router-link to="/marketing/saleslead" class="list-group-item">销售线索
+              </router-link>
+            </div>
+          </li>
           <li class="list-group-item" v-if="userInfo.access.setting.show===1">
             <a href="javascript:void(0);"><i class="iconfont">&#xe600;</i><span>设置</span></a>
             <div class="list-group">
