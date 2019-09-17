@@ -25,7 +25,10 @@
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="studentInfo bdr">
                                     <div class="clearfix text-center pb-20 c666">
-                                        <span class="userFace"><i class="iconfont font50 c999">&#xe646;</i></span>
+                                        <span class="userFace">
+                                            <i class="iconfont" style="font-size:50px;color:#999;" v-if="header_info.headimg===''">&#xe646;</i>
+                                            <i :class="header_info.headimg" v-if="header_info.headimg!==''">{{header_info.headimg}}</i>
+                                        </span>
                                         <p>{{header_info.stu_name}}</p>
                                         <p class="c999">{{header_info.stu_number}}</p>
                                     </div>
@@ -514,8 +517,10 @@
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                         <div class="studentInfo">
                                             <div class="clearfix text-center pb-20 c666">
-                                                <span class="userFace"><i
-                                                        class="iconfont font50 c999">&#xe646;</i></span>
+                                                <span class="userFace">
+                                                    <i class="iconfont" style="font-size:50px;color:#999;" v-if="header_info.headimg===''">&#xe646;</i>
+                                                    <i :class="header_info.headimg" v-if="header_info.headimg!==''">{{header_info.headimg}}</i>
+                                                </span>
                                                 <p><input type="text" name="stu_name" class="form-control"
                                                           placeholder="请输入学生姓名" v-model="header_info.stu_name"
                                                           v-validate="'required'" data-vv-as="学生姓名"/></p>
@@ -1084,12 +1089,20 @@ export default {
           self.signStatusArr = res.data.sign_status
           self.tab1 = res.data.tab1
           self.tab2 = res.data.tab2
-          self.tab3 = (res.data.tab3).sort(self.sortNumber('id'))
           self.tab4 = res.data.tab4
           self.student_type = res.data.student_type
           self.studentSource = res.data.tab2.more_info.student_source
           self.service_adviser_list = res.data.service_adviser
           let countryArr = []
+          if (Object.prototype.toString.call(res.data.tab3) === '[object Object]') {
+            let tab3Arr = []
+            for (let i in res.data.tab3) {
+              tab3Arr.push(res.data.tab3[i])
+            }
+            self.tab3 = tab3Arr.sort(self.sortNumber('id'))
+          } else {
+            self.tab3 = (res.data.tab3).sort(self.sortNumber('id'))
+          }
           res.data.header_info.intention_country.map(item => {
             self.nation.map(items => {
               if (items.id === parseInt(item)) {
@@ -1468,6 +1481,62 @@ export default {
 
         & .userFace {
             width:80px;height:80px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;display:block;margin:0 auto 15px auto;border:1px solid #ddd;line-height:80px;
+            & > i {
+                width:80px;height:80px;display:inline-block;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;
+                text-align:center;line-height:80px;font-size:30px;font-style:normal;color:#fff;
+
+                &.A {background-color:#ff6815;}
+
+                &.B {background-color:#ff940c;}
+
+                &.C {background-color:#ffb500;}
+
+                &.D {background-color:#ffdb00;}
+
+                &.E {background-color:#d6cf06;}
+
+                &.F {background-color:#8bc43d;}
+
+                &.G {background-color:#00a350;}
+
+                &.H {background-color:#00a99d;}
+
+                &.I {background-color:#00aff0;}
+
+                &.J {background-color:#0084ce;}
+
+                &.K {background-color:#005fac;}
+
+                &.L {background-color:#bcc3c7;}
+
+                &.M {background-color:#6c7b87;}
+
+                &.N {background-color:#273f50;}
+
+                &.O {background-color:#1e3894;}
+
+                &.P {background-color:#663592;}
+
+                &.Q {background-color:#973290;}
+
+                &.R {background-color:#f93174;}
+
+                &.S {background-color:#fb281a;}
+
+                &.T {background-color:#ff6815;}
+
+                &.U {background-color:#ff940c;}
+
+                &.V {background-color:#ffb500;}
+
+                &.W {background-color:#ffdb00;}
+
+                &.X {background-color:#d6cf06;}
+
+                &.Y {background-color:#8bc43d;}
+
+                &.Z {background-color:#00a350;}
+            }
         }
     }
 

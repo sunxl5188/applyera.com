@@ -605,9 +605,7 @@ export default {
       let self = this
       self.name = (to.name).toLocaleLowerCase()
       if (self.name === 'student') {
-        setTimeout(function () {
-          self.pagechange(1)
-        }, 500)
+        self.pagechange(1)
       }
     }
   }

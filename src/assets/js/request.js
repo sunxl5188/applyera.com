@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import store from '@/vuex/Store'
-import vueCookie from 'vue-cookies'
 import 'url-search-params-polyfill'
 import axios from 'axios'
-
+let self = new Vue()
 class Request {
   constructor () {
     this.baseUrl = window.ajaxBaseUrl || 'http://www.applyoversea.com'
@@ -12,7 +11,6 @@ class Request {
     this.responseEncoding = 'utf8'
     // this.headers = {"X-Requested-with":"XMLHttpRequest"}
     this.headers = {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-    this.headers['token'] = vueCookie.get('token') || ''
   }
 
   setError (handler) {
@@ -68,18 +66,16 @@ class Request {
     } else {
       config.params = params
     }
+    config.headers.token = self.$cookies.get('token') || ''
     // console.log(config)
     return new Promise((resolve, reject) => {
       axios(config)
         .then(res => {
-          let V = new Vue()
           if (res.status === 200) {
             if (res.data.status === 402) {
-              vueCookie.remove('token')
-              vueCookie.remove('isLogin')
-              vueCookie.remove('userInfo')
-              V.layer.alert(res.data.msg, function (i) {
-                V.layer.close(i)
+              store.dispatch('logOut')
+              self.layer.alert(res.data.msg, function (i) {
+                self.layer.close(i)
                 window.location.replace('/login')
               })
               return false
@@ -87,7 +83,7 @@ class Request {
             if (res.headers.hasOwnProperty('token')) {
               if (res.headers.token) {
                 sessionStorage.setItem('token', res.headers.token)
-                vueCookie.set('token', res.headers.token)
+                self.$cookies.set('token', res.headers.token)
                 store.state.token = res.headers.token
               }
             }
