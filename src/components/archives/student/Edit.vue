@@ -319,9 +319,50 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <div class="col-sm-8" id="next_contact_time" contenteditable="true"
+                                                <div class="col-sm-6" id="next_contact_time" contenteditable="true"
                                                      data-placeholder="设置跟进"></div>
-                                                <div class="col-sm-4 text-right">
+                                                <div class="col-sm-3">
+                                                    <div class="dropdown" style="display: inline-block;">
+                                                        <i :class="repeat!==0?'iconfont font20 cded':'iconfont font20 c999'"
+                                                           style="cursor:pointer;"
+                                                           data-toggle="dropdown">&#xe8bf;</i>
+                                                        <ul class="dropdown-menu dropdown-menu-right">
+                                                            <li @click="repeat=0" :class="repeat===0?'po_re active':'po_re'"><a
+                                                                    href="javascript:void(0);">不重复</a></li>
+                                                            <li @click="repeat=1" :class="repeat===1?'po_re active':'po_re'"><a
+                                                                    href="javascript:void(0);">每天重复</a></li>
+                                                            <li @click="repeat=2" :class="repeat===2?'po_re active':'po_re'"><a
+                                                                    href="javascript:void(0);">每周重复</a></li>
+                                                            <li @click="repeat=3" :class="repeat===3?'po_re active':'po_re'"><a
+                                                                    href="javascript:void(0);">每月重复</a></li>
+                                                            <li @click="repeat=4" :class="repeat===4?'po_re active':'po_re'"><a
+                                                                    href="javascript:void(0);">每年重复</a></li>
+                                                            <li @click="repeat=5" :class="repeat===5?'po_re active':'po_re'"><a
+                                                                    href="javascript:void(0);">工作日重复</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="dropdown" style="display: inline-block;">
+                                                        <i :class="remind!==0?'iconfont font20 cded':'iconfont font20 c999'"
+                                                           style="cursor:pointer;"
+                                                           data-toggle="dropdown">&#xe6b4;</i>
+                                                        <ul class="dropdown-menu dropdown-menu-right">
+                                                            <li @click="remind=0" :class="remind===0?'active':''"><a href="javascript:void(0);">关闭提醒</a>
+                                                            </li>
+                                                            <li @click="remind=1" :class="remind===1?'active':''"><a href="javascript:void(0);">开始时提醒</a>
+                                                            </li>
+                                                            <li @click="remind=2" :class="remind===2?'active':''"><a href="javascript:void(0);">5分钟提醒</a>
+                                                            </li>
+                                                            <li @click="remind=3" :class="remind===3?'active':''"><a href="javascript:void(0);">15分钟提醒</a>
+                                                            </li>
+                                                            <li @click="remind=4" :class="remind===4?'active':''"><a href="javascript:void(0);">30分钟提醒</a>
+                                                            </li>
+                                                            <li @click="remind=5" :class="remind===5?'active':''"><a href="javascript:void(0);">1小时前</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3 text-right">
                                                     <a href="javascript:void(0);" class="cded"
                                                        @click="sendFollow">发布</a>
                                                 </div>
@@ -977,7 +1018,9 @@ export default {
       service_adviser_list: [],
       contactId: [],
       fid: [],
-      signStatusArr: []
+      signStatusArr: [],
+      repeat: 0,
+      remind: 0
     }
   },
   computed: {
@@ -1401,6 +1444,8 @@ export default {
       params.append('student_id', self.id)
       params.append('contact_content', $('#contact_content').html())
       params.append('next_contact_time', $('#next_contact_time').html())
+      params.append('repeat', self.repeat)
+      params.append('remind', self.remind)
       if (self.followContent === '') {
         self.layer.alert('请输入跟进内容！', {icon: 2})
         return false
@@ -1411,6 +1456,8 @@ export default {
           self.getFollowList()
           $('#contact_content').html('')
           $('#next_contact_time').html('')
+          self.repeat = 0
+          self.remind = 0
         } else {
           self.layer.alert(res.msg, {
             icon: 2
