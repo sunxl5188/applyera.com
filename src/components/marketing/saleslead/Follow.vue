@@ -4,10 +4,10 @@
             <div class="col-sm-4 po_ab" style="right:-15px;top: -60px;">
                 <div class="form-group form-search">
                     <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
-                    <i class="iconfont handPower clearSearch" autocomplete="off" v-if="keyword" @click="keyword='';pagechange(1)">&#xe7f6;</i>
+                    <i class="iconfont handPower clearSearch" autocomplete="off" v-if="keyword" @click="keyword='';pageChange(1)">&#xe7f6;</i>
                     <input type="text" name="keyword" class="form-control"
                            placeholder="搜索所有内容"
-                           style="padding-left:30px;" v-model="keyword" @keyup.enter="pagechange(1)">
+                           style="padding-left:30px;" v-model="keyword" @keyup.enter="pageChange(1)">
                 </div>
             </div>
         </div>
@@ -16,18 +16,19 @@
             <tr>
                 <td width="10%" class="text-center"><b>添加时间</b></td>
                 <td>
-                    <a href="javascript:void(0);" class="label label-primary">不限</a>
-                    <a href="javascript:void(0);" class="label">本周</a>
-                    <a href="javascript:void(0);" class="label">本月</a>
-                    <span id="customTime" contenteditable="true" data-placeholder="自定义时间段"></span>
+                    <a href="javascript:void(0);" @click="start_time='';end_time='';type=1;pageChange()" :class="type===1 && end_time === '' ? 'label label-primary' : 'label'">全部</a>
+                    <a href="javascript:void(0);" @click="start_time='';end_time='';type=2;pageChange()" :class="type===2 && end_time === '' ? 'label label-primary' : 'label'">近三月</a>
+                    <a href="javascript:void(0);" @click="start_time='';end_time='';type=3;pageChange()" :class="type===3 && end_time === '' ? 'label label-primary' : 'label'">近一年</a>
+                    <span id="customTime" contenteditable="true" data-placeholder="自定义时间段" :class="type==='' && end_time !== ''?'active':''"></span>
                 </td>
             </tr>
             <tr>
                 <td width="10%" class="text-center"><b>线索来源</b></td>
                 <td>
                     <div class="col-sm-3">
-                        <select name="name" class="form-control selectpicker">
+                        <select name="from_user_id" class="form-control selectpicker" v-model="from_user_id" @change="pageChange()">
                             <option value=""> 请选择销售触手 </option>
+                            <option :value="key" v-for="(item, key) in filter.sou_users" :key="key">{{item}}</option>
                         </select>
                     </div>
                 </td>
@@ -36,8 +37,9 @@
                 <td width="10%" class="text-center"><b>负责顾问</b></td>
                 <td>
                     <div class="col-sm-3">
-                        <select name="name" class="form-control selectpicker">
+                        <select name="operator_user_id" class="form-control selectpicker" v-model="operator_user_id"  @change="pageChange()">
                             <option value=""> 请选择负责顾问 </option>
+                            <option :value="key" v-for="(item, key) in filter.ope_users" :key="key">{{item}}</option>
                         </select>
                     </div>
                 </td>
@@ -45,9 +47,7 @@
             <tr>
                 <td width="10%" class="text-center"><b>当前状态</b></td>
                 <td>
-                    <a href="javascript:void(0);" class="label label-primary">不限</a>
-                    <a href="javascript:void(0);" class="label">未跟进</a>
-                    <a href="javascript:void(0);" class="label">咨询/回访</a>
+                    <a href="javascript:void(0);" :class="key === sign_status ? 'label label-primary' : 'label'" v-for="(item, key) in filter.status_list" :key="key" @click="sign_status = key;pageChange()">{{item}}</a>
                 </td>
             </tr>
             </tbody>
@@ -57,63 +57,47 @@
             <thead>
             <tr>
                 <th width="5%"></th>
-                <th>学生姓名</th>
+                <th width="15%">学生姓名</th>
                 <th>联系电话</th>
                 <th>线索来源</th>
-                <th>
+                <th width="20%">
                     添加时间
                     <a href="javascript:void(0);"
                        :class="time_sort===0?'iconfont sort':(time_sort===1?'iconfont sort up':'iconfont sort down')"
                        @click="listSort"></a>
                 </th>
-                <th>负责顾问</th>
-                <th>当前状态</th>
+                <th width="12%">负责顾问</th>
+                <th width="17%">当前状态</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr v-for="(item, i) in list" :key="i" v-if="!loading">
                 <td><input type="checkbox" name="id[]" value=""></td>
                 <td>
-                    <router-link to="/" class="cded">学生姓名</router-link>
+                    <a href="javascript:void(0);" class="cded" v-html="highlight(item.name, keyword)"></a>
                 </td>
-                <td>13111111111</td>
-                <td>223</td>
-                <td>2019-01-06</td>
-                <td>----</td>
+                <td>{{item.phone}}</td>
+                <td>{{item.from_user}}</td>
+                <td>{{item.create_time}}</td>
+                <td>{{item.operator_user}}</td>
                 <td>
-                    未跟进
+                    <span :style="'color:'+item.status_color+';'">{{item.status_name}}</span>
+                    <span v-if="item.sub_name">
+                        <a href="javascript:void(0);" @click="viewDetail(item.id)" v-if="item.sub_name==='(查看明细)'">{{item.sub_name}}</a>
+                        <a href="javascript:void(0);" @click="review(item.id)" v-if="item.sub_name==='(审核线索)'">{{item.sub_name}}</a>
+                    </span>
                 </td>
             </tr>
-            <tr>
-                <td><input type="checkbox" name="id[]" value=""></td>
-                <td>
-                    <router-link to="/" class="cded">学生姓名</router-link>
-                </td>
-                <td>13111111111</td>
-                <td>223</td>
-                <td>2019-01-06</td>
-                <td>----</td>
-                <td>
-                    签单/转案 (<a href="javascript:void(0);" class="cded">审核</a>)
-                </td>
+            <tr v-if="loading">
+                <td colspan="7" v-html="LoadingImg()"></td>
             </tr>
-            <tr>
-                <td><input type="checkbox" name="id[]" value=""></td>
-                <td>
-                    <router-link to="/" class="cded">学生姓名</router-link>
-                </td>
-                <td>13111111111</td>
-                <td>223</td>
-                <td>2019-01-06</td>
-                <td>----</td>
-                <td>
-                    已返佣 (<a href="javascript:void(0);" class="cded">查看明细</a>)
-                </td>
+            <tr v-if="!loading && list.length === 0">
+                <td colspan="7" v-html="NoData()"></td>
             </tr>
             </tbody>
         </table>
+        <PagInAction :total="total" :current-page="current" @pagechange="pageChange"></PagInAction>
         <!--审核线索-->
-        <a class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modal-id">审核线索</a>
         <div class="modal fade bs-example-modal-lg" id="modal-id">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -121,7 +105,8 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title">审核线索</h4>
                     </div>
-                    <form action="" method="POST" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
+                    <form action="" id="reForm" method="POST" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
+                        <input type="hidden" name="id" id="id" v-model="reDetail.id" />
                     <div class="modal-body">
                          <div class="pl-15 pr-15">
                              <div class="row">
@@ -129,7 +114,7 @@
                                       <div class="form-group">
                                           <label class="col-sm-4 control-label">学生姓名</label>
                                           <div class="col-sm-8 lh34">
-                                              李**
+                                             {{reDetail.name}}
                                           </div>
                                       </div>
                                   </div>
@@ -137,7 +122,7 @@
                                       <div class="form-group">
                                           <label class="col-sm-4 control-label">负责顾问</label>
                                           <div class="col-sm-8 lh34">
-                                              李**
+                                              {{reDetail.from_name}}
                                           </div>
                                       </div>
                                   </div>
@@ -147,7 +132,7 @@
                                      <div class="form-group">
                                          <label class="col-sm-4 control-label">线索来源</label>
                                          <div class="col-sm-8 lh34">
-                                             李**
+                                             {{reDetail.operator_name}}
                                          </div>
                                      </div>
                                  </div>
@@ -155,7 +140,8 @@
                                      <div class="form-group">
                                          <label class="col-sm-4 control-label">审核状态</label>
                                          <div class="col-sm-8 lh34">
-                                             李**
+                                             {{reDetail.audit_status===1?'通过':'不通过'}}
+                                             <input type="hidden" name="audit_status" v-model="reDetail.audit_status" />
                                          </div>
                                      </div>
                                  </div>
@@ -163,9 +149,9 @@
                              <div class="row">
                                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                      <div class="form-group">
-                                         <label class="col-sm-4 control-label">签单来源</label>
+                                         <label class="col-sm-4 control-label">签单金额</label>
                                          <div class="col-sm-8">
-                                             <input type="text" name="" class="form-control" placeholder="请输入"/>
+                                             <input type="text" name="sign_money" class="form-control" placeholder="请输入" v-model="reDetail.sign_money"/>
                                          </div>
                                      </div>
                                  </div>
@@ -173,7 +159,7 @@
                                      <div class="form-group">
                                          <label class="col-sm-4 control-label">签单时间</label>
                                          <div class="col-sm-8">
-                                             <input type="text" name="" class="form-control" placeholder="请选择"/>
+                                             <input type="text" name="sign_time" id="times" class="form-control" placeholder="请选择" v-model="reDetail.sign_success_time"/>
                                          </div>
                                      </div>
                                  </div>
@@ -183,7 +169,7 @@
                                      <div class="form-group">
                                          <label class="col-sm-4 control-label">返佣金额</label>
                                          <div class="col-sm-8">
-                                             <input type="text" name="" class="form-control" placeholder="请输入"/>
+                                             <input type="text" name="sign_comm" class="form-control" placeholder="请输入" v-model="reDetail.sign_commission"/>
                                          </div>
                                      </div>
                                  </div>
@@ -191,15 +177,14 @@
                          </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" @click="reDetail={}">取消</button>
+                        <button type="submit" class="btn btn-primary">确定</button>
                     </div>
                     </form>
                 </div>
             </div>
         </div>
         <!--查看明细-->
-        <a class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modal-id2">查看明细</a>
         <div class="modal fade bs-example-modal-lg" id="modal-id2">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -210,107 +195,19 @@
                     <div class="modal-body">
                         <div class="pl-15 pr-15">
                             <div class="row">
-                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" v-for="(item, i) in layDetail" :key="i">
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label">学生姓名</label>
+                                        <label class="col-sm-4 control-label">{{item.name}}</label>
                                         <div class="col-sm-8 lh34">
-                                          李**
+                                          {{item.val}}
                                         </div>
                                     </div>
                                  </div>
-                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                     <div class="form-group">
-                                         <label class="col-sm-4 control-label">负责顾问</label>
-                                         <div class="col-sm-8 lh34">
-                                             李**
-                                         </div>
-                                     </div>
-                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">线索来源</label>
-                                        <div class="col-sm-8 lh34">
-                                            李**
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">返佣日期</label>
-                                        <div class="col-sm-8 lh34">
-                                            2019-10-10 10:10:10
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">签单金额</label>
-                                        <div class="col-sm-8 lh34">
-                                            ￥200000000
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">签单时间</label>
-                                        <div class="col-sm-8 lh34">
-                                            2019-10-10 10:10:10
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">收款方</label>
-                                        <div class="col-sm-8 lh34">
-                                            张**
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">收款帐户</label>
-                                        <div class="col-sm-8 lh34">
-                                            35346436
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">交易渠道</label>
-                                        <div class="col-sm-8 lh34">
-                                            支付宝
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">交易附件</label>
-                                        <div class="col-sm-8 lh34">
-                                            ---
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">交易附言</label>
-                                        <div class="col-sm-8 lh20"></div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" @click="layDetail={}">确定</button>
                     </div>
                 </div>
             </div>
@@ -322,32 +219,93 @@
 <script>
 import 'bootstrap-select'
 import 'bootstrap-select/js/i18n/defaults-zh_CN'
+import '@~/js/VeeValidateConfig'
+import PagInAction from '@#/PagInAction'
+import db from '@~/js/request'
 export default {
   name: 'Follow',
   data () {
     return {
+      loading: true,
       keyword: '',
-      time_sort: 0
+      type: 1,
+      start_time: '',
+      end_time: '',
+      from_user_id: '',
+      operator_user_id: '',
+      sign_status: '0',
+      time_sort: 0,
+      list: [],
+      total: 0,
+      current: 1,
+      reDetail: {},
+      layDetail: {},
+      filter: {}
     }
   },
   mounted () {
     let self = this
+    self.pageChange()
+    self.getFilter()
     self.$nextTick(() => {
-      $('.selectpicker').selectpicker()
       self.laydate.render({
         elem: '#customTime',
         type: 'date',
         range: true,
         done: (value) => {
-
+          let date = value.split(' - ')
+          self.start_time = date[0]
+          self.end_time = date[1]
+          self.type = ''
+          self.pageChange()
         }
       })
+      self.laydate.render({
+        elem: '#times',
+        type: 'datetime',
+        done: (value) => {
+          self.reDetail.sign_success_time = value
+        }
+      })
+      setTimeout(function () {
+        $('.selectpicker').selectpicker('refresh')
+      }, 500)
     })
   },
   methods: {
-    pagechange (page) {},
-    validateBeforeSubmit () {
-
+    getFilter () {
+      let self = this
+      db.getRequest('/Institution/SourceSubmit/cltorSearch', {}).then(res => {
+        if (res.status === 1) {
+          self.filter = res.data
+        } else {
+          console.log(res.msg)
+        }
+      })
+    },
+    pageChange (page) {
+      let self = this
+      let params = new URLSearchParams()
+      self.loading = true
+      params.append('page', page || 1)
+      params.append('type', self.type)
+      params.append('start_time', self.start_time)
+      params.append('end_time', self.end_time)
+      params.append('keywords', self.keyword)
+      params.append('from_user_id', self.from_user_id)
+      params.append('operator_user_id', self.operator_user_id)
+      params.append('sign_status', self.sign_status)
+      params.append('time_sort', self.time_sort)
+      db.postRequest('/Institution/SourceSubmit/cltorStuList', params).then(res => {
+        if (res.status === 1) {
+          self.list = res.data.list
+          self.total = res.data.total
+        } else {
+          console.log(res.msg)
+        }
+        self.current = page || 1
+        self.loading = false
+      })
     },
     listSort () {
       let self = this
@@ -358,8 +316,63 @@ export default {
       } else if (self.time_sort === 2) {
         self.time_sort = 1
       }
-      self.pagechange()
+      self.pageChange()
+    },
+    // 审核线索
+    review (id) {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('id', id)
+      db.postRequest('/Institution/SourceSubmit/stuAudit', params).then(res => {
+        if (res.status === 1) {
+          self.reDetail = res.data
+          $('#modal-id').modal('show')
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
+    },
+    validateBeforeSubmit () {
+      let self = this
+      let formData = $('#reForm').serializeArray()
+      let params = new URLSearchParams()
+      formData.map(item => {
+        params.append(item.name, item.value)
+      })
+      db.postRequest('/Institution/SourceSubmit/stuAuditEdit', params).then(res => {
+        if (res.status === 1) {
+          self.reDetail = {}
+          self.pageChange(self.current)
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            $('#modal-id').modal('hide')
+            self.layer.close(i)
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
+    },
+    // 查看明细
+    viewDetail (id) {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('id', id)
+      db.postRequest('/Institution/SourceSubmit/stuCommDetail', params).then(res => {
+        if (res.status === 1) {
+          self.layDetail = res.data
+          $('#modal-id2').modal('show')
+        } else {
+          console.log(res.msg)
+        }
+      })
     }
+  },
+  components: {
+    PagInAction
   }
 }
 </script>
@@ -371,7 +384,10 @@ export default {
     & tbody tr:last-of-type td{ padding-bottom:20px;}
     & .label{
           margin-right:10px;color:#333;
-    &.label-primary{color:#fff;}
+        &.label-primary{
+            color:#fff;
+            &:hover,&:focus{background-color:#39f;}
+        }
     }
     & .active{background-color:#39f;color:#fff;line-height:22px;padding-left:.8rem;padding-right:.8rem;-webkit-border-radius:.25em;-moz-border-radius:.25em;border-radius:.25em;}
 }

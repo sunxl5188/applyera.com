@@ -6,7 +6,6 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                         <div class="headerTitle">销售线索</div>
                     </div>
-
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right"></div>
                 </div>
             </div>
@@ -41,12 +40,10 @@ export default {
     let self = this
     self.$nextTick(() => {
       self.name = self.$route.name
+      $(document).on('click', '.filter a', function () {
+        $(this).siblings('span').html('')
+      })
     })
-  },
-  methods: {
-    pagechange (page) {
-
-    }
   },
   components: { Tentacle, Follow, Settlement },
   watch: {
