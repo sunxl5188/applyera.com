@@ -243,9 +243,10 @@ export default {
       breadCrumb: [],
       leftClose: false,
       remindInfo: [],
-      remindTime: '',
       RightW: 1000,
-      MinW: 1000
+      MinW: 1000,
+      inter1: 0,
+      inter2: 0
     }
   },
   computed: {
@@ -270,11 +271,6 @@ export default {
     }, 500)
 
     setTimeout(function () {
-      self.getMsgNum()
-      setInterval(function () {
-        self.getMsgNum()
-      }, 60000)
-
       $('.list-group-item.active div.list-group').height($('.list-group-item.active div.list-group a').length * 40)
 
       $(document).on('click', '.fullLeft>ul>li>a', function () {
@@ -323,16 +319,31 @@ export default {
       })
 
       self.setView()
-      self.getRemind()
     }, 1000)
 
-    // 每一分钟执行，获取提醒信息
-    self.remindTime = setInterval(function () {
-      self.getRemind()
+    let msgTime = setInterval(function () {
+      db.getRequest('Institution/Notice/getNotifyNumber', {}).then(res => {
+        if (res.status === 1) {
+          self.$store.commit('uploadMsg', res.data)
+        }
+        if (res.status === 402 || res.status === 403) {
+          clearInterval(msgTime)
+        }
+      })
     }, 60000)
-  },
-  beforeDestroy () {
-    clearInterval(this.remindTime)
+    // 每一分钟执行，获取提醒信息
+    let remindTime = setInterval(function () {
+      db.postRequest('Institution/Home/getRemind', {}).then(res => {
+        if (res.status === 1 && res.data.length > 0) {
+          self.remindInfo = res.data
+          $('#modalRemind').modal('show')
+        } else if (res.status === 402 || res.status === 403) {
+          clearInterval(remindTime)
+        } else {
+          console.log('获取日历提醒：' + res.msg)
+        }
+      })
+    }, 60000)
   },
   methods: {
     ...mapActions(['login']),
@@ -345,29 +356,10 @@ export default {
         window.location.replace('/')
       })
     },
-    getMsgNum () {
-      let self = this
-      db.getRequest('Institution/Notice/getNotifyNumber', {}).then(res => {
-        if (res.status === 1) {
-          self.$store.commit('uploadMsg', res.data)
-        }
-      })
-    },
     setView () {
       let $this = $('.fullRightContent')
       let viewH = $(window).height() - 51
       $this.css({'min-height': viewH + 'px'})
-    },
-    getRemind () {
-      let self = this
-      db.postRequest('Institution/Home/getRemind', {}).then(res => {
-        if (res.status === 1 && res.data.length > 0) {
-          self.remindInfo = res.data
-          $('#modalRemind').modal('show')
-        } else {
-          console.log('获取日历提醒：' + res.msg)
-        }
-      })
     }
   },
   components: {},

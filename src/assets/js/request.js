@@ -78,7 +78,6 @@ class Request {
                 self.layer.close(i)
                 window.location.replace('/login')
               })
-              return false
             }
             if (res.headers.hasOwnProperty('token')) {
               if (res.headers.token) {

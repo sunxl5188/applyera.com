@@ -158,7 +158,7 @@ export default {
       this.createUpload()
       setTimeout(function () {
         $('input.webuploader-element-invisible').trigger('click')
-      }, 500)
+      }, 200)
     },
     viewPhotos (arr) {
       let self = this

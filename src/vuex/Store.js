@@ -24,13 +24,9 @@ const mutations = {
   },
   // 用户退出登录
   userOut (state) {
-    sessionStorage.removeItem('nav')
-    sessionStorage.removeItem('navArr')
-
     Cookies.remove('userInfo')
     Cookies.remove('token')
     Cookies.remove('isLogin')
-
     state.userInfo = ''
     state.token = ''
     state.isLogin = 0

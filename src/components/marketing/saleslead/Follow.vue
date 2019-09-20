@@ -122,7 +122,7 @@
                                       <div class="form-group">
                                           <label class="col-sm-4 control-label">负责顾问</label>
                                           <div class="col-sm-8 lh34">
-                                              {{reDetail.from_name}}
+                                              {{reDetail.operator_name}}
                                           </div>
                                       </div>
                                   </div>
@@ -132,7 +132,7 @@
                                      <div class="form-group">
                                          <label class="col-sm-4 control-label">线索来源</label>
                                          <div class="col-sm-8 lh34">
-                                             {{reDetail.operator_name}}
+                                             {{reDetail.from_name}}
                                          </div>
                                      </div>
                                  </div>
