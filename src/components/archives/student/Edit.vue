@@ -165,7 +165,7 @@
                                     <div class="panel-heading clearfix">
                                         <span class="pull-left">申请资料</span>
                                         <span class="pull-right">
-                                             <router-link to="/functions/initApply/add">
+                                             <router-link to="/functions/applyInfo/detail">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
@@ -187,7 +187,7 @@
                                         </table>
                                         <div class="panel-noData" v-if="tab1.material.length === 0">
                                             <p class="c999">该学生还没有申请资料</p>
-                                            <router-link to="/functions/initApply/add" class="cded">点击前往创建
+                                            <router-link to="/functions/applyInfo/detail" class="cded">点击前往创建
                                             </router-link>
                                         </div>
                                     </div>
