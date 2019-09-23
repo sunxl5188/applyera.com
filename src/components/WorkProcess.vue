@@ -156,9 +156,10 @@
                                                         {{modalData.student_info.sign_status_str}}
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li v-for="(item,i) in sign_status" :key="i"
-                                                            @click="modalData.student_info.sign_status_str = item.status_name;setStudentState(modalData.student_info.stu_id, item.id)">
-                                                            <a href="#">{{item.status_name}}</a></li>
+                                                        <li v-for="(item,i) in sign_status" :key="i">
+                                                            <a href="#" v-if="item.status_name === modalData.student_info.sign_status_str">{{item.status_name}} <span class="glyphicon glyphicon-ok pull-right c999 ml-10"></span></a>
+                                                            <a href="#" @click="modalData.student_info.sign_status_str = item.status_name;setStudentState(modalData.student_info.stu_id, item.id)" v-if="item.status_name !== modalData.student_info.sign_status_str">{{item.status_name}} <span class="glyphicon glyphicon-ok pull-right c999 ml-10"></span></a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -173,9 +174,9 @@
                                                             {{modalData.student_info.student_type_str}}
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li v-for="(item,i) in studentTypeArr" :key="i"
-                                                                @click="modalData.student_info.student_type_str=item.stu_type;setStudentType(modalData.student_info.stu_id, item.id)">
-                                                                <a href="#">{{item.stu_type}}</a>
+                                                            <li v-for="(item,i) in studentTypeArr" :key="i">
+                                                                <a href="#" v-if="item.stu_type === modalData.student_info.student_type_str">{{item.stu_type}}<span class="glyphicon glyphicon-ok pull-right c999 ml-10"></span></a>
+                                                                <a href="#" @click="modalData.student_info.student_type_str=item.stu_type;setStudentType(modalData.student_info.stu_id, item.id)" v-if="item.stu_type !== modalData.student_info.student_type_str">{{item.stu_type}}</a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -193,9 +194,10 @@
                                                                  class="img-circle" width="30" height="30"/>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li v-for="(item, i) in adviserArr" :key="i"
-                                                                 @click="studentId=modalData.student_info.stu_id;adviserId=item.id;modalData.student_info.adviser_img=item.head_img;saveAdviser()">
-                                                                <a href="#">{{item.name}}</a></li>
+                                                            <li v-for="(item, i) in adviserArr" :key="i">
+                                                                <a href="#" v-if="item.head_img === modalData.student_info.adviser_img">{{item.name}}<span class="glyphicon glyphicon-ok pull-right c999 ml-10"></span></a>
+                                                                <a href="#" @click="studentId=modalData.student_info.stu_id;adviserId=item.id;modalData.student_info.adviser_img=item.head_img;saveAdviser()" v-if="item.head_img !== modalData.student_info.adviser_img">{{item.name}}<span class="glyphicon glyphicon-ok pull-right c999 ml-10"></span></a>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div>
