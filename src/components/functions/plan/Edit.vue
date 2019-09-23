@@ -263,7 +263,7 @@
                                     <td class="text-left">
                                         <input type="hidden" name="recommend_table[time_table][]"
                                                :value="item.time_table"/>
-                                        <select class="form-control selectpicker" name="recommend_table[time_select][]">
+                                        <select class="form-control selectpicker" name="recommend_table[time_select][]" v-model="item.time_select">
                                             <option :value="items" v-for="(items,k) in item.time_table" :key="'sel'+k">{{items}}</option>
                                         </select>
                                     </td>

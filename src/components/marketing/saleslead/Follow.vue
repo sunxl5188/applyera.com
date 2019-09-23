@@ -139,9 +139,15 @@
                                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                      <div class="form-group">
                                          <label class="col-sm-4 control-label">审核状态</label>
-                                         <div class="col-sm-8 lh34">
-                                             {{reDetail.audit_status===1?'通过':'不通过'}}
-                                             <input type="hidden" name="audit_status" v-model="reDetail.audit_status" />
+                                         <div class="col-sm-8">
+                                             <div class="radio">
+                                                 <label>
+                                                     <input type="radio" name="audit_status" value="1" v-model="reDetail.audit_status"> 通过
+                                                 </label>
+                                                 <label class="ml-10">
+                                                     <input type="radio" name="audit_status" value="2" v-model="reDetail.audit_status"> 不通过
+                                                 </label>
+                                             </div>
                                          </div>
                                      </div>
                                  </div>

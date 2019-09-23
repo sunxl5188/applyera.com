@@ -78,7 +78,7 @@
                                            placeholder="请选择日期">
                                 </div>
                                 <div class="col-sm-3">
-                                    <select name="repeat" v-model="repeat" class="form-control">
+                                    <select name="repeat" v-model="repeat" class="form-control selectPicker">
                                         <option value="0">不重复</option>
                                         <option value="1">每天</option>
                                         <option value="5">每个工作日</option>
@@ -96,7 +96,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">提醒状态</label>
                                 <div class="col-sm-4">
-                                    <select name="status" class="form-control" v-model="status">
+                                    <select name="status" class="form-control selectPicker" v-model="status">
                                         <option value="1">已完成</option>
                                         <option value="0">未完成</option>
                                     </select>
@@ -232,7 +232,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">日程状态</label>
                                 <div class="col-sm-5">
-                                    <select name="status" class="form-control" v-model="status">
+                                    <select name="status" class="form-control selectPicker" v-model.number="status">
                                         <option value="1">已完成</option>
                                         <option value="0">未完成</option>
                                     </select>
@@ -360,6 +360,9 @@ export default {
           show: true
         })
         $('.fc-bg td').popover('hide')
+        setTimeout(function () {
+          $('.selectPicker').selectpicker('refresh')
+        }, 500)
       })
       // 弹出创建日程
       $(document).on('click', '.createSch', function () {
@@ -378,7 +381,9 @@ export default {
           show: true
         })
         $('.fc-bg td').popover('hide')
-        $('.selectPicker').selectpicker('refresh')
+        setTimeout(function () {
+          $('.selectPicker').selectpicker('refresh')
+        }, 500)
       })
     })
   },
@@ -429,7 +434,6 @@ export default {
         }
       })
       $('.fc-bg td').popover('hide')
-
       self.dateDay = MM + '-' + DD + ' - ' + MM + '-' + DD
       self.dateTime = MM + '-' + DD + ' 00:00 - ' + MM + '-' + DD + ' 00:00'
       setTimeout(function () {
@@ -473,7 +477,6 @@ export default {
       if (info.event.extendedProps.type === 1) {
         let selectVal = []
         $('#createSch').modal('show')
-        $('.selectPicker').selectpicker('refresh')
         info.event.extendedProps.participant.map(item => {
           self.PartList.map(it => {
             if (it.id === parseInt(item)) {
@@ -486,6 +489,9 @@ export default {
       if (info.event.extendedProps.type === 2) {
         $('#createRe').modal('show')
       }
+      setTimeout(function () {
+        $('.selectPicker').selectpicker('refresh')
+      }, 500)
       self.viewTime()
     },
     validateBeforeSubmit (type) {

@@ -319,26 +319,25 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <div class="col-sm-6" id="next_contact_time" contenteditable="true"
-                                                     data-placeholder="设置跟进"></div>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-9">
+                                                    <span id="next_contact_time" contenteditable="true" data-placeholder="设置跟进"></span>
                                                     <div class="dropdown" style="display: inline-block;">
                                                         <i :class="repeat!==0?'iconfont font20 cded':'iconfont font20 c999'"
                                                            style="cursor:pointer;"
                                                            data-toggle="dropdown">&#xe8bf;</i>
                                                         <ul class="dropdown-menu dropdown-menu-right">
                                                             <li @click="repeat=0" :class="repeat===0?'po_re active':'po_re'"><a
-                                                                    href="javascript:void(0);">不重复</a></li>
+                                                                href="javascript:void(0);">不重复</a></li>
                                                             <li @click="repeat=1" :class="repeat===1?'po_re active':'po_re'"><a
-                                                                    href="javascript:void(0);">每天重复</a></li>
+                                                                href="javascript:void(0);">每天重复</a></li>
                                                             <li @click="repeat=2" :class="repeat===2?'po_re active':'po_re'"><a
-                                                                    href="javascript:void(0);">每周重复</a></li>
+                                                                href="javascript:void(0);">每周重复</a></li>
                                                             <li @click="repeat=3" :class="repeat===3?'po_re active':'po_re'"><a
-                                                                    href="javascript:void(0);">每月重复</a></li>
+                                                                href="javascript:void(0);">每月重复</a></li>
                                                             <li @click="repeat=4" :class="repeat===4?'po_re active':'po_re'"><a
-                                                                    href="javascript:void(0);">每年重复</a></li>
+                                                                href="javascript:void(0);">每年重复</a></li>
                                                             <li @click="repeat=5" :class="repeat===5?'po_re active':'po_re'"><a
-                                                                    href="javascript:void(0);">工作日重复</a></li>
+                                                                href="javascript:void(0);">工作日重复</a></li>
                                                         </ul>
                                                     </div>
 
