@@ -39,9 +39,9 @@
                         <div class="clearfix text-center lh34 pb-15" v-if="sendStudentString.status===1">状态：填写中</div>
                         <div class="clearfix text-center lh34 pb-15" v-if="sendStudentString.status===2">状态：已完成</div>
                         <div class="clearfix bda pad-15" id="copyContent">
-                            <p>学生姓名：{{sendStudentString.name}}</p>
-                            <p>学生编号： {{sendStudentString.number}}</p>
-                            <p>填写地址：{{webSite}}/login?code={{sendStudentString.code}}</p>
+                            <p>登录帐号：{{sendStudentString.name}}</p>
+                            <p>登录密码： {{sendStudentString.number}}</p>
+                            <p>登录地址：{{webSite}}/login?id={{sendStudentString.code}}</p>
                         </div>
                         <div class="clearfix text-center pt-20">
                             <button type="button" class="btn btn-primary copyBtn" data-clipboard-target="#copyContent"

@@ -282,7 +282,7 @@ textarea{
 	}
 
 	& .fullLeft{
-		width:200px;height:100%;-webkit-transition:all .3s ease 0s;-moz-transition:all .3s ease 0s;-ms-transition:all .3s ease 0s;transition:all .3s ease 0s;background-color:#fff;position:fixed;left:0;top:0;z-index:10;box-shadow:0 0 3px #ddd;
+		width:200px;height:100%;-webkit-transition:all .3s ease 0s;-moz-transition:all .3s ease 0s;-ms-transition:all .3s ease 0s;transition:all .3s ease 0s;background-color:#fff;position:fixed;left:0;top:0;z-index:10;box-shadow:0 0 3px #ddd;overflow-y:auto;
 
 		& > div.logo{
 			width:100%;height:50px;display:table;text-align:center;
