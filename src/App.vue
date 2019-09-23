@@ -349,7 +349,7 @@ export default {
     ...mapActions(['login']),
     logOut () {
       let self = this
-      self.layer.confirm('您是否确定退出？', function (e) {
+      self.layer.confirm('您确定要退出登录吗？', function (e) {
         store.dispatch('logOut')
         self.nav = 0
         self.layer.close(e)
