@@ -121,10 +121,10 @@
               </router-link>
             </div>
           </li>
-          <li class="list-group-item">
+          <li class="list-group-item" v-if="userInfo.access.marketing.show===1">
             <a href="javascript:void(0);"><i class="iconfont">&#xe600;</i><span>营销</span></a>
             <div class="list-group">
-              <router-link to="/marketing/saleslead" class="list-group-item">销售线索
+              <router-link to="/marketing/saleslead" class="list-group-item" v-if="userInfo.access.marketing.child[0]===1">销售线索
               </router-link>
             </div>
           </li>
@@ -261,8 +261,16 @@ export default {
     }
     self.$nextTick(() => {
       // 同步登录信息
-      if (self.$cookies.get('userInfo')) {
-        self.$store.dispatch('login', self.$cookies.get('userInfo'))
+      let getUserInfo = self.$cookies.get('userInfo')
+      if (getUserInfo) {
+        db.postRequest('/Institution/Home/roleAccessList', {}).then(res => {
+          if (res.status === 1) {
+            getUserInfo.access = res.data
+            self.$store.dispatch('login', getUserInfo)
+          } else {
+            console.log(res.msg)
+          }
+        })
       }
     })
 
