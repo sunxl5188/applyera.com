@@ -237,13 +237,35 @@ export default new Router({
           ]
         },
         {
+          path: 'answer',
+          name: 'answer',
+          component: resolve => require(['@#/functions/answer/Index'], resolve),
+          meta: {
+            title: '文书作答',
+            requiresAuth: true,
+            group: ['function', 3, '']
+          },
+          children: [
+            {
+              path: 'detail',
+              name: 'answerDetail',
+              component: resolve => require(['@#/functions/answer/detail'], resolve),
+              meta: {
+                title: '',
+                requiresAuth: true,
+                group: ['function', 3, 0]
+              }
+            }
+          ]
+        },
+        {
           path: 'initApply',
           name: 'initApply',
           component: resolve => require(['@#/functions/initApply/Index'], resolve),
           meta: {
             title: '发起申请',
             requiresAuth: true,
-            group: ['function', 3, '']
+            group: ['function', 4, '']
           },
           children: [
             {
@@ -265,7 +287,7 @@ export default new Router({
           meta: {
             title: '申请跟踪',
             requiresAuth: true,
-            group: ['function', 4, '']
+            group: ['function', 5, '']
           }
         },
         {
@@ -275,7 +297,7 @@ export default new Router({
           meta: {
             title: '佣金管理',
             requiresAuth: true,
-            group: ['function', 5, '']
+            group: ['function', 6, '']
           },
           children: [
             {

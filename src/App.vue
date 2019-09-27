@@ -109,7 +109,9 @@
               <router-link to="/functions/applyInfo" class="list-group-item"
                            v-if="userInfo.access.function.child[2]===1">申请资料
               </router-link>
-
+              <router-link to="/functions/answer" class="list-group-item"
+                           >文书作答
+              </router-link>
               <router-link to="/functions/initApply" class="list-group-item"
                            v-if="userInfo.access.function.child[3]===1">发起申请
               </router-link>
