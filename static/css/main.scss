@@ -122,7 +122,7 @@ div{
 a{
 	color:#333;
 
-	&:focus, &:hover{text-decoration:none;}
+	&:focus, &:hover{text-decoration:none;color:#39f;}
 
 	&.active{
 		color:#39f;

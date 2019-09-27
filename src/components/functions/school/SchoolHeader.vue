@@ -19,7 +19,7 @@
                 <div class="clearfix">
                     <div class="row" v-if="userInfo.access.show_commission===1">
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                            <div class="lh36 cded font20">{{schoolInfo.ranking.val}}</div>
+                            <div class="lh36 cded font20">{{schoolInfo.ranking['content']}}</div>
                             <div class="lh20">{{schoolInfo.ranking.name}}</div>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -35,7 +35,7 @@
                     </div>
                     <div class="row" v-if="userInfo.access.show_commission!==1">
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                            <div class="lh36 cded font20">{{schoolInfo.ranking.val}}</div>
+                            <div class="lh36 cded font20">{{schoolInfo.ranking['content']}}</div>
                             <div class="lh20">{{schoolInfo.ranking.name}}</div>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -73,7 +73,12 @@ export default {
       loading: true
     }
   },
-  props: ['schoolInfo'],
+  props: {
+    schoolInfo: {
+      type: Object,
+      default: () => {}
+    }
+  },
   computed: {
     token () {
       return store.state.token

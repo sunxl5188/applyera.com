@@ -35,12 +35,9 @@
                 <div class="schoolTitle">学校概述</div>
                 <div class="clearfix lh20" v-html="intro"></div>
                 <div class="schoolTitle" v-if="adms_office.length > 0">招生办信息</div>
-                <div class="row" v-if="adms_office.length > 0" v-masonry transition-duration="0.3s"
-                     item-selector=".zhaoshengban">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 zhaoshengban" v-for="(item, i) in adms_office" :key="i">
-                        <div class="bda pad-15">
-                            <p v-for="(items, k) in item" :key="k">{{items}}</p>
-                        </div>
+                <div class="row" v-if="adms_office.length > 0">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pb-15" v-for="(item, i) in adms_office" :key="i">
+                        <p v-for="(items, k) in item" :key="k" v-html="items"></p>
                     </div>
                 </div>
                 <div class="schoolTitle">类似的学校有</div>
@@ -244,7 +241,25 @@ export default {
       keywordsA: '',
       keywordsB: '',
       keywordsC: '',
-      headerInfo: {},
+      headerInfo: {
+        'unq_id': '',
+        'schoolname': '',
+        'englishname': '',
+        'address': '',
+        'schoolbadge': '',
+        'website': '',
+        'ranking': {
+          'content': '',
+          'name': ''
+        },
+        'qs_ranking': {
+          'val': '',
+          'name': ''
+        },
+        'is_clt': '',
+        'commission': '',
+        'type': ''
+      },
       baseInfo: {},
       cityInfo: {},
       intro: {},

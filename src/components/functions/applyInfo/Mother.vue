@@ -330,7 +330,7 @@ export default {
 }
 </script>
 
-<style scoped>
-    .form-group {margin-left:0;margin-right:0;}
-    .familyAddress .form-inline {display:inline-block !important;}
+<style scoped lang="scss">
+.form-group {margin-left:0 !important;margin-right:0 !important;}
+.familyAddress .form-inline {display:inline-block !important;}
 </style>
