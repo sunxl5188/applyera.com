@@ -81,7 +81,7 @@
                                @click="sortAction(1)"></a>
                         </th>
                         <th class="w15" v-if="userInfo.access.show_commission===1">
-                            <span class="div_vm">佣金范围</span>
+                            <span class="div_vm">佣金比例</span>
                             <a href="javascript:void(0);"
                                :class="sortComm===''?'icon-sort': (sortComm===1?'icon-sort up':'icon-sort down')"
                                @click="sortAction(2)"></a>
@@ -123,7 +123,7 @@
                             </router-link>
                         </td>
                         <td v-text="item.ranking"></td>
-                        <td v-text="item.commission" v-if="userInfo.access.show_commission===1"></td>
+                        <td v-text="item.commission_rate" v-if="userInfo.access.show_commission===1"></td>
                         <td>
                             <a href="javascript:void(0);" @click="collection(item.unq_id, item.type, $event)"
                                v-if="item.is_clt===0" class="btn btn-primary is-round btn-sm">加入收藏</a>

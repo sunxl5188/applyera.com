@@ -1,203 +1,203 @@
 <template>
-    <div>
-        <div class="btn-group" role="group" id="majortab">
-            <a href="#majortab1" data-toggle="tab" class="btn btn-default btn-primary">收藏学校</a>
-            <a href="#majortab2" data-toggle="tab" class="btn btn-default">本科专业</a>
-            <a href="#majortab3" data-toggle="tab" class="btn btn-default">硕士专业</a>
-        </div>
-        <div class="blk15"></div>
-        <div class="tab-content">
-            <div class="tab-pane fade in active" id="majortab1">
-                <div class="row">
-                    <table class="table table-text-over table-customize">
-                        <thead>
-                        <tr>
-                            <th>学校名称</th>
-                            <th class="w20">所在地区</th>
-                            <th class="w10">
-                                <span class="div_vm">排名</span>
-                                <a href="javascript:void(0);"
-                                   :class="sortRank===''?'icon-sort': (sortRank===1?'icon-sort up':'icon-sort down')"
-                                   @click="sortAction(1)"></a>
-                            </th>
-                            <th class="w15" v-if="userInfo.access.show_commission===1">
-                                <span class="div_vm">佣金范围</span>
-                                <a href="javascript:void(0);"
-                                   :class="sortComm===''?'icon-sort': (sortComm===1?'icon-sort up':'icon-sort down')"
-                                   @click="sortAction(2)"></a>
-                            </th>
-                            <th class="w15">收藏</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(item, i) in school" :key="i">
-                            <td>
-                                <div class="media">
-                                    <div class="media-left">
-                                        <router-link :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}">
-                                            <img class="media-object" :src="'//'+item.schoolbadge" alt="" width="40"
-                                                 height="40">
-                                        </router-link>
-                                    </div>
-                                    <div class="media-body" style="margin-bottom: 0;">
-                                        <div class="lh20">
-                                            <router-link
-                                                    :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}"
-                                                    class="cded">
-                                                {{item.englishname}}
-                                            </router-link>
-                                        </div>
-                                        <div class="lh20 c999">{{item.schoolname}}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td v-text="item.chinesestate"></td>
-                            <td v-text="item.ranking"></td>
-                            <td v-text="item.commission" v-if="userInfo.access.show_commission===1"></td>
-                            <td>
-                                <a href="javascript:void(0);" class="btn btn-default btn-sm is-round"
-                                   @click="clearCollection(item.unq_id, 1)">移出收藏</a>
-                            </td>
-                        </tr>
-                        <tr v-if="loading">
-                            <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg()"></td>
-                        </tr>
-                        <tr v-if="loading===false && school.length === 0">
-                            <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData()"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="majortab2">
-                <div class="row">
-                    <table class="table table-text-over table-customize">
-                        <thead>
-                        <tr>
-                            <th>专业名称</th>
-                            <th class="w25">学校名称</th>
-                            <th class="w10">
-                                <span class="div_vm">排名</span>
-                                <a href="javascript:void(0);"
-                                   :class="sortRank1===''?'icon-sort': (sortRank1===1?'icon-sort up':'icon-sort down')"
-                                   @click="sortAction(3)"></a>
-                            </th>
-                            <th class="w15" v-if="userInfo.access.show_commission===1">
-                                <span class="div_vm">佣金范围</span>
-                                <a href="javascript:void(0);"
-                                   :class="sortComm1===''?'icon-sort': (sortComm1===1?'icon-sort up':'icon-sort down')"
-                                   @click="sortAction(4)"></a>
-                            </th>
-                            <th class="w15">收藏</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(item, i) in profession" :key="i">
-                            <td>
-                                <router-link :to="{path:'/functions/schoollist/majordetaila',query:{id:item.unq_id}}">
-                                    <div class="lh16">
-                                        <div class="cded textOver">{{item.majoren}}</div>
-                                    </div>
-                                    <div class="lh16">
-                                        <div class="textOver">{{item.majorch}}</div>
-                                    </div>
-                                </router-link>
-                            </td>
-                            <td>
-                                <router-link :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.school_unq_id,tab:1}}">
-                                    <div class="lh16">
-                                        <div class="cded textOver">{{item.englishname}}</div>
-                                    </div>
-                                    <div class="lh16">
-                                        <div class="c999 textOver">{{item.schoolname}}</div>
-                                    </div>
-                                </router-link>
-                            </td>
-                            <td v-text="item.ranking"></td>
-                            <td v-text="item.commission" v-if="userInfo.access.show_commission===1"></td>
-                            <td>
-                                <a href="javascript:void(0);" class="btn btn-default btn-sm is-round"
-                                   @click="clearCollection(item.unq_id, 2)">移出收藏</a>
-                            </td>
-                        </tr>
-                        <tr v-if="loading">
-                            <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg()"></td>
-                        </tr>
-                        <tr v-if="loading===false && profession.length === 0">
-                            <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData()"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="majortab3">
-                <div class="row">
-                    <table class="table table-text-over table-customize">
-                        <thead>
-                        <tr>
-                            <th>专业名称</th>
-                            <th class="w25">学校名称</th>
-                            <th class="w10">
-                                <span class="div_vm">排名</span>
-                                <a href="javascript:void(0);"
-                                   :class="sortRank2===''?'icon-sort': (sortRank2===1?'icon-sort up':'icon-sort down')"
-                                   @click="sortAction(5)"></a>
-                            </th>
-                            <th class="w15" v-if="userInfo.access.show_commission===1">
-                                <span class="div_vm">佣金范围</span>
-                                <a href="javascript:void(0);"
-                                   :class="sortComm2===''?'icon-sort': (sortComm2===1?'icon-sort up':'icon-sort down')"
-                                   @click="sortAction(6)"></a>
-                            </th>
-                            <th class="w15">收藏</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(item, i) in major" :key="i">
-                            <td>
-                                <router-link :to="{path:'/functions/schoollist/majordetailb',query:{id:item.unq_id}}">
-                                    <div class="lh16">
-                                        <div class="cded textOver">{{item.major_en}}</div>
-                                    </div>
-                                    <div class="lh16">
-                                        <div class="textOver">{{item.major_cn}}</div>
-                                    </div>
-                                </router-link>
-                            </td>
-                            <td>
-                                <router-link :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.school_unq_id,tab:1}}">
-                                    <div class="lh16">
-                                        <div class="cded textOver">{{item.englishname}}</div>
-                                    </div>
-                                    <div class="lh16">
-                                        <div class="c999 textOver">{{item.schoolname}}</div>
-                                    </div>
-                                </router-link>
-                            </td>
-                            <td v-text="item.ranking"></td>
-                            <td v-text="item.commission" v-if="userInfo.access.show_commission===1"></td>
-                            <td>
-                                <a href="javascript:void(0);" class="btn btn-default btn-sm is-round"
-                                   @click="clearCollection(item.unq_id, 3)">移出收藏</a>
-                            </td>
-                        </tr>
-                        <tr v-if="loading">
-                            <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg()"></td>
-                        </tr>
-                        <tr v-if="loading===false && major.length === 0">
-                            <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData()"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+  <div>
+    <div class="btn-group" role="group" id="majortab">
+      <a href="#majortab1" data-toggle="tab" class="btn btn-default btn-primary">收藏学校</a>
+      <a href="#majortab2" data-toggle="tab" class="btn btn-default">本科专业</a>
+      <a href="#majortab3" data-toggle="tab" class="btn btn-default">硕士专业</a>
     </div>
+    <div class="blk15"></div>
+    <div class="tab-content">
+      <div class="tab-pane fade in active" id="majortab1">
+        <div class="row">
+          <table class="table table-text-over table-customize">
+            <thead>
+            <tr>
+              <th>学校名称</th>
+              <th class="w20">所在地区</th>
+              <th class="w10">
+                <span class="div_vm">排名</span>
+                <a href="javascript:void(0);"
+                   :class="sortRank===''?'icon-sort': (sortRank===1?'icon-sort up':'icon-sort down')"
+                   @click="sortAction(1)"></a>
+              </th>
+              <th class="w15" v-if="userInfo.access.show_commission===1">
+                <span class="div_vm">佣金比例</span>
+                <a href="javascript:void(0);"
+                   :class="sortComm===''?'icon-sort': (sortComm===1?'icon-sort up':'icon-sort down')"
+                   @click="sortAction(2)"></a>
+              </th>
+              <th class="w15">收藏</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, i) in school" :key="i">
+              <td>
+                <div class="media">
+                  <div class="media-left">
+                    <router-link :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}">
+                      <img class="media-object" :src="'//'+item.schoolbadge" alt="" width="40"
+                           height="40">
+                    </router-link>
+                  </div>
+                  <div class="media-body" style="margin-bottom: 0;">
+                    <div class="lh20">
+                      <router-link
+                          :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}"
+                          class="cded">
+                        {{item.englishname}}
+                      </router-link>
+                    </div>
+                    <div class="lh20 c999">{{item.schoolname}}</div>
+                  </div>
+                </div>
+              </td>
+              <td v-text="item.chinesestate"></td>
+              <td v-text="item.ranking"></td>
+              <td v-text="item.commission_rate" v-if="userInfo.access.show_commission===1"></td>
+              <td>
+                <a href="javascript:void(0);" class="btn btn-default btn-sm is-round"
+                   @click="clearCollection(item.unq_id, 1)">移出收藏</a>
+              </td>
+            </tr>
+            <tr v-if="loading">
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg()"></td>
+            </tr>
+            <tr v-if="loading===false && school.length === 0">
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData()"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="majortab2">
+        <div class="row">
+          <table class="table table-text-over table-customize">
+            <thead>
+            <tr>
+              <th>专业名称</th>
+              <th class="w25">学校名称</th>
+              <th class="w10">
+                <span class="div_vm">排名</span>
+                <a href="javascript:void(0);"
+                   :class="sortRank1===''?'icon-sort': (sortRank1===1?'icon-sort up':'icon-sort down')"
+                   @click="sortAction(3)"></a>
+              </th>
+              <th class="w15" v-if="userInfo.access.show_commission===1">
+                <span class="div_vm">佣金比例</span>
+                <a href="javascript:void(0);"
+                   :class="sortComm1===''?'icon-sort': (sortComm1===1?'icon-sort up':'icon-sort down')"
+                   @click="sortAction(4)"></a>
+              </th>
+              <th class="w15">收藏</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, i) in profession" :key="i">
+              <td>
+                <router-link :to="{path:'/functions/schoollist/majordetaila',query:{id:item.unq_id}}">
+                  <div class="lh16">
+                    <div class="cded textOver">{{item.majoren}}</div>
+                  </div>
+                  <div class="lh16">
+                    <div class="textOver">{{item.majorch}}</div>
+                  </div>
+                </router-link>
+              </td>
+              <td>
+                <router-link :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.school_unq_id,tab:1}}">
+                  <div class="lh16">
+                    <div class="cded textOver">{{item.englishname}}</div>
+                  </div>
+                  <div class="lh16">
+                    <div class="c999 textOver">{{item.schoolname}}</div>
+                  </div>
+                </router-link>
+              </td>
+              <td v-text="item.ranking"></td>
+              <td v-text="item.commission_rate" v-if="userInfo.access.show_commission===1"></td>
+              <td>
+                <a href="javascript:void(0);" class="btn btn-default btn-sm is-round"
+                   @click="clearCollection(item.unq_id, 2)">移出收藏</a>
+              </td>
+            </tr>
+            <tr v-if="loading">
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg()"></td>
+            </tr>
+            <tr v-if="loading===false && profession.length === 0">
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData()"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="majortab3">
+        <div class="row">
+          <table class="table table-text-over table-customize">
+            <thead>
+            <tr>
+              <th>专业名称</th>
+              <th class="w25">学校名称</th>
+              <th class="w10">
+                <span class="div_vm">排名</span>
+                <a href="javascript:void(0);"
+                   :class="sortRank2===''?'icon-sort': (sortRank2===1?'icon-sort up':'icon-sort down')"
+                   @click="sortAction(5)"></a>
+              </th>
+              <th class="w15" v-if="userInfo.access.show_commission===1">
+                <span class="div_vm">佣金比例</span>
+                <a href="javascript:void(0);"
+                   :class="sortComm2===''?'icon-sort': (sortComm2===1?'icon-sort up':'icon-sort down')"
+                   @click="sortAction(6)"></a>
+              </th>
+              <th class="w15">收藏</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, i) in major" :key="i">
+              <td>
+                <router-link :to="{path:'/functions/schoollist/majordetailb',query:{id:item.unq_id}}">
+                  <div class="lh16">
+                    <div class="cded textOver">{{item.major_en}}</div>
+                  </div>
+                  <div class="lh16">
+                    <div class="textOver">{{item.major_cn}}</div>
+                  </div>
+                </router-link>
+              </td>
+              <td>
+                <router-link :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.school_unq_id,tab:1}}">
+                  <div class="lh16">
+                    <div class="cded textOver">{{item.englishname}}</div>
+                  </div>
+                  <div class="lh16">
+                    <div class="c999 textOver">{{item.schoolname}}</div>
+                  </div>
+                </router-link>
+              </td>
+              <td v-text="item.ranking"></td>
+              <td v-text="item.commission_rate" v-if="userInfo.access.show_commission===1"></td>
+              <td>
+                <a href="javascript:void(0);" class="btn btn-default btn-sm is-round"
+                   @click="clearCollection(item.unq_id, 3)">移出收藏</a>
+              </td>
+            </tr>
+            <tr v-if="loading">
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg()"></td>
+            </tr>
+            <tr v-if="loading===false && major.length === 0">
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData()"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import PagInAction from '@/components/PagInAction'
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -327,24 +327,27 @@ export default {
       self.getCollection()
     }
   },
-  components: {PagInAction},
+  components: { PagInAction },
   watch: {}
 }
 </script>
 
 <style scoped lang="scss">
-    #majortab {
-        & > a{
-            border-color:#dedede;
-            &:first-of-type{
-                border-bottom-left-radius:20px;border-top-left-radius:20px;padding-left:20px;
-            }
-            &:last-of-type{
-                border-top-right-radius:20px;border-bottom-right-radius:20px;padding-right:20px;
-            }
-            &.btn-primary{
-                border-color:#428bca;
-            }
-        }
+#majortab {
+  & > a {
+    border-color:#dedede;
+
+    &:first-of-type {
+      border-bottom-left-radius:20px;border-top-left-radius:20px;padding-left:20px;
     }
+
+    &:last-of-type {
+      border-top-right-radius:20px;border-bottom-right-radius:20px;padding-right:20px;
+    }
+
+    &.btn-primary {
+      border-color:#428bca;
+    }
+  }
+}
 </style>
