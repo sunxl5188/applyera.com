@@ -1,949 +1,960 @@
 <template>
-  <div class="bgGray" style="margin:-25px -15px;">
-    <div v-if="loading" v-html="LoadingImg()"></div>
-    <div v-if="!loading">
-      <div class="pt-15 pb-15">
+    <div class="bgGray" style="margin:-25px -15px;">
+        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="!loading">
+            <div class="pt-15 pb-15">
 
-        <div class="bgWhite pad-15">
-          <div class="dropdown text-right">
-            <a href="#" id="dropdownMenu1" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-option-vertical c999"></span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li><a href="#" data-toggle="modal" data-backdrop="static"
-                     data-target="#editStudentInfo">编辑资料</a>
-              </li>
-              <li><a href="#" data-toggle="modal" data-backdrop="static"
-                     data-target="#editConsultant">顾问变更</a>
-              </li>
-              <li><a href="#" v-if="id" @click="deleteData">删除学生</a></li>
-              <li><a href="#" v-if="id" @click="shiftHighSeas">移至公海</a></li>
-            </ul>
-          </div>
-          <div class="clearfix pb-15">
-            <div class="row">
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <div class="studentInfo bdr">
-                  <div class="clearfix text-center pb-20 c666">
+                <div class="bgWhite pad-15">
+                    <div class="dropdown text-right">
+                        <a href="#" id="dropdownMenu1" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-option-vertical c999"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#" data-toggle="modal" data-backdrop="static"
+                                   data-target="#editStudentInfo">编辑资料</a>
+                            </li>
+                            <li><a href="#" data-toggle="modal" data-backdrop="static"
+                                   data-target="#editConsultant">顾问变更</a>
+                            </li>
+                            <li><a href="#" v-if="id" @click="deleteData">删除学生</a></li>
+                            <li><a href="#" v-if="id" @click="shiftHighSeas">移至公海</a></li>
+                        </ul>
+                    </div>
+                    <div class="clearfix pb-15">
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <div class="studentInfo bdr">
+                                    <div class="clearfix text-center pb-20 c666">
                                         <span class="userFace">
                                             <i class="iconfont" style="font-size:50px;color:#999;"
                                                v-if="header_info.headimg===''">&#xe646;</i>
                                             <i :class="header_info.headimg" v-if="header_info.headimg!==''">{{header_info.headimg}}</i>
                                         </span>
-                    <p>{{header_info.stu_name}}</p>
-                    <p class="c999">{{header_info.stu_number}}</p>
-                  </div>
-                  <div class="clearfix pl-50">
-                    <div class="clearfix lh26 c999">
-                      <span>学生类型</span><span class="ml-10">{{student_types}}</span>
-                    </div>
-                    <div class="clearfix lh26 c999">
-                      <span>当前状态</span><span class="ml-10">
+                                        <p>{{header_info.stu_name}}</p>
+                                        <p class="c999">{{header_info.stu_number}}</p>
+                                    </div>
+                                    <div class="clearfix pl-50">
+                                        <div class="clearfix lh26 c999">
+                                            <span>学生类型</span>
+                                            <span class="ml-10" v-for="(item, i) in student_type" :key="i" v-if="item.id === header_info.stu_type">
+                                                {{item.stu_type}}
+                                            </span>
+                                        </div>
+                                        <div class="clearfix lh26 c999">
+                                            <span>当前状态</span><span class="ml-10">
                                                 <span v-for="(item, i) in signStatusArr" :key="i"
                                                       v-if="item.id===header_info.sign_status">{{item.status_name}}</span>
                                             </span>
+                                        </div>
+                                        <div class="clearfix lh26 c999">
+                                            <span>负责顾问</span><span class="ml-10">{{header_info.user_name}}</span>
+                                        </div>
+                                        <div class="clearfix lh26 c999">
+                                            <span>创建时间</span><span class="ml-10">{{header_info.create_time}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                <div class="row">
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>联系微信</p>
+                                        <p>{{header_info.stu_wechat || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>联系电话</p>
+                                        <p>{{header_info.stu_phone || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>在读学校</p>
+                                        <p>{{header_info.reading_school || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>在读年级</p>
+                                        <p>{{header_info.reading_grade || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>语言成绩</p>
+                                        <p>{{header_info.lang_score_type || '&nbsp;'}}&nbsp;&nbsp;{{header_info.lang_score
+                                            || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>学术成绩</p>
+                                        <p>{{header_info.acad_score_type || '&nbsp;'}}&nbsp;&nbsp;{{header_info.acad_score
+                                            || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>当前专业</p>
+                                        <p>{{header_info.reading_major || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>GPA</p>
+                                        <p>{{header_info.avg_gpa || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>申请学位</p>
+                                        <p>{{header_info.intention_degree || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>出国时间</p>
+                                        <p>{{header_info.abroad_time || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>意向专业</p>
+                                        <p>{{header_info.intention_major || '&nbsp;'}}</p>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
+                                        <p>意向国家</p>
+                                        <p>{{country || '&nbsp;'}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <p>备注消息</p>
+                                        <p>{{header_info.remark || '&nbsp;'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="clearfix lh26 c999">
-                      <span>负责顾问</span><span class="ml-10">{{header_info.user_name}}</span>
-                    </div>
-                    <div class="clearfix lh26 c999">
-                      <span>创建时间</span><span class="ml-10">{{header_info.create_time}}</span>
-                    </div>
-                  </div>
                 </div>
-              </div>
-              <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                <div class="row">
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>联系微信</p>
-                    <p>{{header_info.stu_wechat || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>联系电话</p>
-                    <p>{{header_info.stu_phone || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>在读学校</p>
-                    <p>{{header_info.reading_school || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>在读年级</p>
-                    <p>{{header_info.reading_grade || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>语言成绩</p>
-                    <p>{{header_info.lang_score_type || '&nbsp;'}}&nbsp;&nbsp;{{header_info.lang_score
-                      || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>学术成绩</p>
-                    <p>{{header_info.acad_score_type || '&nbsp;'}}&nbsp;&nbsp;{{header_info.acad_score
-                      || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>当前专业</p>
-                    <p>{{header_info.reading_major || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>GPA</p>
-                    <p>{{header_info.avg_gpa || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>申请学位</p>
-                    <p>{{header_info.intention_degree || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>出国时间</p>
-                    <p>{{header_info.abroad_time || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>意向专业</p>
-                    <p>{{header_info.intention_major || '&nbsp;'}}</p>
-                  </div>
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
-                    <p>意向国家</p>
-                    <p>{{country || '&nbsp;'}}</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <p>备注消息</p>
-                    <p>{{header_info.remark || '&nbsp;'}}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div class="studentTabs">
-          <ul class="nav nav-tabs"><!--nav-justified-->
-            <li class="active"><a href="#tabs1" data-toggle="tab">学生概况</a></li>
-            <li><a href="#tabs2" data-toggle="tab">学生资料</a></li>
-            <li><a href="#tabs3" data-toggle="tab">附件管理</a></li>
-            <li><a href="#tabs4" data-toggle="tab">操作日志</a></li>
-          </ul>
-        </div>
+                <div class="studentTabs">
+                    <ul class="nav nav-tabs"><!--nav-justified-->
+                        <li class="active"><a href="#tabs1" data-toggle="tab">学生概况</a></li>
+                        <li><a href="#tabs2" data-toggle="tab">学生资料</a></li>
+                        <li><a href="#tabs3" data-toggle="tab">附件管理</a></li>
+                        <li><a href="#tabs4" data-toggle="tab">操作日志</a></li>
+                    </ul>
+                </div>
 
-        <div class="tab-content">
-          <div class="tab-pane fade in active" id="tabs1">
-            <div class="row">
-              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                <div class="panel panel-default">
-                  <div class="panel-heading clearfix">
-                    <span class="pull-left">留学规划</span>
-                    <span class="pull-right">
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="tabs1">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading clearfix">
+                                        <span class="pull-left">留学规划</span>
+                                        <span class="pull-right">
                                              <router-link :to="{path:'/functions/plan/edit',query:{sid:id}}">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
-                  </div>
-                  <div class="panel-body">
-                    <table class="table" v-if="tab1.plan.length > 0">
-                      <tbody>
-                      <tr v-for="(item,i) in tab1.plan" :key="i">
-                        <td width="20%">{{item.create_time}}</td>
-                        <td width="20%">{{item.ins_student_intention_country}}</td>
-                        <td>
-                          <router-link
-                              :to="{path:'/functions/plan/view',query:{id:item.plan_id}}"
-                              class="cded">{{item.recommend}}
-                          </router-link>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                    <div class="panel-noData" v-if="tab1.plan.length === 0">
-                      <p class="c999">该学生还没有留学规划</p>
-                      <router-link :to="{path:'/functions/plan/edit',query:{sid:id}}"
-                                   class="cded">点击前往创建
-                      </router-link>
-                    </div>
-                  </div>
-                </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table class="table" v-if="tab1.plan.length > 0">
+                                            <tbody>
+                                            <tr v-for="(item,i) in tab1.plan" :key="i">
+                                                <td width="20%">{{item.create_time}}</td>
+                                                <td width="20%">{{item.ins_student_intention_country}}</td>
+                                                <td>
+                                                    <router-link
+                                                            :to="{path:'/functions/plan/view',query:{id:item.plan_id}}"
+                                                            class="cded">{{item.recommend}}
+                                                    </router-link>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="panel-noData" v-if="tab1.plan.length === 0">
+                                            <p class="c999">该学生还没有留学规划</p>
+                                            <router-link :to="{path:'/functions/plan/edit',query:{sid:id}}"
+                                                         class="cded">点击前往创建
+                                            </router-link>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div class="panel panel-default">
-                  <div class="panel-heading clearfix">
-                    <span class="pull-left">申请资料</span>
-                    <span class="pull-right">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading clearfix">
+                                        <span class="pull-left">申请资料</span>
+                                        <span class="pull-right">
                                              <router-link to="/functions/applyInfo/detail">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
-                  </div>
-                  <div class="panel-body">
-                    <table class="table" v-if="tab1.material.length > 0">
-                      <tbody>
-                      <tr v-for="(item,i) in tab1.material" :key="i">
-                        <td width="20%">{{item.created_time}}</td>
-                        <td width="20%">{{item.status}}</td>
-                        <td>
-                          <router-link
-                              :to="{path:'/functions/initApply/add',query:{id:item.apply_material_id}}"
-                              class="cded">{{item.apply_num}}
-                          </router-link>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                    <div class="panel-noData" v-if="tab1.material.length === 0">
-                      <p class="c999">该学生还没有申请资料</p>
-                      <router-link to="/functions/applyInfo/detail" class="cded">点击前往创建
-                      </router-link>
-                    </div>
-                  </div>
-                </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table class="table" v-if="tab1.material.length > 0">
+                                            <tbody>
+                                            <tr v-for="(item,i) in tab1.material" :key="i">
+                                                <td width="20%">{{item.created_time}}</td>
+                                                <td width="20%">{{item.status}}</td>
+                                                <td>
+                                                    <router-link
+                                                            :to="{path:'/functions/applyInfo/detail',query:{id:item.apply_material_id}}"
+                                                            class="cded">{{item.apply_num}}
+                                                    </router-link>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="panel-noData" v-if="tab1.material.length === 0">
+                                            <p class="c999">该学生还没有申请资料</p>
+                                            <router-link to="/functions/applyInfo/detail" class="cded">点击前往创建
+                                            </router-link>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div class="panel panel-default">
-                  <div class="panel-heading clearfix">
-                    <span class="pull-left">院校申请</span>
-                    <span class="pull-right">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading clearfix">
+                                        <span class="pull-left">院校申请</span>
+                                        <span class="pull-right">
                                              <router-link to="/functions/initApply/add">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
-                  </div>
-                  <div class="panel-body">
-                    <table class="table" v-if="tab1.apply.length > 0">
-                      <tbody>
-                      <tr v-for="(item,i) in tab1.apply" :key="i">
-                        <td width="20%">{{item.time}}</td>
-                        <td width="20%">{{item.country}}</td>
-                        <td>
-                          <router-link
-                              :to="{path:'/functions/initApply/add',query:{id:item.apply_id}}"
-                              class="cded">{{item.school}}
-                          </router-link>
-                        </td>
-                        <td width="15%">{{item.status}}</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                    <div class="panel-noData" v-if="tab1.apply.length === 0">
-                      <p class="c999">该学生还没有院校申请</p>
-                      <router-link to="/functions/initApply/add" class="cded">
-                        点击前往创建
-                      </router-link>
-                    </div>
-                  </div>
-                </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table class="table" v-if="tab1.apply.length > 0">
+                                            <tbody>
+                                            <tr v-for="(item,i) in tab1.apply" :key="i">
+                                                <td width="20%">{{item.time}}</td>
+                                                <td width="20%">{{item.country}}</td>
+                                                <td>
+                                                    <router-link
+                                                            :to="{path:'/functions/initApply/add',query:{id:item.apply_id}}"
+                                                            class="cded">{{item.school}}
+                                                    </router-link>
+                                                </td>
+                                                <td width="15%">{{item.status}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="panel-noData" v-if="tab1.apply.length === 0">
+                                            <p class="c999">该学生还没有院校申请</p>
+                                            <router-link to="/functions/initApply/add" class="cded">
+                                                点击前往创建
+                                            </router-link>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div class="panel panel-default">
-                  <div class="panel-heading clearfix">
-                    <span class="pull-left">申请进程</span>
-                  </div>
-                  <div class="panel-body">
-                    <table class="table" v-if="tab1.apply_process.length > 0">
-                      <tbody>
-                      <tr v-for="(item,i) in tab1.apply_process" :key="i">
-                        <td width="20%">{{item.country}}</td>
-                        <td>{{item.school_major}}</td>
-                        <td width="25%">
-                          <router-link to="/functions/process" class="cded">
-                            {{item.status}}
-                          </router-link>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                    <div class="panel-noData" v-if="tab1.apply_process.length===0">
-                      <p class="c999">该学生申请中的院校</p>
-                      <router-link to="/functions/track" class="cded">点击前往创建
-                      </router-link>
-                    </div>
-                  </div>
-                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading clearfix">
+                                        <span class="pull-left">申请进程</span>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table class="table" v-if="tab1.apply_process.length > 0">
+                                            <tbody>
+                                            <tr v-for="(item,i) in tab1.apply_process" :key="i">
+                                                <td width="20%">{{item.country}}</td>
+                                                <td>{{item.school_major}}</td>
+                                                <td width="25%">
+                                                    <router-link to="/functions/process" class="cded">
+                                                        {{item.status}}
+                                                    </router-link>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="panel-noData" v-if="tab1.apply_process.length===0">
+                                            <p class="c999">该学生申请中的院校</p>
+                                            <router-link to="/functions/track" class="cded">点击前往创建
+                                            </router-link>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div class="panel panel-default">
-                  <div class="panel-heading clearfix">
-                    <span class="pull-left">佣金概览</span>
-                  </div>
-                  <div class="panel-body">
-                    <table class="table text-center">
-                      <tbody>
-                      <tr>
-                        <td width="50%">
-                          <p class="font20 cded">{{tab1.commission.estimate}}</p>
-                          <p class="font12 c666">预计佣金回报（元）</p>
-                        </td>
-                        <td>
-                          <p class="font20 cded">{{tab1.commission.received}}</p>
-                          <p class="font12 c666">已收到佣金（元）</p>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading clearfix">
+                                        <span class="pull-left">佣金概览</span>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table class="table text-center">
+                                            <tbody>
+                                            <tr>
+                                                <td width="50%">
+                                                    <p class="font20 cded">{{tab1.commission.estimate}}</p>
+                                                    <p class="font12 c666">预计佣金回报（元）</p>
+                                                </td>
+                                                <td>
+                                                    <p class="font20 cded">{{tab1.commission.received}}</p>
+                                                    <p class="font12 c666">已收到佣金（元）</p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="panel panel-default">
-                  <div class="panel-heading clearfix">
-                    <span class="pull-left">跟进动态</span>
-                    <span class="pull-right">
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading clearfix">
+                                        <span class="pull-left">跟进动态</span>
+                                        <span class="pull-right">
                                             <!--<span class="iconfont c999 handPower" data-toggle="modal"
                                                   data-target="#dynamicModal" data-backdrop="static">&#xe73e;</span>-->
                                         </span>
-                  </div>
-                  <div class="panel-body">
+                                    </div>
+                                    <div class="panel-body">
 
-                    <ul class="media-list bdb pb-15">
-                      <div class="media" v-for="(item,i) in tab1.follow" :key="i">
-                        <a class="media-left" href="#">
-                          <img :src="item.head_img || 'http://placehold.it/50x50/FF5733/ffffff'"
-                               style="width:50px; height:50px;" class="img-circle">
-                        </a>
-                        <div class="media-body">
-                          <div class="clearfix media-heading">
+                                        <ul class="media-list bdb pb-15">
+                                            <div class="media" v-for="(item,i) in tab1.follow" :key="i">
+                                                <a class="media-left" href="#">
+                                                    <img :src="item.head_img || 'http://placehold.it/50x50/FF5733/ffffff'"
+                                                         style="width:50px; height:50px;" class="img-circle">
+                                                </a>
+                                                <div class="media-body">
+                                                    <div class="clearfix media-heading">
                                             <span class="pull-left">
                                                 <span class="div_vm">{{item.adviser_name}}</span>
                                                 <a href="javascript:void(0);"
                                                    class="div_vm ml-10 deleteBtn" @click="deleteFollow(item.id)">删除</a>
                                             </span>
-                            <span class="pull-right c999">{{item.contact_time}}</span>
-                          </div>
-                          <div class="clearfix lh22" v-html="item.contact_content"></div>
-                          <div class="clearfix font12 c999" v-if="item.next_contact_time">
-                            设置跟进: {{item.next_contact_time}}
-                          </div>
+                                                        <span class="pull-right c999">{{item.contact_time}}</span>
+                                                    </div>
+                                                    <div class="clearfix lh22" v-html="item.contact_content"></div>
+                                                    <div class="clearfix font12 c999" v-if="item.next_contact_time">
+                                                        设置跟进: {{item.next_contact_time}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ul>
+
+                                        <form action="" method="POST" class="form-horizontal" v-if="id">
+                                            <input type="hidden" name="student_id" id="student_id"/>
+                                            <div class="form-group">
+                                                <div style="margin:15px;height:60px;overflow:auto;overflow-x:hidden;"
+                                                     contenteditable="true" data-placeholder="请输入跟进内容，按Enter 发布"
+                                                     @keyup.enter="sendFollow" id="contact_content"></div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-sm-9">
+                                                    <span id="next_contact_time" contenteditable="true"
+                                                          data-placeholder="设置跟进"></span>
+                                                    <div class="dropdown" style="display: inline-block;">
+                                                        <i :class="repeat!==0?'iconfont font20 cded':'iconfont font20 c999'"
+                                                           style="cursor:pointer;"
+                                                           data-toggle="dropdown">&#xe8bf;</i>
+                                                        <ul class="dropdown-menu dropdown-menu-right">
+                                                            <li @click="setRepeat(item.val, 1)"
+                                                                :class="repeat===item.val?'po_re active':'po_re'"
+                                                                v-for="(item, i) in repeatArr" :key="i">
+                                                                <a href="javascript:void(0);">{{item.title}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="dropdown" style="display: inline-block;">
+                                                        <i :class="remind!==0?'iconfont font20 cded':'iconfont font20 c999'"
+                                                           style="cursor:pointer;"
+                                                           data-toggle="dropdown">&#xe6b4;</i>
+                                                        <ul class="dropdown-menu dropdown-menu-right">
+                                                            <li @click="setRepeat(item.val, 2)"
+                                                                :class="remind===item.val?'active':''"
+                                                                v-for="(item, i) in remindArr" :key="i">
+                                                                <a href="javascript:void(0);">{{item.title}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3 text-right">
+                                                    <a href="javascript:void(0);" class="cded"
+                                                       @click="sendFollow">发布</a>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                    </ul>
+                    </div>
 
-                    <form action="" method="POST" class="form-horizontal" v-if="id">
-                      <input type="hidden" name="student_id" id="student_id"/>
-                      <div class="form-group">
-                        <div style="margin:15px;height:60px;overflow:auto;overflow-x:hidden;"
-                             contenteditable="true" data-placeholder="请输入跟进内容，按Enter 发布"
-                             @keyup.enter="sendFollow" id="contact_content"></div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="col-sm-9">
-                          <span id="next_contact_time" contenteditable="true" data-placeholder="设置跟进"></span>
-                          <div class="dropdown" style="display: inline-block;">
-                            <i :class="repeat!==0?'iconfont font20 cded':'iconfont font20 c999'"
-                               style="cursor:pointer;"
-                               data-toggle="dropdown">&#xe8bf;</i>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                              <li @click="setRepeat(item.val, 1)" :class="repeat===item.val?'po_re active':'po_re'"
-                                  v-for="(item, i) in repeatArr" :key="i">
-                                <a href="javascript:void(0);">{{item.title}}</a>
-                              </li>
-                            </ul>
-                          </div>
-
-                          <div class="dropdown" style="display: inline-block;">
-                            <i :class="remind!==0?'iconfont font20 cded':'iconfont font20 c999'"
-                               style="cursor:pointer;"
-                               data-toggle="dropdown">&#xe6b4;</i>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                              <li @click="setRepeat(item.val, 2)" :class="remind===item.val?'active':''" v-for="(item, i) in remindArr" :key="i">
-                                <a href="javascript:void(0);">{{item.title}}</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div class="col-sm-3 text-right">
-                          <a href="javascript:void(0);" class="cded"
-                             @click="sendFollow">发布</a>
-                        </div>
-                      </div>
-                    </form>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bgWhite tab-pane fade pad-15" id="tabs2">
-            <div class="commonTitle">
-              <span>其他联系人</span>
-              <span class="pull-right">
+                    <div class="bgWhite tab-pane fade pad-15" id="tabs2">
+                        <div class="commonTitle">
+                            <span>其他联系人</span>
+                            <span class="pull-right">
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
                                     data-backdrop="static"
                                     data-target="#addContact">+ 添加</button>
                             <button type="button" class="btn btn-default btn-sm ml-15"
                                     @click="deleteContact">删除</button>
                         </span>
-            </div>
-            <div class="blk20"></div>
-            <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb-15" v-for="(item,i) in tab2.other_contacts" :key="i">
-                <div class="studentZL bda pl-25 pr-25 pt-10 pb-10">
-                  <div class="clearfix text-right" style="margin-bottom: -22px;">
-                    <input type="checkbox" name="id[]" style="margin-top: 0;" :value="item.id">
-                  </div>
-                  <div class="clearfix lh30">{{item.name}}</div>
-                  <div class="clearfix lh30 pt-15"><span>电话</span> <span>{{item.phone}}</span></div>
-                  <div class="clearfix lh30"><span>邮箱</span> <span>{{item.email}}</span></div>
-                  <div class="clearfix lh30"><span>微信</span> <span>{{item.wechat}}</span></div>
-                  <div class="clearfix lh30"><span>联系QQ</span> <span>{{item.qq}}</span></div>
-                  <div class="clearfix lh30"><span>关系</span> <span>{{item.relation}}</span></div>
-                  <div class="clearfix lh30"><span>备注</span> <span>{{item.remark}}</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="blk20"></div>
-            <div class="commonTitle">
-              <span>更多信息</span>
-            </div>
-            <div class="blk20"></div>
-            <div class="row">
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label>创建人</label> {{tab2.more_info.creator_name}}
-                </div>
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label>创建时间</label> {{tab2.more_info.creator_time}}
-                </div>
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label>现负责人</label> {{tab2.more_info.adviser_name}}
-                </div>
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label>发起申请数</label> {{tab2.more_info.apply_num}}
-                </div>
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label>收到Offer</label> {{tab2.more_info.offer_num}}
-                </div>
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label>学生来源</label>
-                  <div contenteditable="true" data-placeholder="请输入学生来源"
-                       v-text="tab2.more_info.student_source"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="bgWhite tab-pane fade pad-15" id="tabs3">
-            <div class="clearfix pt-15 pb-25">
-              <div class="pull-left lh34 c999">小贴士: 支持扩展名: rar,zip,doc,docx,pdf,jpg</div>
-              <div class="pull-right">
-                <button type="button" class="btn btn-primary btn-sm upload" @click="uploadStart">上传文件
-                </button>
-                <button type="button" class="btn btn-default btn-sm ml-10" @click="fileDown">下载</button>
-                <button type="button" class="btn btn-default btn-sm ml-10" @click="deletefile">删除
-                </button>
-              </div>
-            </div>
-            <table class="table table-bordered">
-              <tbody>
-              <tr v-for="(item, i) in tab3" :key="i">
-                <td>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" name="index[]" :value="item.id"/>
-                      {{item.file_name}}
-                    </label>
-                  </div>
-                </td>
-                <td width="15%">{{item.file_size|bytesToSize}}</td>
-                <td width="20%">{{item.date}}</td>
-              </tr>
-              <tr v-if="tab3.length === 0">
-                <td colspan="3" v-html="NoData()"></td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="bgWhite tab-pane fade pad-15" id="tabs4">
-            <table class="table table-hover table-bordered">
-              <thead>
-              <tr>
-                <th width="15%">操作时间</th>
-                <th width="15%">操作人员</th>
-                <th width="15%">操作类型</th>
-                <th>操作内容</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="(item,i) in tab4" :key="i">
-                <td>{{item.time}}</td>
-                <td>{{item.operator}}</td>
-                <td>{{item.type}}</td>
-                <td>{{item.detail}}</td>
-              </tr>
-              <tr v-if="tab4.length===0">
-                <td colspan="4" v-html="NoData()"></td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="po_re">
-        <div id="picker" style="position: absolute;left: -999px;z-index: 1;"></div>
-      </div>
-
-      <!--顾问变更-->
-      <div class="modal fade" id="editConsultant">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">顾问交接</h4>
-            </div>
-            <div class="modal-body">
-              <form action="" method="POST" class="form-horizontal">
-                <div class="form-group">
-                  <label class="col-sm-4 control-label">新负责人</label>
-                  <div class="col-sm-6">
-                    <select name="adviser_id" class="form-control selectpicker"
-                            data-live-search="true" v-model="adviserId">
-                      <option value="">请选择用户</option>
-                      <option :value="item.id" v-for="(item,i) in service_adviser_list" :key="i">
-                        {{item.name}}
-                      </option>
-                    </select>
-                  </div>
+                        </div>
+                        <div class="blk20"></div>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb-15"
+                                 v-for="(item,i) in tab2.other_contacts" :key="i">
+                                <div class="studentZL bda pl-25 pr-25 pt-10 pb-10">
+                                    <div class="clearfix text-right" style="margin-bottom: -22px;">
+                                        <input type="checkbox" name="id[]" style="margin-top: 0;" :value="item.id">
+                                    </div>
+                                    <div class="clearfix lh30">{{item.name}}</div>
+                                    <div class="clearfix lh30 pt-15"><span>电话</span> <span>{{item.phone}}</span></div>
+                                    <div class="clearfix lh30"><span>邮箱</span> <span>{{item.email}}</span></div>
+                                    <div class="clearfix lh30"><span>微信</span> <span>{{item.wechat}}</span></div>
+                                    <div class="clearfix lh30"><span>联系QQ</span> <span>{{item.qq}}</span></div>
+                                    <div class="clearfix lh30"><span>关系</span> <span>{{item.relation}}</span></div>
+                                    <div class="clearfix lh30"><span>备注</span> <span>{{item.remark}}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blk20"></div>
+                        <div class="commonTitle">
+                            <span>更多信息</span>
+                        </div>
+                        <div class="blk20"></div>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <label>创建人</label> {{tab2.more_info.creator_name}}
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <label>创建时间</label> {{tab2.more_info.creator_time}}
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <label>现负责人</label> {{tab2.more_info.adviser_name}}
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <label>发起申请数</label> {{tab2.more_info.apply_num}}
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <label>收到Offer</label> {{tab2.more_info.offer_num}}
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <label>学生来源</label>
+                                    <div contenteditable="true" data-placeholder="请输入学生来源"
+                                         v-text="tab2.more_info.student_source"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bgWhite tab-pane fade pad-15" id="tabs3">
+                        <div class="clearfix pt-15 pb-25">
+                            <div class="pull-left lh34 c999">小贴士: 支持扩展名: rar,zip,doc,docx,pdf,jpg</div>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-primary btn-sm upload" @click="uploadStart">上传文件
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm ml-10" @click="fileDown">下载</button>
+                                <button type="button" class="btn btn-default btn-sm ml-10" @click="deletefile">删除
+                                </button>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr v-for="(item, i) in tab3" :key="i">
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="index[]" :value="item.id"/>
+                                            {{item.file_name}}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td width="15%">{{item.file_size|bytesToSize}}</td>
+                                <td width="20%">{{item.date}}</td>
+                            </tr>
+                            <tr v-if="tab3.length === 0">
+                                <td colspan="3" v-html="NoData()"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bgWhite tab-pane fade pad-15" id="tabs4">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="15%">操作时间</th>
+                                <th width="15%">操作人员</th>
+                                <th width="15%">操作类型</th>
+                                <th>操作内容</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item,i) in tab4" :key="i">
+                                <td>{{item.time}}</td>
+                                <td>{{item.operator}}</td>
+                                <td>{{item.type}}</td>
+                                <td>{{item.detail}}</td>
+                            </tr>
+                            <tr v-if="tab4.length===0">
+                                <td colspan="4" v-html="NoData()"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="modal-footer">
-                  <div class="col-sm-10 col-sm-offset-2">
-                    <button type="button" class="btn btn-primary" @click="setConsultant">确定</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                  </div>
+            </div>
+
+            <div class="po_re">
+                <div id="picker" style="position: absolute;left: -999px;z-index: 1;"></div>
+            </div>
+
+            <!--顾问变更-->
+            <div class="modal fade" id="editConsultant">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">顾问交接</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="POST" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">新负责人</label>
+                                    <div class="col-sm-6">
+                                        <select name="adviser_id" class="form-control selectpicker"
+                                                data-live-search="true" v-model="adviserId">
+                                            <option value="">请选择用户</option>
+                                            <option :value="item.id" v-for="(item,i) in service_adviser_list" :key="i">
+                                                {{item.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <div class="col-sm-10 col-sm-offset-2">
+                                        <button type="button" class="btn btn-primary" @click="setConsultant">确定</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-              </form>
             </div>
-          </div>
-        </div>
-      </div>
-      <!--编辑学生资料-->
-      <div class="modal fade bs-example-modal-lg" id="editStudentInfo">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">编辑学生资料</h4>
-            </div>
-            <form action="" id="editStudentInfoForm" method="POST" class="form-horizontal"
-                  autocomplete="off" @submit.prevent="validateBeforeSubmitStudentInfo('form1')"
-                  data-vv-scope="form1">
-              <input type="hidden" name="stu_id" :value="header_info.stu_id" v-if="header_info.stu_id"/>
-              <input type="hidden" name="is_common" :value="header_info.is_common"
-                     v-if="header_info.is_common === 1"/>
-              <div class="modal-body pl-30 pr-30">
-                <div class="row">
-                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    <div class="studentInfo">
-                      <div class="clearfix text-center pb-20 c666">
+            <!--编辑学生资料-->
+            <div class="modal fade bs-example-modal-lg" id="editStudentInfo">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">编辑学生资料</h4>
+                        </div>
+                        <form action="" id="editStudentInfoForm" method="POST" class="form-horizontal"
+                              autocomplete="off" @submit.prevent="validateBeforeSubmitStudentInfo('form1')"
+                              data-vv-scope="form1">
+                            <input type="hidden" name="stu_id" :value="header_info.stu_id" v-if="header_info.stu_id"/>
+                            <input type="hidden" name="is_common" :value="header_info.is_common"
+                                   v-if="header_info.is_common === 1"/>
+                            <div class="modal-body pl-30 pr-30">
+                                <div class="row">
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                        <div class="studentInfo">
+                                            <div class="clearfix text-center pb-20 c666">
                                                 <span class="userFace">
                                                     <i class="iconfont" style="font-size:50px;color:#999;"
                                                        v-if="header_info.headimg===''">&#xe646;</i>
                                                     <i :class="header_info.headimg" v-if="header_info.headimg!==''">{{header_info.headimg}}</i>
                                                 </span>
-                        <p><input type="text" name="stu_name" class="form-control"
-                                  placeholder="请输入学生姓名" v-model="header_info.stu_name"
-                                  v-validate="'required'" data-vv-as="学生姓名"/></p>
-                        <div class="validateTip text-left"
-                             v-show="errors.has('form1.stu_name')">
-                          {{ errors.first('form1.stu_name') }}
-                        </div>
-                        <p class="c999">{{header_info.stu_number}}</p>
-                      </div>
-                      <div class="clearfix text-center">
-                        <div class="form-group">
-                          <label class="col-sm-4 control-label">学生类型</label>
-                          <div class="col-sm-8">
-                            <select name="stu_type" class="form-control selectpicker"
-                                    v-model="header_info.stu_type"
-                                    @change="student_types=student_type[header_info.stu_type-1].stu_type">
-                              <option value="">请选择</option>
-                              <option :value="item.id" v-for="(item,i) in student_type" :key="i">
-                                {{item.stu_type}}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label col-sm-4">当前状态</label>
-                          <div class="col-sm-8">
-                            <select name="sign_status" class="form-control selectpicker"
-                                    v-model="header_info.sign_status">
-                              <option :value="item.id" v-for="(item, i) in signStatusArr"
-                                      :key="i">{{item.status_name}}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label col-sm-4">负责顾问</label>
-                          <div class="col-sm-8 lh34">{{header_info.user_name}}</div>
-                        </div>
-                      </div>
+                                                <p><input type="text" name="stu_name" class="form-control"
+                                                          placeholder="请输入学生姓名" v-model="header_info.stu_name"
+                                                          v-validate="'required'" data-vv-as="学生姓名"/></p>
+                                                <div class="validateTip text-left"
+                                                     v-show="errors.has('form1.stu_name')">
+                                                    {{ errors.first('form1.stu_name') }}
+                                                </div>
+                                                <p class="c999">{{header_info.stu_number}}</p>
+                                            </div>
+                                            <div class="clearfix text-center">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">学生类型</label>
+                                                    <div class="col-sm-8">
+                                                        <select name="stu_type" class="form-control selectpicker"
+                                                                v-model="header_info.stu_type">
+                                                            <option value="">请选择</option>
+                                                            <option :value="item.id" v-for="(item,i) in student_type" :key="i">
+                                                                {{item.stu_type}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">当前状态</label>
+                                                    <div class="col-sm-8">
+                                                        <select name="sign_status" class="form-control selectpicker"
+                                                                v-model="header_info.sign_status">
+                                                            <option :value="item.id" v-for="(item, i) in signStatusArr"
+                                                                    :key="i">{{item.status_name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">负责顾问</label>
+                                                    <div class="col-sm-8 lh34">{{header_info.user_name}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                        <div class="row editStudentLayer">
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>联系微信</label>
+                                                    <input type="text" name="stu_wechat" class="form-control"
+                                                           placeholder="请输入联系微信" v-model="header_info.stu_wechat">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>联系电话</label>
+                                                    <input type="text" name="stu_phone" class="form-control"
+                                                           placeholder="请输入联系电话" v-model="header_info.stu_phone">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>在读学校</label>
+                                                    <input type="text" name="reading_school" class="form-control"
+                                                           placeholder="请输入在读学校" v-model="header_info.reading_school">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>在读年级</label>
+                                                    <input type="text" name="reading_grade" class="form-control"
+                                                           placeholder="请输入在读年级" v-model="header_info.reading_grade">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>语言成绩</label>
+                                                    <div class="row">
+                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                                                             style="padding-right:5px;">
+                                                            <select name="lang_score_type" class="selectpicker"
+                                                                    data-width="fit"
+                                                                    style="display:inline-block;"
+                                                                    v-model="header_info.lang_score_type">
+                                                                <option value="">请选择</option>
+                                                                <option value="雅思">雅思</option>
+                                                                <option value="托福">托福</option>
+                                                                <option value="PTE">PTE</option>
+                                                                <option value="无">无</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                                                             style="padding-left:5px;">
+                                                            <input type="text" name="lang_score" class="form-control"
+                                                                   placeholder="请输入" v-model="header_info.lang_score">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>学术成绩</label>
+                                                    <div class="row">
+                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                                                             style="padding-right: 5px;">
+                                                            <select name="acad_score_type" class="selectpicker"
+                                                                    data-width="fit"
+                                                                    style="display:inline-block;"
+                                                                    v-model="header_info.acad_score_type">
+                                                                <option value="">请选择</option>
+                                                                <option value="GRE">GRE</option>
+                                                                <option value="GMAT">GMAT</option>
+                                                                <option value="SAT">SAT</option>
+                                                                <option value="ACT">ACT</option>
+                                                                <option value="A-Level">ALevel</option>
+                                                                <option value="O-Level">OLevel</option>
+                                                                <option value="GCSE">GCSE</option>
+                                                                <option value="BTEC">BTEC</option>
+                                                                <option value="IB">IB</option>
+                                                                <option value="高考">高考</option>
+                                                                <option value="无">无</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                                                             style="padding-left:5px;">
+                                                            <input type="text" name="acad_score" class="form-control"
+                                                                   placeholder="请输入" v-model="header_info.acad_score">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>当前专业</label>
+                                                    <input type="text" name="reading_major" class="form-control"
+                                                           placeholder="请输入当前专业" v-model="header_info.reading_major">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>GPA</label>
+                                                    <input type="text" name="avg_gpa" class="form-control"
+                                                           placeholder="请输入均分" v-model="header_info.avg_gpa">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>申请学位</label>
+                                                    <div class="clearfix">
+                                                        <select name="intention_degree"
+                                                                class="form-control selectpicker"
+                                                                data-width="fit" v-model="header_info.intention_degree">
+                                                            <option value="">请选择申请学位</option>
+                                                            <option value="本科">本科</option>
+                                                            <option value="本科预科">本科预科</option>
+                                                            <option value="本硕连读">本硕连读</option>
+                                                            <option value="硕士">硕士</option>
+                                                            <option value="硕士预科">硕士预科</option>
+                                                            <option value="博士">博士</option>
+                                                            <option value="硕博连读">硕博连读</option>
+                                                            <option value="ESL(语言班)">ESL(语言班)</option>
+                                                            <option value="高中">高中</option>
+                                                            <option value="初中">初中</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>出国时间</label>
+                                                    <input type="text" name="abroad_time" class="form-control"
+                                                           placeholder="请输入出国时间" v-model="header_info.abroad_time">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>意向专业</label>
+                                                    <input type="text" name="intention_major" class="form-control"
+                                                           placeholder="请输入意向专业" v-model="header_info.intention_major">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="form-group">
+                                                    <label>意向国家</label>
+                                                    <div class="clearfix">
+                                                        <select name="intention_country[]"
+                                                                class="form-control selectpicker"
+                                                                data-width="fit"
+                                                                data-size="5"
+                                                                multiple
+                                                                data-live-search="true"
+                                                                v-model="header_info.intention_country">
+                                                            <option :value="item.id" v-for="(item,i) in nation"
+                                                                    :key="i">
+                                                                {{item.cn}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="form-group">
+                                                    <label>备注消息</label>
+                                                    <textarea name="remark" class="form-control" placeholder="请输入备注信息"
+                                                              style="height: 50px;"
+                                                              v-model="header_info.remark"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            </div>
+                        </form>
                     </div>
-                  </div>
-                  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <div class="row editStudentLayer">
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>联系微信</label>
-                          <input type="text" name="stu_wechat" class="form-control"
-                                 placeholder="请输入联系微信" v-model="header_info.stu_wechat">
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>联系电话</label>
-                          <input type="text" name="stu_phone" class="form-control"
-                                 placeholder="请输入联系电话" v-model="header_info.stu_phone">
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>在读学校</label>
-                          <input type="text" name="reading_school" class="form-control"
-                                 placeholder="请输入在读学校" v-model="header_info.reading_school">
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>在读年级</label>
-                          <input type="text" name="reading_grade" class="form-control"
-                                 placeholder="请输入在读年级" v-model="header_info.reading_grade">
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>语言成绩</label>
-                          <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                 style="padding-right:5px;">
-                              <select name="lang_score_type" class="selectpicker"
-                                      data-width="fit"
-                                      style="display:inline-block;"
-                                      v-model="header_info.lang_score_type">
-                                <option value="">请选择</option>
-                                <option value="雅思">雅思</option>
-                                <option value="托福">托福</option>
-                                <option value="PTE">PTE</option>
-                                <option value="无">无</option>
-                              </select>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                 style="padding-left:5px;">
-                              <input type="text" name="lang_score" class="form-control"
-                                     placeholder="请输入" v-model="header_info.lang_score">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>学术成绩</label>
-                          <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                 style="padding-right: 5px;">
-                              <select name="acad_score_type" class="selectpicker"
-                                      data-width="fit"
-                                      style="display:inline-block;"
-                                      v-model="header_info.acad_score_type">
-                                <option value="">请选择</option>
-                                <option value="GRE">GRE</option>
-                                <option value="GMAT">GMAT</option>
-                                <option value="SAT">SAT</option>
-                                <option value="ACT">ACT</option>
-                                <option value="A-Level">ALevel</option>
-                                <option value="O-Level">OLevel</option>
-                                <option value="GCSE">GCSE</option>
-                                <option value="BTEC">BTEC</option>
-                                <option value="IB">IB</option>
-                                <option value="高考">高考</option>
-                                <option value="无">无</option>
-                              </select>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                 style="padding-left:5px;">
-                              <input type="text" name="acad_score" class="form-control"
-                                     placeholder="请输入" v-model="header_info.acad_score">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>当前专业</label>
-                          <input type="text" name="reading_major" class="form-control"
-                                 placeholder="请输入当前专业" v-model="header_info.reading_major">
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>GPA</label>
-                          <input type="text" name="avg_gpa" class="form-control"
-                                 placeholder="请输入均分" v-model="header_info.avg_gpa">
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>申请学位</label>
-                          <div class="clearfix">
-                            <select name="intention_degree" class="form-control selectpicker"
-                                    data-width="fit" v-model="header_info.intention_degree">
-                              <option value="">请选择申请学位</option>
-                              <option value="本科">本科</option>
-                              <option value="本科预科">本科预科</option>
-                              <option value="本硕连读">本硕连读</option>
-                              <option value="硕士">硕士</option>
-                              <option value="硕士预科">硕士预科</option>
-                              <option value="博士">博士</option>
-                              <option value="硕博连读">硕博连读</option>
-                              <option value="ESL(语言班)">ESL(语言班)</option>
-                              <option value="高中">高中</option>
-                              <option value="初中">初中</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>出国时间</label>
-                          <input type="text" name="abroad_time" class="form-control"
-                                 placeholder="请输入出国时间" v-model="header_info.abroad_time">
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>意向专业</label>
-                          <input type="text" name="intention_major" class="form-control"
-                                 placeholder="请输入意向专业" v-model="header_info.intention_major">
-                        </div>
-                      </div>
-                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <div class="form-group">
-                          <label>意向国家</label>
-                          <div class="clearfix">
-                            <select name="intention_country[]" class="form-control selectpicker"
-                                    data-width="fit"
-                                    data-size="5"
-                                    multiple
-                                    data-live-search="true"
-                                    v-model="header_info.intention_country">
-                              <option :value="item.id" v-for="(item,i) in nation" :key="i">
-                                {{item.cn}}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
-                          <label>备注消息</label>
-                          <textarea name="remark" class="form-control" placeholder="请输入备注信息"
-                                    style="height: 50px;" v-model="header_info.remark"></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">保存</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <!--跟进动态-->
-      <div class="modal fade" id="dynamicModal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">添加跟进</h4>
             </div>
-            <div class="modal-body">
-              <form action="" method="POST" id="followForm" class="form-horizontal" autocomplete="off">
-                <input type="hidden" name="student_id" :value="id" v-if="id"/>
-                <div class="row">
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-3 control-label">联系方式</label>
-                      <div class="col-sm-9">
-                        <select name="contact_type" class="form-control">
-                          <option value="">请选择</option>
-                          <option value="1">电话</option>
-                          <option value="2">微信</option>
-                          <option value="3">QQ</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-3 control-label">联系时间</label>
-                      <div class="col-sm-9">
-                        <input type="text" name="contact_time" class="form-control" id="times2"
-                               placeholder="请选择联系时间">
+            <!--跟进动态-->
+            <div class="modal fade" id="dynamicModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">添加跟进</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="POST" id="followForm" class="form-horizontal" autocomplete="off">
+                                <input type="hidden" name="student_id" :value="id" v-if="id"/>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">联系方式</label>
+                                            <div class="col-sm-9">
+                                                <select name="contact_type" class="form-control">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">电话</option>
+                                                    <option value="2">微信</option>
+                                                    <option value="3">QQ</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">联系时间</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="contact_time" class="form-control" id="times2"
+                                                       placeholder="请选择联系时间">
 
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="form-group">
-                      <div class="col-sm-12">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
                                                 <textarea name="contact_content" class="form-control"
                                                           placeholder=""
                                                           style="height:50px;"></textarea>
-                      </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">联系人</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="contact_people" class="form-control"
+                                                       placeholder="请输入联系人">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">下次跟进时间</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="next_contact_time" class="form-control"
+                                                       id="times3" placeholder="请选择跟进时间">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">跟进状态</label>
+                                            <div class="col-sm-9">
+                                                <select name="follow_status" class="form-control">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">已签单</option>
+                                                    <option value="2">咨询中</option>
+                                                    <option value="3">待回访</option>
+                                                    <option value="4">已流失</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" @click="saveFollow">确定</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
                     </div>
-                  </div>
                 </div>
-                <div class="row">
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-3 control-label">联系人</label>
-                      <div class="col-sm-9">
-                        <input type="text" name="contact_people" class="form-control"
-                               placeholder="请输入联系人">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-3 control-label">下次跟进时间</label>
-                      <div class="col-sm-9">
-                        <input type="text" name="next_contact_time" class="form-control"
-                               id="times3" placeholder="请选择跟进时间">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-3 control-label">跟进状态</label>
-                      <div class="col-sm-9">
-                        <select name="follow_status" class="form-control">
-                          <option value="">请选择</option>
-                          <option value="1">已签单</option>
-                          <option value="2">咨询中</option>
-                          <option value="3">待回访</option>
-                          <option value="4">已流失</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" @click="saveFollow">确定</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--新增联系人-->
-      <div class="modal fade bs-example-modal-lg" id="addContact">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">新增联系人</h4>
-            </div>
-            <div class="modal-body pl-30 pr-30">
-              <form action="" method="POST" id="contactForm" class="form-horizontal" autocomplete="off">
-                <input type="hidden" name="student_id" :value="id" v-if="id"/>
-                <div class="row">
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-4 control-label">联系人姓名</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" name="name" placeholder="请输入姓名">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-4 control-label">与学生关系</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" name="relation"
-                               placeholder="请输入与学生关系">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-4 control-label">联系电话</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" name="phone"
-                               placeholder="请输入联系电话">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-4 control-label">联系邮箱</label>
-                      <div class="col-sm-8">
-                        <input type="text" name="email" class="form-control"
-                               placeholder="请输入联系邮箱"/>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-4 control-label">联系微信</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" name="wechat"
-                               placeholder="请输入联系微信">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="form-group">
-                      <label class="col-sm-4 control-label">联系QQ</label>
-                      <div class="col-sm-8">
-                        <input type="text" name="qq" class="form-control"
-                               placeholder="请输入联系QQ"/>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="form-group">
-                      <label class="col-sm-2 control-label">备注</label>
-                      <div class="col-sm-10">
+            <!--新增联系人-->
+            <div class="modal fade bs-example-modal-lg" id="addContact">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">新增联系人</h4>
+                        </div>
+                        <div class="modal-body pl-30 pr-30">
+                            <form action="" method="POST" id="contactForm" class="form-horizontal" autocomplete="off">
+                                <input type="hidden" name="student_id" :value="id" v-if="id"/>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">联系人姓名</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="name" placeholder="请输入姓名">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">与学生关系</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="relation"
+                                                       placeholder="请输入与学生关系">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">联系电话</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="phone"
+                                                       placeholder="请输入联系电话">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">联系邮箱</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="email" class="form-control"
+                                                       placeholder="请输入联系邮箱"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">联系微信</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="wechat"
+                                                       placeholder="请输入联系微信">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">联系QQ</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="qq" class="form-control"
+                                                       placeholder="请输入联系QQ"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">备注</label>
+                                            <div class="col-sm-10">
                                                 <textarea name="remark" class="form-control"
                                                           style="height:80px;"></textarea>
-                      </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" @click="saveContact">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" @click="saveContact">保存</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            </div>
-          </div>
+            <a href='' target='_blank' id='file_down'></a>
         </div>
-      </div>
-      <a href='' target='_blank' id='file_down'></a>
     </div>
-  </div>
 </template>
 
 <script>
@@ -1254,9 +1265,7 @@ export default {
                 })
               })
               self.country = countryArr.join(',')
-              self.layer.alert(res.msg, {
-                icon: 1
-              }, function (i) {
+              self.layer.alert(res.msg, { icon: 1 }, function (i) {
                 self.layer.close(i)
                 $('#editStudentInfo').modal('hide')
                 if (self.id === '') {
@@ -1264,9 +1273,7 @@ export default {
                 }
               })
             } else {
-              self.layer.alert(res.msg, {
-                icon: 2
-              })
+              self.layer.alert(res.msg, { icon: 2 })
             }
           })
         }
@@ -1539,170 +1546,170 @@ export default {
 .modal-lg {width:1000px;}
 
 .studentInfo {
-  padding-right:15px;
+    padding-right:15px;
 
-  & .userFace {
-    width:80px;height:80px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;display:block;margin:0 auto 15px auto;border:1px solid #ddd;line-height:80px;
+    & .userFace {
+        width:80px;height:80px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;display:block;margin:0 auto 15px auto;border:1px solid #ddd;line-height:80px;
 
-    & > i {
-      width:80px;height:80px;display:inline-block;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;
-      text-align:center;line-height:80px;font-size:30px;font-style:normal;color:#fff;
+        & > i {
+            width:80px;height:80px;display:inline-block;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;
+            text-align:center;line-height:80px;font-size:30px;font-style:normal;color:#fff;
 
-      &.A {background-color:#ff6815;}
+            &.A {background-color:#ff6815;}
 
-      &.B {background-color:#ff940c;}
+            &.B {background-color:#ff940c;}
 
-      &.C {background-color:#ffb500;}
+            &.C {background-color:#ffb500;}
 
-      &.D {background-color:#ffdb00;}
+            &.D {background-color:#ffdb00;}
 
-      &.E {background-color:#d6cf06;}
+            &.E {background-color:#d6cf06;}
 
-      &.F {background-color:#8bc43d;}
+            &.F {background-color:#8bc43d;}
 
-      &.G {background-color:#00a350;}
+            &.G {background-color:#00a350;}
 
-      &.H {background-color:#00a99d;}
+            &.H {background-color:#00a99d;}
 
-      &.I {background-color:#00aff0;}
+            &.I {background-color:#00aff0;}
 
-      &.J {background-color:#0084ce;}
+            &.J {background-color:#0084ce;}
 
-      &.K {background-color:#005fac;}
+            &.K {background-color:#005fac;}
 
-      &.L {background-color:#bcc3c7;}
+            &.L {background-color:#bcc3c7;}
 
-      &.M {background-color:#6c7b87;}
+            &.M {background-color:#6c7b87;}
 
-      &.N {background-color:#273f50;}
+            &.N {background-color:#273f50;}
 
-      &.O {background-color:#1e3894;}
+            &.O {background-color:#1e3894;}
 
-      &.P {background-color:#663592;}
+            &.P {background-color:#663592;}
 
-      &.Q {background-color:#973290;}
+            &.Q {background-color:#973290;}
 
-      &.R {background-color:#f93174;}
+            &.R {background-color:#f93174;}
 
-      &.S {background-color:#fb281a;}
+            &.S {background-color:#fb281a;}
 
-      &.T {background-color:#ff6815;}
+            &.T {background-color:#ff6815;}
 
-      &.U {background-color:#ff940c;}
+            &.U {background-color:#ff940c;}
 
-      &.V {background-color:#ffb500;}
+            &.V {background-color:#ffb500;}
 
-      &.W {background-color:#ffdb00;}
+            &.W {background-color:#ffdb00;}
 
-      &.X {background-color:#d6cf06;}
+            &.X {background-color:#d6cf06;}
 
-      &.Y {background-color:#8bc43d;}
+            &.Y {background-color:#8bc43d;}
 
-      &.Z {background-color:#00a350;}
+            &.Z {background-color:#00a350;}
+        }
     }
-  }
 }
 
 .row {
-  display:flex;
-  align-items:flex-start;
-  flex-wrap:wrap;
+    display:flex;
+    align-items:flex-start;
+    flex-wrap:wrap;
 }
 
 .form-group {
-  & > label {
-    padding-left:0;padding-right:0;
-  }
+    & > label {
+        padding-left:0;padding-right:0;
+    }
 }
 
 .editStudentLayer {
-  & .form-group {margin-left:0;margin-right:0;}
+    & .form-group {margin-left:0;margin-right:0;}
 }
 
 .studentTabs {
-  padding:30px 0;
+    padding:30px 0;
 
-  & > ul {
-    border:none;text-align:center;width:600px;margin:0 auto;background-color:#fff;-webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;
+    & > ul {
+        border:none;text-align:center;width:600px;margin:0 auto;background-color:#fff;-webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;
 
-    & > li {
-      margin:0;
+        & > li {
+            margin:0;
 
-      & > a {
-        margin-right:0;border:none;width:150px;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
+            & > a {
+                margin-right:0;border:none;width:150px;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
 
-        &:hover, &:focus {background-color:transparent;border:none;}
-      }
+                &:hover, &:focus {background-color:transparent;border:none;}
+            }
 
-      &.active {
-        & > a {
-          -webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;background-color:#428bca;color:#fff;
+            &.active {
+                & > a {
+                    -webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;background-color:#428bca;color:#fff;
+                }
+            }
         }
-      }
     }
-  }
 }
 
 .panel.panel-default {
-  -webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
+    -webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
 
-  & .panel-heading {
-    background-color:#fff;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;border:none;position:relative;text-indent:15px;line-height:22px;
+    & .panel-heading {
+        background-color:#fff;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;border:none;position:relative;text-indent:15px;line-height:22px;
 
-    &:before {
-      content:'';width:2px;height:16px;position:absolute;left:15px;top:50%;margin-top:-8px;display:block;background-color:#428bca;
+        &:before {
+            content:'';width:2px;height:16px;position:absolute;left:15px;top:50%;margin-top:-8px;display:block;background-color:#428bca;
+        }
     }
-  }
 
-  & .panel-noData {
-    border:1px dashed #ddd;padding:30px;text-align:center;
-  }
-
-  & .table {
-    & > tbody {
-      & > tr {
-        & > td {border:none;}
-      }
+    & .panel-noData {
+        border:1px dashed #ddd;padding:30px;text-align:center;
     }
-  }
+
+    & .table {
+        & > tbody {
+            & > tr {
+                & > td {border:none;}
+            }
+        }
+    }
 }
 
 .studentZL {
-  & > div {
-    & > span {
-      display:inline-block;float:left;
+    & > div {
+        & > span {
+            display:inline-block;float:left;
 
-      &:first-of-type {
-        width:25%;
-      }
+            &:first-of-type {
+                width:25%;
+            }
 
-      &:last-of-type {
-        width:75%;padding-left:5px;
-      }
+            &:last-of-type {
+                width:75%;padding-left:5px;
+            }
+        }
     }
-  }
 }
 
 .media-list {
-  max-height:500px;overflow-y:auto;
+    max-height:500px;overflow-y:auto;
 
-  & .media-heading .pull-left {
-    .deleteBtn {display:none;}
+    & .media-heading .pull-left {
+        .deleteBtn {display:none;}
 
-    &:hover .deleteBtn {display:inline-block;}
-  }
+        &:hover .deleteBtn {display:inline-block;}
+    }
 }
 </style>
 <style lang="scss">
 .editStudentLayer {
-  .bootstrap-select {
-    max-width:100%;display:block;
+    .bootstrap-select {
+        max-width:100%;display:block;
 
-    & > .dropdown-toggle {
-      background-color:#fff !important;max-width:100%;
+        & > .dropdown-toggle {
+            background-color:#fff !important;max-width:100%;
 
-      &:focus {outline:none !important;}
+            &:focus {outline:none !important;}
+        }
     }
-  }
 }
 </style>
