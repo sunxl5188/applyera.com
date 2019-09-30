@@ -247,13 +247,23 @@ export default new Router({
           },
           children: [
             {
-              path: 'detail',
-              name: 'answerDetail',
-              component: resolve => require(['@#/functions/answer/detail'], resolve),
+              path: 'addAnswer',
+              name: 'addAnswer',
+              component: resolve => require(['@#/functions/answer/AddAnswer'], resolve),
               meta: {
-                title: '',
+                title: '题目作答',
                 requiresAuth: true,
                 group: ['function', 3, 0]
+              }
+            },
+            {
+              path: 'addLetter',
+              name: 'addLetter',
+              component: resolve => require(['@#/functions/answer/AddLetter'], resolve),
+              meta: {
+                title: '文书作答',
+                requiresAuth: true,
+                group: ['function', 3, 1]
               }
             }
           ]

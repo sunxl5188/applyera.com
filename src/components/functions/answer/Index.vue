@@ -59,10 +59,17 @@
             </div>
             <div class="form-group">
               <div class="form-group ml-10">
-                <router-link to="/functions/answer/detail" class="btn btn-default"><i
-                    class="iconfont">&#xe73e;</i>
-                  添加
-                </router-link>
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                          data-toggle="dropdown">
+                    <i class="iconfont">&#xe73e;</i>
+                    添加
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li><router-link to="/functions/answer/addAnswer">添加文书</router-link></li>
+                    <li><router-link to="/functions/answer/addLetter">添加推荐信</router-link></li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
