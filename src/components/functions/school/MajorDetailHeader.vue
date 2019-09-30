@@ -6,13 +6,22 @@
                     <span class="cded font18">{{schoolInfo.major_cn}}</span>
                     <span class="c999 font16">/ {{schoolInfo.major_en}}</span>
                 </div>
-                <div class="lh24 c999 clearfix">
-                    <span class="pull-left" style="display: inline-block;width:60%;vertical-align: middle;">
-                        <span class="textOver">所属学院：<span v-if="schoolInfo.college_cn!=='-'">{{schoolInfo.college_cn}} / {{schoolInfo.college_en}}</span></span>
-                    </span>
-                    <span class="pull-right" style="display: inline-block;width:38%;">毕业学位：{{schoolInfo.degree}}</span>
+                <div class="row lh24 c999">
+                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                         <span>所属院校：{{schoolInfo.schoolname}}</span>
+                     </div>
+                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                         <span class="textOver">所属学院：<span v-if="schoolInfo.college_cn!=='-'">{{schoolInfo.college_cn}} / {{schoolInfo.college_en}}</span></span>
+                     </div>
                 </div>
-                <div class="lh24 c999">专业网址：<a :href="schoolInfo.major_url" class="cded" target="_blank" v-if="schoolInfo.major_url!=='-'">点击查看</a></div>
+                <div class="row lh24 c999">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        毕业学位：{{schoolInfo.degree}}
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        专业网址：<a :href="schoolInfo.major_url" class="cded" target="_blank" v-if="schoolInfo.major_url!=='-'">点击查看</a>
+                    </div>
+                </div>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
                 <div class="pt-10 pb-15">

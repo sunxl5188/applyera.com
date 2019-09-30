@@ -26,7 +26,8 @@
                                 <div class="studentInfo bdr">
                                     <div class="clearfix text-center pb-20 c666">
                                         <span class="userFace">
-                                            <i class="iconfont" style="font-size:50px;color:#999;" v-if="header_info.headimg===''">&#xe646;</i>
+                                            <i class="iconfont" style="font-size:50px;color:#999;"
+                                               v-if="header_info.headimg===''">&#xe646;</i>
                                             <i :class="header_info.headimg" v-if="header_info.headimg!==''">{{header_info.headimg}}</i>
                                         </span>
                                         <p>{{header_info.stu_name}}</p>
@@ -34,7 +35,10 @@
                                     </div>
                                     <div class="clearfix pl-50">
                                         <div class="clearfix lh26 c999">
-                                            <span>学生类型</span><span class="ml-10">{{student_types}}</span>
+                                            <span>学生类型</span>
+                                            <span class="ml-10" v-for="(item, i) in student_type" :key="i" v-if="item.id === header_info.stu_type">
+                                                {{item.stu_type}}
+                                            </span>
                                         </div>
                                         <div class="clearfix lh26 c999">
                                             <span>当前状态</span><span class="ml-10">
@@ -55,59 +59,59 @@
                                 <div class="row">
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>联系微信</p>
-                                        <p>{{header_info.stu_wechat || "&nbsp;"}}</p>
+                                        <p>{{header_info.stu_wechat || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>联系电话</p>
-                                        <p>{{header_info.stu_phone || "&nbsp;"}}</p>
+                                        <p>{{header_info.stu_phone || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>在读学校</p>
-                                        <p>{{header_info.reading_school || "&nbsp;"}}</p>
+                                        <p>{{header_info.reading_school || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>在读年级</p>
-                                        <p>{{header_info.reading_grade || "&nbsp;"}}</p>
+                                        <p>{{header_info.reading_grade || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>语言成绩</p>
-                                        <p>{{header_info.lang_score_type || "&nbsp;"}}&nbsp;&nbsp;{{header_info.lang_score
-                                            || "&nbsp;"}}</p>
+                                        <p>{{header_info.lang_score_type || '&nbsp;'}}&nbsp;&nbsp;{{header_info.lang_score
+                                            || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>学术成绩</p>
-                                        <p>{{header_info.acad_score_type || "&nbsp;"}}&nbsp;&nbsp;{{header_info.acad_score
-                                            || "&nbsp;"}}</p>
+                                        <p>{{header_info.acad_score_type || '&nbsp;'}}&nbsp;&nbsp;{{header_info.acad_score
+                                            || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>当前专业</p>
-                                        <p>{{header_info.reading_major || "&nbsp;"}}</p>
+                                        <p>{{header_info.reading_major || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>GPA</p>
-                                        <p>{{header_info.avg_gpa || "&nbsp;"}}</p>
+                                        <p>{{header_info.avg_gpa || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>申请学位</p>
-                                        <p>{{header_info.intention_degree || "&nbsp;"}}</p>
+                                        <p>{{header_info.intention_degree || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>出国时间</p>
-                                        <p>{{header_info.abroad_time || "&nbsp;"}}</p>
+                                        <p>{{header_info.abroad_time || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>意向专业</p>
-                                        <p>{{header_info.intention_major || "&nbsp;"}}</p>
+                                        <p>{{header_info.intention_major || '&nbsp;'}}</p>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mb-10">
                                         <p>意向国家</p>
-                                        <p>{{country || "&nbsp;"}}</p>
+                                        <p>{{country || '&nbsp;'}}</p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <p>备注消息</p>
-                                        <p>{{header_info.remark || "&nbsp;"}}</p>
+                                        <p>{{header_info.remark || '&nbsp;'}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +182,7 @@
                                                 <td width="20%">{{item.status}}</td>
                                                 <td>
                                                     <router-link
-                                                            :to="{path:'/functions/initApply/add',query:{id:item.apply_material_id}}"
+                                                            :to="{path:'/functions/applyInfo/detail',query:{id:item.apply_material_id}}"
                                                             class="cded">{{item.apply_num}}
                                                     </router-link>
                                                 </td>
@@ -320,24 +324,18 @@
 
                                             <div class="form-group">
                                                 <div class="col-sm-9">
-                                                    <span id="next_contact_time" contenteditable="true" data-placeholder="设置跟进"></span>
+                                                    <span id="next_contact_time" contenteditable="true"
+                                                          data-placeholder="设置跟进"></span>
                                                     <div class="dropdown" style="display: inline-block;">
                                                         <i :class="repeat!==0?'iconfont font20 cded':'iconfont font20 c999'"
                                                            style="cursor:pointer;"
                                                            data-toggle="dropdown">&#xe8bf;</i>
                                                         <ul class="dropdown-menu dropdown-menu-right">
-                                                            <li @click="repeat=0" :class="repeat===0?'po_re active':'po_re'"><a
-                                                                href="javascript:void(0);">不重复</a></li>
-                                                            <li @click="repeat=1" :class="repeat===1?'po_re active':'po_re'"><a
-                                                                href="javascript:void(0);">每天重复</a></li>
-                                                            <li @click="repeat=2" :class="repeat===2?'po_re active':'po_re'"><a
-                                                                href="javascript:void(0);">每周重复</a></li>
-                                                            <li @click="repeat=3" :class="repeat===3?'po_re active':'po_re'"><a
-                                                                href="javascript:void(0);">每月重复</a></li>
-                                                            <li @click="repeat=4" :class="repeat===4?'po_re active':'po_re'"><a
-                                                                href="javascript:void(0);">每年重复</a></li>
-                                                            <li @click="repeat=5" :class="repeat===5?'po_re active':'po_re'"><a
-                                                                href="javascript:void(0);">工作日重复</a></li>
+                                                            <li @click="setRepeat(item.val, 1)"
+                                                                :class="repeat===item.val?'po_re active':'po_re'"
+                                                                v-for="(item, i) in repeatArr" :key="i">
+                                                                <a href="javascript:void(0);">{{item.title}}</a>
+                                                            </li>
                                                         </ul>
                                                     </div>
 
@@ -346,17 +344,10 @@
                                                            style="cursor:pointer;"
                                                            data-toggle="dropdown">&#xe6b4;</i>
                                                         <ul class="dropdown-menu dropdown-menu-right">
-                                                            <li @click="remind=0" :class="remind===0?'active':''"><a href="javascript:void(0);">关闭提醒</a>
-                                                            </li>
-                                                            <li @click="remind=1" :class="remind===1?'active':''"><a href="javascript:void(0);">开始时提醒</a>
-                                                            </li>
-                                                            <li @click="remind=2" :class="remind===2?'active':''"><a href="javascript:void(0);">5分钟提醒</a>
-                                                            </li>
-                                                            <li @click="remind=3" :class="remind===3?'active':''"><a href="javascript:void(0);">15分钟提醒</a>
-                                                            </li>
-                                                            <li @click="remind=4" :class="remind===4?'active':''"><a href="javascript:void(0);">30分钟提醒</a>
-                                                            </li>
-                                                            <li @click="remind=5" :class="remind===5?'active':''"><a href="javascript:void(0);">1小时前</a>
+                                                            <li @click="setRepeat(item.val, 2)"
+                                                                :class="remind===item.val?'active':''"
+                                                                v-for="(item, i) in remindArr" :key="i">
+                                                                <a href="javascript:void(0);">{{item.title}}</a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -387,7 +378,8 @@
                         </div>
                         <div class="blk20"></div>
                         <div class="row">
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb-15" v-for="(item,i) in tab2.other_contacts" :key="i">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb-15"
+                                 v-for="(item,i) in tab2.other_contacts" :key="i">
                                 <div class="studentZL bda pl-25 pr-25 pt-10 pb-10">
                                     <div class="clearfix text-right" style="margin-bottom: -22px;">
                                         <input type="checkbox" name="id[]" style="margin-top: 0;" :value="item.id">
@@ -558,7 +550,8 @@
                                         <div class="studentInfo">
                                             <div class="clearfix text-center pb-20 c666">
                                                 <span class="userFace">
-                                                    <i class="iconfont" style="font-size:50px;color:#999;" v-if="header_info.headimg===''">&#xe646;</i>
+                                                    <i class="iconfont" style="font-size:50px;color:#999;"
+                                                       v-if="header_info.headimg===''">&#xe646;</i>
                                                     <i :class="header_info.headimg" v-if="header_info.headimg!==''">{{header_info.headimg}}</i>
                                                 </span>
                                                 <p><input type="text" name="stu_name" class="form-control"
@@ -566,7 +559,7 @@
                                                           v-validate="'required'" data-vv-as="学生姓名"/></p>
                                                 <div class="validateTip text-left"
                                                      v-show="errors.has('form1.stu_name')">
-                                                    {{ errors.first("form1.stu_name") }}
+                                                    {{ errors.first('form1.stu_name') }}
                                                 </div>
                                                 <p class="c999">{{header_info.stu_number}}</p>
                                             </div>
@@ -575,8 +568,7 @@
                                                     <label class="col-sm-4 control-label">学生类型</label>
                                                     <div class="col-sm-8">
                                                         <select name="stu_type" class="form-control selectpicker"
-                                                                v-model="header_info.stu_type"
-                                                                @change="student_types=student_type[header_info.stu_type-1].stu_type">
+                                                                v-model="header_info.stu_type">
                                                             <option value="">请选择</option>
                                                             <option :value="item.id" v-for="(item,i) in student_type" :key="i">
                                                                 {{item.stu_type}}
@@ -707,7 +699,8 @@
                                                 <div class="form-group">
                                                     <label>申请学位</label>
                                                     <div class="clearfix">
-                                                        <select name="intention_degree" class="form-control selectpicker"
+                                                        <select name="intention_degree"
+                                                                class="form-control selectpicker"
                                                                 data-width="fit" v-model="header_info.intention_degree">
                                                             <option value="">请选择申请学位</option>
                                                             <option value="本科">本科</option>
@@ -742,13 +735,15 @@
                                                 <div class="form-group">
                                                     <label>意向国家</label>
                                                     <div class="clearfix">
-                                                        <select name="intention_country[]" class="form-control selectpicker"
+                                                        <select name="intention_country[]"
+                                                                class="form-control selectpicker"
                                                                 data-width="fit"
                                                                 data-size="5"
                                                                 multiple
                                                                 data-live-search="true"
                                                                 v-model="header_info.intention_country">
-                                                            <option :value="item.id" v-for="(item,i) in nation" :key="i">
+                                                            <option :value="item.id" v-for="(item,i) in nation"
+                                                                    :key="i">
                                                                 {{item.cn}}
                                                             </option>
                                                         </select>
@@ -759,7 +754,8 @@
                                                 <div class="form-group">
                                                     <label>备注消息</label>
                                                     <textarea name="remark" class="form-control" placeholder="请输入备注信息"
-                                                              style="height: 50px;" v-model="header_info.remark"></textarea>
+                                                              style="height: 50px;"
+                                                              v-model="header_info.remark"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -968,6 +964,7 @@ import '@~/js/VeeValidateConfig'
 import nation from '@@/json/nation.json'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
+
 let WebUploader = require('@@/js/webuploader/webuploader')
 
 export default {
@@ -1019,7 +1016,23 @@ export default {
       fid: [],
       signStatusArr: [],
       repeat: 0,
-      remind: 0
+      remind: 0,
+      repeatArr: [
+        { title: '不重复', val: '0' },
+        { title: '每天重复', val: '1' },
+        { title: '每周重复', val: '2' },
+        { title: '每月重复', val: '3' },
+        { title: '每年重复', val: '4' },
+        { title: '工作日重复', val: '5' }
+      ],
+      remindArr: [
+        { title: '关闭提醒', val: '0' },
+        { title: '开始时提醒', val: '1' },
+        { title: '5分钟提醒', val: '2' },
+        { title: '15分钟提醒', val: '3' },
+        { title: '30分钟提醒', val: '4' },
+        { title: '1小时前', val: '5' }
+      ]
     }
   },
   computed: {
@@ -1159,7 +1172,7 @@ export default {
             }
           })
         } else {
-          self.layer.alert(res.msg, {icon: 2})
+          self.layer.alert(res.msg, { icon: 2 })
         }
         self.loading = false
         self.header_info.is_common = parseInt(self.$route.query.isCommon) || 0
@@ -1213,7 +1226,7 @@ export default {
           extensions: 'rar,zip,doc,docx,pdf,jpg',
           mimeTypes: '*/*'
         },
-        formData: {func: 'student_attachment', student_id: self.id}
+        formData: { func: 'student_attachment', student_id: self.id }
       })
       uploader.on('uploadSuccess', function (file, res) {
         self.tab3.unshift({
@@ -1224,7 +1237,7 @@ export default {
       })
       uploader.on('error', function (handler) {
         if (handler === 'Q_TYPE_DENIED') {
-          self.layer.alert('文件类型不正确！', {icon: 2})
+          self.layer.alert('文件类型不正确！', { icon: 2 })
         }
       })
     },
@@ -1232,7 +1245,7 @@ export default {
       let self = this
       self.$validator.validateAll(scope).then((result) => {
         if (result) {
-          let index = self.layer.load('', {shade: 0.3})
+          let index = self.layer.load('', { shade: 0.3 })
           let formData = $('#editStudentInfoForm').serializeArray()
           let params = new URLSearchParams()
           formData.map(item => {
@@ -1252,9 +1265,7 @@ export default {
                 })
               })
               self.country = countryArr.join(',')
-              self.layer.alert(res.msg, {
-                icon: 1
-              }, function (i) {
+              self.layer.alert(res.msg, { icon: 1 }, function (i) {
                 self.layer.close(i)
                 $('#editStudentInfo').modal('hide')
                 if (self.id === '') {
@@ -1262,9 +1273,7 @@ export default {
                 }
               })
             } else {
-              self.layer.alert(res.msg, {
-                icon: 2
-              })
+              self.layer.alert(res.msg, { icon: 2 })
             }
           })
         }
@@ -1280,7 +1289,7 @@ export default {
       db.postRequest('Institution/Student/stuFollowSave', params).then(res => {
         if (res.status === 1) {
           self.tab1.follow = res.data
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
+          self.layer.alert(res.msg, { icon: 1 }, function (i) {
             self.layer.close(i)
             $('#followForm')[0].reset()
             $('#dynamicModal').modal('hide')
@@ -1298,7 +1307,7 @@ export default {
       let params = new URLSearchParams()
       params.append('student_id[]', self.id)
       params.append('adviser_id', self.adviserId)
-      self.layer.confirm("是否确定把所选的学生转移至 <b class='cf00'>" + advName + '</b>（选择的用户）？转移成功后，原负责人不能再维护跟进和更新此学生数据。', {
+      self.layer.confirm('是否确定把所选的学生转移至 <b class=\'cf00\'>' + advName + '</b>（选择的用户）？转移成功后，原负责人不能再维护跟进和更新此学生数据。', {
         icon: 3
       }, function (ii) {
         self.layer.close(ii)
@@ -1352,7 +1361,7 @@ export default {
       db.postRequest('Institution/Student/otherContactsAdd', params).then(res => {
         if (res.status === 1) {
           $('#contactForm')[0].reset()
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
+          self.layer.alert(res.msg, { icon: 1 }, function (i) {
             self.layer.close(i)
             $('#addContact').modal('hide')
             self.tab2.other_contacts = res.data
@@ -1367,7 +1376,7 @@ export default {
     deleteContact () {
       let self = this
       if (self.contactId.length === 0) {
-        self.layer.alert('请选择需要操作的ID', {icon: 2})
+        self.layer.alert('请选择需要操作的ID', { icon: 2 })
         return false
       }
       self.layer.confirm('您确定要删除此信息？', {
@@ -1382,7 +1391,7 @@ export default {
         db.postRequest('Institution/Student/batchDelContacts', params).then(res => {
           if (res.status === 1) {
             self.tab2.other_contacts = res.data
-            self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.alert(res.msg, { icon: 1 }, function (i) {
               self.layer.close(i)
             })
           } else {
@@ -1396,7 +1405,7 @@ export default {
     fileDown () {
       let self = this
       if (self.fid.length === 0) {
-        self.layer.alert('请选择需要操作的ID', {icon: 2})
+        self.layer.alert('请选择需要操作的ID', { icon: 2 })
         return false
       }
       let url = window.ajaxBaseUrl + '/Institution/Student/archiveDownload?student_id=' + self.id + '&index=' + (self.fid).join(',')
@@ -1412,7 +1421,7 @@ export default {
     deletefile () {
       let self = this
       if (self.fid.length === 0) {
-        self.layer.alert('请选择需要操作的ID', {icon: 2})
+        self.layer.alert('请选择需要操作的ID', { icon: 2 })
         return false
       }
       let params = new URLSearchParams()
@@ -1427,7 +1436,7 @@ export default {
             $(this)[0].checked = false
           })
           self.tab3 = (res.data).sort(self.sortNumber('id'))
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
+          self.layer.alert(res.msg, { icon: 1 }, function (i) {
             self.layer.close(i)
           })
         } else {
@@ -1446,7 +1455,7 @@ export default {
       params.append('repeat', self.repeat)
       params.append('remind', self.remind)
       if (self.followContent === '') {
-        self.layer.alert('请输入跟进内容！', {icon: 2})
+        self.layer.alert('请输入跟进内容！', { icon: 2 })
         return false
       }
       db.postRequest('/Institution/Student/stuFollowSave', params).then(res => {
@@ -1481,20 +1490,20 @@ export default {
       let self = this
       let params = new URLSearchParams()
       if (self.id === '') {
-        self.layer.alert('非法操作', {icon: 2})
+        self.layer.alert('非法操作', { icon: 2 })
         return false
       } else {
         params.append('student_id[]', self.id)
       }
       db.postRequest('/Institution/Student/backStudent', params).then(res => {
         if (res.status === 1) {
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
+          self.layer.alert(res.msg, { icon: 1 }, function (i) {
             self.layer.close(i)
             self.pagechange(self.current)
             self.idArr = []
           })
         } else {
-          self.layer.alert(res.msg, {icon: 2})
+          self.layer.alert(res.msg, { icon: 2 })
         }
       })
     },
@@ -1514,178 +1523,193 @@ export default {
           return 0
         }
       }
+    },
+    setRepeat (val, type) {
+      let self = this
+      let nextContactTime = $('#next_contact_time').text()
+      if (nextContactTime === '') {
+        self.layer.alert('请先设置跟进时间', { icon: 2 })
+      } else {
+        if (type === 1) {
+          self.repeat = val
+        }
+        if (type === 2) {
+          self.remind = val
+        }
+      }
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-    .modal-lg {width:1000px;}
+.modal-lg {width:1000px;}
 
-    .studentInfo {
-        padding-right:15px;
+.studentInfo {
+    padding-right:15px;
 
-        & .userFace {
-            width:80px;height:80px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;display:block;margin:0 auto 15px auto;border:1px solid #ddd;line-height:80px;
-            & > i {
-                width:80px;height:80px;display:inline-block;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;
-                text-align:center;line-height:80px;font-size:30px;font-style:normal;color:#fff;
+    & .userFace {
+        width:80px;height:80px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;display:block;margin:0 auto 15px auto;border:1px solid #ddd;line-height:80px;
 
-                &.A {background-color:#ff6815;}
+        & > i {
+            width:80px;height:80px;display:inline-block;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;
+            text-align:center;line-height:80px;font-size:30px;font-style:normal;color:#fff;
 
-                &.B {background-color:#ff940c;}
+            &.A {background-color:#ff6815;}
 
-                &.C {background-color:#ffb500;}
+            &.B {background-color:#ff940c;}
 
-                &.D {background-color:#ffdb00;}
+            &.C {background-color:#ffb500;}
 
-                &.E {background-color:#d6cf06;}
+            &.D {background-color:#ffdb00;}
 
-                &.F {background-color:#8bc43d;}
+            &.E {background-color:#d6cf06;}
 
-                &.G {background-color:#00a350;}
+            &.F {background-color:#8bc43d;}
 
-                &.H {background-color:#00a99d;}
+            &.G {background-color:#00a350;}
 
-                &.I {background-color:#00aff0;}
+            &.H {background-color:#00a99d;}
 
-                &.J {background-color:#0084ce;}
+            &.I {background-color:#00aff0;}
 
-                &.K {background-color:#005fac;}
+            &.J {background-color:#0084ce;}
 
-                &.L {background-color:#bcc3c7;}
+            &.K {background-color:#005fac;}
 
-                &.M {background-color:#6c7b87;}
+            &.L {background-color:#bcc3c7;}
 
-                &.N {background-color:#273f50;}
+            &.M {background-color:#6c7b87;}
 
-                &.O {background-color:#1e3894;}
+            &.N {background-color:#273f50;}
 
-                &.P {background-color:#663592;}
+            &.O {background-color:#1e3894;}
 
-                &.Q {background-color:#973290;}
+            &.P {background-color:#663592;}
 
-                &.R {background-color:#f93174;}
+            &.Q {background-color:#973290;}
 
-                &.S {background-color:#fb281a;}
+            &.R {background-color:#f93174;}
 
-                &.T {background-color:#ff6815;}
+            &.S {background-color:#fb281a;}
 
-                &.U {background-color:#ff940c;}
+            &.T {background-color:#ff6815;}
 
-                &.V {background-color:#ffb500;}
+            &.U {background-color:#ff940c;}
 
-                &.W {background-color:#ffdb00;}
+            &.V {background-color:#ffb500;}
 
-                &.X {background-color:#d6cf06;}
+            &.W {background-color:#ffdb00;}
 
-                &.Y {background-color:#8bc43d;}
+            &.X {background-color:#d6cf06;}
 
-                &.Z {background-color:#00a350;}
+            &.Y {background-color:#8bc43d;}
+
+            &.Z {background-color:#00a350;}
+        }
+    }
+}
+
+.row {
+    display:flex;
+    align-items:flex-start;
+    flex-wrap:wrap;
+}
+
+.form-group {
+    & > label {
+        padding-left:0;padding-right:0;
+    }
+}
+
+.editStudentLayer {
+    & .form-group {margin-left:0;margin-right:0;}
+}
+
+.studentTabs {
+    padding:30px 0;
+
+    & > ul {
+        border:none;text-align:center;width:600px;margin:0 auto;background-color:#fff;-webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;
+
+        & > li {
+            margin:0;
+
+            & > a {
+                margin-right:0;border:none;width:150px;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
+
+                &:hover, &:focus {background-color:transparent;border:none;}
             }
-        }
-    }
 
-    .row {
-        display:flex;
-        align-items:flex-start;
-        flex-wrap:wrap;
-    }
-
-    .form-group {
-        & > label {
-            padding-left:0;padding-right:0;
-        }
-    }
-
-    .editStudentLayer {
-        & .form-group {margin-left:0;margin-right:0;}
-    }
-
-    .studentTabs {
-        padding:30px 0;
-
-        & > ul {
-            border:none;text-align:center;width:600px;margin:0 auto;background-color:#fff;-webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;
-
-            & > li {
-                margin:0;
-
+            &.active {
                 & > a {
-                    margin-right:0;border:none;width:150px;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
-
-                    &:hover, &:focus {background-color:transparent;border:none;}
-                }
-
-                &.active {
-                    & > a {
-                        -webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;background-color:#428bca;color:#fff;
-                    }
+                    -webkit-border-radius:20px;-moz-border-radius:20px;border-radius:20px;background-color:#428bca;color:#fff;
                 }
             }
         }
     }
+}
 
-    .panel.panel-default {
-        -webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
+.panel.panel-default {
+    -webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
 
-        & .panel-heading {
-            background-color:#fff;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;border:none;position:relative;text-indent:15px;line-height:22px;
+    & .panel-heading {
+        background-color:#fff;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;border:none;position:relative;text-indent:15px;line-height:22px;
 
-            &:before {
-                content:'';width:2px;height:16px;position:absolute;left:15px;top:50%;margin-top:-8px;display:block;background-color:#428bca;
-            }
-        }
-
-        & .panel-noData {
-            border:1px dashed #ddd;padding:30px;text-align:center;
-        }
-
-        & .table {
-            & > tbody {
-                & > tr {
-                    & > td {border:none;}
-                }
-            }
+        &:before {
+            content:'';width:2px;height:16px;position:absolute;left:15px;top:50%;margin-top:-8px;display:block;background-color:#428bca;
         }
     }
 
-    .studentZL {
-        & > div {
-            & > span {
-                display:inline-block;float:left;
+    & .panel-noData {
+        border:1px dashed #ddd;padding:30px;text-align:center;
+    }
 
-                &:first-of-type {
-                    width:25%;
-                }
-
-                &:last-of-type {
-                    width:75%;padding-left:5px;
-                }
+    & .table {
+        & > tbody {
+            & > tr {
+                & > td {border:none;}
             }
         }
     }
+}
 
-    .media-list {
-        max-height:500px;overflow-y:auto;
+.studentZL {
+    & > div {
+        & > span {
+            display:inline-block;float:left;
 
-        & .media-heading .pull-left {
-            .deleteBtn {display:none;}
+            &:first-of-type {
+                width:25%;
+            }
 
-            &:hover .deleteBtn {display:inline-block;}
+            &:last-of-type {
+                width:75%;padding-left:5px;
+            }
         }
     }
+}
+
+.media-list {
+    max-height:500px;overflow-y:auto;
+
+    & .media-heading .pull-left {
+        .deleteBtn {display:none;}
+
+        &:hover .deleteBtn {display:inline-block;}
+    }
+}
 </style>
 <style lang="scss">
-    .editStudentLayer {
-        .bootstrap-select {
-            max-width:100%;display:block;
+.editStudentLayer {
+    .bootstrap-select {
+        max-width:100%;display:block;
 
-            & > .dropdown-toggle {
-                background-color:#fff !important;max-width:100%;
+        & > .dropdown-toggle {
+            background-color:#fff !important;max-width:100%;
 
-                &:focus {outline:none !important;}
-            }
+            &:focus {outline:none !important;}
         }
     }
+}
 </style>

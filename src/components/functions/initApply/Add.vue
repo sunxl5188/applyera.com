@@ -636,7 +636,7 @@ export default {
           self.schoolName = self.uniq(schooArr)
         } else {
           self.layer.alert(res.msg, {
-            shadeClose: false
+            icon: 2
           })
         }
         self.loading = false
