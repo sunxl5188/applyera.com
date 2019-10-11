@@ -40,6 +40,8 @@
                             <div class="col-sm-6">
                                 <select name="" class="form-control selectpicker show-tick">
                                     <option value="">请选择</option>
+                                    <option value="1">本科</option>
+                                    <option value="2">硕士</option>
                                 </select>
                             </div>
                         </td>
@@ -105,17 +107,43 @@
                 </div>
                 <div class="clearfix pt-15">
                     <ul class="media-list rightMediaList">
-                        <div class="media">
-                            <div class="media-left">
-                                <img src="https://via.placeholder.com/50x50/FF5733/ffffff" class="img-circle"/>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">SUNNY <span class="c999 font12">5月12日 14:39</span></div>
-                                <div class="clearfix font12 c999 lh20 pb-5 pt-5">"<em>Proin sodales pulvinar sic tempor.
-                                    Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                                    mus.</em>"
+                        <div class="mediaItem">
+                            <div class="media">
+                                <div class="media-left">
+                                    <img src="https://via.placeholder.com/30x30/FF5733/ffffff" class="img-circle"/>
                                 </div>
-                                <div class="clearfix lh20 c999  pb-5 pt-5">这段不是很好，建议用XXXXXSXJSJ</div>
+                                <div class="media-body">
+                                    <div class="media-heading">
+                                        <span class="pull-left">SUNNY <span
+                                                class="c999 font12">5月12日 14:39</span></span>
+                                        <a href="javascript:void(0);" class="pull-right cded">解决</a>
+                                    </div>
+                                    <div class="clearfix font12 c999 lh20 pb-5 pt-5">"<em>Proin sodales pulvinar sic
+                                        tempor.
+                                        Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
+                                        mus.</em>"
+                                    </div>
+                                    <div class="editBtn">
+                                        <a href="javascript:void(0);" class="cded">编辑</a> · <a
+                                            href="javascript:void(0);" class="cded">删除</a>
+                                    </div>
+                                    <div class="clearfix lh20 c999 pb-5 pt-5">这段不是很好，建议用XXXXXSXJSJ</div>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <img src="https://via.placeholder.com/30x30/FF5733/ffffff" class="img-circle"/>
+                                </div>
+                                <div class="media-body">
+                                    <div class="clearfix pb-10 pt-5"><span contenteditable="true"
+                                                                           data-placeholder="回复"></span></div>
+                                    <div class="editBtn">
+                                        <button type="button" class="btn btn-primary btn-sm">发布</button>
+                                        <button type="button" class="btn btn-default btn-sm ml-10"
+                                                @click="cancelannotion($event)">取消
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </ul>
@@ -148,21 +176,42 @@ export default {
         $('.rightMediaList').height(lh)
       }
       $('.fullScreen .fullRight').css({ position: 'initial' })
+      // 点击批注
+      $(document).on('click', '.mediaItem .media:eq(0)', function () {
+        if (!$(this).parents('.mediaItem').hasClass('stateEdit')) {
+          $(this).parents('.mediaItem').addClass('stateEdit')
+        }
+      })
+      $(document).click(function (e) {
+        let i = $(e.target)
+        if (i.closest('.mediaItem').length === 0) {
+          $('.stateEdit').removeClass('stateEdit')
+        }
+      })
       setTimeout(function () {
         $('.notebook').notebook({
           autoFocus: false,
           placeholder: 'Your text here...',
           mode: 'multiline', // multiline or inline
-          modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor', 'msg']
+          // modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor', 'edit']
+          modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor', 'span']
         })
         $('.notebook').on('contentChange', function (e) {
-          /* let content = e.originalEvent.detail.content
-          console.log(content) */
+          // let content = e.originalEvent.detail.content
+          // let did = 'editor-comment-' + e.timeStamp
+          // $(e.target).find('span').addClass('comment-extra-inner-span').attr('data-id', did)
+          // console.log($('[data-id="editor-comment-' + did + '"]'))
         })
       }, 1000)
     })
   },
-  methods: {},
+  methods: {
+    // 取消批注编辑
+    cancelannotion (event) {
+      let $this = $(event.currentTarget).parents('.mediaItem')
+      $this.removeClass('stateEdit')
+    }
+  },
   components: {}
 }
 </script>
@@ -195,5 +244,45 @@ export default {
 
 .rightMediaList {
     overflow-y:auto;margin-bottom:0;
+
+    & .mediaItem {
+        border:1px solid transparent;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;cursor:pointer;
+
+        &:hover {
+            border-color:#ddd;
+        }
+
+        & .media {
+            padding:10px 15px;
+
+            & .media-body {
+                & .media-heading {
+                    &:after {content:'';display:block;width:100%;height:0;clear:both;overflow:hidden;}
+
+                    & .pull-right {display:none;}
+                }
+
+                & .editBtn {display:none;}
+            }
+
+            &:last-of-type {display:none;}
+        }
+
+        &.stateEdit {
+            cursor:auto;border-color:#ddd;
+
+            & .media {
+                & .media-body {
+                    & .media-heading {
+                        & .pull-right {display:initial;}
+                    }
+
+                    & .editBtn {display:block;}
+                }
+
+                &:last-of-type {display:block;border-top:1px solid #ddd;}
+            }
+        }
+    }
 }
 </style>

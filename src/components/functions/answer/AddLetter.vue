@@ -40,6 +40,8 @@
                             <div class="col-sm-6">
                                 <select name="" class="form-control selectpicker show-tick">
                                     <option value="">请选择</option>
+                                    <option value="1">本科</option>
+                                    <option value="2">硕士</option>
                                 </select>
                             </div>
                         </td>
@@ -67,42 +69,46 @@
                     </tbody>
                 </table>
                 <div class="font16 fontB clearfix lh50">推荐人信息</div>
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td class="w20 text-center bgGray">姓名</td>
-                        <td>
-                            <input type="text" class="form-control" placeholder="请输入推荐人姓名"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w20 text-center bgGray">联系电话</td>
-                        <td>
-                            <input type="text" class="form-control" placeholder="请输入推荐人联系电话"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w20 text-center bgGray">联系邮箱</td>
-                        <td>
-                            <input type="text" class="form-control" placeholder="请输入推荐人联系邮箱"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w20 text-center bgGray">工作职位</td>
-                        <td>
-                            <input type="text" class="form-control" placeholder="请输入推荐人的职位"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="w20 text-center bgGray">工作单位</td>
-                        <td>
-                            <input type="text" class="form-control" placeholder="请输入推荐人工作单位"/>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="clearfix">
-                    <textarea class="form-control" placeholder="请用英文输入推荐信正文"></textarea>
+                <div v-for="(item, i) in letterArr" :key="i" class="referrerList">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td class="w20 text-center bgGray">姓名</td>
+                            <td>
+                                <input type="text" class="form-control" v-model="item.userName" placeholder="请输入推荐人姓名"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w20 text-center bgGray">联系电话</td>
+                            <td>
+                                <input type="text" class="form-control" v-model="item.mobile" placeholder="请输入推荐人联系电话"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w20 text-center bgGray">联系邮箱</td>
+                            <td>
+                                <input type="text" class="form-control" v-model="item.email" placeholder="请输入推荐人联系邮箱"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w20 text-center bgGray">工作职位</td>
+                            <td>
+                                <input type="text" class="form-control" v-model="item.position"
+                                       placeholder="请输入推荐人的职位"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w20 text-center bgGray">工作单位</td>
+                            <td>
+                                <input type="text" class="form-control" v-model="item.employer"
+                                       placeholder="请输入推荐人工作单位"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix">
+                        <textarea class="form-control" placeholder="请用英文输入推荐信正文" v-model="item.content"></textarea>
+                    </div>
                 </div>
                 <div class="clearfix bda-d lh34 text-center mt-15">
                     <a href="javascript:void(0);" class="c999" @click="addLetter()">
@@ -135,7 +141,16 @@ export default {
   name: 'AddLetter',
   data () {
     return {
-      letterArr: []
+      letterArr: [
+        {
+          userName: '',
+          mobile: '',
+          email: '',
+          position: '',
+          employer: '',
+          content: ''
+        }
+      ]
     }
   },
   mounted () {
@@ -147,6 +162,15 @@ export default {
   methods: {
     // 添加推荐信
     addLetter () {
+      let self = this
+      self.letterArr.push({
+        userName: '',
+        mobile: '',
+        email: '',
+        position: '',
+        employer: '',
+        content: ''
+      })
     }
   }
 }
@@ -170,6 +194,12 @@ export default {
                 }
             }
         }
+    }
+}
+.referrerList{
+    margin-bottom:15px;
+    & input, & textarea{
+        border:none;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
     }
 }
 </style>

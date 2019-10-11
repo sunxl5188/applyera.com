@@ -118,7 +118,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <PagInAction :total="total" @pagechange="pagechange"></PagInAction>
+                <PagInAction :total="total" :current-page="current" @pagechange="pagechange"></PagInAction>
             </div>
         </div>
         <router-view></router-view>
@@ -144,6 +144,7 @@ export default {
       type: 0,
       time: '',
       time_sort: 0,
+      current: 1,
       total: 0,
       list: []
     }
@@ -196,6 +197,7 @@ export default {
             shadeClose: false
           })
         }
+        self.current = p || 1
         self.loading = false
       })
     },
@@ -245,6 +247,9 @@ export default {
   watch: {
     $route (to, from) {
       this.name = (to.name).toLocaleLowerCase()
+      if (to.name === 'message') {
+        this.pagechange(this.current)
+      }
     }
   }
 }

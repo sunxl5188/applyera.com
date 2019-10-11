@@ -8,7 +8,7 @@ import laydate from '@@/js/laydate/laydate'
 import layer from 'layui-layer'
 import vueCookie from 'vue-cookies'
 import { VueMasonryPlugin } from 'vue-masonry'
-import '@@/css/main.css'
+import '@@/css/main.scss'
 let $ = require('jquery')
 window.$ = window.jQuery = $
 

@@ -173,7 +173,7 @@ export default {
           }
           db.postRequest('Institution/User/edit', params).then(res => {
             if (res.status === 1) {
-              self.layer.alert(res.msg, {icon: 2}, function (e) {
+              self.layer.alert(res.msg, {icon: 1}, function (e) {
                 self.layer.close(e)
                 self.$router.push('/admin/user/')
               })

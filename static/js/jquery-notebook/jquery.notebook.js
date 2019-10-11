@@ -271,7 +271,7 @@
         transform.translate(elem, pos.x, pos.y)
       },
       /*
-               * Updates the bubble to set the active formats for the current selection.
+               * 更新气泡以设置当前选择的活动格式。
                */
       updateState: function (editor, elem) {
         elem.find('button').removeClass('active')
@@ -286,7 +286,8 @@
           'h2': 'h2',
           'a': 'anchor',
           'ul': 'ul',
-          'ol': 'ol'
+          'ol': 'ol',
+          'span': 'span'
         }
         for (var i = 0; i < formats.length; i++) {
           var format = formats[i]
@@ -298,7 +299,7 @@
                * tags enclosing the selection.
                */
       checkForFormatting: function (currentNode, formats) {
-        var validFormats = ['b', 'i', 'u', 'h1', 'h2', 'ol', 'ul', 'li', 'a', 'msg']
+        var validFormats = ['b', 'i', 'u', 'h1', 'h2', 'ol', 'ul', 'li', 'a', 'span']
         if (currentNode.nodeName === '#text' ||
             validFormats.indexOf(currentNode.nodeName.toLowerCase()) != -1) {
           if (currentNode.nodeName != '#text') {
@@ -691,8 +692,21 @@
           $(document).scrollTop($(document).scrollTop() + boundary.top)
           events.change.call(this)
         },
-        msg: function (e) {
-          console.log(e)
+        span: function (e) {
+          e.preventDefault()
+          // d.execCommand('StrikeThrough', false)
+          let $this = $(window.getSelection().anchorNode.parentNode)
+          if ($this.is('span')) {
+            $(window.getSelection().anchorNode).unwrap()
+          } else {
+            d.execCommand('BackColor', false, '#ff0')
+            $(window.getSelection().anchorNode.parentNode).attr('data-id', 'comment-' + e.timeStamp)
+            $(window.getSelection().anchorNode.parentNode).addClass('comment-extra-inner-span')
+          }
+          bubble.update.call(this)
+          events.change.call(this)
+          /* let txt = window.getSelection ? window.getSelection() : document.selection.createRange().text;
+          console.log(txt) comment-extra-inner-span */
         }
       },
       enterKey: function (e) {
@@ -769,6 +783,6 @@
     autoFocus: false,
     placeholder: 'Your text here...',
     mode: 'multiline',
-    modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor', 'msg']
+    modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor', 'span']
   }
 })(jQuery, document, window)

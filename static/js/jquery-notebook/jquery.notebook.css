@@ -95,7 +95,7 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.jquery-notebook.bubble button.msg{
+.jquery-notebook.bubble button.span{
     border-left:1px solid #000;
 }
 
@@ -119,9 +119,9 @@
     content: "\f0c1";
 }
 
-.jquery-notebook.bubble button.msg:after {
+.jquery-notebook.bubble button.span:after {
     font-family:'iconfont';
-    content: "\e95b";
+    content: "\e60f";
 }
 
 .jquery-notebook.bubble button.paste:after {
@@ -171,3 +171,5 @@
     font-size: 14px;
     float: left;
 }
+.comment-extra-inner-span{border-bottom:2px solid #ffe9a8;}
+.comment-extra-inner-span:hover{background-color:#ffe9a8;}
