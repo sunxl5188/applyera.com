@@ -621,7 +621,7 @@ export default {
       let Y = self.newDate.getFullYear()
       let M = self.newDate.getMonth()
       let D = self.newDate.getDate()
-      if (M < 10) {
+      if (M < 9) {
         MM = '0' + (M + 1)
       } else {
         MM = M
