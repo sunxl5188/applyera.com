@@ -139,7 +139,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">最高账号数量</label>
                             <div class="col-sm-8">
-                                <input type="text" name="" class="form-control" placeholder="请输入">
+                                <input type="text" name="max_account" class="form-control" placeholder="请输入">
                             </div>
                         </div>
                     </div>
@@ -147,7 +147,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">有效期至</label>
                             <div class="col-sm-8">
-                                <input type="text" name="" id="times" class="form-control" placeholder="请选择">
+                                <input type="text" name="service_deadline" id="times" class="form-control" placeholder="请选择">
                             </div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">套餐名</label>
                             <div class="col-sm-8">
-                                <input type="text" name="" class="form-control" placeholder="请输入">
+                                <input type="text" name="service_type" class="form-control" placeholder="请输入">
                             </div>
                         </div>
                     </div>

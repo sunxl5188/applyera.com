@@ -48,7 +48,7 @@
                                        v-model="list.name"
                                        v-validate="'required'"/>
                                 <div class="validateTip" v-show="errors.has('name')">
-                                    {{ errors.first("name") }}
+                                    {{ errors.first('name') }}
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                                        v-model="list.phone"
                                        v-validate="'required|mobile'"/>
                                 <div class="validateTip" v-show="errors.has('phone')">
-                                    {{ errors.first("phone") }}
+                                    {{ errors.first('phone') }}
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">公司/工作室</label>
                             <div class="col-sm-8">
-                                <select name="type" class="form-control selectpicker show-tick" @change="typeChange($event)">
+                                <select name="type" class="form-control selectpicker show-tick"
+                                        @change="typeChange($event)">
                                     <option value="1" :selected="type===1">公司</option>
                                     <option value="2" :selected="type===2">工作室</option>
                                 </select>
@@ -146,7 +147,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">最高账号数量</label>
                             <div class="col-sm-8">
-                                <input type="text" name="" class="form-control" placeholder="请输入">
+                                <input type="text" name="max_account" v-model="max_account" class="form-control"
+                                       placeholder="请输入">
                             </div>
                         </div>
                     </div>
@@ -154,7 +156,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">有效期至</label>
                             <div class="col-sm-8">
-                                <input type="text" name="" id="times" class="form-control" placeholder="请选择">
+                                <input type="text" name="service_deadline" v-model="service_deadline" id="times"
+                                       class="form-control" placeholder="请选择">
                             </div>
                         </div>
                     </div>
@@ -164,7 +167,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">套餐名</label>
                             <div class="col-sm-8">
-                                <input type="text" name="" class="form-control" placeholder="请输入">
+                                <input type="text" name="service_type" v-model="service_type" class="form-control"
+                                       placeholder="请输入">
                             </div>
                         </div>
                     </div>
@@ -172,8 +176,11 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">地址</label>
                     <div class="col-sm-11 addressInline">
-                        <CitySelect :p="list.province_id" :c="list.city_id" :a="list.area_id" pName='province_id' cName='area_id' aName='area_id' @cityCallback="cityCallback"></CitySelect>
-                        <input type="text" name="address" class="form-control" placeholder="详细地址" style="display:inline-block;width:auto;vertical-align: middle;min-width:260px;" v-model="list.address">
+                        <CitySelect :p="list.province_id" :c="list.city_id" :a="list.area_id" pName='province_id'
+                                    cName='area_id' aName='area_id' @cityCallback="cityCallback"></CitySelect>
+                        <input type="text" name="address" class="form-control" placeholder="详细地址"
+                               style="display:inline-block;width:auto;vertical-align: middle;min-width:260px;"
+                               v-model="list.address">
                     </div>
                 </div>
 
@@ -218,7 +225,10 @@ export default {
       oldBank: [],
       picList: [],
       logo: {},
-      bank_account: ''
+      bank_account: '',
+      max_account: '',
+      service_deadline: '',
+      service_type: ''
     }
   },
   computed: {
@@ -241,15 +251,25 @@ export default {
             self.picList = res.data.uploads
             self.logo = res.data.logo
             self.bank_account = res.data.bank_account
+            self.max_account = res.data.max_account
+            self.service_deadline = res.data.service_deadline
+            self.service_type = res.data.service_type
           } else {
-            self.layer.alert(res.msg, {icon: 2})
+            self.layer.alert(res.msg, { icon: 2 })
           }
           self.loading = false
+          setTimeout(function () {
+            $('.selectpicker').selectpicker()
+            self.laydate.render({
+              elem: '#times',
+              type: 'datetime',
+              done: (value) => {
+                self.service_deadline = value
+              }
+            })
+          }, 200)
         })
       }, 500)
-      setTimeout(function () {
-        $('.selectpicker').selectpicker()
-      }, 1000)
     })
   },
   methods: {
@@ -296,12 +316,12 @@ export default {
           }
           db.postRequest('Institution/Company/edit', params).then(res => {
             if (res.status === 1) {
-              self.layer.alert(res.msg, function (e) {
+              self.layer.alert(res.msg, {icon: 1}, function (e) {
                 self.layer.close(e)
                 self.$router.push('/admin/agency')
               })
             } else {
-              self.layer.alert(res.msg, {icon: 2})
+              self.layer.alert(res.msg, { icon: 2 })
             }
           })
         }
@@ -320,5 +340,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.addressInline > div{display:inline-block !important;}
+.addressInline > div {display:inline-block !important;}
 </style>

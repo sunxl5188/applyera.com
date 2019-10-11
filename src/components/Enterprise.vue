@@ -25,10 +25,10 @@
                              </a>
                          </div>
                          <div class="clearfix text-center">
-                             <div class="lh34 font16 pt-15">北京教育科技有限公司</div>
-                             <div class="lh24">团队基础版</div>
+                             <div class="lh34 font16 pt-15">{{list.left_name}}</div>
+                             <div class="lh24">{{list.left_service}}</div>
                              <div class="clearfix lh24">
-                                 还有<span class="cded">10</span>到期
+                                 还有<span class="cded">{{list.left_last}}</span>到期
                              </div>
                          </div>
                      </div>

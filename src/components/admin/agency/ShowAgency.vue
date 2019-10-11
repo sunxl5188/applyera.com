@@ -101,13 +101,13 @@
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
                             <label class="col-sm-4 control-label">最高账号数量</label>
-                            <div class="col-sm-8 lh34"></div>
+                            <div class="col-sm-8 lh34">{{list.max_account}}</div>
                         </div>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
                             <label class="col-sm-4 control-label">有效期至</label>
-                            <div class="col-sm-8 lh34"></div>
+                            <div class="col-sm-8 lh34">{{list.service_deadline}}</div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
                             <label class="col-sm-4 control-label">套餐名</label>
-                            <div class="col-sm-8 lh34"></div>
+                            <div class="col-sm-8 lh34">{{list.service_type}}</div>
                         </div>
                     </div>
                 </div>
