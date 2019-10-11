@@ -69,21 +69,44 @@
                     </tbody>
                 </table>
                 <div class="clearfix lh50 font16 fontB">个人陈述</div>
-                <div class="clearfix lh22 pb-15 notebook">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                    commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                    commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                    commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                    commodo. Proin sodales pulvinar sic tempor
+                <div class="clearfix lh22 pb-15 statement">
+                    <div class="statementShow">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
+                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit.
+                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
+                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit.
+                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
+                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit.
+                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
+                        commodo. Proin sodales pulvinar sic tempor
+                    </div>
+                    <div class="statementEdit" contenteditable="true" data-placeholder="请输入个人陈述"
+                         @focusout="statementSave()">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
+                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit.
+                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
+                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit.
+                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
+                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit.
+                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
+                        commodo. Proin sodales pulvinar sic tempor
+                    </div>
+                    <button type="button" class="btn btn-primary" @click="statmentState($event)">编辑</button>
                 </div>
                 <div class="clearfix">
                     <textarea name="" class="form-control" placeholder="请用英文作答"></textarea>
                 </div>
                 <div class="clearfix lh50 font16 fontB">Writing Sample</div>
-                <div class="clearfix lh22 pb-15">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod
+                <div class="clearfix lh22 pb-15 notebook">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Aenean euismod
                     bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin
                     sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod
                     bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin
@@ -157,6 +180,7 @@
 import '@@/js/jquery-notebook/jquery.notebook'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import db from '@~/js/request'
 
 export default {
   name: 'Detail',
@@ -210,9 +234,22 @@ export default {
     cancelannotion (event) {
       let $this = $(event.currentTarget).parents('.mediaItem')
       $this.removeClass('stateEdit')
+    },
+    // 点击编辑个人陈述
+    statmentState (event) {
+      let $this = $(event.currentTarget).parents('.statement')
+      $this.addClass('active')
+    },
+    // 保存个人陈述
+    statementSave () {
+      let content = $('.statementEdit').text()
+      let params = new URLSearchParams()
+      params.append('content', content)
+      db.postRequest('', params).then(res => {
+        console.log(res.msg)
+      })
     }
-  },
-  components: {}
+  }
 }
 </script>
 <style lang="scss">
@@ -283,6 +320,30 @@ export default {
                 &:last-of-type {display:block;border-top:1px solid #ddd;}
             }
         }
+    }
+}
+
+.statement {
+    position:relative;
+
+    & .btn {display:none;position:absolute;right:0;bottom:15px;z-index:2;}
+
+    &:hover {
+        & .btn {display:initial;}
+    }
+
+    & .statementShow {display:block;}
+
+    & .statementEdit {display:none;}
+
+    &.active {
+        &:hover {
+            & .btn {display:none !important;}
+        }
+
+        & .statementShow {display:none;}
+
+        & .statementEdit {display:block;}
     }
 }
 </style>
