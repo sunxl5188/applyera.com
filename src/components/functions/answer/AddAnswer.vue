@@ -28,7 +28,7 @@
                         <td class="w20 text-center bgGray">学生姓名</td>
                         <td>
                             <div class="col-sm-6">
-                                <select name="" class="form-control selectpicker show-tick">
+                                <select name="" class="form-control selectpicker show-tick" data-live-search="true">
                                     <option value="">请选择</option>
                                 </select>
                             </div>
@@ -50,7 +50,7 @@
                         <td class="w20 text-center bgGray">申请学校</td>
                         <td>
                             <div class="col-sm-6">
-                                <select name="" class="form-control selectpicker show-tick">
+                                <select name="" class="form-control selectpicker show-tick" data-live-search="true">
                                     <option value="">请选择</option>
                                 </select>
                             </div>
@@ -60,7 +60,7 @@
                         <td class="w20 text-center bgGray">申请专业</td>
                         <td>
                             <div class="col-sm-6">
-                                <select name="" class="form-control selectpicker show-tick">
+                                <select name="" class="form-control selectpicker show-tick" data-live-search="true">
                                     <option value="">请选择</option>
                                 </select>
                             </div>
@@ -84,7 +84,7 @@
                         Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
                         commodo. Proin sodales pulvinar sic tempor
                     </div>
-                    <div class="statementEdit" contenteditable="true" data-placeholder="请输入个人陈述"
+                    <div class="statementEdit" contenteditable="true" spellcheck="false" data-placeholder="请输入个人陈述"
                          @focusout="statementSave()">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
@@ -130,7 +130,7 @@
                 </div>
                 <div class="clearfix pt-15">
                     <ul class="media-list rightMediaList">
-                        <div class="mediaItem">
+                        <div class="mediaItem" data-id="comment-1570848524872">
                             <div class="media">
                                 <div class="media-left">
                                     <img src="https://via.placeholder.com/30x30/FF5733/ffffff" class="img-circle"/>
@@ -218,13 +218,24 @@ export default {
           placeholder: 'Your text here...',
           mode: 'multiline', // multiline or inline
           // modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor', 'edit']
-          modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor', 'span']
+          modifiers: ['span']
         })
         $('.notebook').on('contentChange', function (e) {
           // let content = e.originalEvent.detail.content
           // let did = 'editor-comment-' + e.timeStamp
           // $(e.target).find('span').addClass('comment-extra-inner-span').attr('data-id', did)
           // console.log($('[data-id="editor-comment-' + did + '"]'))
+        })
+        $(document).on('mouseenter mouseleave', '[data-id^="comment-"]', function (event) {
+          let $id = $(this).attr('data-id')
+          // 鼠标穿过时触发
+          if (event.type === 'mouseenter') {
+            $('[data-id="' + $id + '"]').addClass('active')
+          }
+          // 鼠标离开时触发
+          if (event.type === 'mouseleave') {
+            $('[data-id="' + $id + '"]').removeClass('active')
+          }
         })
       }, 1000)
     })
@@ -285,7 +296,7 @@ export default {
     & .mediaItem {
         border:1px solid transparent;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;cursor:pointer;
 
-        &:hover {
+        &:hover, &.active {
             border-color:#ddd;
         }
 

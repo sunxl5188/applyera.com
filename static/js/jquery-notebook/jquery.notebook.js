@@ -699,8 +699,9 @@
           if ($this.is('span')) {
             $(window.getSelection().anchorNode).unwrap()
           } else {
-            d.execCommand('BackColor', false, '#ff0')
-            $(window.getSelection().anchorNode.parentNode).attr('data-id', 'comment-' + e.timeStamp)
+            let sid = new Date().getTime()
+            d.execCommand('BackColor', false, '#ffe9a8')
+            $(window.getSelection().anchorNode.parentNode).attr('data-id', 'comment-' + sid)
             $(window.getSelection().anchorNode.parentNode).addClass('comment-extra-inner-span')
           }
           bubble.update.call(this)

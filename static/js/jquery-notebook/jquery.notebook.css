@@ -121,7 +121,7 @@
 
 .jquery-notebook.bubble button.span:after {
     font-family:'iconfont';
-    content: "\e60f";
+    content: "\e95b";
 }
 
 .jquery-notebook.bubble button.paste:after {
@@ -171,5 +171,5 @@
     font-size: 14px;
     float: left;
 }
-.comment-extra-inner-span{border-bottom:2px solid #ffe9a8;}
-.comment-extra-inner-span:hover{background-color:#ffe9a8;}
+.comment-extra-inner-span{border-bottom:2px solid #ffe9a8;background-color:#fff !important;}
+.comment-extra-inner-span:hover, .comment-extra-inner-span.active{background-color:#ffe9a8 !important;}
