@@ -825,7 +825,13 @@ span[contenteditable], div[contenteditable]{
 /*自定义下拉*/
 .customizeDropdown{
 	position:relative;
-	&.open{
-
+	&.open{}
+}
+.notebook-tool{
+	width:40px;height:40px;position:absolute;background-color:#1b2733;border:1px solid #000;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;color:#c1c7cd;line-height:40px;text-align:center;cursor:pointer;display:none;
+	& button{
+		-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;background-color:transparent;border:none;padding:0;width:100%;
 	}
 }
+.comment-extra-inner-span{border-bottom:2px solid #ffe9a8;background-color:#fff !important;}
+.comment-extra-inner-span:hover, .comment-extra-inner-span.active{background-color:#ffe9a8 !important;}

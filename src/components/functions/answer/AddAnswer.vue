@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="addAnswer">
         <div class="clearfix pb-30">
             <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -7,8 +7,12 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                     <div class="form-group">
-                        <button type="button" class="btn btn-default ml-10"><i class="iconfont">&#xe62c;</i> 分享</button>
-                        <button type="button" class="btn btn-default ml-10"><i class="iconfont">&#xe637;</i> 保存</button>
+                        <button type="button" class="btn btn-default ml-10" @click="sendStudent()"><i class="iconfont">&#xe62c;</i>
+                            分享
+                        </button>
+                        <button type="button" class="btn btn-default ml-10" @click="saveData()"><i class="iconfont">&#xe637;</i>
+                            保存
+                        </button>
                         <button type="button" class="btn btn-default ml-10"><i class="iconfont">&#xe64d;</i> 提交</button>
                         <button type="button" class="btn btn-default ml-10" @click="$router.back()"><i class="iconfont">&#xe64f;</i>
                             返回
@@ -28,8 +32,12 @@
                         <td class="w20 text-center bgGray">学生姓名</td>
                         <td>
                             <div class="col-sm-6">
-                                <select name="" class="form-control selectpicker show-tick" data-live-search="true">
+                                <select v-model="stu_id" class="form-control selectpicker show-tick"
+                                        data-live-search="true">
                                     <option value="">请选择</option>
+                                    <option :value="item.id" v-for="(item, i) in studentArr" :key="i">
+                                        {{item.stu_name}}
+                                    </option>
                                 </select>
                             </div>
                         </td>
@@ -38,8 +46,8 @@
                         <td class="w20 text-center bgGray">申报类型</td>
                         <td>
                             <div class="col-sm-6">
-                                <select name="" class="form-control selectpicker show-tick">
-                                    <option value="">请选择</option>
+                                <select v-model.number="apply_type" @change="getProfession()"
+                                        class="form-control selectpicker show-tick">
                                     <option value="1">本科</option>
                                     <option value="2">硕士</option>
                                 </select>
@@ -50,8 +58,12 @@
                         <td class="w20 text-center bgGray">申请学校</td>
                         <td>
                             <div class="col-sm-6">
-                                <select name="" class="form-control selectpicker show-tick" data-live-search="true">
+                                <select v-model="school_unq_id" @change="getProfession()"
+                                        class="form-control selectpicker show-tick" data-live-search="true">
                                     <option value="">请选择</option>
+                                    <option :value="item.unq_id" v-for="(item, i) in schoolArr" :key="i">
+                                        {{item.sc_name}}
+                                    </option>
                                 </select>
                             </div>
                         </td>
@@ -60,61 +72,36 @@
                         <td class="w20 text-center bgGray">申请专业</td>
                         <td>
                             <div class="col-sm-6">
-                                <select name="" class="form-control selectpicker show-tick" data-live-search="true">
+                                <select v-model="major_unq_id" @change="getTopic()"
+                                        class="form-control selectpicker show-tick" data-live-search="true">
                                     <option value="">请选择</option>
+                                    <option :value="item.unq_id" v-for="(item, i) in professionArr" :key="i">
+                                        {{item.mj_name}}
+                                    </option>
                                 </select>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <div class="clearfix lh50 font16 fontB">个人陈述</div>
-                <div class="clearfix lh22 pb-15 statement">
-                    <div class="statementShow">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit.
-                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit.
-                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit.
-                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                        commodo. Proin sodales pulvinar sic tempor
+                <div class="clearfix" v-if="topic.answer_ps">
+                    <div class="clearfix lh50 font16 fontB">个人陈述</div>
+                    <div class="clearfix lh22 pb-15 statement">
+                        <div class="statementShow" v-html="topic.custom_ps"></div>
+                        <div class="statementEdit" contenteditable="true" spellcheck="false" data-placeholder="请输入个人陈述"
+                             @focusout="statementSave()" v-html="topic.custom_ps"></div>
+                        <button type="button" class="btn btn-primary" @click="statmentState($event)">编辑</button>
                     </div>
-                    <div class="statementEdit" contenteditable="true" spellcheck="false" data-placeholder="请输入个人陈述"
-                         @focusout="statementSave()">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit.
-                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit.
-                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                        commodo. Proin sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit.
-                        Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo
-                        commodo. Proin sodales pulvinar sic tempor
+                    <div class="clearfix bdt pt-15">
+                        <div contenteditable="true" spellcheck="false" data-placeholder="请用英文作答"
+                             v-html="topic.answer_ps"></div>
                     </div>
-                    <button type="button" class="btn btn-primary" @click="statmentState($event)">编辑</button>
-                </div>
-                <div class="clearfix">
-                    <textarea name="" class="form-control" placeholder="请用英文作答"></textarea>
-                </div>
-                <div class="clearfix lh50 font16 fontB">Writing Sample</div>
-                <div class="clearfix lh22 pb-15 notebook">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Aenean euismod
-                    bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin
-                    sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod
-                    bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin
-                    sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod
-                    bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin
-                    sodales pulvinar sic tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod
-                    bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin
-                    sodales pulvinar sic tempor
+                    <div class="clearfix lh50 font16 fontB">Writing Sample</div>
+                    <div class="clearfix lh22 notebook po_re" v-html="topic.custom_ws" contenteditable="true"></div>
+                    <div class="clearfix bdt pt-15 mt-15">
+                        <div contenteditable="true" spellcheck="false" data-placeholder="请用英文作答"
+                             v-html="topic.answer_ws"></div>
+                    </div>
                 </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -173,31 +160,47 @@
                 </div>
             </div>
         </div>
+        <ShareIt :info="sendStudentString"></ShareIt>
     </div>
 </template>
 
 <script>
-import '@@/js/jquery-notebook/jquery.notebook'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import ShareIt from '@#/functions/applyInfo/ShareIt'
 import db from '@~/js/request'
 
 export default {
   name: 'Detail',
   data () {
-    return {}
+    return {
+      id: '',
+      stu_id: '',
+      apply_type: 1,
+      school_unq_id: '',
+      major_unq_id: '',
+      studentArr: [],
+      schoolArr: [],
+      professionArr: [],
+      topic: {
+        custom_ps: '',
+        custom_ws: '',
+        answer_ps: '',
+        answer_ws: ''
+      },
+      sendStudentString: {}
+    }
   },
   beforeDestroy () {
     $('.fullScreen .fullRight').removeAttr('style')
   },
   mounted () {
     let self = this
+    self.id = self.$route.query.id || ''
+    self.getSchoolAndStudent()
     self.$nextTick(() => {
-      $('.selectpicker').selectpicker()
-      let lh = $('.leftBox').height() - 35
-      let rh = $('.rightMediaList').height()
-      if (lh > rh) {
-        $('.rightMediaList').height(lh)
+      if (self.id !== '') {
+        self.getDetail()
       }
       $('.fullScreen .fullRight').css({ position: 'initial' })
       // 点击批注
@@ -212,19 +215,167 @@ export default {
           $('.stateEdit').removeClass('stateEdit')
         }
       })
+      // 框选时弹出按钮
+      $(document).on('mouseup', '.notebook', function (event) {
+        event.preventDefault()
+        let txt = window.getSelection ? window.getSelection() : document.selection.createRange().text
+        let x = -20
+        let y = -55
+        let r = ''
+        if (txt.toString() === '') {
+          return false
+        }
+        if (document.selection) {
+          r = document.selection.createRange().text
+        } else if (window.getSelection()) {
+          r = window.getSelection()
+        }
+        if (r !== '') {
+          if ($('.notebook-tool').length === 0) {
+            let tooltip = '<div class=\'notebook-tool\'><button type=\'button\'><i class=\'iconfont\'>&#xe95b;</i></button></div>'
+            $('body').append(tooltip)
+          }
+          $('.notebook-tool').css({
+            'top': (event.pageY + y) + 'px',
+            'left': (event.pageX + x) + 'px'
+          }).show()
+        }
+      })
+      // 设置批注标签
+      $(document).on('click', '.notebook-tool button', function (event) {
+        event.preventDefault()
+        let sid = new Date().getTime()
+        let cid = 'comment-' + sid
+        $(this).parent().hide()
+        document.execCommand('BackColor', false, '#ffe9a8')
+        $(window.getSelection().anchorNode.parentNode).attr('data-id', cid)
+        $(window.getSelection().anchorNode.parentNode).addClass('comment-extra-inner-span')
+      })
+    })
+  },
+  methods: {
+    // 获取请求ID详情
+    getDetail () {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('id', self.id)
+      db.postRequest('/Institution/Document/qsEdit', params).then(res => {
+        if (res.status === 1) {
+          self.apply_type = res.data.apply_type
+          self.stu_id = res.data.ins_student_id
+          self.school_unq_id = res.data.school_unq_id
+          self.major_unq_id = res.data.major_unq_id
+          self.topic.custom_ps = res.data.custom_ps
+          self.topic.custom_ws = res.data.custom_ws
+          self.topic.answer_ps = res.data.answer_ps
+          self.topic.answer_ws = res.data.answer_ws
+          self.getProfession('auto')
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          }, function (i) {
+            self.layer.close(i)
+            self.$router.back()
+          })
+        }
+        self.setRightHeigth()
+      })
+    },
+    // 获取学生、学校列表
+    getSchoolAndStudent () {
+      let self = this
+      db.postRequest('/Institution/Document/stuList', {}).then(res => {
+        if (res.status === 1) {
+          self.studentArr = res.data.stu_list
+          self.schoolArr = res.data.sc_list
+        } else {
+          console.log(res.msg)
+        }
+      })
+    },
+    // 获取专业列表
+    getProfession (action) {
+      let self = this
+      let params = new URLSearchParams()
+      if (action !== 'auto') {
+        self.major_unq_id = ''
+        self.topic = {
+          custom_ps: '',
+          custom_ws: '',
+          answer_ps: '',
+          answer_ws: ''
+        }
+      }
+      if (self.school_unq_id === '') {
+        self.professionArr = []
+        setTimeout(function () {
+          $('.selectpicker').selectpicker('refresh')
+        }, 500)
+        return false
+      }
+      params.append('apply_type', self.apply_type)
+      params.append('school_unq_id', self.school_unq_id)
+      db.postRequest('/Institution/Document/mjList', params).then(res => {
+        if (res.status === 1) {
+          self.professionArr = res.data
+        } else {
+          self.professionArr = []
+          console.log(res.msg)
+        }
+        setTimeout(function () {
+          $('.selectpicker').selectpicker('refresh')
+        }, 500)
+      })
+    },
+    // 获取题目信息
+    getTopic () {
+      let self = this
+      let params = new URLSearchParams()
+      if (self.major_unq_id === '') {
+        self.topic = {
+          custom_ps: '',
+          custom_ws: '',
+          answer_ps: '',
+          answer_ws: ''
+        }
+        return false
+      }
+      params.append('apply_type', self.apply_type)
+      params.append('major_unq_id', self.major_unq_id)
+      db.postRequest('/Institution/Document/getQs', params).then(res => {
+        if (res.status === 1) {
+          self.topic = res.data
+        } else {
+          console.log(res.msg)
+        }
+        self.setRightHeigth()
+      })
+    },
+    // 设置右边高度
+    setRightHeigth () {
       setTimeout(function () {
-        $('.notebook').notebook({
-          autoFocus: false,
-          placeholder: 'Your text here...',
-          mode: 'multiline', // multiline or inline
-          // modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor', 'edit']
-          modifiers: ['span']
-        })
+        let lh = $('.leftBox').height() - 35
+        let rh = $('.rightMediaList').height()
+        if (lh > rh) {
+          $('.rightMediaList').height(lh)
+        }
+      }, 500)
+    },
+    // 设置编辑器
+    setNoteBook () {
+      setTimeout(function () {
         $('.notebook').on('contentChange', function (e) {
+          let id = e.originalEvent.detail.id
           // let content = e.originalEvent.detail.content
-          // let did = 'editor-comment-' + e.timeStamp
-          // $(e.target).find('span').addClass('comment-extra-inner-span').attr('data-id', did)
-          // console.log($('[data-id="editor-comment-' + did + '"]'))
+          // let index = $('.notebook').find('[data-id=' + id + ']').index()
+          $(document).on('click', function (event) {
+            let i = $(event.target)
+            if (i.closest('[data-id=' + id + ']').length === 0 && i.closest('.jquery-notebook.bubble.jump').length === 0) {
+              document.cookie = 'notebook='
+              $(this).unbind('click')
+              console.log('点击空白处，取消批注，重新加载数据')
+            }
+          })
         })
         $(document).on('mouseenter mouseleave', '[data-id^="comment-"]', function (event) {
           let $id = $(this).attr('data-id')
@@ -238,9 +389,7 @@ export default {
           }
         })
       }, 1000)
-    })
-  },
-  methods: {
+    },
     // 取消批注编辑
     cancelannotion (event) {
       let $this = $(event.currentTarget).parents('.mediaItem')
@@ -248,8 +397,12 @@ export default {
     },
     // 点击编辑个人陈述
     statmentState (event) {
-      let $this = $(event.currentTarget).parents('.statement')
-      $this.addClass('active')
+      if (this.id === '') {
+        self.layer.alert('请选保存当前页面后再编辑!', { icon: 2 })
+      } else {
+        let $this = $(event.currentTarget).parents('.statement')
+        $this.addClass('active')
+      }
     },
     // 保存个人陈述
     statementSave () {
@@ -259,13 +412,73 @@ export default {
       db.postRequest('', params).then(res => {
         console.log(res.msg)
       })
+    },
+    // 保存当前数据
+    saveData () {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('id', self.id)
+      params.append('stu_id', self.stu_id)
+      params.append('apply_type', self.apply_type)
+      params.append('school_unq_id', self.school_unq_id)
+      params.append('major_unq_id', self.major_unq_id)
+      params.append('custom_ps', self.topic.custom_ps)
+      params.append('answer_ps', self.topic.answer_ps)
+      params.append('custom_ws', self.topic.custom_ws)
+      params.append('answer_ws', self.topic.answer_ws)
+      db.postRequest('/Institution/Document/qsSave', params).then(res => {
+        if (res.status === 1) {
+          self.layer.alert(res.msg, { icon: 1 }, function (i) {
+            self.layer.close(i)
+            if (self.id === '') {
+              window.location.replace('/functions/answer/addAnswer?id=' + res.data)
+            }
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
+    },
+    // 发送给学生填写
+    sendStudent () {
+      let self = this
+      if (self.stu_id === '') {
+        self.layer.alert('请选择保存页面后再分享！', {
+          icon: 2
+        })
+      } else {
+        let params = new URLSearchParams()
+        params.append('id', self.stu_id)
+        params.append('education_type', self.apply_type)
+        db.postRequest('/Institution/ApplyMaterial/sendStudent', params).then(res => {
+          if (res.status === 1) {
+            self.sendStudentString = res.data
+            $('#sendInfo').modal({
+              backdrop: 'static',
+              show: true
+            })
+          } else {
+            self.layer.alert(res.msg, {
+              shadeClose: false
+            })
+          }
+        })
+      }
     }
+  },
+  components: {
+    ShareIt
   }
 }
 </script>
 <style lang="scss">
-@import "../../../../static/js/jquery-notebook/jquery.notebook.css";
-@import "../../../../node_modules/font-awesome/css/font-awesome.min.css";
+.addAnswer {
+    .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
+        white-space:nowrap;-ms-text-overflow:ellipsis;text-overflow:ellipsis;overflow:hidden;max-width:300px;min-width:150px;
+    }
+}
 </style>
 <style scoped lang="scss">
 .title {border:none;padding-left:0;padding-right:0;}

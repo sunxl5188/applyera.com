@@ -27,31 +27,7 @@
         </div>
 
         <!-- 发送信息给学生start-->
-        <div class="modal fade" id="sendInfo">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title text-center">请将以下信息复制给学生,学生完成填写后资料将自动录入系统</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="clearfix text-center lh34 pb-15" v-if="sendStudentString.status===0">状态：未开始</div>
-                        <div class="clearfix text-center lh34 pb-15" v-if="sendStudentString.status===1">状态：填写中</div>
-                        <div class="clearfix text-center lh34 pb-15" v-if="sendStudentString.status===2">状态：已完成</div>
-                        <div class="clearfix bda pad-15" id="copyContent">
-                            <p>登录帐号：{{sendStudentString.acc}}</p>
-                            <p>登录密码： {{sendStudentString.pwd}}</p>
-                            <p>登录地址：{{webSite}}/login?cid={{sendStudentString.cid}}&aid={{sendStudentString.aid}}</p>
-                        </div>
-                        <div class="clearfix text-center pt-20">
-                            <button type="button" class="btn btn-primary copyBtn" data-clipboard-target="#copyContent"
-                                    @click="CopyText">一键复制
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <ShareIt :info="sendStudentString"></ShareIt>
         <!-- 发送信息给学生end-->
         <div v-if="loading" v-html="LoadingImg()"></div>
         <div v-if="!loading">
@@ -969,7 +945,6 @@
 <script>
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
-import Clipboard from 'clipboard'
 import lang from '@@/json/language'
 import nation from '@@/json/nation'
 import liveTime from '@@/json/liveTime'
@@ -982,6 +957,7 @@ import FamilyComponent from '@/components/functions/applyInfo/FamilyComponent'
 import UEducationComponent from '@/components/functions/applyInfo/UEducationComponent'
 import MEducationComponent from '@/components/functions/applyInfo/MEducationComponent'
 import ExamComponent from '@/components/functions/applyInfo/ExamComponent'
+import ShareIt from '@#/functions/applyInfo/ShareIt'
 import CitySelect from '@#/shared/CitySelect'
 import '@~/js/VeeValidateConfig'
 import store from '@/vuex/Store'
@@ -994,8 +970,7 @@ export default {
   data () {
     return {
       id: '',
-      webSite: '',
-      sendStudentString: '',
+      sendStudentString: {},
       loading: true,
       studentId: '',
       studentNumber: '',
@@ -1177,15 +1152,8 @@ export default {
   mounted () {
     let self = this
     let id = self.$route.query.id
-    let website = window.location.origin
-    if (website.indexOf('localhost') >= 0) {
-      self.webSite = website
-    } else {
-      self.webSite = 'https://student.' + website.split('.')[1] + '.' + website.split('.')[2]
-    }
 
     self.$nextTick(() => {
-      self.copyBtn = new Clipboard('.copyBtn')
       self.showTimes()
       // *******************************
       if (id !== undefined) {
@@ -1334,17 +1302,6 @@ export default {
     delWorkExp (i) {
       this.personal.work_experience.splice(i, 1)
     },
-    // 复制文本
-    CopyText () {
-      let self = this
-      let clipboard = self.copyBtn
-      clipboard.on('success', function () {
-        self.layer.msg('复制成功')
-      })
-      clipboard.on('error', function () {
-        self.layer.msg('复制失败，请手动选择复制！')
-      })
-    },
     FamilyCallback (isCheck, formData) {
       this.FamilyCheck = isCheck
       this.FamilyData = formData
@@ -1460,7 +1417,8 @@ export default {
     UEducationComponent,
     MEducationComponent,
     ExamComponent,
-    CitySelect
+    CitySelect,
+    ShareIt
   }
 }
 </script>

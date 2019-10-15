@@ -41,7 +41,7 @@
                             <a class="dropdown-toggle" href="#">
                                 <i class="iconfont font22" v-if="userInfo.headphoto===''">&#xe62a;</i>
                                 <p v-if="userInfo.headphoto!==''"><img :src="userInfo.headphoto" alt=""></p>
-                                <span v-text="userInfo.company +','+ userInfo.name" class="div_vm"></span>
+                                <span v-text="userInfo.company +','+ userInfo.name" class="div_vm" v-if="userInfo.company"></span>
                                 <span class="caret"></span>
                             </a>
                             <div class="popover fade bottom in">

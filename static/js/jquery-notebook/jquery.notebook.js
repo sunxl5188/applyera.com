@@ -255,8 +255,8 @@
     },
     bubble = {
       /*
-               * This is called to position the bubble above the selection.
-               */
+                 * This is called to position the bubble above the selection.
+                 */
       updatePos: function (editor, elem) {
         var sel = w.getSelection(),
           range = sel.getRangeAt(0),
@@ -271,8 +271,8 @@
         transform.translate(elem, pos.x, pos.y)
       },
       /*
-               * 更新气泡以设置当前选择的活动格式。
-               */
+                 * 更新气泡以设置当前选择的活动格式。
+                 */
       updateState: function (editor, elem) {
         elem.find('button').removeClass('active')
         var sel = w.getSelection(),
@@ -295,9 +295,9 @@
         }
       },
       /*
-               * Recursively navigates upwards in the DOM to find all the format
-               * tags enclosing the selection.
-               */
+                 * Recursively navigates upwards in the DOM to find all the format
+                 * tags enclosing the selection.
+                 */
       checkForFormatting: function (currentNode, formats) {
         var validFormats = ['b', 'i', 'u', 'h1', 'h2', 'ol', 'ul', 'li', 'a', 'span']
         if (currentNode.nodeName === '#text' ||
@@ -560,10 +560,10 @@
         actions.removePlaceholder.call(this)
 
         /*
-                   * This breaks the undo when the whole text is deleted but so far
-                   * it is the only way that I fould to solve the more serious bug
-                   * that the editor was losing the p elements after deleting the whole text
-                   */
+                     * This breaks the undo when the whole text is deleted but so far
+                     * it is the only way that I fould to solve the more serious bug
+                     * that the editor was losing the p elements after deleting the whole text
+                     */
         if (/^\s*$/.test($(this).text())) {
           $(this).empty()
           utils.html.addTag($(this), 'p', true, true)
@@ -686,7 +686,7 @@
         undo: function (e) {
           e.preventDefault()
           d.execCommand('undo', false)
-          var sel = w.getSelection(),
+          let sel = w.getSelection(),
             range = sel.getRangeAt(0),
             boundary = range.getBoundingClientRect()
           $(document).scrollTop($(document).scrollTop() + boundary.top)
@@ -694,20 +694,15 @@
         },
         span: function (e) {
           e.preventDefault()
-          // d.execCommand('StrikeThrough', false)
-          let $this = $(window.getSelection().anchorNode.parentNode)
-          if ($this.is('span')) {
-            $(window.getSelection().anchorNode).unwrap()
-          } else {
-            let sid = new Date().getTime()
-            d.execCommand('BackColor', false, '#ffe9a8')
-            $(window.getSelection().anchorNode.parentNode).attr('data-id', 'comment-' + sid)
-            $(window.getSelection().anchorNode.parentNode).addClass('comment-extra-inner-span')
-          }
+          let sid = new Date().getTime()
+          let cid = 'comment-' + sid
+          document.cookie = 'notebook = ' + cid + ''
+          d.execCommand('BackColor', false, '#ffe9a8')
+          $(window.getSelection().anchorNode.parentNode).attr('data-id', cid)
+          $(window.getSelection().anchorNode.parentNode).addClass('comment-extra-inner-span')
           bubble.update.call(this)
           events.change.call(this)
-          /* let txt = window.getSelection ? window.getSelection() : document.selection.createRange().text;
-          console.log(txt) comment-extra-inner-span */
+          $('.jquery-notebook').removeClass('active')
         }
       },
       enterKey: function (e) {
@@ -765,10 +760,14 @@
         }, 500)
       },
       change: function (e) {
-        var contentArea = $('#jquery-notebook-content-' + $(this).attr('data-jquery-notebook-id'))
+        let contentArea = $('#jquery-notebook-content-' + $(this).attr('data-jquery-notebook-id'))
         contentArea.val($(this).html())
-        var content = contentArea.val()
-        var changeEvent = new CustomEvent('contentChange', {'detail': {'content': content}})
+        let content = contentArea.val()
+        let changeEvent = new CustomEvent('contentChange', {
+          'detail': {
+            'content': content,
+            id: document.cookie.split(';')[0].split('=')[1] }
+        })
         this.dispatchEvent(changeEvent)
       }
     }
