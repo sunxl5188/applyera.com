@@ -110,7 +110,7 @@
                                         </ul>
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <div class="list-group-box bda borderRadius">
+                                        <div class="list-group-box bda fillet-8">
                                             <div class="list-group pl-15 pr-15">
                                                 <div class="clearfix form-search bdb  pl-15 pr-15"
                                                      style="margin:0 -15px;">
@@ -157,7 +157,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="schoolMajor2">
-                                <div class="list-group pl-15 pr-15 bda borderRadius">
+                                <div class="list-group pl-15 pr-15 bda fillet-8">
                                     <div class="row bdb" v-for="(item, i) in ActiveArr" :key="i">
                                         <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                             <div class="checkbox">

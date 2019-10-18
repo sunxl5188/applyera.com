@@ -31,7 +31,10 @@ $font-color:(
 
 .bgGray{background:#f1f2f7;}
 
-.borderRadius{-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;}
+
+@for $i from 1 through 7 {
+	.fillet-#{$i + 3}{-webkit-border-radius:$i+3+px;-moz-border-radius:$i+3+px;border-radius:$i+3+px;}
+}
 
 .vl-notify{z-index:9999999 !important;}
 
