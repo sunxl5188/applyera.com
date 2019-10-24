@@ -106,7 +106,7 @@
                                     <i class="iconfont cded" v-if="item.is_return_val===1">&#xe719;</i>
                                     <i class="iconfont cf00" v-if="item.is_return_val===2">&#xe606;</i>
                                 </div>
-                                <span>资料接收(<span v-if="item.is_return_val===0">等待</span><span
+                                <span>回执(<span v-if="item.is_return_val===0">等待</span><span
                                         v-if="item.is_return_val===1">收到回执</span><span
                                         v-if="item.is_return_val===2">没收到</span>)</span>
                             </div>
@@ -116,7 +116,7 @@
                                     <i class="iconfont cded" v-if="item.is_interview_val===1">&#xe719;</i>
                                     <i class="iconfont cf00" v-if="item.is_interview_val===2">&#xe606;</i>
                                 </div>
-                                <span>资料接收(<span v-if="item.is_interview_val===0">等待中</span><span
+                                <span>面试(<span v-if="item.is_interview_val===0">等待中</span><span
                                         v-if="item.is_interview_val===1">通过</span><span
                                         v-if="item.is_interview_val===2">不通过</span>)</span>
                             </div>
@@ -126,7 +126,7 @@
                                     <i class="iconfont cded" v-if="item.res===1">&#xe719;</i>
                                     <i class="iconfont cf00" v-if="item.res===2">&#xe606;</i>
                                 </div>
-                                <span>资料接收(<span v-if="item.res===0">等待</span><span
+                                <span>结果(<span v-if="item.res===0">等待</span><span
                                         v-if="item.res===1">offer</span><span v-if="item.res===2">拒信</span>)</span>
                             </div>
                         </div>

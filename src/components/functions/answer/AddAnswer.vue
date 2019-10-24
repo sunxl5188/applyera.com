@@ -137,7 +137,7 @@
                                              contenteditable="false">
                                             {{items.content}}
                                         </div>
-                                        <div class="editBtn" v-show="item[0]['solve_status']===0">
+                                        <div class="editBtn" v-show="item[0]['solve_status']===0" v-if="items.is_self===1">
                                             <a href="javascript:void(0);" class="cded edit">编辑</a>
                                             <a href="javascript:void(0);" class="cded save hidden">保存</a>
                                             · <a href="javascript:void(0);" class="cded" @click="delComment(items.id, 'del', items.front_code)">删除</a>

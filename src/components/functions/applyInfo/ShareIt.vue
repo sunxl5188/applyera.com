@@ -13,7 +13,7 @@
                     <div class="clearfix bda pad-15" id="copyContent">
                         <p>登录帐号：{{info.acc}}</p>
                         <p>登录密码： {{info.pwd}}</p>
-                        <p>登录地址：{{webSite}}/login?cid={{info.cid}}&aid={{info.aid}}</p>
+                        <p>登录地址：{{webSite}}/login?cid={{info.cid}}</p>
                     </div>
                     <div class="clearfix text-center pt-20">
                         <button type="button" class="btn btn-primary copyBtn" data-clipboard-target="#copyContent"
