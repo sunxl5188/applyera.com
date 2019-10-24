@@ -135,7 +135,7 @@
                         <p v-if="item.is_res_upload===0"><a href="javascript:void(0);" class="c999">查看回执</a> <a
                                 href="javascript:void(0);" class="c999">下载回执</a></p>
                         <p v-if="item.is_res_upload===1"><a href="javascript:void(0);" class="cded"
-                                                            @click="viewImg(item.res_upload)">查看回执</a><a
+                                                            @click="viewImg(item.res_upload)">查看回执</a> <a
                                 :href="url+'/Institution/Apply/showReturn?id='+item.id" class="cded ml-10"
                                 target="_blank">下载回执</a></p>
                         <p v-if="item.is_return_upload===0"><a href="javascript:void(0);" class="c999">申请结果</a> <a
