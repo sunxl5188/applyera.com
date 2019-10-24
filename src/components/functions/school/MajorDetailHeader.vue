@@ -8,7 +8,7 @@
                 </div>
                 <div class="row lh24 c999">
                      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                         <span>所属院校：{{schoolInfo.schoolname}}</span>
+                         <span>所属院校：<router-link :to="{path:'/functions/schoollist/SchollDetail?id=US1&tab=1',query:{id:schoolInfo.school_unq_id,tab:1}}" class="cded">{{schoolInfo.schoolname}}</router-link></span>
                      </div>
                      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                          <span class="textOver">所属学院：<span v-if="schoolInfo.college_cn!=='-'">{{schoolInfo.college_cn}} / {{schoolInfo.college_en}}</span></span>

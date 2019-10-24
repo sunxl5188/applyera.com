@@ -52,19 +52,19 @@
                 <div class="row">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><font class="cf00">*</font>邮箱</label>
+                            <label class="col-sm-4 control-label">邮箱</label>
                             <div class="col-sm-8 lh34" v-text="list.email"></div>
                         </div>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><font class="cf00">*</font>佣金比例(%)</label>
+                            <label class="col-sm-4 control-label">佣金比例(%)</label>
                             <div class="col-sm-8 lh34" v-text="list.commission_rate"></div>
                         </div>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><font class="cf00">*</font>公司/工作室</label>
+                            <label class="col-sm-4 control-label">公司/工作室</label>
                             <div class="col-sm-8 lh34" v-text="list.type === 1 ? '公司': '工作室'"></div>
                         </div>
                     </div>
@@ -98,13 +98,35 @@
                             <div class="col-sm-8 lh34" v-text="list.create_time"></div>
                         </div>
                     </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">最高账号数量</label>
+                            <div class="col-sm-8 lh34">{{list.max_account}}</div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">有效期至</label>
+                            <div class="col-sm-8 lh34">{{list.service_deadline}}</div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">地址</label>
-                    <div class="col-sm-11 lh34" v-text="prov + city + area + ' ' +list.address"></div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">套餐名</label>
+                            <div class="col-sm-8 lh34">{{list.service_type}}</div>
+                        </div>
+                    </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">地址</label>
+                            <div class="col-sm-8 lh34" v-text="prov + city + area + ' ' +list.address"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="col-sm-1 control-label">备注信息</label>
                     <div class="col-sm-11 lh34" v-text="list.remark"></div>

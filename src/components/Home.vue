@@ -706,7 +706,7 @@ export default {
           },
           color: ['#f28770', '#01b1ee', '#30c67d', '#9f88ec'],
           legend: {
-            right: '10%',
+            right: '1%',
             top: '28%',
             height: 120,
             orient: 'vertical',
@@ -745,8 +745,8 @@ export default {
             {
               name: '数据表',
               type: 'pie',
-              radius: [15, 100],
-              center: ['30%', '50%'],
+              radius: [25, 100],
+              center: ['18%', '50%'],
               roseType: 'radius',
               label: {
                 normal: {

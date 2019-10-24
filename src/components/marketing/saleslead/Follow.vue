@@ -63,7 +63,13 @@
         </tbody>
       </table>
     </div>
-
+    <div class="clearfix pb-15">
+      <div class="pull-left lh34">共 <span class="cded">{{total}}</span> 条线索</div>
+      <div class="pull-right">
+        <button type="button" class="btn btn-default ml-10" @click="deleteList()">删除</button>
+        <button type="button" class="btn btn-default ml-10" @click="settlement()">结算</button>
+      </div>
+    </div>
     <table class="table table-customize">
       <thead>
       <tr>
@@ -83,7 +89,7 @@
       </thead>
       <tbody>
       <tr v-for="(item, i) in list" :key="i" v-if="!loading">
-        <td><input type="checkbox" name="id[]" value=""></td>
+        <td><input type="checkbox" :value="item.id" @click="setActiveId($event, item.id)"></td>
         <td>
           <a href="javascript:void(0);" class="cded" v-html="highlight(item.name, keyword)"></a>
         </td>
@@ -94,9 +100,10 @@
         <td>
           <span :style="'color:'+item.status_color+';'">{{item.status_name}}</span>
           <span v-if="item.sub_name">
-                        <a href="javascript:void(0);" @click="viewDetail(item.id)" v-if="item.sub_name==='(查看明细)'">{{item.sub_name}}</a>
-                        <a href="javascript:void(0);" @click="review(item.id)" v-if="item.sub_name==='(审核线索)'">{{item.sub_name}}</a>
-                    </span>
+            <a href="javascript:void(0);" @click="viewDetail(item.id)" v-if="item.sub_name==='(查看明细)'">{{item.sub_name}}</a>
+            <a href="javascript:void(0);" @click="review(item.id)" v-if="item.sub_name==='(审核线索)'">{{item.sub_name}}</a>
+            <a href="javascript:void(0);" @click="review(item.id)" v-if="item.sub_name==='(编辑)'">{{item.sub_name}}</a>
+          </span>
         </td>
       </tr>
       <tr v-if="loading">
@@ -248,6 +255,7 @@ export default {
   data () {
     return {
       loading: true,
+      activeId: [],
       keyword: '',
       type: 1,
       start_time: '',
@@ -366,7 +374,7 @@ export default {
         if (res.status === 1) {
           self.reDetail = {}
           self.pageChange(self.current)
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
+          self.layer.alert(res.msg, { icon: 1 }, function (i) {
             $('#modal-id').modal('hide')
             self.layer.close(i)
           })
@@ -404,6 +412,72 @@ export default {
         $this.removeClass('hiddenS')
         $('.btn-Collapse').html('收起筛选<i class="iconfont">&#xe688;</i>')
       }
+    },
+    // 设置选中ID
+    setActiveId (event, id) {
+      let self = this
+      if (event.currentTarget.checked) {
+        self.activeId.push(id)
+      } else {
+        self.activeId.map((item, i) => {
+          if (item === id) {
+            self.activeId.splice(i, 1)
+          }
+        })
+      }
+    },
+    // 删除
+    deleteList () {
+      let self = this
+      if (self.activeId.length === 0) {
+        self.layer.alert('请选择要操作的学生编号', { icon: 2 })
+        return false
+      }
+      self.layer.confirm('您确定要删除此信息？', {
+        shadeClose: false
+      }, function (i) {
+        self.layer.close(i)
+        let params = new URLSearchParams()
+        self.activeId.map(item => {
+          params.append('ids[]', item)
+        })
+        db.postRequest('/Institution/SourceSubmit/stuDel', params).then(res => {
+          if (res.status === 1) {
+            self.layer.alert(res.msg, { icon: 1 }, function (i) {
+              self.layer.close(i)
+              self.pageChange(self.current)
+            })
+          } else {
+            self.layer.alert(res.msg, {
+              icon: 2
+            })
+          }
+        })
+      })
+    },
+    // 结算
+    settlement () {
+      let self = this
+      if (self.activeId.length === 0) {
+        self.layer.alert('请选择要操作的学生编号', { icon: 2 })
+        return false
+      }
+      let params = new URLSearchParams()
+      self.activeId.map(item => {
+        params.append('ids[]', item)
+      })
+      db.postRequest('/Institution/SourceSubmit/stuPaycomm', params).then(res => {
+        if (res.status === 1) {
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+            self.pageChange(self.current)
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
     }
   },
   components: {
@@ -413,11 +487,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.filterFollow{
-  -webkit-transition: all .3s ease 0s;-moz-transition: all .3s ease 0s;-ms-transition: all .3s ease 0s;transition: all .3s ease 0s;
-  &.hiddenS{height:1px !important;overflow:hidden;}
-  & table{margin-bottom:0;}
+.filterFollow {
+  -webkit-transition:all .3s ease 0s;-moz-transition:all .3s ease 0s;-ms-transition:all .3s ease 0s;transition:all .3s ease 0s;
+
+  &.hiddenS {height:1px !important;overflow:hidden;}
+
+  & table {margin-bottom:0;}
 }
+
 .filter {
   & tbody tr td {padding-top:10px;padding-bottom:10px;border:none;}
 

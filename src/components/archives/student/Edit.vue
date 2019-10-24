@@ -35,7 +35,10 @@
                   </div>
                   <div class="clearfix pl-50">
                     <div class="clearfix lh26 c999">
-                      <span>学生类型</span><span class="ml-10">{{student_types}}</span>
+                      <span>学生类型</span>
+                      <span class="ml-10" v-for="(item, i) in student_type" :key="i" v-if="item.id === header_info.stu_type">
+                        {{item.stu_type}}
+                      </span>
                     </div>
                     <div class="clearfix lh26 c999">
                       <span>当前状态</span><span class="ml-10">
@@ -179,7 +182,7 @@
                         <td width="20%">{{item.status}}</td>
                         <td>
                           <router-link
-                              :to="{path:'/functions/initApply/add',query:{id:item.apply_material_id}}"
+                              :to="{path:'/functions/applyInfo/detail',query:{id:item.apply_material_id}}"
                               class="cded">{{item.apply_num}}
                           </router-link>
                         </td>
@@ -350,61 +353,42 @@
                              @keyup.enter="sendFollow" id="contact_content"></div>
                       </div>
 
-                      <div class="form-group">
-                        <div class="col-sm-9">
-                          <span id="next_contact_time" contenteditable="true" data-placeholder="设置跟进"></span>
-                          <div class="dropdown" style="display: inline-block;">
-                            <i :class="repeat!==0?'iconfont font20 cded':'iconfont font20 c999'"
-                               style="cursor:pointer;"
-                               data-toggle="dropdown">&#xe8bf;</i>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                              <li @click="repeat=0" :class="repeat===0?'po_re active':'po_re'"><a
-                                  href="javascript:void(0);">不重复</a></li>
-                              <li @click="repeat=1" :class="repeat===1?'po_re active':'po_re'"><a
-                                  href="javascript:void(0);">每天重复</a></li>
-                              <li @click="repeat=2" :class="repeat===2?'po_re active':'po_re'"><a
-                                  href="javascript:void(0);">每周重复</a></li>
-                              <li @click="repeat=3" :class="repeat===3?'po_re active':'po_re'"><a
-                                  href="javascript:void(0);">每月重复</a></li>
-                              <li @click="repeat=4" :class="repeat===4?'po_re active':'po_re'"><a
-                                  href="javascript:void(0);">每年重复</a></li>
-                              <li @click="repeat=5" :class="repeat===5?'po_re active':'po_re'"><a
-                                  href="javascript:void(0);">工作日重复</a></li>
-                            </ul>
-                          </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-9">
+                                                    <span id="next_contact_time" contenteditable="true"
+                                                          data-placeholder="设置跟进"></span>
+                                                    <div class="dropdown" style="display: inline-block;">
+                                                        <i :class="repeat!==0?'iconfont font20 cded':'iconfont font20 c999'"
+                                                           style="cursor:pointer;"
+                                                           data-toggle="dropdown">&#xe8bf;</i>
+                                                        <ul class="dropdown-menu dropdown-menu-right">
+                                                            <li @click="setRepeat(item.val, 1)"
+                                                                :class="repeat===item.val?'po_re active':'po_re'"
+                                                                v-for="(item, i) in repeatArr" :key="i">
+                                                                <a href="javascript:void(0);">{{item.title}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
 
-                          <div class="dropdown" style="display: inline-block;">
-                            <i :class="remind!==0?'iconfont font20 cded':'iconfont font20 c999'"
-                               style="cursor:pointer;"
-                               data-toggle="dropdown">&#xe6b4;</i>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                              <li @click="remind=0" :class="remind===0?'active':''"><a
-                                  href="javascript:void(0);">关闭提醒</a>
-                              </li>
-                              <li @click="remind=1" :class="remind===1?'active':''"><a
-                                  href="javascript:void(0);">开始时提醒</a>
-                              </li>
-                              <li @click="remind=2" :class="remind===2?'active':''"><a
-                                  href="javascript:void(0);">5分钟提醒</a>
-                              </li>
-                              <li @click="remind=3" :class="remind===3?'active':''"><a
-                                  href="javascript:void(0);">15分钟提醒</a>
-                              </li>
-                              <li @click="remind=4" :class="remind===4?'active':''"><a
-                                  href="javascript:void(0);">30分钟提醒</a>
-                              </li>
-                              <li @click="remind=5" :class="remind===5?'active':''"><a
-                                  href="javascript:void(0);">1小时前</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div class="col-sm-3 text-right">
-                          <a href="javascript:void(0);" class="cded"
-                             @click="sendFollow">发布</a>
-                        </div>
-                      </div>
-                    </form>
+                                                    <div class="dropdown" style="display: inline-block;">
+                                                        <i :class="remind!==0?'iconfont font20 cded':'iconfont font20 c999'"
+                                                           style="cursor:pointer;"
+                                                           data-toggle="dropdown">&#xe6b4;</i>
+                                                        <ul class="dropdown-menu dropdown-menu-right">
+                                                            <li @click="setRepeat(item.val, 2)"
+                                                                :class="remind===item.val?'active':''"
+                                                                v-for="(item, i) in remindArr" :key="i">
+                                                                <a href="javascript:void(0);">{{item.title}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3 text-right">
+                                                    <a href="javascript:void(0);" class="cded"
+                                                       @click="sendFollow">发布</a>
+                                                </div>
+                                            </div>
+                                        </form>
 
                   </div>
                 </div>
@@ -1059,7 +1043,23 @@ export default {
       fid: [],
       signStatusArr: [],
       repeat: 0,
-      remind: 0
+      remind: 0,
+      repeatArr: [
+        { title: '不重复', val: '0' },
+        { title: '每天重复', val: '1' },
+        { title: '每周重复', val: '2' },
+        { title: '每月重复', val: '3' },
+        { title: '每年重复', val: '4' },
+        { title: '工作日重复', val: '5' }
+      ],
+      remindArr: [
+        { title: '关闭提醒', val: '0' },
+        { title: '开始时提醒', val: '1' },
+        { title: '5分钟提醒', val: '2' },
+        { title: '15分钟提醒', val: '3' },
+        { title: '30分钟提醒', val: '4' },
+        { title: '1小时前', val: '5' }
+      ]
     }
   },
   computed: {
@@ -1552,6 +1552,20 @@ export default {
           return -1
         } else {
           return 0
+        }
+      }
+    },
+    setRepeat (val, type) {
+      let self = this
+      let nextContactTime = $('#next_contact_time').text()
+      if (nextContactTime === '') {
+        self.layer.alert('请先设置跟进时间', { icon: 2 })
+      } else {
+        if (type === 1) {
+          self.repeat = val
+        }
+        if (type === 2) {
+          self.remind = val
         }
       }
     }

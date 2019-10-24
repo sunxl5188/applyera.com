@@ -48,7 +48,7 @@
                                        v-model="list.name"
                                        v-validate="'required'"/>
                                 <div class="validateTip" v-show="errors.has('name')">
-                                    {{ errors.first("name") }}
+                                    {{ errors.first('name') }}
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                                        v-model="list.phone"
                                        v-validate="'required|mobile'"/>
                                 <div class="validateTip" v-show="errors.has('phone')">
-                                    {{ errors.first("phone") }}
+                                    {{ errors.first('phone') }}
                                 </div>
                             </div>
                         </div>
@@ -72,35 +72,28 @@
                 <div class="row">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><font class="cf00">*</font>邮箱</label>
+                            <label class="col-sm-4 control-label">邮箱</label>
                             <div class="col-sm-8">
                                 <input type="text" name="email" class="form-control" placeholder=""
-                                       v-model="list.email"
-                                       v-validate="'required|email'"/>
-                                <div class="validateTip" v-show="errors.has('email')">
-                                    {{ errors.first("email") }}
-                                </div>
+                                       v-model="list.email"/>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><font class="cf00">*</font>佣金比例(%)</label>
+                            <label class="col-sm-4 control-label">佣金比例(%)</label>
                             <div class="col-sm-8">
                                 <input type="text" name="commission_rate" class="form-control" placeholder=""
-                                       v-model="list.commission_rate"
-                                       v-validate="'required'"/>
-                                <div class="validateTip" v-show="errors.has('commission_rate')">
-                                    {{ errors.first("commission_rate") }}
-                                </div>
+                                       v-model="list.commission_rate"/>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><font class="cf00">*</font>公司/工作室</label>
+                            <label class="col-sm-4 control-label">公司/工作室</label>
                             <div class="col-sm-8">
-                                <select name="type" class="form-control" @change="typeChange($event)">
+                                <select name="type" class="form-control selectpicker show-tick"
+                                        @change="typeChange($event)">
                                     <option value="1" :selected="type===1">公司</option>
                                     <option value="2" :selected="type===2">工作室</option>
                                 </select>
@@ -150,41 +143,44 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">地址</label>
-                    <div class="col-sm-11">
-                        <div class="row">
-                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                <select name="province_id" class="form-control" @change="cityChange($event, 1)">
-                                    <option value="">请选择</option>
-                                    <option :value="op.id" v-for="(op,i) in prov" :key="i"
-                                            :selected="op.id === list.province_id">{{op.title}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                <select name="city_id" class="form-control" @change="cityChange($event, 2)">
-                                    <option value="">请选择</option>
-                                    <option :value="op.id" v-for="(op,i) in city" :key="i" :selected="op.id === list.city_id">
-                                        {{op.title}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                <select name="area_id" class="form-control" @change="cityChange($event, 3)">
-                                    <option value="">请选择</option>
-                                    <option :value="op.id" v-for="(op,i) in area" :key="i" :selected="op.id === list.area_id">
-                                        {{op.title}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <input type="text" name="address" class="form-control" placeholder="详细地址"
-                                       v-model="list.address">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">最高账号数量</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="max_account" v-model="max_account" class="form-control"
+                                       placeholder="请输入">
                             </div>
                         </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">有效期至</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="service_deadline" v-model="service_deadline" id="times"
+                                       class="form-control" placeholder="请选择">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">套餐名</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="service_type" v-model="service_type" class="form-control"
+                                       placeholder="请输入">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">地址</label>
+                    <div class="col-sm-11 addressInline">
+                        <CitySelect :p="list.province_id" :c="list.city_id" :a="list.area_id" pName='province_id'
+                                    cName='area_id' aName='area_id' @cityCallback="cityCallback"></CitySelect>
+                        <input type="text" name="address" class="form-control" placeholder="详细地址"
+                               style="display:inline-block;width:auto;vertical-align: middle;min-width:260px;"
+                               v-model="list.address">
                     </div>
                 </div>
 
@@ -209,11 +205,12 @@
 </template>
 
 <script>
+import 'bootstrap-select'
+import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import CitySelect from '@#/shared/CitySelect'
 import AgencyTabs from '@/components/admin/agency/AgencyTabs'
-import city from '@@/js/cityjsonNew.json'
 import db from '@~/js/request'
 import store from '@/vuex/Store'
-let citylist = city.citylist
 
 export default {
   name: 'EditAgency',
@@ -228,52 +225,15 @@ export default {
       oldBank: [],
       picList: [],
       logo: {},
-      bank_account: ''
+      bank_account: '',
+      max_account: '',
+      service_deadline: '',
+      service_type: ''
     }
   },
   computed: {
     token () {
       return store.state.token
-    },
-    prov () {
-      let provArr = []
-      for (let i = 0; i < citylist.length; i++) {
-        provArr.push({
-          id: citylist[i]['area_id'],
-          title: citylist[i]['title'],
-          pinyin: citylist[i]['pinyin']
-        })
-      }
-      return provArr
-    },
-    city () {
-      let self = this
-      let cityArr = []
-      let index = (self.pIndex) ? self.pIndex : 0
-      let data = citylist[index]['child']
-      for (let i = 0; i < data.length; i++) {
-        cityArr.push({
-          id: data[i]['area_id'],
-          title: data[i]['title'],
-          pinyin: data[i]['pinyin']
-        })
-      }
-      return cityArr
-    },
-    area () {
-      let self = this
-      let areaArr = []
-      let pindex = (self.pIndex) ? self.pIndex : 0
-      let cindex = (self.cIndex) ? self.cIndex : 0
-      let data = citylist[pindex]['child'][cindex]['child']
-      for (let i = 0; i < data.length; i++) {
-        areaArr.push({
-          id: data[i]['area_id'],
-          title: data[i]['title'],
-          pinyin: data[i]['pinyin']
-        })
-      }
-      return areaArr
     }
   },
   mounted () {
@@ -283,9 +243,7 @@ export default {
       setTimeout(function () {
         let params = new URLSearchParams()
         params.append('id', id)
-        db.getRequest('Institution/Company/detail', {
-          id: id
-        }).then(res => {
+        db.getRequest('Institution/Company/detail', params).then(res => {
           if (res.status === 1) {
             self.list = res.data
             self.oldBank = res.data.bank_cards
@@ -293,21 +251,23 @@ export default {
             self.picList = res.data.uploads
             self.logo = res.data.logo
             self.bank_account = res.data.bank_account
-
-            for (let i = 0; i < citylist.length; i++) {
-              if (citylist[i].area_id === res.data.province_id) {
-                self.pIndex = i
-                for (let ii = 0; ii < citylist[i]['child'].length; ii++) {
-                  if (citylist[i]['child'][ii]['area_id'] === res.data.city_id) {
-                    self.cIndex = ii
-                  }
-                }
-              }
-            }
+            self.max_account = res.data.max_account
+            self.service_deadline = res.data.service_deadline
+            self.service_type = res.data.service_type
           } else {
-            self.layer.alert(res.msg, {icon: 2})
+            self.layer.alert(res.msg, { icon: 2 })
           }
           self.loading = false
+          setTimeout(function () {
+            $('.selectpicker').selectpicker()
+            self.laydate.render({
+              elem: '#times',
+              type: 'datetime',
+              done: (value) => {
+                self.service_deadline = value
+              }
+            })
+          }, 200)
         })
       }, 500)
     })
@@ -356,12 +316,12 @@ export default {
           }
           db.postRequest('Institution/Company/edit', params).then(res => {
             if (res.status === 1) {
-              self.layer.alert(res.msg, function (e) {
+              self.layer.alert(res.msg, {icon: 1}, function (e) {
                 self.layer.close(e)
                 self.$router.push('/admin/agency')
               })
             } else {
-              self.layer.alert(res.msg, {icon: 2})
+              self.layer.alert(res.msg, { icon: 2 })
             }
           })
         }
@@ -370,14 +330,15 @@ export default {
     setChildForm (params, childFormData) {
       this.childForm = params
       this.childFormData = childFormData
-    }
+    },
+    cityCallback (data) {}
   },
   components: {
-    AgencyTabs
+    CitySelect, AgencyTabs
   }
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.addressInline > div {display:inline-block !important;}
 </style>
