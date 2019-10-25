@@ -182,7 +182,7 @@
 
                         <div class="pt-15" v-if="exam.is_academic_score">
                             <!--GRE-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.gre" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.gre" :key="'gre'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -320,7 +320,7 @@
                             </div>
 
                             <!--GRE Subject-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.gre_subject" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.gre_subject" :key="'gresb'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -404,7 +404,7 @@
                             </div>
 
                             <!--GMAT-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.gmat" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.gmat" :key="'gmat'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -552,9 +552,8 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!--SAT-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.sat" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.sat" :key="'sat'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -614,9 +613,8 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!--SAT Subject-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.sat_subject" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.sat_subject" :key="'satsb'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -669,7 +667,7 @@
                             </div>
 
                             <!--高考-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.college_enter_exam" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.college_enter_exam" :key="'gk'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -767,7 +765,7 @@
                             </div>
 
                             <!--ACT-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.act" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.act" :key="'act'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -840,7 +838,7 @@
                             </div>
 
                             <!--A-Level-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.a_level" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.a_level" :key="'al'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -886,7 +884,7 @@
                                 </div>
                             </div>
                             <!--O-Level-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.o_level" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.o_level" :key="'ol'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -935,7 +933,7 @@
                             </div>
 
                             <!--GCSE-->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.gcse" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.gcse" :key="'gcse'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -975,7 +973,7 @@
                             </div>
 
                             <!--BTEC--->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.btec" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.btec" :key="'btse'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
@@ -1019,7 +1017,7 @@
                             </div>
 
                             <!--IB--->
-                            <div class="clearfix elementList" v-for="(item, i) in exam.ib" :key="i">
+                            <div class="clearfix elementList" v-for="(item, i) in exam.ib" :key="'ib'+i">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">

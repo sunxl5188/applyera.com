@@ -7,13 +7,13 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                     <div class="form-group">
-                        <button type="button" class="btn btn-default ml-10" @click="sendStudent()"><i class="iconfont">&#xe62c;</i>
+                        <button type="button" class="btn btn-default ml-10" v-if="status===0" @click="sendStudent()"><i class="iconfont">&#xe62c;</i>
                             分享
                         </button>
-                        <button type="button" class="btn btn-default ml-10" @click="saveData()"><i class="iconfont">&#xe637;</i>
+                        <button type="button" class="btn btn-default ml-10" v-if="status===0" @click="saveData()"><i class="iconfont">&#xe637;</i>
                             保存
                         </button>
-                        <button type="button" class="btn btn-default ml-10" @click="submitData()"><i class="iconfont">&#xe64d;</i> 提交</button>
+                        <button type="button" class="btn btn-default ml-10" v-if="status===0" @click="submitData()"><i class="iconfont">&#xe64d;</i> 提交</button>
                         <button type="button" class="btn btn-default ml-10" @click="$router.back()"><i class="iconfont">&#xe64f;</i>
                             返回
                         </button>
@@ -32,13 +32,18 @@
                         <td class="w20 text-center bgGray">学生姓名</td>
                         <td>
                             <div class="col-sm-6">
-                                <select v-model="stu_id" class="form-control selectpicker show-tick"
-                                        data-live-search="true">
-                                    <option value="">请选择</option>
-                                    <option :value="item.id" v-for="(item, i) in studentArr" :key="i">
-                                        {{item.stu_name}}
-                                    </option>
-                                </select>
+                                <div v-if="status===0">
+                                    <select v-model="stu_id" class="form-control selectpicker show-tick"
+                                            data-live-search="true">
+                                        <option value="">请选择</option>
+                                        <option :value="item.id" v-for="(item, i) in studentArr" :key="i">
+                                            {{item.stu_name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div v-if="status===1">
+                                    <span class="textOver" :title="item.stu_name" v-for="(item, i) in studentArr" :key="i" v-if="item.id===stu_id">{{item.stu_name}}</span>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -46,11 +51,17 @@
                         <td class="w20 text-center bgGray">申报类型</td>
                         <td>
                             <div class="col-sm-6">
-                                <select v-model.number="apply_type" @change="getProfession()"
-                                        class="form-control selectpicker show-tick">
-                                    <option value="1">本科</option>
-                                    <option value="2">硕士</option>
-                                </select>
+                                <div v-if="status===0">
+                                    <select v-model.number="apply_type" @change="getProfession()"
+                                            class="form-control selectpicker show-tick">
+                                        <option value="1">本科</option>
+                                        <option value="2">硕士</option>
+                                    </select>
+                                </div>
+                                <div v-if="status===1">
+                                    <span v-if="apply_type===1">本科</span>
+                                    <span v-if="apply_type===2">硕士</span>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -58,13 +69,18 @@
                         <td class="w20 text-center bgGray">申请学校</td>
                         <td>
                             <div class="col-sm-6">
-                                <select v-model="school_unq_id" @change="getProfession()"
-                                        class="form-control selectpicker show-tick" data-live-search="true">
-                                    <option value="">请选择</option>
-                                    <option :value="item.unq_id" v-for="(item, i) in schoolArr" :key="i">
-                                        {{item.sc_name}}
-                                    </option>
-                                </select>
+                                <div v-if="status===0">
+                                    <select v-model="school_unq_id" @change="getProfession()"
+                                            class="form-control selectpicker show-tick" data-live-search="true">
+                                        <option value="">请选择</option>
+                                        <option :value="item.unq_id" v-for="(item, i) in schoolArr" :key="i">
+                                            {{item.sc_name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div v-if="status===1">
+                                    <span class="textOver" :title="item.sc_name" v-for="(item, i) in schoolArr" :key="i" v-if="item.unq_id===school_unq_id">{{item.sc_name}}</span>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -72,13 +88,18 @@
                         <td class="w20 text-center bgGray">申请专业</td>
                         <td>
                             <div class="col-sm-6">
-                                <select v-model="major_unq_id" @change="getTopic()"
-                                        class="form-control selectpicker show-tick" data-live-search="true">
-                                    <option value="">请选择</option>
-                                    <option :value="item.unq_id" v-for="(item, i) in professionArr" :key="i">
-                                        {{item.mj_name}}
-                                    </option>
-                                </select>
+                                <div v-if="status===0">
+                                    <select v-model="major_unq_id" @change="getTopic()"
+                                            class="form-control selectpicker show-tick" data-live-search="true">
+                                        <option value="">请选择</option>
+                                        <option :value="item.unq_id" v-for="(item, i) in professionArr" :key="i">
+                                            {{item.mj_name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div v-if="status===1">
+                                    <span class="textOver" :title="item.mj_name" v-for="(item, i) in professionArr" :key="i" v-if="item.unq_id===major_unq_id">{{item.mj_name}}</span>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -91,7 +112,7 @@
                              v-html="topic.custom_ps"></div>
                     </div>
                     <div class="clearfix bdt pt-15">
-                        <div contenteditable="true" data-placeholder="请用英文作答" id="answer_ps"
+                        <div :contenteditable="status===0?true:false" data-placeholder="请用英文作答" id="answer_ps"
                              v-html="topic.answer_ps"></div>
                     </div>
                     <div class="clearfix lh50 font16 fontB">Writing Sample</div>
@@ -100,7 +121,7 @@
                              v-html="topic.custom_ws"></div>
                     </div>
                     <div class="clearfix bdt pt-15 mt-15">
-                        <div :class="{notebook:id}" contenteditable="true" data-placeholder="请用英文作答" id="answer_ws"
+                        <div :class="{notebook:id&&status===0}" :contenteditable="status===0?true:false" data-placeholder="请用英文作答" id="answer_ws"
                              v-html="topic.answer_ws"></div>
                     </div>
                 </div>
@@ -196,6 +217,7 @@ export default {
   data () {
     return {
       id: '',
+      status: 0,
       title: '',
       stu_id: '',
       apply_type: 1,
@@ -353,6 +375,7 @@ export default {
       params.append('id', self.id)
       db.postRequest('/Institution/Document/qsEdit', params).then(res => {
         if (res.status === 1) {
+          self.status = res.data.status
           self.title = res.data.title
           self.apply_type = res.data.apply_type
           self.stu_id = res.data.ins_student_id

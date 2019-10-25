@@ -1,5 +1,5 @@
 <template>
-    <div class="form-inline" :id="id">
+    <div class="form-inline">
         <!--省市区三级联动菜单-->
         <select :name="pName" class="form-control selectpicker show-tick" data-dropup-auto="false"
                 v-model="province" @change="getCityList($event.target.selectedIndex - 1, 1);refreshSelect()">
@@ -60,7 +60,6 @@ export default {
   },
   data () {
     return {
-      id: '',
       province: this.p,
       city: this.c,
       area: this.a,
@@ -71,7 +70,6 @@ export default {
   },
   mounted () {
     let self = this
-    self.id = 'city_' + (new Date()).getTime()
     self.$nextTick(() => {
       if (self.province) {
         let i = self.arrObjIndex(self.pList, self.province)
@@ -96,17 +94,25 @@ export default {
     },
     getCityList (i, type) {
       let self = this
-      if (type === 1) {
+      if (i >= 0) {
+        if (type === 1) {
+          self.city = ''
+          self.area = ''
+          self.cList = []
+          self.aList = []
+          self.cList = self.pList[i]['child']
+        }
+        if (type === 2) {
+          self.area = ''
+          self.aList = []
+          self.aList = self.cList[i]['child']
+        }
+      } else {
+        self.province = ''
         self.city = ''
         self.area = ''
         self.cList = []
         self.aList = []
-        self.cList = self.pList[i]['child']
-      }
-      if (type === 2) {
-        self.area = ''
-        self.aList = []
-        self.aList = self.cList[i]['child']
       }
       self.$emit('cityCallback', {
         province: self.province,
@@ -125,10 +131,9 @@ export default {
     },
     // 选择时，列表值变动时刷新select样式
     refreshSelect () {
-      let $this = $('#' + this.id)
       setTimeout(function () {
-        $this.find('.selectpicker').selectpicker('refresh')
-      }, 300)
+        $('.selectpicker').selectpicker('refresh')
+      }, 350)
     }
   }
 }
