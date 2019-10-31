@@ -147,15 +147,15 @@
                                     <td>
                                         <input type="hidden" name="majorList[]" :value="item.unq_id">
                                         <router-link
-                                                :to="{path:'/tool/schoollist/SchollDetail', query:{id:item.school_unq_id,tab:1}}"
+                                                :to="{path:'/functions/schoollist/SchollDetail', query:{id:item.school_unq_id,tab:1}}"
                                                 class="cded">学校
                                         </router-link>
                                         <router-link
-                                                :to="{path:'/tool/schoollist/majordetaila', query:{id:item.unq_id}}"
+                                                :to="{path:'/functions/schoollist/majordetaila', query:{id:item.unq_id}}"
                                                 class="cded ml-5" v-if="item.type===1">专业
                                         </router-link>
                                         <router-link
-                                                :to="{path:'/tool/schoollist/majordetailb', query:{id:item.unq_id}}"
+                                                :to="{path:'/functions/schoollist/majordetailb', query:{id:item.unq_id}}"
                                                 class="cded ml-5" v-if="item.type===2">专业
                                         </router-link>
                                     </td>

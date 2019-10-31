@@ -4,12 +4,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title text-center">请将以下信息复制给学生,学生完成填写后资料将自动录入系统</h4>
+                    <h4 class="modal-title text-center">请将以下信息复制给学生,学生可以凭账号密码查看</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="clearfix text-center lh34 pb-15" v-if="info.status===0">状态：未开始</div>
-                    <div class="clearfix text-center lh34 pb-15" v-if="info.status===1">状态：填写中</div>
-                    <div class="clearfix text-center lh34 pb-15" v-if="info.status===2">状态：已完成</div>
                     <div class="clearfix bda pad-15" id="copyContent">
                         <p>登录帐号：{{info.acc}}</p>
                         <p>登录密码： {{info.pwd}}</p>

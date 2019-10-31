@@ -323,7 +323,6 @@ export default {
           }
         })
       }, 500)
-
       // 点击上一个月、周、天
       $(document).on('click', '.fc-header-toolbar [aria-label="prev"]', function () {
         let D = new Date(calendarApi.getDate())
@@ -331,6 +330,7 @@ export default {
         MM = (MM < 10) ? '0' + MM : MM
         let Ndate = D.getFullYear() + '-' + MM
         self.getEventInfo(Ndate)
+        $('[id^="popover"]').hide()
       })
       // 点击下一个月、周、天
       $(document).on('click', '.fc-header-toolbar [aria-label="next"]', function () {
@@ -339,6 +339,7 @@ export default {
         MM = (MM < 10) ? '0' + MM : MM
         let Ndate = D.getFullYear() + '-' + MM
         self.getEventInfo(Ndate)
+        $('[id^="popover"]').hide()
       })
       // 点击头部工具栏
       $(document).on('click', '.eventType [type="checkbox"]', function () {
@@ -493,6 +494,9 @@ export default {
         $('.selectPicker').selectpicker('refresh')
       }, 500)
       self.viewTime()
+    },
+    changeMonth (start, end, current) {
+      console.log('changeMonth', start.format(), end.format(), current.format())
     },
     validateBeforeSubmit (type) {
       let self = this

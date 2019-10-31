@@ -204,7 +204,7 @@
                       <div class="dropdown">
                           <span class="iconfont c999 dropdown-toggle handPower" data-toggle="dropdown">&#xe73e;</span>
                             <ul class="dropdown-menu dropdown-menu-right">
-                              <li><router-link to="/functions/answer/addAnswer">添加文书</router-link></li>
+                              <li><router-link :to="{path:'/functions/answer/addAnswer',query:{stuId:id}}">添加文书</router-link></li>
                               <!--<li><a href="#">添加推荐信</a></li>-->
                             </ul>
                       </div>
@@ -216,14 +216,14 @@
                       <tr v-for="(item, i) in tab1.doc" :key="i">
                         <td width="20%">{{item.created_time}}</td>
                         <td>{{item.title}}</td>
-                        <td width="20%">{{item.stu_name}}</td>
+                        <td width="20%">{{item.operator_name}}</td>
                         <td width="20%">{{item.status}}</td>
                       </tr>
                       </tbody>
                     </table>
                     <div class="panel-noData" v-if="tab1.doc.length === 0">
                       <p class="c999">该学生还没有文书</p>
-                      <router-link to="/functions/answer/addAnswer" class="cded">点击前往创建文书<!--/推荐信--></router-link>
+                      <router-link :to="{path:'/functions/answer/addAnswer',query:{stuId:id}}" class="cded">点击前往创建文书<!--/推荐信--></router-link>
                     </div>
                   </div>
                 </div>

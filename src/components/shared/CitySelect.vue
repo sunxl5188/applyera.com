@@ -1,17 +1,17 @@
 <template>
     <div class="form-inline">
         <!--省市区三级联动菜单-->
-        <select :name="pName" class="form-control selectpicker show-tick" data-dropup-auto="false"
+        <select :name="pName" class="form-control selectpicker show-tick" data-dropup-auto="false" data-size="10"
                 v-model="province" @change="getCityList($event.target.selectedIndex - 1, 1);refreshSelect()">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="(item, i) in pList" :key="i">{{item.title}}</option>
         </select>
-        <select :name="cName" class="form-control selectpicker show-tick" data-dropup-auto="false"
+        <select :name="cName" class="form-control selectpicker show-tick" data-dropup-auto="false" data-size="10"
                 v-model="city" @change="getCityList($event.target.selectedIndex - 1, 2);refreshSelect()">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="(item, i) in cList" :key="i">{{item.title}}</option>
         </select>
-        <select :name="aName" class="form-control selectpicker show-tick" data-dropup-auto="false"
+        <select :name="aName" class="form-control selectpicker show-tick" data-dropup-auto="false" data-size="10"
                 v-model="area" @change="getCityList($event.target.selectedIndex - 1, 3)" v-if="aDisplay">
             <option value="">请选择</option>
             <option :value="item.area_id" v-for="(item, i) in aList" :key="i">{{item.title}}</option>

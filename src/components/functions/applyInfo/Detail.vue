@@ -301,7 +301,7 @@
                                 <div class="form-group">
                                     <select :name="'language[name]['+i+']'" class="form-control selectpicker"
                                             v-validate="'required'"
-                                            data-vv-as="语言" v-model="item.name">
+                                            data-vv-as="语言" v-model="item.name" data-size="10" data-live-search="true">
                                         <option value="">请选择</option>
                                         <option :value="items.id" v-for="(items,k) in lang" :key="k">
                                             {{items.cn}}

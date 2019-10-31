@@ -14,10 +14,10 @@
                 <div class="text-center">
                     <img :src="list.head_img" alt="" data-toggle="modal"
                          data-backdrop="static"
-                         data-target="#userFace" class="img-circle handPower" width="100" height="100" v-if="list.head_img!==''">
+                         data-target="#userFace" class="img-circle handPower" style="width: 100px;height: 100px;display: inline-block;" v-if="list.head_img!==''">
                     <img :src="'http://placehold.it/100x100'" alt="" data-toggle="modal"
                          data-backdrop="static"
-                         data-target="#userFace" class="img-circle handPower" width="100" height="100" v-if="list.head_img===''">
+                         data-target="#userFace" class="img-circle handPower" style="width: 100px;height: 100px;display: inline-block;" v-if="list.head_img===''">
                     <div class="caption">
                         <h4>{{list.user_name}}</h4>
                         <p>{{list.role_name}}</p>

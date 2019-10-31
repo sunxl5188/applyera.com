@@ -34,7 +34,7 @@
                             <div class="col-sm-6">
                                 <div v-if="status===0">
                                     <select v-model="stu_id" class="form-control selectpicker show-tick"
-                                            data-live-search="true">
+                                            data-live-search="true" data-size="15">
                                         <option value="">请选择</option>
                                         <option :value="item.id" v-for="(item, i) in studentArr" :key="i">
                                             {{item.stu_name}}
@@ -108,16 +108,16 @@
                 <div class="clearfix" v-if="topic.answer_ps">
                     <div class="clearfix lh50 font16 fontB">个人陈述</div>
                     <div class="clearfix lh22 pb-15">
-                        <div :contenteditable="id?true:false" data-placeholder="请输入个人陈述" @focusout="statementSave()"
+                        <div :contenteditable="id?true:false" data-placeholder="请输入个人陈述"
                              v-html="topic.custom_ps"></div>
                     </div>
                     <div class="clearfix bdt pt-15">
                         <div :contenteditable="status===0?true:false" data-placeholder="请用英文作答" id="answer_ps"
                              v-html="topic.answer_ps"></div>
                     </div>
-                    <div class="clearfix lh50 font16 fontB">Writing Sample</div>
+                    <div class="clearfix lh50 font16 fontB mt-30">Writing Sample</div>
                     <div class="clearfix lh22 pb-15">
-                        <div :contenteditable="id?true:false" data-placeholder="请输入个人写作" @focusout="statementSave()"
+                        <div :contenteditable="id?true:false" data-placeholder="请输入个人写作"
                              v-html="topic.custom_ws"></div>
                     </div>
                     <div class="clearfix bdt pt-15 mt-15">
@@ -196,7 +196,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="commentArr.length === 0" v-html="NoData()" class="bda fillet-4 pad-10"></div>
                     </ul>
                 </div>
             </div>
@@ -246,6 +245,7 @@ export default {
   mounted () {
     let self = this
     self.id = self.$route.query.id || ''
+    self.stu_id = self.$route.query.stuId || ''
     self.getSchoolAndStudent()
     self.$nextTick(() => {
       if (self.id !== '') {
@@ -477,35 +477,6 @@ export default {
         }
       }, 500)
     },
-    // 设置编辑器
-    setNoteBook () {
-      setTimeout(function () {
-        $('.notebook').on('contentChange', function (e) {
-          let id = e.originalEvent.detail.id
-          // let content = e.originalEvent.detail.content
-          // let index = $('.notebook').find('[data-id=' + id + ']').index()
-          $(document).on('click', function (event) {
-            let i = $(event.target)
-            if (i.closest('[data-id=' + id + ']').length === 0 && i.closest('.jquery-notebook.bubble.jump').length === 0) {
-              document.cookie = 'notebook='
-              $(this).unbind('click')
-              console.log('点击空白处，取消批注，重新加载数据')
-            }
-          })
-        })
-        $(document).on('mouseenter mouseleave', '[data-id^="comment-"]', function (event) {
-          let $id = $(this).attr('data-id')
-          // 鼠标穿过时触发
-          if (event.type === 'mouseenter') {
-            $('[data-id="' + $id + '"]').addClass('active')
-          }
-          // 鼠标离开时触发
-          if (event.type === 'mouseleave') {
-            $('[data-id="' + $id + '"]').removeClass('active')
-          }
-        })
-      }, 1000)
-    },
     // 取消批注编辑
     cancelannotion (event, type) {
       event.preventDefault()
@@ -522,15 +493,6 @@ export default {
         })
         self.commentId = ''
       }
-    },
-    // 保存个人陈述
-    statementSave () {
-      let content = $('.statementEdit').text()
-      let params = new URLSearchParams()
-      params.append('content', content)
-      db.postRequest('', params).then(res => {
-        console.log(res.msg)
-      })
     },
     // 保存当前数据
     saveData () {
@@ -551,7 +513,12 @@ export default {
           self.layer.alert(res.msg, { icon: 1 }, function (i) {
             self.layer.close(i)
             if (self.id === '') {
-              window.location.replace('/functions/answer/addAnswer?id=' + res.data)
+              let str = location.href
+              if (str.indexOf('?') >= 0) {
+                window.location.replace(str.substr(0, str.indexOf('?')) + '?id=' + res.data)
+              } else {
+                window.location.replace(str + '?id=' + res.data)
+              }
             }
           })
         } else {
