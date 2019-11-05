@@ -463,7 +463,7 @@
                                                 <div class="form-group">
                                                     <label>国家</label>
                                                     <select name="foreign_live_country"
-                                                            class="form-control selectpicker"
+                                                            class="form-control selectpicker" data-live-search="true" data-size="15"
                                                             v-model="personal.foreign_live_country">
                                                         <option value="">请选择</option>
                                                         <option :value="item.id" v-for="(item,i) in nation" :key="i">
@@ -519,7 +519,7 @@
                                                 <div class="form-group">
                                                     <label>国家</label>
                                                     <select name="foreign_identity_country"
-                                                            class="form-control selectpicker"
+                                                            class="form-control selectpicker" data-live-search="true" data-size="15"
                                                             v-model="personal.foreign_identity_country">
                                                         <option value="">请选择</option>
                                                         <option :value="item.id" v-for="(item,i) in nation" :key="i">
@@ -576,7 +576,7 @@
                                                 <div class="form-group">
                                                     <label>国家</label>
                                                     <select name="dual_nationality_country"
-                                                            class="form-control selectpicker"
+                                                            class="form-control selectpicker" data-live-search="true" data-size="15"
                                                             v-model="personal.dual_nationality_country">
                                                         <option value="">请选择</option>
                                                         <option :value="item.id" v-for="(item,i) in nation" :key="i">

@@ -689,7 +689,7 @@
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label>职业兴趣 <font class="cf00">*</font></label>
-                        <select name="career_interest" class="form-control selectpicker" v-validate="'required'"
+                        <select name="career_interest" class="form-control selectpicker" data-live-search="true" data-size="15" v-validate="'required'"
                                 data-vv-as="职业兴趣" v-model="education.career_interest">
                             <option value="">请选择职业兴趣</option>
                             <option :value="item.id" v-for="(item,i) in career" :key="i">{{item.cn}}</option>
@@ -766,7 +766,7 @@ export default {
             })
           }
         })
-      }, 1500)
+      }, 800)
     },
     validateBeforeSubmit () {
       let self = this

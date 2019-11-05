@@ -74,7 +74,7 @@ class Request {
           if (res.status === 200) {
             if (res.data.status === 402) {
               store.dispatch('logOut')
-              self.layer.alert(res.data.msg, function (i) {
+              self.layer.alert(res.data.msg, {icon: 2}, function (i) {
                 self.layer.close(i)
                 window.location.replace('/login')
               })

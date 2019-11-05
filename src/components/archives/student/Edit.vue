@@ -539,7 +539,7 @@
                 <div class="form-group">
                   <label class="col-sm-4 control-label">新负责人</label>
                   <div class="col-sm-6">
-                    <select name="adviser_id" class="form-control selectpicker"
+                    <select name="adviser_id" class="form-control selectpicker" data-size="10"
                             data-live-search="true" v-model="adviserId">
                       <option value="">请选择用户</option>
                       <option :value="item.id" v-for="(item,i) in service_adviser_list" :key="i">
@@ -1085,8 +1085,6 @@ export default {
           elem: '#next_contact_time',
           type: 'datetime'
         })
-
-        $('.selectpicker').selectpicker()
         self.createUpload()
 
         $(document).on('click', '[name="fid[]"]', function () {
@@ -1207,6 +1205,7 @@ export default {
           if (self.id === '') {
             $('#editStudentInfo').modal('show')
           }
+          $('.selectpicker').selectpicker('refresh')
         }, 1000)
       })
     },

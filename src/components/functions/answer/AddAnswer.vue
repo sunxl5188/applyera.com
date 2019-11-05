@@ -109,19 +109,19 @@
                     <div class="clearfix lh50 font16 fontB">个人陈述</div>
                     <div class="clearfix lh22 pb-15">
                         <div :contenteditable="id?true:false" data-placeholder="请输入个人陈述"
-                             v-html="topic.custom_ps"></div>
+                             v-html="topic.custom_ps" class="wordwrap"></div>
                     </div>
                     <div class="clearfix bdt pt-15">
-                        <div :contenteditable="status===0?true:false" data-placeholder="请用英文作答" id="answer_ps"
+                        <div :class="{notebook:id&&status===0}" class="wordwrap" :contenteditable="status===0?true:false" data-placeholder="请用英文作答" id="answer_ps"
                              v-html="topic.answer_ps"></div>
                     </div>
                     <div class="clearfix lh50 font16 fontB mt-30">Writing Sample</div>
                     <div class="clearfix lh22 pb-15">
-                        <div :contenteditable="id?true:false" data-placeholder="请输入个人写作"
+                        <div class="wordwrap" :contenteditable="id?true:false" data-placeholder="请输入个人写作"
                              v-html="topic.custom_ws"></div>
                     </div>
                     <div class="clearfix bdt pt-15 mt-15">
-                        <div :class="{notebook:id&&status===0}" :contenteditable="status===0?true:false" data-placeholder="请用英文作答" id="answer_ws"
+                        <div :class="{notebook:id&&status===0}" class="wordwrap" :contenteditable="status===0?true:false" data-placeholder="请用英文作答" id="answer_ws"
                              v-html="topic.answer_ws"></div>
                     </div>
                 </div>
@@ -254,7 +254,7 @@ export default {
       } else {
         setTimeout(function () {
           $('.selectpicker').selectpicker('refresh')
-        }, 500)
+        }, 1000)
       }
       $('.fullScreen .fullRight').css({ position: 'initial' })
       // 点击批注
@@ -291,16 +291,16 @@ export default {
         let txt = window.getSelection ? window.getSelection() : document.selection.createRange().text
         let x = -20
         let y = -55
-        let r = ''
         if (txt.toString() === '') {
           return false
         }
-        if (document.selection) {
-          r = document.selection.createRange().text
-        } else if (window.getSelection()) {
-          r = window.getSelection()
+        let html = $(this).html().replace(/\s/ig, '')
+        let str = txt.toString().replace(/\s/ig, '')
+        if (html.indexOf(str) < 0) {
+          self.layer.alert('选中的批注重复了，重新选择！', {icon: 2})
+          return false
         }
-        if (r !== '') {
+        if (txt !== '') {
           if ($('.notebook-tool').length === 0) {
             let tooltip = '<div class=\'notebook-tool\'><button type=\'button\'><i class=\'iconfont\'>&#xe95b;</i></button></div>'
             $('body').append(tooltip)
@@ -395,6 +395,9 @@ export default {
           })
         }
         self.setRightHeigth()
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh')
+        }, 500)
       })
     },
     // 获取学生、学校列表
@@ -495,7 +498,7 @@ export default {
       }
     },
     // 保存当前数据
-    saveData () {
+    saveData (msgFalse) {
       let self = this
       let params = new URLSearchParams()
       params.append('id', self.id)
@@ -509,6 +512,9 @@ export default {
       params.append('custom_ws', self.topic.custom_ws)
       params.append('answer_ws', $('#answer_ws').html())
       db.postRequest('/Institution/Document/qsSave', params).then(res => {
+        if (msgFalse === true) {
+          return false
+        }
         if (res.status === 1) {
           self.layer.alert(res.msg, { icon: 1 }, function (i) {
             self.layer.close(i)
@@ -573,15 +579,19 @@ export default {
       let self = this
       let $this = $(event.target)
       let content = $this.parents('.media-body').find('[data-label="content"]').text()
-      let str = $('.notebook').html()
-      let resp = str.replace(/<span class="">(.*?)<\/span>/ig, '$1')
-      let res = resp.replace(/<span style="[^\\"]*?">(.*?)<\/span>/ig, '$1')
+      let str1 = $('#answer_ps').html()
+      let resp1 = str1.replace(/<span class="">(.*?)<\/span>/ig, '$1')
+      let res1 = resp1.replace(/<span style="[^\\"]*?">(.*?)<\/span>/ig, '$1')
+      let str2 = $('#answer_ws').html()
+      let resp2 = str2.replace(/<span class="">(.*?)<\/span>/ig, '$1')
+      let res2 = resp2.replace(/<span style="[^\\"]*?">(.*?)<\/span>/ig, '$1')
       let params = new URLSearchParams()
       params.append('doc_id', self.id)
       params.append('content', content)
       if (type === 2) {
         params.append('front_code', self.commentId)
-        params.append('note_ws', res)
+        params.append('note_ps', res1)
+        params.append('note_ws', res2)
       } else {
         let commentId = $this.parents('.mediaItem').attr('data-id')
         params.append('front_code', commentId)
@@ -604,13 +614,21 @@ export default {
     // 删除批注
     delComment (id, type, cid) {
       let self = this
+      let $this = $('#answer_ps [data-id="' + cid + '"], #answer_ws [data-id="' + cid + '"]')
       let params = new URLSearchParams()
       params.append('type', type)
       params.append('note_id', id)
       params.append('action', cid)
       db.postRequest('/Institution/Document/noteAction', params).then(res => {
         if (res.status === 1) {
-          self.getComment()
+          if (res.data.del_all === 1) {
+            $this.before($this.text())
+            $this.remove()
+            self.saveData(true)
+          }
+          setTimeout(() => {
+            self.getComment()
+          }, 500)
         } else {
           self.layer.alert(res.msg, {icon: 2})
         }
@@ -785,5 +803,8 @@ export default {
             }
         }
     }
+}
+.wordwrap{
+    word-wrap: break-word; word-break: normal;
 }
 </style>

@@ -624,7 +624,7 @@ export default {
       if (M < 9) {
         MM = '0' + (M + 1)
       } else {
-        MM = M
+        MM = M + 1
       }
       if (D < 10) {
         DD = '0' + D
@@ -641,7 +641,6 @@ export default {
     },
     // 编辑修改今日等办
     getInfo (events) {
-      console.log(events)
       let self = this
       self.id = events.id
       self.title = events.title

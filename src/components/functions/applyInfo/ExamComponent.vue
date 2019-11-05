@@ -1309,7 +1309,7 @@ export default {
             })
           }
         })
-      }, 500)
+      }, 800)
     },
     validateBeforeSubmit () {
       let self = this
@@ -1331,7 +1331,7 @@ export default {
     RefreshSelect () {
       setTimeout(function () {
         $('.selectpicker').selectpicker('refresh')
-      }, 200)
+      }, 500)
     },
     // 设置单、多选样式
     setIcheck () {
@@ -1351,6 +1351,7 @@ export default {
             if (thisName !== undefined) {
               self[obj][thisName] = event.currentTarget.checked ? 1 : ''
               self.RefreshSelect()
+              self.showTimeD()
             }
           })
         })
