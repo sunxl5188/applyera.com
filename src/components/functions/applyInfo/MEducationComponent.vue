@@ -36,6 +36,7 @@
                         <div class="form-group">
                             <label>推荐人称谓 <font class="cf00">*</font></label>
                             <select :name="'rcmder[title]['+i+']'" v-model="item.title" class="form-control selectpicker show-tick" v-validate="'required'" data-vv-as="推荐人称谓">
+                                <option value="">请选择</option>
                                 <option value="Miss">Miss</option>
                                 <option value="Ms">Ms</option>
                                 <option value="Mr">Mr</option>
@@ -80,6 +81,7 @@
                                 <font class="cf00">*</font>
                             </label>
                             <select :name="'rcmder[lv]['+i+']'" v-model="item.lv" class="form-control selectpicker show-tick" v-validate="'required'" data-vv-as="推荐人优先级">
+                                <option value="">请选择</option>
                                 <option value="1">第一推荐人</option>
                                 <option value="2">第二推荐人</option>
                                 <option value="3">第三推荐人</option>

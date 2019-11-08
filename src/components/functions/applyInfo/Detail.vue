@@ -1124,19 +1124,7 @@ export default {
         drop_reason: '',
         school_name: '',
         enter_time: '',
-        rcmder: [{
-          career: '',
-          title: '',
-          relation: '',
-          phone: '',
-          email: '',
-          lv: '',
-          prov: '',
-          details: '',
-          city: '',
-          district: '',
-          name: ''
-        }]
+        rcmder: []
       },
       exam: {
         is_language_score: true,
@@ -1218,7 +1206,6 @@ export default {
           self.family = res.data.family
           self.exam = res.data.exam
           self.education = res.data.education
-
           self.studentId = res.data.student_id
           self.studentNumber = res.data.student_number
 
