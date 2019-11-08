@@ -204,6 +204,7 @@ export default {
           console.log(res.msg)
         }
         self.loading = false
+        self.current = p || 1
       })
     },
     clearData () {

@@ -105,7 +105,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <PagInAction :total="total" @pagechange="pagechange"
+                <PagInAction :total="total" :current-page="current" @pagechange="pagechange"
                              v-if="list.length > 0"></PagInAction>
             </div>
 
@@ -130,6 +130,7 @@ export default {
       type: '',
       time: '',
       status: 0,
+      current: 1,
       list: [],
       total: 0
     }
@@ -175,6 +176,7 @@ export default {
           self.layer.alert(res.msg, {icon: 2})
         }
         self.loading = false
+        self.current = p || 1
       })
     },
     clearData () {

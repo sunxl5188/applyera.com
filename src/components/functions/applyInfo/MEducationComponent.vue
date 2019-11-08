@@ -2,6 +2,129 @@
     <div>
         <form id="EducationForm" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
             <input type="hidden" name="education_type" id="education_type" value="2"/>
+            <div class="clearfix lh34 mb-15 bdb">
+                <h4>
+                    <b>推荐人</b>
+                    <span class="font14 c999">(建议您至少添加一位学术推荐人)</span>
+                    <button type="button" class="btn btn-primary btn-sm" @click="addReCommend">新增推荐人</button>
+                </h4>
+            </div>
+            <div class="clearfix" v-for="(item, i) in education.rcmder" :key="i">
+                <div class="clearfix pt-10 pb-10 mb-10 text-right bdb" v-if="i > 0">
+                    <button type="button" class="btn btn-default btn-sm" @click="delRecommend(i)">删除</button>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label>推荐人姓名 <font class="cf00">*</font></label>
+                            <input type="text" :name="'rcmder[name]['+i+']'" v-model="item.name" class="form-control" placeholder="请用英文输入推荐人姓名" v-validate="'required|ens'" data-vv-as="推荐人姓名">
+                            <div class="validateTip" v-show="errors.has('rcmder[name]['+i+']')">
+                                {{ errors.first('rcmder[name]['+i+']') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label>推荐人职位 <font class="cf00">*</font></label>
+                            <input type="text" :name="'rcmder[career]['+i+']'" v-model="item.career" class="form-control" placeholder="请用英文或拼音输入推荐人的职位名称" v-validate="'required|ens'" data-vv-as="推荐人职位">
+                            <div class="validateTip" v-show="errors.has('rcmder[career]['+i+']')">
+                                {{ errors.first('rcmder[career]['+i+']') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label>推荐人称谓 <font class="cf00">*</font></label>
+                            <select :name="'rcmder[title]['+i+']'" v-model="item.title" class="form-control selectpicker show-tick" v-validate="'required'" data-vv-as="推荐人称谓">
+                                <option value="Miss">Miss</option>
+                                <option value="Ms">Ms</option>
+                                <option value="Mr">Mr</option>
+                            </select>
+                            <div class="validateTip" v-show="errors.has('rcmder[title]['+i+']')">
+                                {{ errors.first('rcmder[title]['+i+']') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label>与我的关系 <font class="cf00">*</font></label>
+                            <input type="text" :name="'rcmder[relation]['+i+']'" v-model="item.relation" class="form-control" placeholder="请用英文或拼音输入推荐人与您的关系，如：Teacher" v-validate="'required|ens'" data-vv-as="与我的关系">
+                            <div class="validateTip" v-show="errors.has('rcmder[relation]['+i+']')">
+                                {{ errors.first('rcmder[relation]['+i+']') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label>联系电话 <font class="cf00">*</font></label>
+                            <input type="text" :name="'rcmder[phone]['+i+']'" v-model="item.phone" class="form-control" placeholder="请输入联系电话" v-validate="'required|mobile'" data-vv-as="联系电话">
+                            <div class="validateTip" v-show="errors.has('rcmder[phone]['+i+']')">
+                                {{ errors.first('rcmder[phone]['+i+']') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label>联系邮箱</label>
+                            <input type="text" :name="'rcmder[email]['+i+']'" v-model="item.email" class="form-control" placeholder="请输入联系邮箱">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label>推荐人优先级
+                                <i class="iconfont c999 handPower" title="若学校只要求一个推荐人，我们提交优先级靠前的推荐人" data-toggle="tooltip" data-placement="top">&#xe999;</i>
+                                <font class="cf00">*</font>
+                            </label>
+                            <select :name="'rcmder[lv]['+i+']'" v-model="item.lv" class="form-control selectpicker show-tick" v-validate="'required'" data-vv-as="推荐人优先级">
+                                <option value="1">第一推荐人</option>
+                                <option value="2">第二推荐人</option>
+                                <option value="3">第三推荐人</option>
+                                <option value="4">第四推荐人</option>
+                                <option value="5">第五推荐人</option>
+                            </select>
+                            <div class="validateTip" v-show="errors.has('rcmder[lv]['+i+']')">
+                                {{ errors.first('rcmder[lv]['+i+']') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class="form-group">
+                            <label>详细地址 <font class="cf00">*</font></label>
+                            <div class="form-inline" id="citys">
+                                <CitySelect
+                                        :p="item.prov"
+                                        :c="item.city"
+                                        :a="item.district"
+                                        :pName="'rcmder[prov]['+i+']'"
+                                        :cName="'rcmder[city]['+i+']'"
+                                        :aName="'rcmder[district]['+i+']'"
+                                        @cityCallback="cityCallback"/>
+                                <input type="hidden" :name="'ReDer[prov]['+i+']'" :value="item.prov" v-validate="'required'" data-vv-as="省" />
+                                <input type="hidden" :name="'ReDer[city]['+i+']'" :value="item.city" v-validate="'required'" data-vv-as="市" />
+                                <input type="hidden" :name="'ReDer[district]['+i+']'" :value="item.district" v-validate="'required'" data-vv-as="区" />
+                                <input type="text" :name="'rcmder[details]['+i+']'" v-model="item.details" class="form-control" placeholder="请用英文或拼音输入推荐人地址" v-validate="'required'" data-vv-as="详细地址">
+                                <div class="validateTip" v-show="errors.has('ReDer[prov]['+i+']')">
+                                    {{ errors.first('ReDer[prov]['+i+']') }}
+                                </div>
+                                <div class="validateTip" v-show="errors.has('ReDer[city]['+i+']')">
+                                    {{ errors.first('ReDer[city]['+i+']') }}
+                                </div>
+                                <div class="validateTip" v-show="errors.has('ReDer[district]['+i+']')">
+                                    {{ errors.first('ReDer[district]['+i+']') }}
+                                </div>
+                                <div class="validateTip" v-show="errors.has('rcmder[details]['+i+']')">
+                                    {{ errors.first('rcmder[details]['+i+']') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="clearfix lh34 mb-15 bdb"><h4><b>本科信息</b></h4></div>
 
             <div class="row">
@@ -18,9 +141,9 @@
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label>就读时间 <font class="cf00">*</font></label>
-                        <input type="text" name="enter_time" data-name="enter_time" class="form-control times"
+                        <input type="text" name="enter_time" data-name="enter_time" class="form-control times2"
                                placeholder="请输入学时间"
-                               v-validate="'required|date_format:yyyy-MM-dd'" data-vv-as="就读时间"
+                               v-validate="'required'" data-vv-as="就读时间"
                                v-model="education.enter_time">
                         <div class="validateTip" v-show="errors.has('enter_time')">
                             {{ errors.first("enter_time") }}
@@ -237,9 +360,9 @@
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
                                         <label>休学时长 </label>
-                                        <input name="drop_period" class="form-control times" data-name="drop_period"
+                                        <input name="drop_period" class="form-control" data-name="drop_period"
                                                placeholder="请选择休学时长"
-                                               v-validate="'required|date_format:yyyy-MM-dd'" data-vv-as="休学时长"
+                                               v-validate="'required'" data-vv-as="休学时长"
                                                v-model="education.drop_period">
                                         <div class="validateTip" v-show="errors.has('drop_period')">
                                             {{ errors.first("drop_period") }}
@@ -303,6 +426,7 @@
 <script>
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import CitySelect from '@#/shared/CitySelect'
 import career from '@@/json/career.json'
 import degree from '@@/json/degree.json'
 require('icheck')
@@ -318,7 +442,20 @@ export default {
   data () {
     return {
       career: career,
-      degree: degree
+      degree: degree,
+      defaultRe: {
+        career: '',
+        title: '',
+        relation: '',
+        phone: '',
+        email: '',
+        lv: '',
+        prov: '',
+        details: '',
+        city: '',
+        district: '',
+        name: ''
+      }
     }
   },
   mounted () {
@@ -326,6 +463,11 @@ export default {
     self.showTimeC()
     self.RefreshSelect()
     self.setIcheck()
+    self.$nextTick(() => {
+      $(document).on('change', '#citys select', function () {
+        self.ReIndex = $(this).attr('name').match(/[0-9]+/)[0]
+      })
+    })
   },
   methods: {
     showTimeC () {
@@ -347,6 +489,14 @@ export default {
                 self.education[element.getAttribute('name')] = value1
               }
             })
+          }
+        })
+        self.laydate.render({
+          elem: '.times2',
+          type: 'date',
+          range: true,
+          done: (value) => {
+            self.education.enter_time = value
           }
         })
       }, 1500)
@@ -394,7 +544,25 @@ export default {
           })
         })
       }, 500)
+    },
+    cityCallback (data) {
+      let self = this
+      setTimeout(function () {
+        let i = self.ReIndex
+        self.education.rcmder[i]['prov'] = data.province
+        self.education.rcmder[i]['city'] = data.city
+        self.education.rcmder[i]['district'] = data.area
+      }, 100)
+    },
+    addReCommend () {
+      this.education.rcmder.push(this.defaultRe)
+    },
+    delRecommend (i) {
+      this.education.rcmder.splice(i, 1)
     }
+  },
+  components: {
+    CitySelect
   }
 }
 </script>

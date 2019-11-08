@@ -180,6 +180,7 @@ export default {
           console.log(res.msg)
         }
         self.loading = false
+        self.current = p || 1
       })
     },
     clearData () {
@@ -217,7 +218,7 @@ export default {
       self.name = (to.name).toLocaleLowerCase()
       if (self.name === 'applyinfo') {
         setTimeout(function () {
-          self.pagechange(1)
+          self.pagechange(self.current)
         }, 500)
       }
     }

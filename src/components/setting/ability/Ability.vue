@@ -168,7 +168,7 @@ export default {
       let params = new URLSearchParams()
       params.append('title', self.title)
       params.append('number', self.number)
-      params.append('page', p)
+      params.append('page', p || 1)
       db.postRequest('Institution/Assess/index', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.list
@@ -177,6 +177,7 @@ export default {
           self.layer.alert(res.msg)
         }
         self.loading = false
+        self.current = p || 1
       })
     },
     clearData () {

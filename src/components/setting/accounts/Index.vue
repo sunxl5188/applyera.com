@@ -422,7 +422,6 @@ export default {
       let self = this
       let params = new URLSearchParams()
       self.loading = true
-      self.current = p || 1
       params.append('page', p || 1)
       params.append('department_id', self.department_id)
       db.getRequest('Institution/Account/index', params).then(res => {
@@ -435,6 +434,7 @@ export default {
           })
         }
         self.loading = false
+        self.current = p || 1
       })
     },
     validateBeforeSubmit () {

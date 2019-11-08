@@ -1,5 +1,5 @@
 <template>
-    <div class="form-inline">
+    <div class="form-inline" style="display:inline-block;">
         <!--省市区三级联动菜单-->
         <select :name="pName" class="form-control selectpicker show-tick" data-dropup-auto="false" data-size="10"
                 v-model="province" @change="getCityList($event.target.selectedIndex - 1, 1);refreshSelect()">

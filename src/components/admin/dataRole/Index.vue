@@ -163,6 +163,7 @@ export default {
           self.layer.alert(res.msg, {icon: 2})
         }
         self.loading = false
+        self.current = p || 1
       })
     },
     clearData () {

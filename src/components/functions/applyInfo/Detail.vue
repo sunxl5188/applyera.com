@@ -1123,7 +1123,20 @@ export default {
         career_planing: '',
         drop_reason: '',
         school_name: '',
-        enter_time: ''
+        enter_time: '',
+        rcmder: [{
+          career: '',
+          title: '',
+          relation: '',
+          phone: '',
+          email: '',
+          lv: '',
+          prov: '',
+          details: '',
+          city: '',
+          district: '',
+          name: ''
+        }]
       },
       exam: {
         is_language_score: true,

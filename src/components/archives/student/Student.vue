@@ -354,6 +354,7 @@ export default {
       let self = this
       let params = new URLSearchParams()
       self.list = []
+      self.loading = true
       params.append('student_name', self.student_name)
       params.append('student_type', self.student_type)
       params.append('student_status', self.student_status)

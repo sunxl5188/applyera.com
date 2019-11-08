@@ -57,7 +57,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <PagInAction :total="total" :currentPage="currentPage" @pagechange="pagechange"></PagInAction>
+                <PagInAction :total="total" :current-page="currentPage" @pagechange="pagechange"></PagInAction>
             </div>
         </div>
         <router-view></router-view>
