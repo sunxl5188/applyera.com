@@ -112,6 +112,7 @@
                                          v-if="userInfo.access.function.child[2]===1">申请资料
                             </router-link>
                             <router-link to="/functions/answer" class="list-group-item"
+                                         v-if="userInfo.access.function.child[6]===1"
                             >文书作答
                             </router-link>
                             <router-link to="/functions/initApply" class="list-group-item"

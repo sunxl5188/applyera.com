@@ -7,13 +7,12 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                     <div class="form-group">
-                        <button type="button" class="btn btn-default ml-10" v-if="status===0" @click="sendStudent()"><i class="iconfont">&#xe62c;</i>
+                        <button type="button" class="btn btn-default ml-10" @click="sendStudent()"><i class="iconfont">&#xe62c;</i>
                             分享
                         </button>
-                        <button type="button" class="btn btn-default ml-10" v-if="status===0" @click="saveData()"><i class="iconfont">&#xe637;</i>
+                        <button type="button" class="btn btn-default ml-10" @click="saveData()"><i class="iconfont">&#xe637;</i>
                             保存
                         </button>
-                        <button type="button" class="btn btn-default ml-10" v-if="status===0" @click="submitData()"><i class="iconfont">&#xe64d;</i> 提交</button>
                         <button type="button" class="btn btn-default ml-10" @click="$router.back()"><i class="iconfont">&#xe64f;</i>
                             返回
                         </button>
@@ -31,89 +30,94 @@
                     <tr>
                         <td class="w20 text-center bgGray">学生姓名</td>
                         <td>
-                            <div class="col-sm-6">
-                                <div v-if="status===0">
-                                    <select v-model="stu_id" class="form-control selectpicker show-tick"
-                                            data-live-search="true" data-size="15">
-                                        <option value="">请选择</option>
-                                        <option :value="item.id" v-for="(item, i) in studentArr" :key="i">
-                                            {{item.stu_name}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div v-if="status===1">
-                                    <span class="textOver" :title="item.stu_name" v-for="(item, i) in studentArr" :key="i" v-if="item.id===stu_id">{{item.stu_name}}</span>
-                                </div>
+                            <div v-if="status!==2">
+                                <select v-model="stu_id" class="form-control selectpicker show-tick" data-width="fit"
+                                        data-live-search="true" data-size="10">
+                                    <option value="">请选择</option>
+                                    <option :value="item.id" v-for="(item, i) in studentArr" :key="i">
+                                        {{item.stu_name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div v-if="status===2">
+                                <span class="textOver" :title="item.stu_name" v-for="(item, i) in studentArr" :key="i" v-if="item.id===stu_id">{{item.stu_name}}</span>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td class="w20 text-center bgGray">申报类型</td>
                         <td>
-                            <div class="col-sm-6">
-                                <div v-if="status===0">
-                                    <select v-model.number="apply_type" @change="getProfession()"
-                                            class="form-control selectpicker show-tick">
-                                        <option value="1">本科</option>
-                                        <option value="2">硕士</option>
-                                    </select>
-                                </div>
-                                <div v-if="status===1">
-                                    <span v-if="apply_type===1">本科</span>
-                                    <span v-if="apply_type===2">硕士</span>
-                                </div>
+                            <div v-if="status!==2">
+                                <select v-model.number="apply_type" @change="getProfession()"
+                                        class="form-control selectpicker show-tick" data-width="fit">
+                                    <option value="1">本科</option>
+                                    <option value="2">硕士</option>
+                                </select>
+                            </div>
+                            <div v-if="status===2">
+                                <span v-if="apply_type===1">本科</span>
+                                <span v-if="apply_type===2">硕士</span>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td class="w20 text-center bgGray">申请学校</td>
                         <td>
-                            <div class="col-sm-6">
-                                <div v-if="status===0">
-                                    <select v-model="school_unq_id" @change="getProfession()"
-                                            class="form-control selectpicker show-tick" data-live-search="true">
-                                        <option value="">请选择</option>
-                                        <option :value="item.unq_id" v-for="(item, i) in schoolArr" :key="i">
-                                            {{item.sc_name}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div v-if="status===1">
-                                    <span class="textOver" :title="item.sc_name" v-for="(item, i) in schoolArr" :key="i" v-if="item.unq_id===school_unq_id">{{item.sc_name}}</span>
-                                </div>
+                            <div v-if="status!==2">
+                                <select v-model="school_unq_id" @change="getProfession()"
+                                        class="form-control selectpicker show-tick" data-width="fit" data-live-search="true" data-size="10">
+                                    <option value="">请选择</option>
+                                    <option value="custom">自定义学校</option>
+                                    <option :value="item.unq_id" v-for="(item, i) in schoolArr" :key="i">
+                                        {{item.sc_name}}
+                                    </option>
+                                </select>
                             </div>
+                            <div v-if="status===2">
+                                <span class="textOver" :title="item.sc_name" v-for="(item, i) in schoolArr" :key="i" v-if="item.unq_id===school_unq_id">{{item.sc_name}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr v-if="school_unq_id==='custom'">
+                        <td class="w20 text-center bgGray">自定义学校</td>
+                        <td>
+                            <input type="text" name="school_custom" class="form-control" v-model="school_custom" placeholder="请输入自定义学校名称" style="border-color:transparent;"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="w20 text-center bgGray">申请专业</td>
                         <td>
-                            <div class="col-sm-6">
-                                <div v-if="status===0">
-                                    <select v-model="major_unq_id" @change="getTopic()"
-                                            class="form-control selectpicker show-tick" data-live-search="true">
-                                        <option value="">请选择</option>
-                                        <option :value="item.unq_id" v-for="(item, i) in professionArr" :key="i">
-                                            {{item.mj_name}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div v-if="status===1">
-                                    <span class="textOver" :title="item.mj_name" v-for="(item, i) in professionArr" :key="i" v-if="item.unq_id===major_unq_id">{{item.mj_name}}</span>
-                                </div>
+                            <div v-if="status!==2">
+                                <select v-model="major_unq_id" @change="getTopic()"
+                                        class="form-control selectpicker show-tick" data-width="fit" data-live-search="true" data-size="10">
+                                    <option value="">请选择</option>
+                                    <option value="custom">自定义专业</option>
+                                    <option :value="item.unq_id" v-for="(item, i) in professionArr" :key="i">
+                                        {{item.mj_name}}
+                                    </option>
+                                </select>
                             </div>
+                            <div v-if="status===2">
+                                <span class="textOver" :title="item.mj_name" v-for="(item, i) in professionArr" :key="i" v-if="item.unq_id===major_unq_id">{{item.mj_name}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr v-if="major_unq_id === 'custom'">
+                        <td class="w20 text-center bgGray">自定义专业</td>
+                        <td>
+                            <input type="text" name="major_custom" class="form-control" v-model="major_custom" placeholder="请输入自定义专业名" style="border-color:transparent;"/>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <div class="clearfix" v-if="topic.answer_ps">
+                <div class="clearfix" v-if="topic.custom_ps">
                     <div class="clearfix lh50 font16 fontB">个人陈述</div>
                     <div class="clearfix lh22 pb-15">
                         <div :contenteditable="id?true:false" data-placeholder="请输入个人陈述"
                              v-html="topic.custom_ps" class="wordwrap"></div>
                     </div>
                     <div class="clearfix bdt pt-15">
-                        <div :class="{notebook:id&&status===0}" class="wordwrap" :contenteditable="status===0?true:false" data-placeholder="请用英文作答" id="answer_ps"
-                             v-html="topic.answer_ps"></div>
+                        <div :class="{notebook:id&&status!==2}" class="wordwrap" :contenteditable="status!==2?true:false" data-placeholder="请用英文作答" id="answer_ps" v-html="topic.answer_ps"></div>
                     </div>
                     <div class="clearfix lh50 font16 fontB mt-30">Writing Sample</div>
                     <div class="clearfix lh22 pb-15">
@@ -121,82 +125,86 @@
                              v-html="topic.custom_ws"></div>
                     </div>
                     <div class="clearfix bdt pt-15 mt-15">
-                        <div :class="{notebook:id&&status===0}" class="wordwrap" :contenteditable="status===0?true:false" data-placeholder="请用英文作答" id="answer_ws"
-                             v-html="topic.answer_ws"></div>
+                        <div :class="{notebook:id&&status!==2}" class="wordwrap" :contenteditable="status!==2?true:false" data-placeholder="请用英文作答" id="answer_ws" v-html="topic.answer_ws"></div>
                     </div>
                 </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <div class="dropdown">
-                    <a href="javascript:void(0);" data-toggle="dropdown">
-                        批注记录
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" @click="getComment(1)">批注记录</a></li>
-                        <li><a href="#" @click="getComment(2)">操作记录</a></li>
-                    </ul>
-                </div>
-                <div class="clearfix pt-15">
-                    <ul class="media-list rightMediaList">
-                        <div class="mediaItem" :data-id="item[0]['front_code']" v-for="(item, i) in commentArr"
-                             :key="i">
-                            <div class="media media-top">
-                                <div class="media-item" :class="{gtTwo:item.length>1}"
-                                     v-for="(items, k) in item" :key="k" :data-id="items.id">
+                <div class="commentBox">
+                    <div class="dropdown">
+                        <a href="javascript:void(0);" data-toggle="dropdown">
+                            {{dropName}}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" @click="getComment();dropName='批注记录'">批注记录</a></li>
+                            <li><a href="#" @click="getOperAction();dropName='操作记录'">操作记录</a></li>
+                        </ul>
+                    </div>
+                    <div class="clearfix pt-15" v-if="dropName==='批注记录'">
+                        <ul class="media-list rightMediaList">
+                            <div class="mediaItem" :data-id="item[0]['front_code']" v-for="(item, i) in commentArr"
+                                 :key="i">
+                                <div class="media media-top">
+                                    <div class="media-item" :class="{gtTwo:item.length>1}"
+                                         v-for="(items, k) in item" :key="k" :data-id="items.id">
+                                        <div class="media-left">
+                                            <img :src="items.head_img || '../../../../static/images/defaultface.png'"
+                                                 width="30" height="30" class="img-circle"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="media-heading">
+                                        <span class="pull-left">{{items.user_name}} <span
+                                                class="c999 font12">{{items.created_time}}</span></span>
+                                                <a href="javascript:void(0);" class="pull-right cded" v-if="k === 0" v-show="item[0]['solve_status']===0" @click="delComment(items.id, 'solve', items.front_code)">解决</a>
+                                            </div>
+                                            <div class="clearfix commentContent font12 c999 lh20 pb-5 pt-5"
+                                                 contenteditable="false">
+                                                {{items.content}}
+                                            </div>
+                                            <div class="editBtn" v-show="item[0]['solve_status']===0" v-if="items.is_self===1">
+                                                <a href="javascript:void(0);" class="cded edit">编辑</a>
+                                                <a href="javascript:void(0);" class="cded save hidden">保存</a>
+                                                · <a href="javascript:void(0);" class="cded" @click="delComment(items.id, 'del', items.front_code)">删除</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="media" v-show="item[0]['solve_status']===0">
                                     <div class="media-left">
-                                        <img :src="items.head_img || 'https://via.placeholder.com/30x30/cccccc/ffffff'"
+                                        <img :src="userInfo.headphoto || 'https://via.placeholder.com/30x30/cccccc/ffffff'"
                                              width="30" height="30" class="img-circle"/>
                                     </div>
                                     <div class="media-body">
-                                        <div class="media-heading">
-                                        <span class="pull-left">{{items.user_name}} <span
-                                                class="c999 font12">{{items.created_time}}</span></span>
-                                            <a href="javascript:void(0);" class="pull-right cded" v-if="k === 0" v-show="item[0]['solve_status']===0" @click="delComment(items.id, 'solve', items.front_code)">解决</a>
-                                        </div>
-                                        <div class="clearfix commentContent font12 c999 lh20 pb-5 pt-5"
-                                             contenteditable="false">
-                                            {{items.content}}
-                                        </div>
-                                        <div class="editBtn" v-show="item[0]['solve_status']===0" v-if="items.is_self===1">
-                                            <a href="javascript:void(0);" class="cded edit">编辑</a>
-                                            <a href="javascript:void(0);" class="cded save hidden">保存</a>
-                                            · <a href="javascript:void(0);" class="cded" @click="delComment(items.id, 'del', items.front_code)">删除</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="media" v-show="item[0]['solve_status']===0">
-                                <div class="media-left">
-                                    <img :src="userInfo.headphoto || 'https://via.placeholder.com/30x30/cccccc/ffffff'"
-                                         width="30" height="30" class="img-circle"/>
-                                </div>
-                                <div class="media-body">
-                                    <div class="clearfix pb-10 pt-5">
+                                        <div class="clearfix pb-10 pt-5">
                                         <span contenteditable="true"
                                               :data-placeholder="item[0]['id']?'@回复':'最新回复'"
                                               data-label="content"></span>
-                                    </div>
-                                    <div class="editBtn" v-if="commentId===''">
-                                        <button type="button" class="btn btn-primary btn-sm"
-                                                @click="addComment($event, 1)">发布
-                                        </button>
-                                        <button type="button" class="btn btn-default btn-sm ml-10"
-                                                @click="cancelannotion($event, 1)">取消
-                                        </button>
-                                    </div>
-                                    <div class="editBtn" v-if="commentId">
-                                        <button type="button" class="btn btn-primary btn-sm"
-                                                @click="addComment($event, 2)">发布
-                                        </button>
-                                        <button type="button" class="btn btn-default btn-sm ml-10"
-                                                @click="cancelannotion($event, 2)">取消
-                                        </button>
+                                        </div>
+                                        <div class="editBtn" v-if="commentId===''">
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                    @click="addComment($event, 1)">发布
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-sm ml-10"
+                                                    @click="cancelannotion($event, 1)">取消
+                                            </button>
+                                        </div>
+                                        <div class="editBtn" v-if="commentId">
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                    @click="addComment($event, 2)">发布
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-sm ml-10"
+                                                    @click="cancelannotion($event, 2)">取消
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </ul>
+                        </ul>
+                    </div>
+                    <div class="clearfix pt-15" v-if="dropName==='操作记录'">
+                        <p v-for="(item, i) in OperAction" :key="i">{{item.log}}<br/><span class="font12 c999">{{item.add_time}}</span></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -222,9 +230,12 @@ export default {
       apply_type: 1,
       school_unq_id: '',
       major_unq_id: '',
+      school_custom: '',
+      major_custom: '',
       studentArr: [],
       schoolArr: [],
       professionArr: [],
+      OperAction: [],
       topic: {
         custom_ps: '',
         custom_ws: '',
@@ -233,7 +244,9 @@ export default {
       },
       sendStudentString: {},
       commentArr: [],
-      commentId: ''
+      commentId: '',
+      dropName: '批注记录',
+      offsetObj: {}
     }
   },
   beforeDestroy () {
@@ -294,12 +307,6 @@ export default {
         if (txt.toString() === '') {
           return false
         }
-        let html = $(this).html().replace(/\s/ig, '')
-        let str = txt.toString().replace(/\s/ig, '')
-        if (html.indexOf(str) < 0) {
-          self.layer.alert('选中的批注重复了，重新选择！', {icon: 2})
-          return false
-        }
         if (txt !== '') {
           if ($('.notebook-tool').length === 0) {
             let tooltip = '<div class=\'notebook-tool\'><button type=\'button\'><i class=\'iconfont\'>&#xe95b;</i></button></div>'
@@ -314,9 +321,17 @@ export default {
       // 设置批注标签
       $(document).on('click', '.notebook-tool button', function (event) {
         event.preventDefault()
+        let txt = window.getSelection ? window.getSelection() : document.selection.createRange().text
+        let html = $(window.getSelection().anchorNode.parentNode).html().replace(/\s/ig, '')
+        let str = txt.toString().replace(/\s/ig, '')
+        $(this).parent().hide()
+        if (html.indexOf(str) < 0) {
+          self.layer.alert('选中的批注重复了，重新选择！', {icon: 2})
+          return false
+        }
         let sid = new Date().getTime()
         let cid = 'comment-' + sid
-        $(this).parent().hide()
+        self.dropName = '批注记录'
         document.execCommand('BackColor', false, '#ffe9a8')
         $(window.getSelection().anchorNode.parentNode).attr('data-id', cid)
         $(window.getSelection().anchorNode.parentNode).addClass('comment-extra-inner-span')
@@ -365,6 +380,63 @@ export default {
           $('[data-id="' + $id + '"]').removeClass('active')
         }
       })
+      // 禁止右键与ctrl+V
+      $(document).on('keyup', function (event) {
+        setTimeout(() => {
+          if (event.code === 'KeyV') {
+            let id = $(event.target).attr('id')
+            let html = $(event.target).html()
+            let html1 = html.replace(/<[^<>]+>/g, '')
+            let str1 = []
+            let str2 = html.match(/(<span(.*?)class="comment-extra-inner-span[^\\"]*?"(.*?)>(.*?)<\/span>)/ig)
+            $(event.target).find('.comment-extra-inner-span').each(function (i, e) {
+              str1.push(e.innerText)
+            })
+            if (str2 !== null) {
+              for (let i = 0; i < str1.length; i++) {
+                html1 = html1.replace(str1[i], str2[i])
+              }
+            }
+            if (id === 'answer_ps') {
+              self.topic.answer_ps = html1
+              $('#answer_ps').html(html1)
+            }
+            if (id === 'answer_ws') {
+              self.topic.answer_ws = html1
+              $('#answer_ws').html(html1)
+            }
+          }
+        }, 200)
+      })
+      document.body.oncontextmenu = function (e) {
+        if (e.button) {
+          e.returnValue = false
+        }
+      }
+      // 设置右边浮动
+      setTimeout(() => {
+        let $this = $('.commentBox')
+        let $thisW = $this.parent().outerWidth(true)
+        let $thisH = $(window).height() - 50
+        let $thisOffset = $this.parent().offset().top
+        let left = $this.parent().offset().left
+        self.offsetObj = {w: $thisW, h: $thisH, l: left}
+        $(document).on('scroll resize', function () {
+          let top = $(window).scrollTop() + 50
+          if (top - $thisOffset > 0) {
+            $this.addClass('fixed').css({left: self.offsetObj['l'], width: self.offsetObj['w'], height: self.offsetObj['h']})
+          } else {
+            $this.removeClass('fixed').removeAttr('style')
+          }
+        })
+        $(window).on('resize', function () {
+          let $this = $('.commentBox')
+          let $thisW = $this.parent().outerWidth(true)
+          let $thisH = $(window).height() - 50
+          let left = $this.parent().offset().left
+          self.offsetObj = {w: $thisW, h: $thisH, l: left}
+        })
+      }, 1000)
     })
   },
   methods: {
@@ -381,6 +453,8 @@ export default {
           self.stu_id = res.data.ins_student_id
           self.school_unq_id = res.data.school_unq_id
           self.major_unq_id = res.data.major_unq_id
+          self.school_custom = res.data.school_custom
+          self.major_custom = res.data.major_custom
           self.topic.custom_ps = res.data.custom_ps
           self.topic.custom_ws = res.data.custom_ws
           self.topic.answer_ps = res.data.answer_ps
@@ -394,7 +468,6 @@ export default {
             self.$router.back()
           })
         }
-        self.setRightHeigth()
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh')
         }, 500)
@@ -467,18 +540,7 @@ export default {
         } else {
           console.log(res.msg)
         }
-        self.setRightHeigth()
       })
-    },
-    // 设置右边高度
-    setRightHeigth () {
-      setTimeout(function () {
-        let lh = $('.leftBox').height() - 35
-        let rh = $('.rightMediaList').height()
-        if (lh > rh) {
-          $('.rightMediaList').height(lh)
-        }
-      }, 500)
     },
     // 取消批注编辑
     cancelannotion (event, type) {
@@ -507,6 +569,8 @@ export default {
       params.append('apply_type', self.apply_type)
       params.append('school_unq_id', self.school_unq_id)
       params.append('major_unq_id', self.major_unq_id)
+      params.append('school_custom', self.school_custom)
+      params.append('major_custom', self.major_custom)
       params.append('custom_ps', self.topic.custom_ps)
       params.append('answer_ps', $('#answer_ps').html())
       params.append('custom_ws', self.topic.custom_ws)
@@ -561,14 +625,25 @@ export default {
       }
     },
     // 批注列表
-    getComment (state) {
+    getComment () {
       let self = this
       let params = new URLSearchParams()
       params.append('doc_id', self.id)
-      params.append('record', state || 1)
       db.postRequest('/Institution/Document/noteList', params).then(res => {
         if (res.status === 1) {
           self.commentArr = res.data
+        } else {
+          console.log(res.msg)
+        }
+      })
+    },
+    getOperAction () {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('doc_id', self.id)
+      db.postRequest('Institution/Document/notelog', params).then(res => {
+        if (res.status === 1) {
+          self.OperAction = res.data
         } else {
           console.log(res.msg)
         }
@@ -587,6 +662,7 @@ export default {
       let res2 = resp2.replace(/<span style="[^\\"]*?">(.*?)<\/span>/ig, '$1')
       let params = new URLSearchParams()
       params.append('doc_id', self.id)
+      params.append('type', type)
       params.append('content', content)
       if (type === 2) {
         params.append('front_code', self.commentId)
@@ -646,32 +722,6 @@ export default {
           console.log(res.msg)
         }
       })
-    },
-    // 提交保存
-    submitData () {
-      let self = this
-      if (self.id === '') {
-        self.layer.alert('请先保存后再提交信息!', {icon: 2})
-        return false
-      }
-      self.layer.confirm('您确定要提交信息吗？', {
-        icon: 3
-      }, function (i) {
-        self.layer.close(i)
-        let params = new URLSearchParams()
-        params.append('id', self.id)
-        db.postRequest('Institution/Document/qsSubmit', params).then(res => {
-          if (res.status === 1) {
-            self.layer.alert(res.msg, {icon: 1}, function (i) {
-              self.layer.close(i)
-            })
-          } else {
-            self.layer.alert(res.msg, {
-              icon: 2
-            })
-          }
-        })
-      })
     }
   },
   components: {
@@ -682,7 +732,7 @@ export default {
 <style lang="scss">
 .addAnswer {
     .bootstrap-select {
-        -webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;margin-left:-20px;
+        -webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;
 
         & .dropdown-toggle {
             border:none;
@@ -727,6 +777,12 @@ export default {
         }
     }
 }
+.commentBox{
+    overflow-y:auto;
+    &.fixed{
+        position:fixed;z-index:100;top:50px;padding:15px;
+    }
+}
 
 .rightMediaList {
     overflow-y:auto;margin-bottom:0;
@@ -769,6 +825,9 @@ export default {
 
             &.media-top{
                 max-height:80px;overflow:hidden;padding-bottom:0;margin-bottom:10px;
+                & .commentContent{
+                    height:18px;overflow:hidden;padding-top:0;padding-bottom:0;
+                }
             }
         }
 
@@ -778,6 +837,9 @@ export default {
             & .media {
                 &.media-top{
                     max-height:max-content;overflow:inherit;
+                    & .commentContent{
+                        height:auto;overflow:initial;padding-top:5px;padding-bottom:5px;
+                    }
                 }
                 & .media-heading {display:inline;}
 
@@ -797,6 +859,11 @@ export default {
             cursor:auto;border-color:#ddd;
 
             & .media {
+                &.media-top{
+                    & .commentContent{
+                        height:auto;overflow:initial;padding-top:5px;padding-bottom:5px;
+                    }
+                }
                 &:first-of-type {display:none;}
 
                 &:last-of-type {display:block;}
