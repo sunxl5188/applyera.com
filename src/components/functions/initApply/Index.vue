@@ -73,7 +73,7 @@
 
                         <div class="form-group">
                             <div class="form-group ml-10">
-                                <router-link to="/functions/initApply/add" class="btn btn-default"><i class="iconfont">&#xe73e;</i>
+                                <router-link to="/functions/initApply/ChooseSchool" class="btn btn-default"><i class="iconfont">&#xe73e;</i>
                                     添加
                                 </router-link>
                             </div>
@@ -103,7 +103,7 @@
                     <tbody>
                     <tr v-for="(item, i) in list" :key="i">
                         <td>
-                            <router-link :to="{path:'/functions/initApply/add',query:{id:item.id}}">
+                            <router-link :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.id}}">
                                 <span class="cded" v-html="highlight(item.name, keywords)"></span>
                                 (<span v-html="highlight(item.number, keywords)"></span>)
                             </router-link>
@@ -119,7 +119,7 @@
                                         class="iconfont">&#xe66b;</i></a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li>
-                                        <router-link :to="{path:'/functions/initApply/add',query:{id:item.id}}">查看
+                                        <router-link :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.id}}">查看
                                         </router-link>
                                     </li>
                                     <li><a href="javascript:void(0);" v-if="item.pay_status ==='否'"

@@ -209,6 +209,9 @@ textarea{
 			}
 		}
 	}
+	&.btn-outline-primary{
+		background-color:#fff;border-color:#39f;color:#333;
+	}
 }
 
 .fullScreen{
@@ -834,3 +837,25 @@ span[contenteditable], div[contenteditable]{
 }
 .comment-extra-inner-span{border-bottom:2px solid #ffe9a8;background-color:#fff !important;}
 .comment-extra-inner-span:hover, .comment-extra-inner-span.active{background-color:#ffe9a8 !important;}
+
+.progress{
+	&.progress-4{
+		height:4px;
+		&.progress-bar{
+			font-size:0;line-height:0;overflow:hidden;height:4px;
+		}
+	}
+}
+.nav{
+	&.nav-pills{
+		&.nav-pills-custom{
+			& > li{
+				& > a{
+					&:focus,&:hover{
+						background-color:transparent;
+					}
+				}
+			}
+		}
+	}
+}

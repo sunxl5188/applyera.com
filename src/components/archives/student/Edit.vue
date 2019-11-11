@@ -232,7 +232,7 @@
                   <div class="panel-heading clearfix">
                     <span class="pull-left">院校申请</span>
                     <span class="pull-right">
-                                             <router-link to="/functions/initApply/add">
+                                             <router-link to="/functions/initApply/ChooseSchool">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
@@ -245,7 +245,7 @@
                         <td width="20%">{{item.country}}</td>
                         <td>
                           <router-link
-                              :to="{path:'/functions/initApply/add',query:{id:item.apply_id}}"
+                              :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.apply_id}}"
                               class="cded">{{item.school}}
                           </router-link>
                         </td>
@@ -255,7 +255,7 @@
                     </table>
                     <div class="panel-noData" v-if="tab1.apply.length === 0">
                       <p class="c999">该学生还没有院校申请</p>
-                      <router-link to="/functions/initApply/add" class="cded">
+                      <router-link to="/functions/initApply/ChooseSchool" class="cded">
                         点击前往创建
                       </router-link>
                     </div>

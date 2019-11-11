@@ -188,12 +188,12 @@
                             <div class="col-xs-1-5 col-sm-1-5 col-md-1-5 col-lg-1-5">
                                 <div class="media">
                                     <div class="media-left">
-                                        <router-link to="/functions/initApply/add">
+                                        <router-link to="/functions/initApply/ChooseSchool">
                                             <i class="iconfont">&#xe6ff;</i>
                                         </router-link>
                                     </div>
                                     <div class="media-body">
-                                        <router-link to="/functions/initApply/add">
+                                        <router-link to="/functions/initApply/ChooseSchool">
                                             <div class="font14 lh20">发起申请</div>
                                             <div class="font12 c999 lh20">向全球院校一键提交申请</div>
                                         </router-link>

@@ -279,13 +279,43 @@ export default new Router({
           },
           children: [
             {
-              path: 'add',
-              name: 'add-initApply',
-              component: resolve => require(['@#/functions/initApply/Add'], resolve),
+              path: 'ChooseSchool',
+              name: 'ChooseSchool',
+              component: resolve => require(['@#/functions/initApply/ChooseSchool'], resolve),
               meta: {
-                title: '申请详情',
+                title: '选择学校',
                 requiresAuth: true,
                 group: ['function', 3, 0]
+              }
+            },
+            {
+              path: 'UploadData',
+              name: 'UploadData',
+              component: resolve => require(['@#/functions/initApply/UploadData'], resolve),
+              meta: {
+                title: '上传材料',
+                requiresAuth: true,
+                group: ['function', 3, 1]
+              }
+            },
+            {
+              path: 'QuestionAnswer',
+              name: 'QuestionAnswer',
+              component: resolve => require(['@#/functions/initApply/QuestionAnswer'], resolve),
+              meta: {
+                title: '题目作答',
+                requiresAuth: true,
+                group: ['function', 3, 2]
+              }
+            },
+            {
+              path: 'ConfirmSubmission',
+              name: 'ConfirmSubmission',
+              component: resolve => require(['@#/functions/initApply/ConfirmSubmission'], resolve),
+              meta: {
+                title: '确认提交',
+                requiresAuth: true,
+                group: ['function', 3, 3]
               }
             }
           ]
@@ -789,6 +819,28 @@ export default new Router({
                 title: '消息配置详情',
                 requiresAuth: true,
                 group: ['applyoversea', 9, 0]
+              }
+            }
+          ]
+        },
+        {
+          path: 'application',
+          name: 'application',
+          component: resolve => require(['@#/admin/application/Index'], resolve),
+          meta: {
+            title: '院校申请',
+            requiresAuth: true,
+            group: ['applyoversea', 10, '']
+          },
+          children: [
+            {
+              path: 'Detail',
+              name: 'application-Detail',
+              component: resolve => require(['@#/admin/application/Detail'], resolve),
+              meta: {
+                title: '申请详情',
+                requiresAuth: true,
+                group: ['applyoversea', 10, 0]
               }
             }
           ]

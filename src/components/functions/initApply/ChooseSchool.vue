@@ -1,54 +1,86 @@
 <template>
     <div>
-        <div class="clearfix pb-30">
-            <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="headerTitle">发起申请</div>
+        <InitApplyNav :state="state" :id="id"/>
+        <div class="row form-horizontal">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">选择学生</label>
+                    <div class="col-sm-9">
+                        <select name="stu_name" class="form-control selectpicker show-tick" data-live-serach="true"
+                                data-size="15">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
-                    <div class="form-group ml-10">
-                        <button type="button" class="btn btn-default" @click="submitSave()"
-                                v-if="(submitStatus === 0 || submitStatus === 1) && saveBtn ===1"><i class="iconfont">&#xe637;</i>
-                            保存
-                        </button>
-                        <a href="javascript:void(0);" class="btn btn-default" @click="adminSave"
-                           v-if="saveBtn===2">
-                            <i class="iconfont">&#xe637;</i>
-                            <span>保存</span>
-                        </a>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">申请材料</label>
+                    <div class="col-sm-9">
+                        <select name="stu_name" class="form-control selectpicker show-tick" data-live-serach="true"
+                                data-size="15">
+                            <option value="">请选择</option>
+                        </select>
                     </div>
-                    <div class="form-group" v-if="submitStatus===0 && orderId">
-                        <a href="javascript:void(0);" class="btn btn-default ml-10" @click="submitConfirm">
-                            <i class="iconfont">&#xe632;</i>
-                            <span>确认</span>
-                        </a>
-                    </div>
-                    <div class="form-group">
-                        <router-link :to="{path:'/home/payment',query:{id:orderId}}" class="btn btn-default ml-10"
-                                     v-if="submitStatus===1">
-                            <i class="iconfont">&#xe62f;</i>
-                            <span>支付</span>
-                        </router-link>
-
-                        <button type="button" class="btn btn-default ml-10" @click="$router.go(goto)"><i class="iconfont">&#xe64f;</i>
-                            返回
-                        </button>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">申报类型</label>
+                    <div class="col-sm-9">
+                        <select name="stu_name" class="form-control selectpicker show-tick" data-live-serach="true"
+                                data-size="15">
+                            <option value="">请选择</option>
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
 
-        <ul class="nav nav-tabs"><!--nav-justified-->
-            <li role="presentation" class="active">
-                <a href="#Addapplication1" data-toggle="tab" @click="saveBtn=1">机构处理页</a>
-            </li>
-            <li role="presentation" v-if="userInfo['access']['apply_internal']===1">
-                <a href="#Addapplication2" data-toggle="tab" v-if="orderId" @click="saveBtn=2">易申学处理页</a>
-            </li>
-        </ul>
+        <div class="clearfix text-center">
+            <i class="iconfont cded">&#xe610;</i>
+            如果该生尚未填写申请资料，请先前往"
+            <router-link to="/functions/applyInfo/detail" class="cded">申请资料</router-link>
+            "填写
+        </div>
+
+        <table class="table table-customize">
+            <thead>
+            <tr>
+                <th><i class="iconfont handPower cded">&#xe622;</i></th>
+                <th>院校名称</th>
+                <th>专业名称</th>
+                <th>专业网址</th>
+                <th>申请批次</th>
+                <th>可得佣金(元)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><i class="iconfont handPower cded lh38">&#xe61f5;</i></td>
+                <td>
+                    <div>MIT</div>
+                    <div>麻省理工</div>
+                </td>
+                <td>
+                    <div>Accounting</div>
+                    <div>会计</div>
+                </td>
+                <td><a href="javascript:void(0);" target="_blank" class="cded lh34">点击前往</a></td>
+                <td>
+                    <input type="text" name="name" class="form-control" placeholder="请填写申请批次 (输入框)"/>
+                </td>
+                <td><span class="lh34">6%</span></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="clearfix text-center">
+            <button type="button" class="btn btn-primary">下一页</button>
+            <button type="button" class="btn btn-outline-primary ml-20">保存</button>
+        </div>
 
         <div class="tab-content pt-30">
-            <div class="tab-pane fade in active" id="Addapplication1">
+            <div class="tab-pane fade in active">
                 <form id="addApplication" class="form-horizontal" autocomplete="off"
                       @submit.prevent="validateBeforeSubmit">
                     <input type="hidden" name="orderId" id="orderId" v-model="orderId"/>
@@ -63,7 +95,7 @@
                                 <i class="iconfont" data-toggle="modal" data-target="#StudentComponent"
                                    data-backdrop="static" v-if="!orderId" style="top:25px;">&#xe741;</i>
                                 <div class="validateTip" v-show="errors.has('nameNumber')">
-                                    {{ errors.first("nameNumber") }}
+                                    {{ errors.first('nameNumber') }}
                                 </div>
                             </div>
                             <StudentComponent @setStuden="setStuden"/>
@@ -103,7 +135,8 @@
                                                 style="display:inline-block;width:180px;vertical-align: middle;"
                                                 v-validate="'required'" data-vv-as="申请资料">
                                             <option value="">请选择</option>
-                                            <option :value="item.apply_id" v-for="(item,i) in studentInfo.apply" :key="i">
+                                            <option :value="item.apply_id" v-for="(item,i) in studentInfo.apply"
+                                                    :key="i">
                                                 {{item.apply_number}}
                                             </option>
                                         </select>
@@ -114,7 +147,7 @@
                                             </router-link>
                                         </span>
                                         <div class="validateTip" v-show="errors.has('applyId')">
-                                            {{ errors.first("applyId") }}
+                                            {{ errors.first('applyId') }}
                                         </div>
                                     </div>
                                 </div>
@@ -375,7 +408,7 @@
                                     </td>
                                     <td>
                                         <div class="div_vm">
-                                            <span :id="'uploadRcmdId'+i">上传附件({{item.uploadRcmdPath===""?0:item.uploadRcmdPath.split("|").length}})</span>
+                                            <span :id="'uploadRcmdId'+i">上传附件({{item.uploadRcmdPath===''?0:item.uploadRcmdPath.split('|').length}})</span>
                                             <input type="hidden" name="uploadRcmdPath[]"
                                                    v-model="item.uploadRcmdPath" :data-index="i"/>
                                         </div>
@@ -429,7 +462,8 @@
                             <div class="blk30"></div>
 
                             <div class="row">
-                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" v-for="(item, i) in schoolList" :key="i">
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" v-for="(item, i) in schoolList"
+                                     :key="i">
                                     <a data-toggle="tab" :href="'#schoolAns'+i">
                                         <div class="thumbnail">
                                             <i :class="item.last_time === '未开始'?'state state1':'state state3'"></i>
@@ -506,11 +540,6 @@
                     </div>
                 </form>
             </div>
-            <div class="tab-pane fade" id="Addapplication2"
-                 v-if="orderId && userInfo['access']['apply_internal']===1"
-                 style="height:0;display:block;overflow:hidden;">
-                <AdminComponent ref="admin" :id="orderId"></AdminComponent>
-            </div>
         </div>
 
         <SchoolOrMajorComponent :btnHide="btnHide" :applyType="applyType" @getmajorinfo="getmajorinfo"/>
@@ -519,21 +548,24 @@
 
 <script>
 import '@~/js/VeeValidateConfig'
+import InitApplyNav from '@#/functions/initApply/InitApplyNav'
 import SchoolOrMajorComponent from '@/components/functions/plan/SchoolOrMajorComponent'
 import StudentComponent from '@/components/functions/plan/StudentComponent'
-import AdminComponent from '@/components/functions/initApply/AdminComponent'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
+
 let WebUploader = require('@@/js/webuploader/webuploader')
 
 export default {
-  name: 'Add',
+  name: 'ChooseSchool',
   store,
   data () {
     return {
       goto: -1,
       saveBtn: 1,
       btnHide: true,
+      id: '',
+      state: [0, 0, 0, 0],
       orderId: '',
       submitStatus: 0, // 是否可支付
       applyType: 1, // 申报类型
@@ -547,15 +579,15 @@ export default {
       rcmdNeeds: '',
       letter: [], // 推荐信上传
       uploadArr: [
-        {id: 'picker1', fid: 'uploadPassport'},
-        {id: 'picker2', fid: 'uploadGraduation'},
-        {id: 'picker3', fid: 'uploadScore'},
-        {id: 'picker4', fid: 'uploadReading'},
-        {id: 'picker5', fid: 'uploadReport'},
-        {id: 'picker6', fid: 'uploadResume'},
-        {id: 'picker7', fid: 'uploadDegree'},
-        {id: 'picker8', fid: 'uploadProperty'},
-        {id: 'picker9', fid: 'uploadOther'}
+        { id: 'picker1', fid: 'uploadPassport' },
+        { id: 'picker2', fid: 'uploadGraduation' },
+        { id: 'picker3', fid: 'uploadScore' },
+        { id: 'picker4', fid: 'uploadReading' },
+        { id: 'picker5', fid: 'uploadReport' },
+        { id: 'picker6', fid: 'uploadResume' },
+        { id: 'picker7', fid: 'uploadDegree' },
+        { id: 'picker8', fid: 'uploadProperty' },
+        { id: 'picker9', fid: 'uploadOther' }
       ],
       uploadPassport: [],
       uploadGraduation: [],
@@ -578,6 +610,7 @@ export default {
   },
   mounted () {
     let self = this
+    self.id = self.$route.query.id || ''
     self.orderId = self.$route.query.id
     self.$nextTick(() => {
       if (self.orderId !== undefined) {
@@ -661,7 +694,7 @@ export default {
                   icon: 1
                 }, function (i) {
                   self.layer.close(i)
-                  self.$router.push('/functions/initApply/add?id=' + res.data)
+                  self.$router.push('/functions/initApply/ChooseSchool?id=' + res.data)
                   self.orderId = res.data
                   self.goto = -2
                   self.getinfo()
@@ -673,7 +706,7 @@ export default {
                 self.getinfo()
               }
             } else {
-              self.layer.alert(res.msg, {icon: 2})
+              self.layer.alert(res.msg, { icon: 2 })
             }
           })
         } else {
@@ -760,12 +793,12 @@ export default {
           threads: 1,
           fileNumLimit: undefined, // 限制上传个数
           fileSingleSizeLimit: 1024 * 1024 * 20, // 限制单个上传图片的大小
-          formData: {func: 'apply'}, // 上传所需参数
+          formData: { func: 'apply' }, // 上传所需参数
           duplicate: true // 重复上传
         })
 
         uploader.on('uploadProgress', function (file, percentage) {
-          $('#file' + list[i]['id']).find('#' + file.id + ' .uploadProgress span').css({width: percentage * 100 + '%'})
+          $('#file' + list[i]['id']).find('#' + file.id + ' .uploadProgress span').css({ width: percentage * 100 + '%' })
         })
 
         uploader.on('uploadSuccess', function (file, res) {
@@ -800,7 +833,7 @@ export default {
             }
             $('#file' + $this.attr('id')).find('#' + file.id).attr('fid', res.data.path)
           } else {
-            self.layer.alert(res.msg, {icon: 2})
+            self.layer.alert(res.msg, { icon: 2 })
           }
         })
       }
@@ -828,7 +861,7 @@ export default {
           threads: 1,
           fileNumLimit: 1, // 限制上传个数
           fileSingleSizeLimit: 1024 * 1024 * 20, // 限制单个上传图片的大小
-          formData: {func: 'apply'}, // 上传所需参数
+          formData: { func: 'apply' }, // 上传所需参数
           duplicate: true // 重复上传
         })
         uploader.on('uploadSuccess', function (file, res) {
@@ -841,13 +874,13 @@ export default {
               $this.find('.webuploader-pick').html('上传附件(1)')
             }
           } else {
-            self.layer.alert(res.msg, {icon: 2})
+            self.layer.alert(res.msg, { icon: 2 })
           }
         })
 
         uploader.on('error', function (handler) {
           if (handler === 'Q_EXCEED_NUM_LIMIT') {
-            self.layer.alert('文件数量超个数，最多上传一个文件', {icon: 2})
+            self.layer.alert('文件数量超个数，最多上传一个文件', { icon: 2 })
           }
         })
       }
@@ -997,42 +1030,42 @@ export default {
   components: {
     SchoolOrMajorComponent,
     StudentComponent,
-    AdminComponent
+    InitApplyNav
   }
 }
 </script>
 
 <style scoped lang="scss">
-    .thumbnail {
-        & .state {
-            width:30px;height:60px;display:block;overflow:hidden;background-image:url(../../../../static/images/001.png); background-repeat:no-repeat;position:absolute;right:15px;top:0;z-index:10;
+.thumbnail {
+    & .state {
+        width:30px;height:60px;display:block;overflow:hidden;background-image:url(../../../../static/images/001.png); background-repeat:no-repeat;position:absolute;right:15px;top:0;z-index:10;
 
-            &.state1 {
-                background-position:0 0;
-            }
+        &.state1 {
+            background-position:0 0;
+        }
 
-            &.state2 {
-                background-position:-30px 0;
-            }
+        &.state2 {
+            background-position:-30px 0;
+        }
 
-            &.state3 {
-                background-position:-60px 0;
-            }
+        &.state3 {
+            background-position:-60px 0;
         }
     }
+}
 
-    .table > tbody > tr > td {
-        vertical-align:top;
-    }
+.table > tbody > tr > td {
+    vertical-align:top;
+}
 </style>
 <style lang="scss">
-    #addApplication {
-        & .form-group {margin-left:0;margin-right:0;}
+#addApplication {
+    & .form-group {margin-left:0;margin-right:0;}
 
-        & .webuploader-pick {
-            color:#fff !important;background:#428bca;padding-right:18px;height:34px;line-height:34px;width:120px !important;
+    & .webuploader-pick {
+        color:#fff !important;background:#428bca;padding-right:18px;height:34px;line-height:34px;width:120px !important;
 
-            &:after {content:'';}
-        }
+        &:after {content:'';}
     }
+}
 </style>
