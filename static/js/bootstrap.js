@@ -1167,6 +1167,10 @@ if (typeof jQuery === "undefined") {
 		var $modal_dialog = $(this.$element[0]).find(".modal-dialog")
 		var m_top = ( $(window).height() - $modal_dialog.height() )/2
 		$modal_dialog.css({"margin": m_top + "px auto"})
+		// 自定义层级
+		if(this.options.index !== undefined){
+			$modal_dialog.css({"z-index": this.options.index})
+		}
 	}
 
 	Modal.prototype.resetAdjustments = function () {
