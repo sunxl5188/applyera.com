@@ -216,9 +216,11 @@
                                     <select name="student_type" class="form-control" v-validate="'required'"
                                             data-vv-as="必选项">
                                         <option value="">请选择</option>
-                                        <option :value="item.id" v-for="(item,i) in student_type_list[field]" :key="i"
-                                                v-if="field!==''">
+                                        <option :value="item.id" v-for="(item,i) in student_type_list['type']" :key="i" v-if="field==='type'">
                                             {{item.stu_type}}
+                                        </option>
+                                        <option :value="item.id" v-for="(item,i) in student_type_list['state']" :key="i" v-if="field==='state'">
+                                            {{item.status_name}}
                                         </option>
                                     </select>
                                     <div class="validateTip" v-show="errors.has('form1.student_type')">

@@ -1169,7 +1169,7 @@ if (typeof jQuery === "undefined") {
 		$modal_dialog.css({"margin": m_top + "px auto"})
 		// 自定义层级
 		if(this.options.index !== undefined){
-			$modal_dialog.css({"z-index": this.options.index})
+			$(this.$element[0]).css({"z-index": this.options.index})
 		}
 	}
 
