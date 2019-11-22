@@ -764,6 +764,11 @@ export default {
             self.submitSave('focusout')
           }
         })
+        // 自定义学校关闭时清空自定义字段
+        $('#addCustom').on('hidden.bs.modal', function () {
+          $('#addCustomForm')[0].reset()
+          self.customField = []
+        })
       }, 3000)
 
       self.setSelect()

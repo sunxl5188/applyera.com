@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label class="ml-15">申报类型</label>
                     <select name="education_type" class="form-control selectpicker"
-                            v-model.number="education.education_type"
+                            v-model.number="education_type"
                             @change="EducationType">
                         <option value="1">申请本科</option>
                         <option value="2">申请硕士</option>
@@ -981,18 +981,14 @@ export default {
       visaType: visaType, // 签证类型
       workType: workType, // 工作类型
       workNature: workNature, // 工作性质
-
       EducationComponent: UEducationComponent,
-
+      education_type: 1,
       FamilyCheck: false, // 家庭验证
       FamilyData: [], // 家庭表单
-
       EducationCheck: false, // 教育验证
       EducationData: [], // 教育表单
-
       ExamCheck: false, // 考试成绩验证
       ExamData: [], // 考试成绩表单
-
       personal: {
         sex: 1,
         is_married: 2,
@@ -1085,7 +1081,6 @@ export default {
         teacher_position: '',
         teacher_email: '',
         teacher_phone: '',
-        education_type: 1,
         is_highschool_boarding: 1,
         is_not_graduated: '',
         is_graduated_plan: '',
@@ -1124,7 +1119,19 @@ export default {
         drop_reason: '',
         school_name: '',
         enter_time: '',
-        rcmder: []
+        rcmder: [{
+          career: '',
+          title: '',
+          relation: '',
+          phone: '',
+          email: '',
+          lv: '',
+          prov: '',
+          details: '',
+          city: '',
+          district: '',
+          name: ''
+        }]
       },
       exam: {
         is_language_score: true,
@@ -1202,24 +1209,22 @@ export default {
       params.append('id', id)
       db.getRequest('/Institution/ApplyMaterial/edit', params).then(res => {
         if (res.status === 1) {
+          self.education_type = res.data.education_type
           self.personal = res.data.personal
           self.family = res.data.family
           self.exam = res.data.exam
           self.education = res.data.education
           self.studentId = res.data.student_id
           self.studentNumber = res.data.student_number
-
           self.EducationType()
         } else {
           console.log(res.msg)
         }
+        self.loading = false
         setTimeout(function () {
-          self.loading = false
-          setTimeout(function () {
-            $('.selectpicker').selectpicker('refresh')
-            self.setIcheck()
-          }, 1000)
-        }, 800)
+          $('.selectpicker').selectpicker('refresh')
+          self.setIcheck()
+        }, 1000)
       })
     },
     // 获取学生ID
@@ -1315,7 +1320,7 @@ export default {
       this.ExamData = formData
     },
     EducationType () {
-      if (this.education.education_type === 1) {
+      if (this.education_type === 1) {
         this.EducationComponent = UEducationComponent
       } else {
         this.EducationComponent = MEducationComponent
@@ -1331,7 +1336,7 @@ export default {
       } else {
         let params = new URLSearchParams()
         params.append('id', self.studentId)
-        params.append('education_type', self.education.education_type)
+        params.append('education_type', self.education_type)
         db.postRequest('/Institution/ApplyMaterial/sendStudent', params).then(res => {
           if (res.status === 1) {
             self.sendStudentString = res.data

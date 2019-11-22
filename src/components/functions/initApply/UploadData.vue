@@ -2,7 +2,7 @@
     <div>
         <InitApplyNav :state="state" step="step2" :id="id"/>
         <div class="clearfix form-horizontal">
-            您申请的学校有：普林斯顿大学，南安普顿大学，奥本大学,普林斯顿大学，南安普顿大学，奥本大学
+            您申请的学校有：{{schoolText}}
         </div>
         <div class="clearfix lh30">建议上传附件：</div>
         <div class="clearfix lh24">
@@ -50,26 +50,73 @@
                 <div id="picker">上传</div>
             </div>
         </div>
-        <table class="table table-customize">
+        <table class="table table-bordered table-customize" id="uploadTable">
+            <thead>
+            <tr>
+                <th colspan="5">
+                    <img src="../../../../static/images/007.png" width="20" alt="" class="div_vm">
+                    <span class="div_vm">学生端</span>
+                </th>
+            </tr>
+            </thead>
             <tbody>
-            <tr v-for="(item, i) in list" :key="i">
-                <td width="5%">
-                    <input type="checkbox" name="id[]" :value="item.id"/>
+            <tr v-for="(item, i) in list.student" :key="i">
+                <td class="w5">
+                    <input type="checkbox" name="id[]" :value="item.id" :id="item.id"/>
                 </td>
-                <td>{{item.file_name}}</td>
-                <td width="20%" class="bootstrap-select-border-no">
-                    <select class="form-control selectpicker show-tick" data-width="fit" v-model="item.file_type"
-                            @change="selectSaveType($event, item.id)">
+                <td>
+                    <label :for="item.id">{{item.file_name}}</label>
+                </td>
+                <td class="w25">
+                    <select class="form-control selectpicker show-tick" v-model="item.file_type"
+                            @change="selectSaveType(item.id, item.file_type)">
                         <option value="">请关联</option>
-                        <option :value="n" v-for="(items, n) in type_mapping" :key="n">{{items}}</option>
-                    </select></td>
-                <td>{{item.file_size}}</td>
-                <td width="18%">{{item.add_time}}</td>
+                        <option :value="n" v-for="(items, n) in typeMapping" :key="n">{{items}}</option>
+                    </select>
+                </td>
+                <td class="w15">{{item.file_size}}</td>
+                <td class="w20">{{item.add_time}}</td>
             </tr>
             <tr v-if="loading">
                 <td colspan="5" v-html="LoadingImg()"></td>
             </tr>
-            <tr v-if="!loading && list.length === 0">
+            <tr v-if="!loading && list.student.length === 0">
+                <td colspan="5" v-html="NoData()"></td>
+            </tr>
+            </tbody>
+        </table>
+        <!--************************************************************************************-->
+        <table class="table table-bordered table-customize" id="uploadTable2">
+            <thead>
+            <tr>
+                <th colspan="5">
+                    <img src="../../../../static/images/007.png" width="20" alt="" class="div_vm">
+                    <span class="div_vm">机构端</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, i) in list.user" :key="i">
+                <td class="w5">
+                    <input type="checkbox" name="id[]" :value="item.id" :id="item.id"/>
+                </td>
+                <td>
+                    <label :for="item.id">{{item.file_name}}</label>
+                </td>
+                <td class="w25">
+                    <select class="form-control selectpicker show-tick" v-model="item.file_type"
+                            @change="selectSaveType(item.id, item.file_type)">
+                        <option value="">请关联</option>
+                        <option :value="n" v-for="(items, n) in typeMapping" :key="n">{{items}}</option>
+                    </select>
+                </td>
+                <td class="w15">{{item.file_size}}</td>
+                <td class="w20">{{item.add_time}}</td>
+            </tr>
+            <tr v-if="loading">
+                <td colspan="5" v-html="LoadingImg()"></td>
+            </tr>
+            <tr v-if="!loading && list.user.length === 0">
                 <td colspan="5" v-html="NoData()"></td>
             </tr>
             </tbody>
@@ -80,8 +127,8 @@
         </div>
         <div class="blk20"></div>
         <div class="clearfix text-center">
-            <button type="button" class="btn btn-primary">下一页</button>
-            <button type="button" class="btn btn-outline-primary ml-20">保存</button>
+            <router-link to="/functions/initApply/QuestionAnswer" class="btn btn-default" v-if="!id">下一页</router-link>
+            <router-link :to="{path:'/functions/initApply/QuestionAnswer',query:{id:id}}" class="btn btn-default" v-if="id">下一页</router-link>
         </div>
         <div id="fileList" class="hidden"></div>
         <a href="" id="downfile"></a>
@@ -92,8 +139,8 @@
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import webupload from '@~/js/webupload'
-// import db from '@~/js/request'
 import InitApplyNav from '@#/functions/initApply/InitApplyNav'
+import db from '@~/js/request'
 
 export default {
   name: 'UploadData',
@@ -103,7 +150,11 @@ export default {
       siteUrl: window.ajaxBaseUrl,
       loading: true,
       list: [],
-      state: [0, 0, 0, 0]
+      state: [0, 0, 0, 0],
+      idArr: [],
+      file_id: [],
+      typeMapping: [],
+      schoolText: ''
     }
   },
   mounted () {
@@ -111,7 +162,34 @@ export default {
     self.$nextTick(() => {
       self.id = self.$route.query.id || ''
       $('[data-toggle="tooltip"]').tooltip()
-      $('.selectpicker').selectpicker()
+      if (self.id === '') {
+        self.loading = false
+      } else {
+        self.getAnnex()
+      }
+      $(document).on('click', '#selectAll', function () {
+        let boole = $(this).is(':checked')
+        $('#uploadTable [type="checkbox"], #uploadTable2 [type="checkbox"]').each(function (index, element) {
+          element.checked = boole
+          if (boole) {
+            self.idArr.push(element.value)
+          } else {
+            self.idArr = []
+          }
+        })
+      })
+      $(document).on('click', '#uploadTable [type="checkbox"], #uploadTable2 [type="checkbox"]', function (ev) {
+        let boole = ev.target.checked
+        if (boole) {
+          self.idArr.push(ev.target.value)
+        } else {
+          self.idArr.map((item, i) => {
+            if (item === ev.target.value) {
+              self.idArr.splice(i, 1)
+            }
+          })
+        }
+      })
       // *****************************
       setTimeout(function () {
         // 上传
@@ -122,9 +200,10 @@ export default {
             extensions: 'pdf',
             mimeTypes: '*!/!*'
           },
-          formData: { u_type: 'apply' },
+          formData: { apply_order_id: self.id, func: 'student_attachment' },
           uploadFinished: function () {
-            self.pageChange()
+            self.layer.msg('上传成功')
+            self.getAnnex()
           },
           error: (e) => {
             if (e === 'Q_TYPE_DENIED' || e === 'F_EXCEED_SIZE') {
@@ -136,19 +215,79 @@ export default {
     })
   },
   methods: {
-    downfile () {
-
+    // 获取附件列表
+    getAnnex () {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('id', self.id)
+      db.postRequest('Institution/Apply/uplodaData', params).then(res => {
+        if (res.status === 1) {
+          self.list = res.data.list
+          self.typeMapping = res.data.file_type_list
+          self.schoolText = res.data.school_rcmd_list
+        } else {
+          console.log(res.msg)
+        }
+        self.reSelect()
+        self.loading = false
+      })
     },
+    // 下载
+    downfile () {
+      let self = this
+      if (self.idArr.length === 0) {
+        self.layer.alert('请选择要操作的编号')
+        return false
+      }
+      let url = window.ajaxBaseUrl + '/Institution/Apply/uplodaDataDownload?ids=' + self.idArr + '&token=' + self.$cookies.get('token')
+      let element = document.querySelector('#downfile')
+      element.href = url
+      element.target = '_blank'
+      element.click()
+    },
+    // 删除附件
     delfile () {
-
+      let self = this
+      if (self.idArr.length === 0) {
+        self.layer.alert('请选择要操作的编号')
+        return false
+      }
+      self.layer.confirm('您确定要删除此附件？', {
+        icon: 3
+      }, function (i) {
+        self.layer.close(i)
+        let params = new URLSearchParams()
+        params.append('apply_order_id', self.id)
+        self.idArr.map((item) => {
+          params.append('index[]', item)
+        })
+        db.postRequest('/Institution/Student/batchDelAttach', params).then(res => {
+          if (res.status === 1) {
+            self.layer.msg(res.msg)
+            self.getAnnex()
+          } else {
+            self.layer.msg(res.msg)
+          }
+        })
+      })
+    },
+    // 设置附件类型
+    selectSaveType (id, type) {
+      let params = new URLSearchParams()
+      params.append('id', id)
+      params.append('type', type)
+      db.postRequest('Institution/Student/relate', params).then(res => {
+        console.log(res.msg)
+      })
+    },
+    reSelect () {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh')
+      }, 500)
     }
   },
   components: {
     InitApplyNav
-  },
-  watch: {},
-  errorCaptured (err, vm, info) {
-    console.log(err)
   }
 }
 </script>
@@ -160,5 +299,8 @@ export default {
       padding:7px 15px;background-color:#547bbd;color:#fff;height:34px;
         &:before{content:'';}
   }
+}
+#uploadTable, #uploadTable2{
+    & label{margin-bottom:0;cursor:pointer;}
 }
 </style>

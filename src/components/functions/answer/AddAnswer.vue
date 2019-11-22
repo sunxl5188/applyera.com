@@ -251,6 +251,7 @@ export default {
   },
   beforeDestroy () {
     $('.fullScreen .fullRight').removeAttr('style')
+    $(window).unbind('resize')
   },
   computed: { // 选项/数据=>计算属性将被混入到 Vue 实例中。所有 getter 和 setter 的 this 上下文自动地绑定为 Vue 实例
     ...mapState(['userInfo'])

@@ -22,7 +22,7 @@ export default function webUpload (assign, options) {
       multiple: true // 是否开起同时选择多个文件能力
     },
     resize: false, // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-    headers: {token: vueCookie.get('student_token')},
+    headers: {token: vueCookie.get('token')},
     accept: {
       title: 'Images', // 文字描述
       extensions: 'gif,jpg,jpeg,bmp,png', // 允许的文件后缀，不带点，多个用逗号分割。

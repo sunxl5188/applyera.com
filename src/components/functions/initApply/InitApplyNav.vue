@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                     <div class="form-group">
-                        <router-link :to="{path:'/functions/initApply',query:{id:id}}" class="btn btn-default ml-10">
+                        <router-link :to="{path:'/functions/initApply',query:{id:id}}" exact class="btn btn-default ml-10">
                             <i class="iconfont">&#xe64f;</i>
                             返回</router-link>
                     </div>
@@ -16,27 +16,43 @@
         </div>
         <ul class="nav nav-pills nav-justified nav-pills-custom">
             <li>
-                <router-link :to="{path:'/functions/initApply/ChooseSchool',query:{id:id}}">选择学校
-                    <i class="iconfont cf00" v-if="state[0]===0">&#xe610;</i>
-                    <i class="iconfont c52c" v-if="state[0]===1">&#xe719;</i>
+                <router-link to="/functions/initApply/ChooseSchool" v-if="!id">选择学校
+                    <!--<i class="iconfont cf00" v-if="state[0]===0">&#xe610;</i>
+                    <i class="iconfont c52c" v-if="state[0]===1">&#xe719;</i>-->
+                </router-link>
+                <router-link :to="{path:'/functions/initApply/ChooseSchool',query:{id:id}}" v-if="id">选择学校
+                    <!--<i class="iconfont cf00" v-if="state[0]===0">&#xe610;</i>
+                    <i class="iconfont c52c" v-if="state[0]===1">&#xe719;</i>-->
                 </router-link>
             </li>
             <li>
-                <router-link :to="{path:'/functions/initApply/UploadData',query:{id:id}}">上传资料
-                    <i class="iconfont cf00" v-if="state[1]===0">&#xe610;</i>
-                    <i class="iconfont c52c" v-if="state[1]===1">&#xe719;</i>
+                <a href="javascript:void(0);" data-toggle="tooltip" title="请先保存第一步选择学校后继续" v-if="id===''">上传资料
+                    <!--<i class="iconfont cf00" v-if="state[1]===0">&#xe610;</i>
+                    <i class="iconfont c52c" v-if="state[1]===1">&#xe719;</i>-->
+                </a>
+                <router-link :to="{path:'/functions/initApply/UploadData',query:{id:id}}" v-if="id">上传资料
+                    <!--<i class="iconfont cf00" v-if="state[1]===0">&#xe610;</i>
+                    <i class="iconfont c52c" v-if="state[1]===1">&#xe719;</i>-->
                 </router-link>
             </li>
             <li>
-                <router-link :to="{path:'/functions/initApply/QuestionAnswer',query:{id:id}}">题目作答
-                    <i class="iconfont cf00" v-if="state[2]===0">&#xe610;</i>
-                    <i class="iconfont c52c" v-if="state[2]===1">&#xe719;</i>
+                <a href="javascript:void(0);" data-toggle="tooltip" title="请先保存第一步选择学校后继续" v-if="id===''">题目作答
+                    <!--<i class="iconfont cf00" v-if="state[1]===0">&#xe610;</i>
+                    <i class="iconfont c52c" v-if="state[1]===1">&#xe719;</i>-->
+                </a>
+                <router-link :to="{path:'/functions/initApply/QuestionAnswer',query:{id:id}}" v-if="id">题目作答
+                    <!--<i class="iconfont cf00" v-if="state[2]===0">&#xe610;</i>
+                    <i class="iconfont c52c" v-if="state[2]===1">&#xe719;</i>-->
                 </router-link>
             </li>
             <li>
-                <router-link :to="{path:'/functions/initApply/ConfirmSubmission',query:{id:id}}">确认提交
-                    <i class="iconfont cf00" v-if="state[3]===0">&#xe610;</i>
-                    <i class="iconfont c52c" v-if="state[3]===1">&#xe719;</i>
+                <a href="javascript:void(0);" data-toggle="tooltip" title="请先保存第一步选择学校后继续" v-if="id===''">确认提交
+                    <!--<i class="iconfont cf00" v-if="state[1]===0">&#xe610;</i>
+                    <i class="iconfont c52c" v-if="state[1]===1">&#xe719;</i>-->
+                </a>
+                <router-link :to="{path:'/functions/initApply/ConfirmSubmission',query:{id:id}}" v-if="id">确认提交
+                    <!--<i class="iconfont cf00" v-if="state[3]===0">&#xe610;</i>
+                    <i class="iconfont c52c" v-if="state[3]===1">&#xe719;</i>-->
                 </router-link>
             </li>
         </ul>
@@ -63,6 +79,11 @@ export default {
   },
   data () {
     return {}
+  },
+  mounted () {
+    this.$nextTick(() => {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
   }
 }
 </script>
