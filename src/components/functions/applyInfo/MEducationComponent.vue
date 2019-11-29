@@ -10,6 +10,7 @@
                 </h4>
             </div>
             <div class="clearfix" v-for="(item, i) in education.rcmder" :key="i">
+                <input type="hidden" :name="'rcmder[id]['+i+']'" :value="item.id" />
                 <div class="clearfix pt-10 pb-10 mb-10 text-right bdb" v-if="i > 0">
                     <button type="button" class="btn btn-default btn-sm" @click="delRecommend(i)">删除</button>
                 </div>

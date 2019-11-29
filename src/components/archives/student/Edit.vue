@@ -321,10 +321,13 @@
                                                 <span class="pull-left">学生端</span>
                                             </div>
                                             <div class="panel-body" style="height:131px;overflow:hidden;">
-                                                <p>登录账号：</p>
-                                                <p>登录密码：</p>
+                                                <p>登录账号：{{tab1.login_info.stu_num}}</p>
+                                                <p>登录密码：{{tab1.login_info.temp_pwd}}</p>
                                                 <p style="word-break:break-all; word-wrap:break-word;">
-                                                    登录地址：https://student.19.3/login?cid=YXBwbHlvdmVyc2VhMjc%3D</p>
+                                                    登录地址：<a
+                                                        :href="'http://student.applyera.com/login?cid='+tab1.login_info.c_id"
+                                                        target="_blank">http://student.applyera.com/login?cid={{tab1.login_info.c_id}}</a>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -420,11 +423,12 @@
                         <div class="commonTitle">
                             <span>推荐人</span>
                             <span class="pull-right">
-                                <i class="iconfont handPower" data-toggle="modal" data-backdrop="static" data-target="#addReferrer">&#xe73e;</i>
+                                <i class="iconfont handPower" @click="addReferrer">&#xe73e;</i>
                           </span>
                         </div>
                         <div class="row">
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb-15">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb-15" v-for="(item, i) in tab2.rcmder_list"
+                                 :key="i">
                                 <div class="studentZL bda pl-25 pr-25 pt-10 pb-10">
                                     <div class="clearfix text-right" style="margin-bottom: -22px;">
                                         <div class="dropdown">
@@ -433,21 +437,29 @@
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="#"
-                                                       data-toggle="modal" data-backdrop="static"
-                                                       data-target="#">编辑</a></li>
-                                                <li><a href="javascript:void(0);">删除</a></li>
+                                                <li><a href="javascript:void(0);" @click="editReferrer(item)">编辑</a>
+                                                </li>
+                                                <li><a href="javascript:void(0);"
+                                                       @click="deleteReferrer(item.id)">删除</a></li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="clearfix lh30">推荐人姓名</div>
-                                    <div class="clearfix lh30 pt-15"><span>职位</span> <span></span></div>
-                                    <div class="clearfix lh30"><span>称谓</span> <span></span></div>
-                                    <div class="clearfix lh30"><span>关系</span> <span></span></div>
-                                    <div class="clearfix lh30"><span>电话</span> <span></span></div>
-                                    <div class="clearfix lh30"><span>邮箱</span> <span></span></div>
-                                    <div class="clearfix lh30"><span>优先级</span> <span></span></div>
-                                    <div class="clearfix lh30"><span>地址</span> <span></span></div>
+                                    <div class="clearfix lh30">推荐人姓名 {{item.name}}</div>
+                                    <div class="clearfix lh30 pt-15"><span>职位</span> <span>{{item.career}}</span></div>
+                                    <div class="clearfix lh30"><span>称谓</span> <span>{{item.title}}</span></div>
+                                    <div class="clearfix lh30"><span>关系</span> <span>{{item.relation}}</span></div>
+                                    <div class="clearfix lh30"><span>电话</span> <span>{{item.phone}}</span></div>
+                                    <div class="clearfix lh30"><span>邮箱</span> <span>{{item.email}}</span></div>
+                                    <div class="clearfix lh30"><span>优先级</span> <span>
+                                        <span v-if="item.lv === 1">第一推荐人</span>
+                                        <span v-if="item.lv === 2">第二推荐人</span>
+                                        <span v-if="item.lv === 3">第三推荐人</span>
+                                        <span v-if="item.lv === 4">第四推荐人</span>
+                                        <span v-if="item.lv === 5">第五推荐人</span>
+                                    </span></div>
+                                    <div class="clearfix lh30"><span>地址</span>
+                                        <span>{{outputCity(item.prov, item.city, item.district)}} {{item.details}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -455,7 +467,7 @@
                         <div class="commonTitle">
                             <span>其他联系人</span>
                             <span class="pull-right">
-                                <i class="iconfont handPower" data-toggle="modal" data-backdrop="static" data-target="#addContact">&#xe73e;</i>
+                                <i class="iconfont handPower" @click="addCommon">&#xe73e;</i>
                             </span>
                         </div>
                         <div class="blk20"></div>
@@ -473,7 +485,8 @@
                                                 <li><a href="#" @click="otherContact=tab2['other_contacts'][i]"
                                                        data-toggle="modal" data-backdrop="static"
                                                        data-target="#addContact">编辑</a></li>
-                                                <li><a href="javascript:void(0);" @click="deleteContact(item.id)">删除</a></li>
+                                                <li><a href="javascript:void(0);" @click="deleteContact(item.id)">删除</a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -561,9 +574,11 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <select class="form-control selectpicker show-tick" data-size="10" v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
+                                    <select class="form-control selectpicker show-tick" data-size="10"
+                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
                                         <option value="">请选择</option>
-                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}</option>
+                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
+                                        </option>
                                     </select>
                                 </td>
                                 <td width="15%">{{item.file_size}}</td>
@@ -598,9 +613,11 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <select class="form-control selectpicker show-tick" data-size="10" v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
+                                    <select class="form-control selectpicker show-tick" data-size="10"
+                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
                                         <option value="">请选择</option>
-                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}</option>
+                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
+                                        </option>
                                     </select>
                                 </td>
                                 <td>{{item.file_size}}</td>
@@ -1109,8 +1126,8 @@
                 </div>
             </div>
             <!--添加推荐人-->
-            <div class="modal fade" id="addReferrer">
-                <div class="modal-dialog">
+            <div class="modal fade bs-example-modal-lg" id="addReferrer">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -1118,24 +1135,34 @@
                         </div>
                         <div class="modal-body">
                             <form action="" method="POST" id="ReferrerForm" class="form-horizontal" autocomplete="off">
-                                <input type="hidden" name="student_id" :value="id" v-if="id"/>
-                                <input type="hidden" name="id" />
+                                <input type="hidden" name="id" :value="referrer.id"/>
+                                <input type="hidden" name="student_id" :value="id" />
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label">推荐人姓名</label>
+                                            <label class="col-sm-4 control-label">推荐人姓名<font
+                                                    class="cf00">*</font></label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" name=""
-                                                       placeholder="请输入姓名">
+                                                <input type="text" name="name" v-model="referrer.name"
+                                                       class="form-control" placeholder="请用英文输入推荐人姓名"
+                                                       v-validate="'required|ens'" data-vv-as="推荐人姓名">
+                                                <div class="validateTip" v-show="errors.has('name')">
+                                                    {{ errors.first('name') }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label">职位</label>
+                                            <label class="col-sm-4 control-label">推荐人职位<font
+                                                    class="cf00">*</font></label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" name=""
-                                                       placeholder="请输入职位">
+                                                <input type="text" name="career" v-model="referrer.career"
+                                                       class="form-control" placeholder="请用英文或拼音输入推荐人的职位名称"
+                                                       v-validate="'required|ens'" data-vv-as="推荐人职位">
+                                                <div class="validateTip" v-show="errors.has('career')">
+                                                    {{ errors.first('career') }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1143,60 +1170,127 @@
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label">称谓</label>
+                                            <label class="col-sm-4 control-label">推荐人称谓<font
+                                                    class="cf00">*</font></label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" name=""
-                                                       placeholder="请输入称谓">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">关系</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" name="" class="form-control"
-                                                       placeholder="请输入关系"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">电话</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" name=""
-                                                       placeholder="请输入联系电话">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">邮箱</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" name="" class="form-control"
-                                                       placeholder="请输入邮箱"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6 col-lg-6 col-lg-6 col-lg-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">优先级</label>
-                                            <div class="col-sm-8">
-                                                <select name="" class="form-control selectpicker show-tick" data-size="10">
+                                                <select name="title" v-model="referrer.title"
+                                                        class="form-control selectpicker show-tick"
+                                                        v-validate="'required'" data-vv-as="推荐人称谓">
                                                     <option value="">请选择</option>
+                                                    <option value="Miss">Miss</option>
+                                                    <option value="Ms">Ms</option>
+                                                    <option value="Mr">Mr</option>
                                                 </select>
+                                                <div class="validateTip" v-show="errors.has('title')">
+                                                    {{ errors.first('title') }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">与我的关系<font
+                                                    class="cf00">*</font></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="relation" v-model="referrer.relation"
+                                                       class="form-control" placeholder="请用英文或拼音输入推荐人与您的关系，如：Teacher"
+                                                       v-validate="'required|ens'" data-vv-as="与我的关系">
+                                                <div class="validateTip" v-show="errors.has('relation')">
+                                                    {{ errors.first('relation') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">联系电话 <font
+                                                    class="cf00">*</font></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="phone" v-model="referrer.phone"
+                                                       class="form-control" placeholder="请输入联系电话"
+                                                       v-validate="'required|mobile'" data-vv-as="联系电话">
+                                                <div class="validateTip" v-show="errors.has('phone')">
+                                                    {{ errors.first('phone') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">联系邮箱</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="email" v-model="referrer.email"
+                                                       class="form-control" placeholder="请输入联系邮箱">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-6 col-lg-6 col-lg-6 col-lg-6">
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label">地址</label>
+                                            <label class="col-sm-4 control-label">
+                                                推荐人优先级
+                                                <i class="iconfont c999 handPower" title="若学校只要求一个推荐人，我们提交优先级靠前的推荐人"
+                                                   data-toggle="tooltip" data-placement="top">&#xe999;</i>
+                                                <font class="cf00">*</font>
+                                            </label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" name=""
-                                                       placeholder="请输入地址">
+                                                <select name="lv" v-model="referrer.lv"
+                                                        class="form-control selectpicker show-tick"
+                                                        v-validate="'required'" data-vv-as="推荐人优先级">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">第一推荐人</option>
+                                                    <option value="2">第二推荐人</option>
+                                                    <option value="3">第三推荐人</option>
+                                                    <option value="4">第四推荐人</option>
+                                                    <option value="5">第五推荐人</option>
+                                                </select>
+                                                <div class="validateTip" v-show="errors.has('lv')">
+                                                    {{ errors.first('lv') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-lg-6 col-lg-6 col-lg-6"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">详细地址 <font
+                                                    class="cf00">*</font></label>
+                                            <div class="col-sm-10 form-inline">
+                                                <CitySelect
+                                                        :p="referrer.prov"
+                                                        :c="referrer.city"
+                                                        :a="referrer.district"
+                                                        pName="prov"
+                                                        cName="city"
+                                                        aName="district"
+                                                        ref="city"
+                                                        @cityCallback="cityCallback"/>
+                                                <input type="text" name="details" v-model="referrer.details"
+                                                       class="form-control" placeholder="请用英文或拼音输入推荐人地址"
+                                                       v-validate="'required'" data-vv-as="详细地址">
+                                                <input type="hidden" name="Cprov" :value="referrer.prov"
+                                                       v-validate="'required'" data-vv-as="省"/>
+                                                <input type="hidden" name="Ccity" :value="referrer.city"
+                                                       v-validate="'required'" data-vv-as="市"/>
+                                                <input type="hidden" name="Cdistrict" :value="referrer.district"
+                                                       v-validate="'required'" data-vv-as="区"/>
+                                                <div class="validateTip" v-show="errors.has('Cprov')">
+                                                    {{ errors.first('Cprov') }}
+                                                </div>
+                                                <div class="validateTip" v-show="errors.has('Ccity')">
+                                                    {{ errors.first('Ccity') }}
+                                                </div>
+                                                <div class="validateTip" v-show="errors.has('Cdistrict')">
+                                                    {{ errors.first('Cdistrict') }}
+                                                </div>
+                                                <div class="validateTip" v-show="errors.has('details')">
+                                                    {{ errors.first('details') }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1205,7 +1299,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-primary" @click="saveReferrer">保存</button>
                         </div>
                     </div>
                 </div>
@@ -1219,7 +1313,10 @@
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import '@~/js/VeeValidateConfig'
+import CitySelect from '@#/shared/CitySelect'
+import { bytesToSize } from '../../../assets/js/utils'
 import nation from '@@/json/nation.json'
+import city from '@@/json/city.json'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -1232,6 +1329,7 @@ export default {
     return {
       loading: true,
       nation: nation,
+      city: city,
       id: '',
       country: '',
       student_types: '',
@@ -1299,6 +1397,20 @@ export default {
         wechat: '',
         qq: '',
         remark: ''
+      },
+      referrer: {
+        id: '',
+        career: '',
+        title: '',
+        relation: '',
+        phone: '',
+        email: '',
+        lv: '',
+        prov: '',
+        details: '',
+        city: '',
+        district: '',
+        name: ''
       }
     }
   },
@@ -1306,9 +1418,6 @@ export default {
     let self = this
     self.id = self.$route.query.id || ''
     self.getDetail()
-    document.addEventListener('paste', function (ev) {
-      console.log(ev)
-    })
     self.$nextTick(() => {
       setTimeout(function () {
         self.laydate.render({
@@ -1392,6 +1501,7 @@ export default {
             remark: ''
           }
         })
+        $('[data-toggle="tooltip"]').tooltip()
       }, 1000)
     })
   },
@@ -1487,11 +1597,16 @@ export default {
         formData: { func: 'student_attachment', student_id: self.id }
       })
       uploader.on('uploadSuccess', function (file, res) {
-        self.tab3.unshift({
+        self.tab3.user.unshift({
           file_name: res.data.file_name,
-          file_size: res.data.file_size,
-          date: res.data.date
+          file_size: bytesToSize(res.data.file_size),
+          date: res.data.date,
+          file_type: '',
+          add_time: self.currentTime()
         })
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh')
+        }, 500)
       })
       uploader.on('error', function (handler) {
         if (handler === 'Q_TYPE_DENIED') {
@@ -1625,10 +1740,9 @@ export default {
       })
       db.postRequest('Institution/Student/otherContactsAdd', params).then(res => {
         if (res.status === 1) {
-          $('#contactForm')[0].reset()
+          $('#addContact').modal('hide')
           self.layer.alert(res.msg, { icon: 1 }, function (i) {
             self.layer.close(i)
-            $('#addContact').modal('hide')
             self.tab2.other_contacts = res.data
           })
         } else {
@@ -1805,7 +1919,152 @@ export default {
       db.postRequest('Institution/Student/relate', params).then(res => {
         console.log(res.msg)
       })
+    },
+    // 添加其他联系人
+    addCommon () {
+      $('#contactForm')[0].reset()
+      $('#addContact').modal({
+        backdrop: 'static',
+        show: true
+      })
+    },
+    // 输出省市区名
+    outputCity (p, c, a) {
+      let self = this
+      let porv = ''
+      let city = ''
+      let area = ''
+      self.city.map((item) => {
+        if (item.area_id === p) {
+          porv = item.title
+          item.child.map((items) => {
+            if (items.area_id === c) {
+              city = items.title
+              items.child.map((v) => {
+                if (v.area_id === a) {
+                  area = v.title
+                }
+              })
+            }
+          })
+        }
+      })
+      return porv + city + area
+    },
+    // 添加推荐人
+    addReferrer () {
+      let self = this
+      self.referrer = {
+        id: '',
+        career: '',
+        title: '',
+        relation: '',
+        phone: '',
+        email: '',
+        lv: '',
+        prov: '',
+        details: '',
+        city: '',
+        district: '',
+        name: ''
+      }
+      setTimeout(() => {
+        this.$refs.city.province = ''
+        this.$refs.city.city = ''
+        this.$refs.city.area = ''
+        self.$refs.city.init()
+        $('#addReferrer').modal({
+          backdrop: 'static',
+          show: true
+        })
+      }, 500)
+    },
+    // 修改推荐人
+    editReferrer (item) {
+      this.referrer = {
+        id: item.id,
+        career: item.career,
+        title: item.title,
+        relation: item.relation,
+        phone: item.phone,
+        email: item.email,
+        lv: item.lv,
+        prov: item.prov,
+        details: item.details,
+        city: item.city,
+        district: item.district,
+        name: item.name
+      }
+      this.$refs.city.province = item.prov
+      this.$refs.city.city = item.city
+      this.$refs.city.area = item.district
+      this.$refs.city.init()
+      setTimeout(() => {
+        $('#addReferrer').modal({
+          backdrop: 'static',
+          show: true
+        })
+      }, 500)
+    },
+    // 删除推荐人
+    deleteReferrer (id) {
+      let self = this
+      self.layer.confirm('您确定要删除此信息？', {
+        icon: 3
+      }, function (i) {
+        self.layer.close(i)
+        let params = new URLSearchParams()
+        params.append('r_id', id)
+        params.append('stu_id', self.id)
+        db.postRequest('/Institution/Student/rcmderDel', params).then(res => {
+          if (res.status === 1) {
+            self.tab2.rcmder_list.map((item, i) => {
+              if (item.id === id) {
+                self.tab2.rcmder_list.splice(i, 1)
+              }
+            })
+            self.layer.alert(res.msg, { icon: 1 }, function (i) {
+              self.layer.close(i)
+            })
+          } else {
+            self.layer.alert(res.msg, {
+              icon: 2
+            })
+          }
+        })
+      })
+    },
+    // 保存推荐人
+    saveReferrer () {
+      let self = this
+      let formData = $('#ReferrerForm').serializeArray()
+      let params = new URLSearchParams()
+      formData.map(item => {
+        params.append(item.name, item.value)
+      })
+      db.postRequest('/Institution/Student/rcmderEdit', params).then(res => {
+        if (res.status === 1) {
+          $('#addReferrer').modal('hide')
+          self.tab2.rcmder_list = res.data.rcmder_list
+          self.layer.alert(res.msg, { icon: 1 }, function (i) {
+            self.layer.close(i)
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
+      })
+    },
+    cityCallback (data) {
+      let self = this
+      self.referrer['prov'] = data.province
+      self.referrer['city'] = data.city
+      self.referrer['district'] = data.area
     }
+  },
+  components: {
+    CitySelect
   }
 }
 </script>
@@ -1927,6 +2186,8 @@ export default {
         &:before {
             content:'';width:2px;height:16px;position:absolute;left:15px;top:50%;margin-top:-8px;display:block;background-color:#428bca;
         }
+
+        &:after {content:'';display:block;width:100%;height:0;clear:both;float:none;overflow:hidden;}
     }
 
     & .panel-noData {
@@ -1948,11 +2209,11 @@ export default {
             display:inline-block;float:left;
 
             &:first-of-type {
-                width:25%;
+                width:20%; text-align:right;
             }
 
             &:last-of-type {
-                width:75%;padding-left:5px;
+                width:75%;padding-left:10px;white-space:nowrap;overflow:hidden;-ms-text-overflow:ellipsis;text-overflow:ellipsis;
             }
         }
     }
@@ -1967,8 +2228,9 @@ export default {
         &:hover .deleteBtn {display:inline-block;}
     }
 }
-#tabs3{
-    & .checkbox{
+
+#tabs3 {
+    & .checkbox {
         margin-bottom:0;margin-top:0;
     }
 }

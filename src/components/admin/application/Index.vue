@@ -79,20 +79,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr v-for="(item, i) in list" :key="i">
                     <td>
-                        <router-link :to="{path:'/admin/application/Detail',query:{id:1}}" class="cded">学生姓名----</router-link>
+                        <router-link :to="{path:'/admin/application/Detail',query:{id:item.id}}" class="cded">{{item.student_name}}</router-link>
                     </td>
-                    <td>本科</td>
-                    <td>美国</td>
-                    <td>李**</td>
-                    <td>机构名称</td>
-                    <td>2020-10-10</td>
+                    <td>{{item.apply_type}}</td>
+                    <td>{{item.country_list}}</td>
+                    <td>{{item.user_name}}</td>
+                    <td>{{item.company_name}}</td>
+                    <td>{{item.created_time}}</td>
                     <td class="text-center">
                         <div class="dropdown">
                             <a href="javascript:void(0);" data-toggle="dropdown"><i class="iconfont">&#xe66b;</i></a>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a href="#">----</a></li>
+                                <li><router-link :to="{path:'/admin/application/Detail',query:{id:item.id}}">编辑</router-link></li>
                             </ul>
                         </div>
                     </td>
@@ -132,15 +132,16 @@ export default {
     let self = this
     self.name = self.$route.name
     self.$nextTick(() => {
-
+      self.pageChange()
     })
   },
   methods: {
     pageChange (page) {
       let self = this
       let params = new URLSearchParams()
+      self.loading = true
       params.append('page', page || 1)
-      db.postRequest('', params).then(res => {
+      db.postRequest('/Institution/Apply/admOrderList', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.list
           self.total = res.data.total
@@ -148,6 +149,7 @@ export default {
           console.log(res.msg)
         }
         self.current = page || 1
+        self.loading = false
       })
     },
     clearData () {

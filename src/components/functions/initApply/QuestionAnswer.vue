@@ -71,6 +71,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-5 control-label">推荐人姓名</label>
                                                 <div class="col-sm-7">
+                                                    <input type="hidden" name="rcmder[id][]" :value="item.id" />
                                                     <input type="text" name="rcmder[name][]" v-model="item.name" class="form-control" placeholder="请输入推荐人姓名">
                                                 </div>
                                             </div>

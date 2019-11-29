@@ -44,15 +44,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="clearfix font12 text-center">
+                    <i class="iconfont cded">&#xe610;</i>
+                    如果该生尚未填写申请资料，请先前往"
+                    <router-link to="/functions/applyInfo/detail" class="cded">申请资料</router-link>
+                    "填写
+                </div>
             </div>
-
-            <div class="clearfix text-center">
-                <i class="iconfont cded">&#xe610;</i>
-                如果该生尚未填写申请资料，请先前往"
-                <router-link to="/functions/applyInfo/detail" class="cded">申请资料</router-link>
-                "填写
-            </div>
-
+            <div class="blk30"></div>
             <table class="table table-customize">
                 <thead>
                 <tr>
@@ -68,7 +67,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="(item, i) in schoolArr" :key="i">
-                    <td><i class="iconfont handPower cded lh38" @click="deleteSchool(i)" v-if="i!==0">&#xe61f5;</i></td>
+                    <td><i class="iconfont handPower cded lh38" @click="deleteSchool(i)">&#xe61f5;</i></td>
                     <td>
                         <div v-show="item.school_unq_id !== 'custom'">
                             <select name="major_list[school_unq_id][]" class="form-control selectpicker show-tick"
@@ -103,12 +102,13 @@
                     </td>
                     <td>
                         <input type="hidden" name="major_list[major_website][]" v-model="item.major_website"/>
-                        <a :href="item.major_website" target="_blank" class="cded lh34"
-                           v-if="item.major_website">点击前往</a>
-                        <span v-if="!item.major_website" class="c999">--</span>
+                        <a :href="item.major_website" target="_blank" class="cded lh34" v-if="item.major_website">点击前往</a>
+                        <span v-if="!item.major_website" class="c999">
+                            <input type="text" name="name" class="form-control" v-model="item.major_website" placeholder="请输入专业网址" />
+                        </span>
                     </td>
                     <td>
-                        <input type="text" name="major_list[term][]" class="form-control" placeholder="请填写申请批次 (输入框)"
+                        <input type="text" name="major_list[term][]" class="form-control" placeholder="请填写申请批次"
                                v-model="item.term" :list="'term'+i" autocomplete="off"/>
                         <datalist :id="'term'+i">
                             <option :value="items" v-for="(items, i) in item.batchList" :key="i"></option>
@@ -153,6 +153,7 @@ export default {
       studentId: '',
       materialId: '',
       applyType: 1,
+      applyEmail: '',
       schoolArr: [{
         school_unq_id: '',
         school_name: '',
@@ -202,6 +203,7 @@ export default {
           self.getMaterial(res.data.student_id)
           self.studentId = res.data.student_id
           self.materialId = res.data.apply_id
+          self.applyEmail = res.data.apply_email
           self.applyType = res.data.apply_type
           self.schoolArr = res.data.major_list
           res.data.major_list.map((item, i) => {

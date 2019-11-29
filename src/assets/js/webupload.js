@@ -36,6 +36,7 @@ export default function webUpload (assign, options) {
     fileSingleSizeLimit: 1024 * 1024 * 2, // 验证单个文件大小是否超出限制
     thumbnail: {width: 150, className: 'image-lg'},
     uploadFinished: undefined, // 所有文件上传结束后触发
+    uploadSuccess: undefined, // 上传成功后触发
     error: undefined // 上传报错
   }
   let opts = $.extend({}, config, options)
@@ -99,14 +100,18 @@ export default function webUpload (assign, options) {
   // 上传成功
   uploader.on('uploadSuccess', function (file, response) {
     let $this = $('#' + file.id)
-    $this.find('.image-panel').show() // 显示图片时
-    $this.find('.data').text('上传成功')
-    $this.attr('fid', response.data.id)
-    assign.push(response.data)
+    if (opts.uploadSuccess !== undefined && Object.prototype.toString.call(opts.uploadSuccess) === '[object Function]') {
+      opts.uploadSuccess(file, response)
+    } else {
+      $this.find('.image-panel').show() // 显示图片时
+      $this.find('.data').text('上传成功')
+      $this.attr('fid', response.data.id)
+      assign.push(response.data)
+    }
   })
   // 所有文件上传结束后触发
   uploader.on('uploadFinished', function () {
-    if (opts.uploadFinished !== undefined) {
+    if (opts.uploadFinished !== undefined && Object.prototype.toString.call(opts.uploadFinished) === '[object Function]') {
       opts.uploadFinished()
     }
   })

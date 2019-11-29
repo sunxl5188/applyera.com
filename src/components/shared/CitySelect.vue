@@ -71,6 +71,12 @@ export default {
   mounted () {
     let self = this
     self.$nextTick(() => {
+      self.init()
+    })
+  },
+  methods: {
+    init () {
+      let self = this
       if (self.province) {
         let i = self.arrObjIndex(self.pList, self.province)
         self.initialList(i, 1)
@@ -80,9 +86,7 @@ export default {
         self.initialList(i, 2)
       }
       self.refreshSelect()
-    })
-  },
-  methods: {
+    },
     initialList (i, type) {
       let self = this
       if (type === 1) {

@@ -94,7 +94,6 @@
                         <th>学生姓名</th>
                         <th>申请项目</th>
                         <th>申请国家</th>
-                        <th>是否支付</th>
                         <th>服务顾问</th>
                         <th class="w15">创建时间</th>
                         <th class="w10"></th>
@@ -110,7 +109,6 @@
                         </td>
                         <td>{{item.apply_type}}</td>
                         <td>{{item.apply_country}}</td>
-                        <td>{{item.pay_status}}</td>
                         <td>{{item.adviser_name}}</td>
                         <td>{{item.created_time}}</td>
                         <td class="text-center">
@@ -129,10 +127,10 @@
                         </td>
                     </tr>
                     <tr v-if="loading">
-                        <td colspan="7" class="text-center" v-html="LoadingImg()"></td>
+                        <td colspan="6" class="text-center" v-html="LoadingImg()"></td>
                     </tr>
                     <tr v-if="loading===false && list.length === 0">
-                        <td colspan="7" class="text-center" v-html="NoData()"></td>
+                        <td colspan="6" class="text-center" v-html="NoData()"></td>
                     </tr>
                     </tbody>
                 </table>
