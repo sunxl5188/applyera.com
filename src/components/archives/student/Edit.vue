@@ -1133,10 +1133,11 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title">添加推荐人</h4>
                         </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" id="ReferrerForm" class="form-horizontal" autocomplete="off">
+                        <form action="" method="POST" id="ReferrerForm" class="form-horizontal" autocomplete="off"
+                              @submit.prevent="saveReferrer">
+                            <div class="modal-body">
                                 <input type="hidden" name="id" :value="referrer.id"/>
-                                <input type="hidden" name="student_id" :value="id" />
+                                <input type="hidden" name="student_id" :value="id"/>
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <div class="form-group">
@@ -1295,12 +1296,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" @click="saveReferrer">保存</button>
-                        </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary">保存</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -1501,7 +1502,6 @@ export default {
             remark: ''
           }
         })
-        $('[data-toggle="tooltip"]').tooltip()
       }, 1000)
     })
   },
@@ -1977,6 +1977,7 @@ export default {
           backdrop: 'static',
           show: true
         })
+        $('[data-toggle="tooltip"]').tooltip()
       }, 500)
     },
     // 修改推荐人
@@ -2004,6 +2005,7 @@ export default {
           backdrop: 'static',
           show: true
         })
+        $('[data-toggle="tooltip"]').tooltip()
       }, 500)
     },
     // 删除推荐人
@@ -2037,21 +2039,25 @@ export default {
     // 保存推荐人
     saveReferrer () {
       let self = this
-      let formData = $('#ReferrerForm').serializeArray()
-      let params = new URLSearchParams()
-      formData.map(item => {
-        params.append(item.name, item.value)
-      })
-      db.postRequest('/Institution/Student/rcmderEdit', params).then(res => {
-        if (res.status === 1) {
-          $('#addReferrer').modal('hide')
-          self.tab2.rcmder_list = res.data.rcmder_list
-          self.layer.alert(res.msg, { icon: 1 }, function (i) {
-            self.layer.close(i)
+      self.$validator.validateAll().then((result) => {
+        if (result) {
+          let formData = $('#ReferrerForm').serializeArray()
+          let params = new URLSearchParams()
+          formData.map(item => {
+            params.append(item.name, item.value)
           })
-        } else {
-          self.layer.alert(res.msg, {
-            icon: 2
+          db.postRequest('/Institution/Student/rcmderEdit', params).then(res => {
+            if (res.status === 1) {
+              $('#addReferrer').modal('hide')
+              self.tab2.rcmder_list = res.data.rcmder_list
+              self.layer.alert(res.msg, { icon: 1 }, function (i) {
+                self.layer.close(i)
+              })
+            } else {
+              self.layer.alert(res.msg, {
+                icon: 2
+              })
+            }
           })
         }
       })
