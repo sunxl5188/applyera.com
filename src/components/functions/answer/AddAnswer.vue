@@ -417,17 +417,19 @@ export default {
       // 设置右边浮动
       setTimeout(() => {
         let $this = $('.commentBox')
-        let $thisW = $this.parent().outerWidth(true)
+        let leftH = $('.leftBox').height()
+        let $thisW = $this.parent().width()
         let $thisH = $(window).height() - 50
         let $thisOffset = $this.parent().offset().top
         let left = $this.parent().offset().left
         self.offsetObj = {w: $thisW, h: $thisH, l: left}
+        $this.css({left: self.offsetObj['l'], width: self.offsetObj['w'], height: leftH + 'px'})
         $(document).on('scroll resize', function () {
           let top = $(window).scrollTop() + 50
           if (top - $thisOffset > 0) {
             $this.addClass('fixed').css({left: self.offsetObj['l'], width: self.offsetObj['w'], height: self.offsetObj['h']})
           } else {
-            $this.removeClass('fixed').removeAttr('style')
+            $this.removeClass('fixed')
           }
         })
         $(window).on('resize', function () {
@@ -436,6 +438,7 @@ export default {
           let $thisH = $(window).height() - 50
           let left = $this.parent().offset().left
           self.offsetObj = {w: $thisW, h: $thisH, l: left}
+          $this.css({left: self.offsetObj['l'], width: self.offsetObj['w'], height: self.offsetObj['h']})
         })
       }, 1000)
     })
@@ -538,6 +541,11 @@ export default {
       db.postRequest('/Institution/Document/getQs', params).then(res => {
         if (res.status === 1) {
           self.topic = res.data
+          setTimeout(() => {
+            let $this = $('.commentBox')
+            let leftH = $('.leftBox').height()
+            $this.css({height: leftH + 'px'})
+          }, 500)
         } else {
           console.log(res.msg)
         }

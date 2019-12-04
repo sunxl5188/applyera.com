@@ -860,3 +860,22 @@ span[contenteditable], div[contenteditable]{
 		}
 	}
 }
+
+.bootstrapSelectBorderNone{
+	.bootstrap-select {
+		-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background:transparent !important;
+
+		& .dropdown-toggle {
+			border:none;background:transparent !important;
+
+			& .filter-option-inner-inner {
+				//white-space:nowrap;-ms-text-overflow:ellipsis;text-overflow:ellipsis;overflow:hidden;max-width:300px;min-width:150px;
+				word-break:break-all; word-wrap:break-word;white-space:normal;
+			}
+
+			& .bs-caret {display:none;}
+
+			&:hover, &:focus, &:active {background-color:transparent;outline:none !important;}
+		}
+	}
+}

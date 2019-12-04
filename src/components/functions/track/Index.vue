@@ -86,64 +86,71 @@
                 </thead>
                 <tbody v-for="(item,i) in list" :key="i">
                 <tr>
-                    <td width="5%"><i class="iconfont handPower" @click="viewBtn($event)">&#xe636;</i></td>
-                    <td width="10%">{{item.name}}</td>
-                    <td>{{item.country}}</td>
-                    <td>{{item.apply_type_name}}</td>
-                    <td>{{item.schoolname}}</td>
-                    <td>{{item.user_name}}</td>
-                    <td width="15%">{{item.status}}</td>
+                    <td class="w5"><i class="iconfont handPower" @click="viewBtn($event)">&#xe636;</i></td>
+                    <td class="w10">{{item.name}}</td>
+                    <td class="w10">{{item.country}}</td>
+                    <td class="w10">{{item.apply_type}}</td>
+                    <td>{{item.school_name}}</td>
+                    <td class="w15">{{item.user_name}}</td>
+                    <td class="w15">
+                        <span v-if="item.apply_code===0">无需操作</span>
+                        <span v-if="item.apply_code===2">已支付</span>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-backdrop="static" data-target="#applyFee" v-if="item.apply_code===1" @click="itemInfo={id: item.id, title:item.apply_tips, annotation: item.apply_remark, image: item.apply_images}">待支付</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#interview" v-if="item.apply_code===3" @click="itemInfo={id: item.id, title:item.apply_tips, annotation: item.apply_remark, image: item.apply_images}">待面试</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#viewResult" v-if="item.apply_code===4" @click="itemInfo={id: item.id, title:item.apply_tips, annotation: item.apply_remark, image: item.apply_images}">查看结果</button>
+                    </td>
                 </tr>
                 <tr class="infoView" style="display:none;">
                     <td colspan="2">
-                        {{item.major_en}}<br/>{{item.major_name}}
+                        {{item.major_name}}
                     </td>
                     <td colspan="4">
                         <div class="row text-center progressX">
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="clearfix">
-                                    <i class="iconfont c999" v-if="item.is_return_val===0">&#xe63e;</i>
-                                    <i class="iconfont cded" v-if="item.is_return_val===1">&#xe719;</i>
-                                    <i class="iconfont cf00" v-if="item.is_return_val===2">&#xe606;</i>
+                                    <i class="iconfont c999" v-if="item.material_status===0">&#xe63e;</i>
+                                    <i class="iconfont cded" v-if="item.material_status===1">&#xe719;</i>
+                                    <i class="iconfont cded" v-if="item.material_status===2">&#xe63e;</i>
                                 </div>
-                                <span>回执(<span v-if="item.is_return_val===0">等待</span><span
-                                        v-if="item.is_return_val===1">收到回执</span><span
-                                        v-if="item.is_return_val===2">没收到</span>)</span>
+                                <span>资料接收(<span v-if="item.material_status===0" class="c999">等待</span><span
+                                        v-if="item.material_status===1" class="cded">已提交</span><span
+                                        v-if="item.material_status===2" class="cded">已接收</span>)</span>
                             </div>
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="clearfix">
-                                    <i class="iconfont c999" v-if="item.is_interview_val===0">&#xe63e;</i>
-                                    <i class="iconfont cded" v-if="item.is_interview_val===1">&#xe719;</i>
-                                    <i class="iconfont cf00" v-if="item.is_interview_val===2">&#xe606;</i>
+                                    <i class="iconfont c999" v-if="item.pay_has===1 && item.pay_status===0">&#xe63e;</i>
+                                    <i class="iconfont cded" v-if="item.pay_has===1 && item.pay_status===1">&#xe719;</i>
+                                    <i class="iconfont cded" v-if="item.pay_has===2">&#xe719;</i>
                                 </div>
-                                <span>面试(<span v-if="item.is_interview_val===0">等待中</span><span
-                                        v-if="item.is_interview_val===1">通过</span><span
-                                        v-if="item.is_interview_val===2">不通过</span>)</span>
+                                <span>申请费(
+                                    <span v-if="item.pay_has===1 && item.pay_status===0" class="c999">待支付</span>
+                                    <span v-if="item.pay_has===1 && item.pay_status===1" class="cded">已支付</span>
+                                    <span v-if="item.pay_has===2" class="cded">无需支付</span>
+                                    )</span>
                             </div>
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="clearfix">
-                                    <i class="iconfont c999" v-if="item.res===0">&#xe63e;</i>
-                                    <i class="iconfont cded" v-if="item.res===1">&#xe719;</i>
-                                    <i class="iconfont cf00" v-if="item.res===2">&#xe606;</i>
+                                    <i class="iconfont c999" v-if="item.interview_status===0">&#xe63e;</i>
+                                    <i class="iconfont cded" v-if="item.interview_status===1">&#xe63e;</i>
+                                    <i class="iconfont cded" v-if="item.interview_status===2">&#xe719;</i>
                                 </div>
-                                <span>结果(<span v-if="item.res===0">等待</span><span
-                                        v-if="item.res===1">offer</span><span v-if="item.res===2">拒信</span>)</span>
+                                <span>学生面试(<span v-if="item.interview_status===0" class="c999">待确定</span>
+                                    <span v-if="item.interview_status===1" class="cded">待面试</span><span
+                                        v-if="item.is_interview_val===2" class="cded">无需面试</span>)</span>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <div class="clearfix">
+                                    <i class="iconfont c999" v-if="item.res_status===0">&#xe63e;</i>
+                                    <i class="iconfont cded" v-if="item.res_status===1">&#xe719;</i>
+                                    <i class="iconfont cf00" v-if="item.res_status===2">&#xe606;</i>
+                                </div>
+                                <span>结果发放(<span v-if="item.res_status===0" class="c999">等待</span><span
+                                        v-if="item.res_status===1" class="cded">offer</span><span v-if="item.res_status===2" class="cf00">拒信</span>)</span>
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <p v-if="item.is_res_upload===0"><a href="javascript:void(0);" class="c999">查看回执</a> <a
-                                href="javascript:void(0);" class="c999">下载回执</a></p>
-                        <p v-if="item.is_res_upload===1"><a href="javascript:void(0);" class="cded"
-                                                            @click="viewImg(item.res_upload)">查看回执</a> <a
-                                :href="url+'/Institution/Apply/showReturn?id='+item.id" class="cded ml-10"
-                                target="_blank">下载回执</a></p>
-                        <p v-if="item.is_return_upload===0"><a href="javascript:void(0);" class="c999">申请结果</a> <a
-                                href="javascript:void(0);" class="c999">下载结果</a></p>
-                        <p v-if="item.is_return_upload===1"><a href="javascript:void(0);" class="cded"
-                                                               @click="viewImg(item.return_upload)">申请结果</a><a
-                                :href="url+'/Institution/Apply/showRes?id='+item.id" class="cded ml-10" target="_blank">下载结果</a>
-                        </p>
+                    <td class="text-center">
+                        <a href="javascript:void(0);" class="cded" @click="viewImg(item.img_list)">回执中心</a>
                     </td>
                 </tr>
                 </tbody>
@@ -160,6 +167,71 @@
             </table>
             <PagInAction :total="total" @pagechange="pagechange"></PagInAction>
         </div>
+        <!--申请费-->
+        <div class="modal fade bs-example-modal-lg" id="applyFee">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">申请费</h4>
+                    </div>
+                    <div class="modal-body" style="max-height: 500px;overflow-y: auto;">
+                        <div v-html="itemInfo.title" class="pt-15 pb-15"></div>
+                        <div v-text="itemInfo.annotation" class="pt-15 pb-15" v-if="itemInfo.annotation"></div>
+                        <div class="text-center">
+                            <img :src="item" alt="" v-for="(item, i) in itemInfo.image" :key="i" class="img-responsive">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <router-link :to="{path:'/home/payment',query:{id:itemInfo.id}}" class="btn btn-primary" data-dismiss="modal">前往支付</router-link>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--院校面试-->
+        <div class="modal fade bs-example-modal-lg" id="interview">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">院校面试</h4>
+                    </div>
+                    <div class="modal-body" style="max-height: 500px;overflow-y: auto;">
+                        <div v-html="itemInfo.title" class="pt-15 pb-15"></div>
+                        <div v-text="itemInfo.annotation" class="pt-15 pb-15" v-if="itemInfo.annotation"></div>
+                        <div class="text-center">
+                            <img :src="item" alt="" v-for="(item, i) in itemInfo.image" :key="i" class="img-responsive">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" @click="layerTips(itemInfo.id)">已完成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--查看结果-->
+        <div class="modal fade bs-example-modal-lg" id="viewResult">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">查看结果</h4>
+                    </div>
+                    <div class="modal-body" style="max-height: 500px;overflow-y: auto;">
+                        <div v-html="itemInfo.title" class="pt-15 pb-15"></div>
+                        <div v-text="itemInfo.annotation" class="pt-15 pb-15" v-if="itemInfo.annotation"></div>
+                        <div class="text-center">
+                            <img :src="item" alt="" v-for="(item, i) in itemInfo.image" :key="i" class="img-responsive">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">知道了</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -174,14 +246,19 @@ export default {
   data () {
     return {
       loading: true,
-      url: '//' + window.ajaxBaseUrl,
       studentName: '',
       studentNum: '',
       applyType: '',
       payStatus: '',
       payTime: '',
       list: [],
-      total: 0
+      total: 0,
+      itemInfo: {
+        id: '',
+        title: '',
+        annotation: '',
+        image: []
+      }
     }
   },
   computed: {
@@ -235,6 +312,7 @@ export default {
       this.payTime = ''
       this.pagechange()
     },
+    // 查看图片
     viewImg (arr) {
       let self = this
       let imgList = []
@@ -245,7 +323,7 @@ export default {
           imgList.push({
             'alt': '',
             'pid': i,
-            'src': '//' + item,
+            'src': item,
             'thumb': ''
           })
         })
@@ -255,17 +333,34 @@ export default {
           'data': imgList
         }
         self.layer.photos({
-          photos: data
+          photos: data,
+          anim: 5
         })
       }
     },
     viewBtn (event) {
       let $this = $(event.currentTarget)
-      if ($this.parents('tr').next('.infoView').is(':hidden')) {
+      if ($this.parents('tr').next('.infoView').is(':hidden')) { // &#xe636;
         $this.parents('tr').next('.infoView').show()
+        $this.html('&#xe63a;')
       } else {
         $this.parents('tr').next('.infoView').hide()
+        $this.html('&#xe636;')
       }
+    },
+    layerTips (id) {
+      let self = this
+      $('#interview').modal('hide')
+      self.layer.confirm('您是否确认已完成院校面试？', {
+        icon: 3
+      }, function (i) {
+        self.layer.close(i)
+        let params = new URLSearchParams()
+        params.append('id', id)
+        db.postRequest('/Institution/Apply/interviewConfirm', params).then(res => {
+          console.log(res.msg)
+        })
+      })
     }
   },
   components: {
@@ -287,7 +382,7 @@ export default {
         position:relative;
 
         &:after {
-            content:'';width:66%;height:1px;background:#ddd;position:absolute;left:50%;margin-left:-33%;top:10px;z-index:1;
+            content:'';width:76%;height:1px;background:#ddd;position:absolute;left:12%;top:10px;z-index:1;
         }
 
         & > div {z-index:2;}

@@ -80,12 +80,15 @@
             <tr v-for="(item, i) in list.major_list" :key="i">
                 <td><input type="checkbox" name="id[]" :value="item.id"/></td>
                 <td>
-                    <router-link :to="{path:'/',query:{id:item.id}}" class="cded">
+                    <router-link :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.school_unq_id,tab:1}}" class="cded">
                         {{item.school_name}}
                     </router-link>
                 </td>
                 <td>
-                    <router-link :to="{path:'/',query:{id:item.id}}">
+                    <router-link :to="{path:'/functions/schoollist/majordetaila',query:{id:item.major_unq_id}}" class="cded" v-if="list.apply_type===1">
+                        {{item.major_name}}
+                    </router-link>
+                    <router-link :to="{path:'/functions/schoollist/majordetailb',query:{id:item.major_unq_id}}" class="cded" v-if="list.apply_type===2">
                         {{item.major_name}}
                     </router-link>
                 </td>
@@ -94,8 +97,7 @@
                 <td>{{item.comm}}</td>
                 <td>{{item.comm_channel}}</td>
                 <td>
-                    <span v-if="item.material_status===1">已提交</span>
-                    <span v-if="item.material_status===2">已接收</span>
+                    {{item.apply_status}}
                 </td>
             </tr>
             <tr v-if="loading">
@@ -199,6 +201,8 @@
                                             </select>
                                             <input type="number" min="0" name="pay_fee[]" class="form-control div_vm" placeholder="请输入金额"
                                                    style="display:inline-block;width:auto;" v-model="item.pay_fee"/>
+                                            <input type="hidden" name="pay_uploads[]" v-model="item.pay_uploads" />
+                                            <button type="button" class="btn btn-default" @click="uploadClick('s'+i)">上传凭证</button>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -276,6 +280,7 @@
         <div style="position: absolute;left:-9999px;">
             <div :id="'picker'+i" v-for="(item, i) in list.major_list" :key="i"></div>
             <div :id="'pickerf'+k" v-for="(item, k) in list.major_list" :key="'f'+k"></div>
+            <div :id="'pickers'+n" v-for="(item, n) in list.major_list" :key="'s'+n"></div>
         </div>
         <a href="" id="saveFile"></a>
     </div>
@@ -364,6 +369,7 @@ export default {
         self.list.major_list.map((item, i) => {
           self.formUpload(i, 'material_uploads', i)
           self.formUpload('f' + i, 'res_uploads', i)
+          self.formUpload('s' + i, 'pay_uploads', i)
         })
       }, 3000)
     })
@@ -515,6 +521,7 @@ export default {
         if (res.status === 1) {
           img.src = window.ajaxBaseUrl + res.data
           img.setAttribute('data-url', res.data)
+          img.className = 'img-responsive'
           $('#pasteImage').append(img)
         } else {
           self.layer.alert(res.msg, {

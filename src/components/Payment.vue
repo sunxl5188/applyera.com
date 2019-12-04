@@ -33,9 +33,9 @@
                     </ul>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 font16 text-center">
-                    <div class="lh30 pt-10">总额：<span class="cfad">￥</span><span class="cfad font26">{{info.pay_money_cny}}</span>
+                    <div class="lh30 pt-10">总额：<span class="cfad font26">{{info.pay_money_cny}}</span>
                     </div>
-                    <div class="lh30 c999">（总计{{info.school_count}}所院校{{info.major_count}}个专业,共${{info.pay_money}}）
+                    <div class="lh30 c999">（总计{{info.school_count}}所院校{{info.major_count}}个专业,共{{info.pay_money}}）
                     </div>
                 </div>
             </div>
@@ -136,7 +136,7 @@ export default {
           self.info = res.data
         } else {
           self.layer.alert(res.msg, {
-            shadeClose: false
+            icon: 2
           }, function (i) {
             self.layer.close(i)
             self.$router.back()
@@ -177,7 +177,7 @@ export default {
                 clearInterval(self.payT)
                 setTimeout(function () {
                   $('#weixinLay').modal('hide')
-                  self.$router.push('/functions/application')
+                  self.$router.push('/functions/track')
                 }, 1500)
                 return false
               }
@@ -189,7 +189,7 @@ export default {
           })
         } else {
           self.layer.alert(res.msg, {
-            shadeClose: false
+            icon: 2
           })
         }
       })

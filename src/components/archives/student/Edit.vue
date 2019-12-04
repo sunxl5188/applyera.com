@@ -444,7 +444,8 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="clearfix lh30">推荐人姓名 {{item.name}}</div>
+                                    <div class="clearfix lh30">推荐人{{i+1}}</div>
+                                    <div class="clearfix lh30 pt-15"><span></span> <span>{{item.name}}</span></div>
                                     <div class="clearfix lh30 pt-15"><span>职位</span> <span>{{item.career}}</span></div>
                                     <div class="clearfix lh30"><span>称谓</span> <span>{{item.title}}</span></div>
                                     <div class="clearfix lh30"><span>关系</span> <span>{{item.relation}}</span></div>
@@ -2215,7 +2216,7 @@ export default {
             display:inline-block;float:left;
 
             &:first-of-type {
-                width:20%; text-align:right;
+                width:20%;
             }
 
             &:last-of-type {

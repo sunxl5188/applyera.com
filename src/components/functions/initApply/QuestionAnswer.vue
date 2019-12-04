@@ -24,13 +24,14 @@
                             {{item.school_name}}<br>
                             {{item.major_name}}
                         </td>
-                        <td>推荐信 {{item.rcmd_num}} 封</td>
+                        <td>推荐人 {{item.rcmd_num}} 位</td>
                         <td>
                             <select v-model="item.rcmd_id_list" class="form-control selectpicker show-tick" multiple
                                     data-size="15" data-selected-text-format="count > 3" title="请选择" data-width="200px">
                                 <option :value="items.id" v-for="(items, k) in rcmdList" :key="k">{{items.name}}</option>
                             </select>
                             <a class="btn btn-default" @click="getReferrer(item.id, item.rcmd_id_list)" v-if="item.rcmd_id_list.length > 0">编辑推荐人</a>
+                            <router-link to="/functions/applyInfo/detail" class="cded" v-if="rcmdList.length === 0">前往创建</router-link>
                         </td>
                     </tr>
                     <tr>

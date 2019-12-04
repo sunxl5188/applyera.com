@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="blk30"></div>
-            <table class="table table-customize">
+            <table class="table table-customize schoolList">
                 <thead>
                 <tr>
                     <th class="w5">
@@ -62,14 +62,14 @@
                     <th class="w20">专业名称</th>
                     <th class="w15">专业网址</th>
                     <th class="w25">申请批次</th>
-                    <th>可得佣金(元)</th>
+                    <th>可得佣金</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="(item, i) in schoolArr" :key="i">
                     <td><i class="iconfont handPower cded lh38" @click="deleteSchool(i)">&#xe61f5;</i></td>
                     <td>
-                        <div v-show="item.school_unq_id !== 'custom'">
+                        <div v-show="item.school_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
                             <select name="major_list[school_unq_id][]" class="form-control selectpicker show-tick"
                                     data-size="10" data-live-search="true" data-width="190px"
                                     v-model="item.school_unq_id"
@@ -86,7 +86,7 @@
                                v-show="item.school_unq_id === 'custom'">
                     </td>
                     <td>
-                        <div v-show="item.major_unq_id !== 'custom'">
+                        <div v-show="item.major_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
                             <select name="major_list[major_unq_id][]" class="form-control selectpicker show-tick"
                                     data-size="10" data-live-search="true" data-width="190px"
                                     v-model="item.major_unq_id" @change="getBatch(i, applyType, item.major_unq_id)">
@@ -101,15 +101,15 @@
                                v-model="item.major_name" v-show="item.major_unq_id === 'custom'">
                     </td>
                     <td>
-                        <input type="hidden" name="major_list[major_website][]" v-model="item.major_website"/>
-                        <a :href="item.major_website" target="_blank" class="cded lh34" v-if="item.major_website">点击前往</a>
-                        <span v-if="!item.major_website" class="c999">
+                        <input type="hidden" name="major_list[major_website][]" v-model="item.major_website" />
+                        <a :href="item.major_website" target="_blank" class="cded lh34" v-if="item.major_unq_id !=='custom'">点击前往</a>
+                        <span v-if="item.major_unq_id === 'custom'" class="c999">
                             <input type="text" name="name" class="form-control" v-model="item.major_website" placeholder="请输入专业网址" />
                         </span>
                     </td>
                     <td>
                         <input type="text" name="major_list[term][]" class="form-control" placeholder="请填写申请批次"
-                               v-model="item.term" :list="'term'+i" autocomplete="off"/>
+                               v-model="item.term" :list="'term'+i" autocomplete="off" />
                         <datalist :id="'term'+i">
                             <option :value="items" v-for="(items, i) in item.batchList" :key="i"></option>
                         </datalist>
@@ -117,7 +117,7 @@
                     <td>
                         <span class="lh34">
                             <input type="text" name="major_list[comm][]" class="form-control" v-model="item.comm"
-                                   readonly/>
+                                   readonly />
                         </span>
                     </td>
                 </tr>
@@ -377,5 +377,8 @@ export default {
 
 .table > tbody > tr > td {
     vertical-align:top;
+}
+.schoolList{
+    [type="text"]{border:none;background-color:transparent !important;}
 }
 </style>
