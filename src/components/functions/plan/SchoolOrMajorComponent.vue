@@ -133,17 +133,14 @@
                                                 </div>
 
                                                 <div class="row bdb" v-for="(item, i) in majorArr" :key="i">
-                                                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                                         <div class="checkbox" :data-id="item.unq_id">
                                                             <label>
-                                                                <input type="radio" name="unq_id"
-                                                                       @click="setSelectId(item)"/>
+                                                                <input type="checkbox" name="unq_id"
+                                                                       @click="setSelectId($event,item)"/>
                                                                 {{item.majorch}}
                                                             </label>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                                        <span class="textOver lh40">{{item.collagech}}</span>
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center lh40">
                                                         <i class="iconfont cded handPower"
@@ -203,11 +200,11 @@
                     </div>
                     <div class="modal-body">
                         <dl>
-                            <dt>{{majorDateInfo.schoolname}}</dt>
+                            <dt>{{majorDateInfo.schoolname_en}}</dt>
                             <dd>学校排名：{{majorDateInfo.ranking}}</dd>
                             <dd>学校地址：{{majorDateInfo.position}}</dd>
-                            <dt class="cded">{{majorDateInfo.majorch}}</dt>
-                            <dd v-if="type===2">学位名称：{{majorDateInfo.degree_name}}</dd>
+                            <dt class="cded">{{majorDateInfo.majoren}}</dt>
+                            <dd v-if="applyType===2">学位名称：{{majorDateInfo.degree_name}}</dd>
                             <dd>所属学院：{{majorDateInfo.collagech}}</dd>
                             <dd>
                                 <div class="row">
@@ -229,7 +226,7 @@
                                     </div>
                                 </div>
                             </dd>
-                            <dd v-if="type===1">
+                            <dd v-if="applyType===1">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         STA成绩：{{majorDateInfo.sat}}
@@ -239,7 +236,7 @@
                                     </div>
                                 </div>
                             </dd>
-                            <dd v-if="type===2">
+                            <dd v-if="applyType===2">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         GRE：{{majorDateInfo.gre}}
@@ -291,12 +288,26 @@ export default {
       isSchoolList: false,
       majorArr: [],
       ActiveArr: [],
-      majorDateInfo: {}
-    }
-  },
-  computed: {
-    token () {
-      return store.state.token
+      majorDateInfo: {
+        act: '',
+        apply_fee: '',
+        apply_time: '',
+        collagech: '',
+        commission: '',
+        degree_name: '',
+        gmat: '',
+        gre: '',
+        ielts: '',
+        majorch: '',
+        majoren: '',
+        majorintro: '',
+        position: '',
+        ranking: '',
+        sat: '',
+        schoolname: '',
+        schoolname_en: '',
+        toefl: ''
+      }
     }
   },
   mounted () {
@@ -373,16 +384,18 @@ export default {
       self.tuition = '不限'
       self.majorArea = '不限'
     },
-    setSelectId (obj) {
+    setSelectId (ev, obj) {
       let self = this
-      obj.sunqId = self.unqId
-      for (let i = 0; i < self.ActiveArr.length; i++) {
-        if (self.ActiveArr[i].sunqId === self.unqId) {
-          self.ActiveArr[i] = obj
-          return false
-        }
+      let boole = ev.target.checked
+      if (boole) {
+        self.ActiveArr.push(obj)
+      } else {
+        self.ActiveArr.map((item, i) => {
+          if (obj.id === item.id) {
+            self.ActiveArr.splice(i, 1)
+          }
+        })
       }
-      self.ActiveArr.push(obj)
     },
     parentData () {
       let self = this
@@ -430,19 +443,15 @@ export default {
       let params = new URLSearchParams()
       params.append('majorUnqId', id)
       params.append('type', self.applyType)
-      self.loading = true
-      db.postRequest('Institution/Plan/getMajorPreview', params).then(res => {
+      db.postRequest('/Institution/Plan/getMajorPreview', params).then(res => {
         if (res.status === 1) {
           self.majorDateInfo = res.data
           setTimeout(function () {
             $('#majorDate').modal('show')
-          }, 100)
+          }, 10)
         } else {
-          self.layer.alert(res.msg, {
-            shadeClose: false
-          })
+          console.log(res.msg)
         }
-        self.loading = false
       })
     }
   }

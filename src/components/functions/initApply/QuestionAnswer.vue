@@ -26,10 +26,12 @@
                         </td>
                         <td>推荐人 {{item.rcmd_num}} 位</td>
                         <td>
-                            <select v-model="item.rcmd_id_list" class="form-control selectpicker show-tick" multiple
-                                    data-size="15" data-selected-text-format="count > 3" title="请选择" data-width="200px">
-                                <option :value="items.id" v-for="(items, k) in rcmdList" :key="k">{{items.name}}</option>
-                            </select>
+                            <div v-if="rcmdList.length > 0" style="display:inline-block;">
+                                <select v-model="item.rcmd_id_list" class="form-control selectpicker show-tick" multiple
+                                        data-size="15" data-selected-text-format="count > 3" title="请选择" data-width="200px">
+                                    <option :value="items.id" v-for="(items, k) in rcmdList" :key="k">{{items.name}}</option>
+                                </select>
+                            </div>
                             <a class="btn btn-default" @click="getReferrer(item.id, item.rcmd_id_list)" v-if="item.rcmd_id_list.length > 0">编辑推荐人</a>
                             <router-link to="/functions/applyInfo/detail" class="cded" v-if="rcmdList.length === 0">前往创建</router-link>
                         </td>
@@ -50,9 +52,7 @@
                 </table>
                 <div class="blk20"></div>
                 <div class="clearfix text-center">
-                    <router-link :to="{path:'/functions/initApply/ConfirmSubmission',query:{id:id}}"
-                                 class="btn btn-default">下一页
-                    </router-link>
+                    <button type="button" class="btn btn-default" @click="nextPage">下一页</button>
                     <button type="submit" class="btn btn-primary ml-20">保存</button>
                 </div>
             </form>
@@ -318,6 +318,23 @@ export default {
         self.referrer[i]['city'] = data.city
         self.referrer[i]['district'] = data.area
       }, 100)
+    },
+    // 下一页
+    nextPage () {
+      let self = this
+      let formData = $('#questionForm').serializeArray()
+      let params = new URLSearchParams()
+      formData.map(item => {
+        params.append(item.name, item.value)
+      })
+      self.list.map((item, i) => {
+        params.append('major[rcmd_id_list][' + i + ']', item.rcmd_id_list)
+      })
+      db.postRequest('/Institution/Apply/questionAnswerSave', params).then(res => {
+        if (res.status === 1) {
+          self.$router.push('/functions/initApply/ConfirmSubmission?id=' + self.id)
+        }
+      })
     }
   },
   components: { InitApplyNav, CitySelect }

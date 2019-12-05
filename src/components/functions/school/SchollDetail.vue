@@ -99,12 +99,8 @@
                   <div class="lh20" v-html="highlight(item.majorch,keywordsA)"></div>
                 </router-link>
               </td>
-              <td v-if="item.collageen==='-'&&item.collagech==='-'">
-                <div class="lh20 textOver" v-html="highlight(item.collageen,keywordsA)"></div>
-                <div class="lh20 c999" v-html="highlight(item.collagech,keywordsA)"></div>
-              </td>
-              <td :title="item.collageen +'<br>'+item.collagech"
-                  class="poshyTop" v-if="item.collageen!=='-'&&item.collagech!=='-'">
+              <td :title="item.collageen!=='-'?item.collageen +'<br>'+item.collagech:''"
+                  :class="{poshyTop:item.collageen!=='-'}">
                 <router-link :to="{path:'/functions/schoollist/majordetaila', query:{id:item.unq_id}}">
                   <div class="lh20 textOver" v-html="highlight(item.collageen,keywordsA)"></div>
                   <div class="lh20 c999" v-html="highlight(item.collagech,keywordsA)"></div>
@@ -162,7 +158,7 @@
                   <div class="lh20" v-html="highlight(item.major_cn, keywordsB)"></div>
                 </router-link>
               </td>
-              <td :title="item.college_en +'<br>'+item.college_cn" class="poshyTop">
+              <td :title="item.college_en!=='-'?item.college_en +'<br>'+item.college_cn:''" :class="{poshyTop:item.college_en!=='-'}">
                 <router-link :to="{path:'/functions/schoollist/majordetailb', query:{id:item.unq_id}}">
                   <div class="lh20 textOver" v-html="highlight(item.college_en, keywordsB)"></div>
                   <div class="lh20 c999" v-html="highlight(item.college_cn, keywordsB)"></div>
@@ -198,7 +194,7 @@
           <img src="../../../../static/images/permission.jpg" alt="" class="img-responsive"
                style="margin:0 auto;">
         </div>
-        <div class="clearfix" v-if="userInfo.access.show_school_case===1">
+        <div class="clearfix pt-10" v-if="userInfo.access.show_school_case===1">
           <div class="clearfix">
             <div v-if="caseList.length === 0" v-html="NoData()"></div>
             <div v-masonry transition-duration="0.3s" item-selector=".item" class="row">

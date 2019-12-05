@@ -58,11 +58,11 @@
                     <th class="w5">
                         <i class="iconfont handPower cded" @click="addSchool">&#xe622;</i>
                     </th>
-                    <th class="w20">院校名称</th>
-                    <th class="w20">专业名称</th>
+                    <th class="w20"><span class="pl-15">院校名称</span></th>
+                    <th class="w20"><span class="pl-15">专业名称</span></th>
                     <th class="w15">专业网址</th>
-                    <th class="w25">申请批次</th>
-                    <th>可得佣金</th>
+                    <th class="w25"><span class="pl-10">申请批次</span></th>
+                    <th><span class="pl-10">可得佣金</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -124,8 +124,7 @@
                 </tbody>
             </table>
             <div class="clearfix text-center">
-                <router-link to="/functions/initApply/UploadData" class="btn btn-default" v-if="id===''">下一页</router-link>
-                <router-link :to="{path:'/functions/initApply/UploadData',query:{id:id}}" class="btn btn-default" v-if="id!==''">下一页</router-link>
+                <button type="button" class="btn btn-default" @click="nextPage">下一页</button>
                 <button type="submit" class="btn btn-primary ml-20">保存</button>
             </div>
         </form>
@@ -346,6 +345,24 @@ export default {
               })
             }
           })
+        }
+      })
+    },
+    // 下一页
+    nextPage () {
+      let self = this
+      let formData = $('#schoolApply').serializeArray()
+      let params = new URLSearchParams()
+      formData.map(item => {
+        params.append(item.name, item.value)
+      })
+      db.postRequest('Institution/Apply/choseSchoolSave', params).then(res => {
+        if (res.status === 1) {
+          if (self.id) {
+            self.$router.push('/functions/initApply/UploadData?id=' + self.id)
+          } else {
+            self.$router.push('/functions/initApply/UploadData')
+          }
         }
       })
     }

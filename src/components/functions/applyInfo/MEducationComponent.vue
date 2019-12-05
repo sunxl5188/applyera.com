@@ -61,7 +61,7 @@
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
                             <label>联系电话 <font class="cf00">*</font></label>
-                            <input type="text" :name="'rcmder[phone]['+i+']'" v-model="item.phone" class="form-control" placeholder="请输入联系电话" v-validate="'required|mobile'" data-vv-as="联系电话">
+                            <input type="text" :name="'rcmder[phone]['+i+']'" v-model="item.phone" class="form-control" placeholder="请输入联系电话" v-validate="'required'" data-vv-as="联系电话">
                             <div class="validateTip" v-show="errors.has('rcmder[phone]['+i+']')">
                                 {{ errors.first('rcmder[phone]['+i+']') }}
                             </div>

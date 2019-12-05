@@ -870,7 +870,7 @@ span[contenteditable], div[contenteditable]{
 
 			& .filter-option-inner-inner {
 				//white-space:nowrap;-ms-text-overflow:ellipsis;text-overflow:ellipsis;overflow:hidden;max-width:300px;min-width:150px;
-				word-break:break-all; word-wrap:break-word;white-space:normal;
+				word-wrap:break-word;white-space:normal;
 			}
 
 			& .bs-caret {display:none;}

@@ -120,13 +120,10 @@
                                 <div class="clearfix">
                                     <i class="iconfont c999" v-if="item.pay_has===1 && item.pay_status===0">&#xe63e;</i>
                                     <i class="iconfont cded" v-if="item.pay_has===1 && item.pay_status===1">&#xe719;</i>
+                                    <i class="iconfont c999" v-if="item.pay_has===0">&#xe719;</i>
                                     <i class="iconfont cded" v-if="item.pay_has===2">&#xe719;</i>
                                 </div>
-                                <span>申请费(
-                                    <span v-if="item.pay_has===1 && item.pay_status===0" class="c999">待支付</span>
-                                    <span v-if="item.pay_has===1 && item.pay_status===1" class="cded">已支付</span>
-                                    <span v-if="item.pay_has===2" class="cded">无需支付</span>
-                                    )</span>
+                                <span>申请费(<span v-if="item.pay_has===1 && item.pay_status===0" class="c999">待支付</span><span v-if="item.pay_has===1 && item.pay_status===1" class="cded">已支付</span><span v-if="item.pay_has===2" class="cded">无需支付</span><span v-if="item.pay_has===0" class="c999">待确定</span>)</span>
                             </div>
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="clearfix">
@@ -134,9 +131,8 @@
                                     <i class="iconfont cded" v-if="item.interview_status===1">&#xe63e;</i>
                                     <i class="iconfont cded" v-if="item.interview_status===2">&#xe719;</i>
                                 </div>
-                                <span>学生面试(<span v-if="item.interview_status===0" class="c999">待确定</span>
-                                    <span v-if="item.interview_status===1" class="cded">待面试</span><span
-                                        v-if="item.is_interview_val===2" class="cded">无需面试</span>)</span>
+                                <span>学生面试(<span v-if="item.interview_status===0" class="c999">待确定</span><span v-if="item.interview_status===1" class="cded">待面试</span><span v-if="item.interview_status===2" class="cded">无需面试</span>)
+                                </span>
                             </div>
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="clearfix">
@@ -317,7 +313,7 @@ export default {
       let self = this
       let imgList = []
       if (arr.length === 0) {
-        self.layer.alert('查无信息', {icon: 2})
+        self.layer.alert('暂无回执', {icon: 2})
       } else {
         arr.map((item, i) => {
           imgList.push({

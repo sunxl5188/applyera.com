@@ -192,7 +192,7 @@
                         <div class="form-group">
                             <label>毕业时间</label>
                             <input type="text" name="main_guardian_school_time" class="form-control times"
-                                   placeholder="请输入所获学位" v-model="family.main_guardian_school_time">
+                                   placeholder="请选择毕业时间" v-model="family.main_guardian_school_time">
                         </div>
                     </div>
                 </div>

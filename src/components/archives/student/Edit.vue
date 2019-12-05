@@ -217,7 +217,7 @@
                                             <tbody>
                                             <tr v-for="(item, i) in tab1.doc" :key="i">
                                                 <td width="20%">{{item.created_time}}</td>
-                                                <td>{{item.title}}</td>
+                                                <td><router-link :to="{path:'/functions/answer/addAnswer',query:{id:item.id}}" class="cded">{{item.title}}</router-link></td>
                                                 <td width="20%">{{item.operator_name}}</td>
                                                 <td width="20%">{{item.status}}</td>
                                             </tr>
@@ -444,9 +444,8 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="clearfix lh30">推荐人{{i+1}}</div>
-                                    <div class="clearfix lh30 pt-15"><span></span> <span>{{item.name}}</span></div>
-                                    <div class="clearfix lh30 pt-15"><span>职位</span> <span>{{item.career}}</span></div>
+                                    <div class="clearfix lh30">{{item.name}}</div>
+                                    <div class="clearfix lh30"><span>职位</span> <span>{{item.career}}</span></div>
                                     <div class="clearfix lh30"><span>称谓</span> <span>{{item.title}}</span></div>
                                     <div class="clearfix lh30"><span>关系</span> <span>{{item.relation}}</span></div>
                                     <div class="clearfix lh30"><span>电话</span> <span>{{item.phone}}</span></div>
@@ -1207,15 +1206,10 @@
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label">联系电话 <font
-                                                    class="cf00">*</font></label>
+                                            <label class="col-sm-4 control-label">联系电话</label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="phone" v-model="referrer.phone"
-                                                       class="form-control" placeholder="请输入联系电话"
-                                                       v-validate="'required|mobile'" data-vv-as="联系电话">
-                                                <div class="validateTip" v-show="errors.has('phone')">
-                                                    {{ errors.first('phone') }}
-                                                </div>
+                                                       class="form-control" placeholder="请输入联系电话">
                                             </div>
                                         </div>
                                     </div>
