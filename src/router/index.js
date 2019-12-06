@@ -226,12 +226,42 @@ export default new Router({
           children: [
             {
               path: 'detail',
-              name: 'applyInfo-info',
+              name: 'applyInfoDetail',
               component: resolve => require(['@#/functions/applyInfo/detail'], resolve),
               meta: {
                 title: '资料详情',
                 requiresAuth: true,
                 group: ['function', 2, 0]
+              }
+            },
+            {
+              path: 'family',
+              name: 'family',
+              component: resolve => require(['@#/functions/applyInfo/FamilyComponent'], resolve),
+              meta: {
+                title: '家庭信息',
+                requiresAuth: true,
+                group: ['function', 2, 1]
+              }
+            },
+            {
+              path: 'education',
+              name: 'education',
+              component: resolve => require(['@#/functions/applyInfo/Education'], resolve),
+              meta: {
+                title: '教育背景',
+                requiresAuth: true,
+                group: ['function', 2, 2]
+              }
+            },
+            {
+              path: 'exam',
+              name: 'exam',
+              component: resolve => require(['@#/functions/applyInfo/ExamComponent'], resolve),
+              meta: {
+                title: '考试成绩',
+                requiresAuth: true,
+                group: ['function', 2, 3]
               }
             }
           ]

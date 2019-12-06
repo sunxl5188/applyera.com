@@ -422,11 +422,16 @@
                     </div>
                 </div>
             </div>
+            <div class="clearfix text-center pt-35 pb-15">
+                <button type="button" class="btn btn-primary btn-lg" style="width: 200px;">下一页</button>
+                <button type="button" class="btn btn-outline-primary btn-lg ml-20" style="width: 200px;">保存</button>
+            </div>
         </form>
     </div>
 </template>
 
 <script>
+import '@~/js/VeeValidateConfig'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import CitySelect from '@#/shared/CitySelect'

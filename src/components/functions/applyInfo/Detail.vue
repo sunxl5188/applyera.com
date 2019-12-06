@@ -6,17 +6,11 @@
                     <div class="headerTitle">申请资料</div>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
-                    <div class="form-group ml-10">
+                    <div class="form-group ml-10" v-if="id">
                         <button type="button" class="btn btn-default" @click="sendStudent()"><i class="iconfont">&#xe601;</i>
                             发送给学生填写
                         </button>
                     </div>
-                    <div class="form-group ml-10">
-                        <button type="button" class="btn btn-default" @click="submitForm()"><i
-                                class="iconfont">&#xe637;</i> 保存
-                        </button>
-                    </div>
-
                     <div class="form-group ml-10">
                         <button type="button" class="btn btn-default" @click="$router.back()"><i class="iconfont">&#xe64f;</i>
                             返回
@@ -27,10 +21,11 @@
         </div>
 
         <!-- 发送信息给学生start-->
-        <ShareIt :info="sendStudentString"></ShareIt>
+        <ShareIt :info="sendStudentString" v-if="id"></ShareIt>
         <!-- 发送信息给学生end-->
         <div v-if="loading" v-html="LoadingImg()"></div>
         <div v-if="!loading">
+            <HeaderNav :id="id" :tabStatus="tabStatus"></HeaderNav>
             <div class="clearfix form-inline">
                 <div class="form-group form-search">
                     <label>关联学生</label>
@@ -54,15 +49,6 @@
 
                 <StudentComponent @setStuden="getStudent"/>
             </div>
-            <div class="blk30"></div>
-
-            <ul class="nav nav-tabs"><!--nav-justified-->
-                <li role="presentation" class="active"><a href="#userInfo1" data-toggle="tab">个人信息</a></li>
-                <li role="presentation"><a href="#userInfo2" data-toggle="tab">家庭信息</a></li>
-                <li role="presentation"><a href="#userInfo3" data-toggle="tab">教育背景</a></li>
-                <li role="presentation"><a href="#userInfo4" data-toggle="tab">考试成绩</a></li>
-            </ul>
-
             <div class="tab-content pt-30">
                 <div class="tab-pane fade in active" id="userInfo1">
                     <form action="" method="POST" class="form-horizontal" id="addApply"
@@ -920,6 +906,10 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="clearfix text-center pt-35 pb-15">
+                            <button type="button" class="btn btn-primary btn-lg" style="width:200px;">下一页</button>
+                            <button type="button" class="btn btn-outline-primary btn-lg ml-20" @click="submitForm()" style="width:200px;">保存</button>
+                        </div>
                     </form>
                 </div>
 
@@ -952,6 +942,7 @@ import idType from '@@/json/idType'
 import visaType from '@@/json/visaType'
 import workType from '@@/json/workType'
 import workNature from '@@/json/workNature'
+import HeaderNav from '@/components/functions/applyInfo/HeaderNav'
 import StudentComponent from '@/components/functions/plan/StudentComponent'
 import FamilyComponent from '@/components/functions/applyInfo/FamilyComponent'
 import UEducationComponent from '@/components/functions/applyInfo/UEducationComponent'
@@ -970,6 +961,7 @@ export default {
   data () {
     return {
       id: '',
+      tabStatus: [0, 0, 0, 0],
       sendStudentString: {},
       loading: true,
       studentId: '',
@@ -1417,6 +1409,7 @@ export default {
     }
   },
   components: {
+    HeaderNav,
     StudentComponent,
     FamilyComponent,
     UEducationComponent,
@@ -1429,8 +1422,6 @@ export default {
 </script>
 
 <style lang="scss">
-    @import "../../../../node_modules/icheck/skins/all.css";
-
     #addApply {
         & .bornArea {
             & .form-inline {
