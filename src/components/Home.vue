@@ -608,7 +608,7 @@ export default {
           self.createEcharts(res.data)
         } else {
           self.layer.alert(res.msg, {
-            shadeClose: false
+            icon: 2
           })
         }
         self.loading = false
@@ -683,7 +683,7 @@ export default {
           self.prog = (res.data.finish / res.data.all) * 100 || 0
         } else {
           self.layer.alert(res.msg, {
-            shadeClose: false
+            icon: 2
           })
         }
       })

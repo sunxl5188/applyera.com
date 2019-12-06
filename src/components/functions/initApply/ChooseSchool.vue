@@ -361,7 +361,7 @@ export default {
           if (self.id) {
             self.$router.push('/functions/initApply/UploadData?id=' + self.id)
           } else {
-            self.$router.push('/functions/initApply/UploadData')
+            self.$router.push('/functions/initApply/UploadData?id=' + res.data)
           }
         }
       })

@@ -53,7 +53,7 @@ router.beforeEach((to, from, next) => {
     } else {
       sessionStorage.clear()
       // router.push('/login')
-      V.layer.alert('登录超时，请重新登录！', function () {
+      V.layer.alert('登录超时，请重新登录！', {icon: 2}, function () {
         window.location.href = '/login'
       })
     }
