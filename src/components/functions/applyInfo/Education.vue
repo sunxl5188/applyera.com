@@ -26,6 +26,8 @@
 import HeaderNav from '@/components/functions/applyInfo/HeaderNav'
 import MEducationComponent from '@/components/functions/applyInfo/MEducationComponent'
 import UEducationComponent from '@/components/functions/applyInfo/UEducationComponent'
+import '@~/js/VeeValidateConfig'
+import db from '@~/js/request'
 export default {
   name: 'Education',
   data () {
@@ -100,6 +102,19 @@ export default {
   mounted () {
     let self = this
     self.id = self.$route.query.id || ''
+    self.$nextTick(() => {
+      if (self.id) {
+        let self = this
+        let params = new URLSearchParams()
+        params.append('id', self.id)
+        db.getRequest('/Institution/ApplyMaterial/editEducation', params).then(res => {
+          if (res.status === 1) {
+          } else {
+            console.log(res.msg)
+          }
+        })
+      }
+    })
   },
   methods: {},
   components: {

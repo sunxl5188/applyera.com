@@ -1287,6 +1287,7 @@ import HeaderNav from '@/components/functions/applyInfo/HeaderNav'
 import '@~/js/VeeValidateConfig'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import db from '@~/js/request'
 require('icheck')
 
 export default {
@@ -1319,9 +1320,22 @@ export default {
   mounted () {
     let self = this
     self.id = self.$route.query.id || ''
-    self.showTimeD()
-    self.RefreshSelect()
-    self.setIcheck()
+    self.$nextTick(() => {
+      if (self.id) {
+        let self = this
+        let params = new URLSearchParams()
+        params.append('id', self.id)
+        db.getRequest('/Institution/ApplyMaterial/editExam', params).then(res => {
+          if (res.status === 1) {
+            self.showTimeD()
+            self.RefreshSelect()
+            self.setIcheck()
+          } else {
+            console.log(res.msg)
+          }
+        })
+      }
+    })
   },
   methods: {
     showTimeD () {

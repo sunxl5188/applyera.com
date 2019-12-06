@@ -281,6 +281,7 @@ import HeaderNav from '@/components/functions/applyInfo/HeaderNav'
 import Father from '@/components/functions/applyInfo/Father'
 import Mother from '@/components/functions/applyInfo/Mother'
 import '@~/js/VeeValidateConfig'
+import db from '@~/js/request'
 require('icheck')
 
 export default {
@@ -335,11 +336,25 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted: function () {
     let self = this
-    self.showTime()
-    self.setIcheck()
-    self.RefreshSelect()
+    self.id = self.$route.query.id || ''
+    self.$nextTick(() => {
+      if (self.id) {
+        let self = this
+        let params = new URLSearchParams()
+        params.append('id', self.id)
+        db.getRequest('/Institution/ApplyMaterial/editFamily', params).then(res => {
+          if (res.status === 1) {
+            self.showTime()
+            self.setIcheck()
+            self.RefreshSelect()
+          } else {
+            console.log(res.msg)
+          }
+        })
+      }
+    })
   },
   methods: {
     showTime () {
