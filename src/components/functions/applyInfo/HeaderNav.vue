@@ -1,5 +1,23 @@
 <template>
     <div>
+        <div class="clearfix pb-30">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="headerTitle">申请资料</div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
+                    <div class="form-group ml-10" v-if="id">
+                        <button type="button" class="btn btn-default" @click="sendStudent()"><i class="iconfont">&#xe601;</i>
+                            发送给学生填写
+                        </button>
+                    </div>
+                    <div class="form-group ml-10">
+                        <router-link to="/functions/applyInfo" exact class="btn btn-default"><i class="iconfont">&#xe64f;</i>
+                            返回</router-link>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="studentNav">
             <div class="text-justify">
                 <!--无ID时-->
@@ -39,18 +57,26 @@
             </div>
         </div>
         <div class="blk30"></div>
+        <!-- 发送信息给学生start-->
+        <ShareIt :info="sendStudentString" v-if="id"></ShareIt>
+        <!-- 发送信息给学生end-->
     </div>
 </template>
 
 <script>
+import ShareIt from '@#/functions/applyInfo/ShareIt'
+import db from '@~/js/request'
 export default {
   name: 'HeaderNav',
   data () {
     return {
+      sendStudentString: {}
     }
   },
   props: {
     id: '',
+    studentId: '',
+    educationType: '',
     tabStatus: {
       type: Array,
       default: () => [0, 0, 0, 0]
@@ -60,6 +86,37 @@ export default {
     this.$nextTick(() => {
       $('[data-toggle="tooltip"]').tooltip()
     })
+  },
+  methods: {
+  // 发送给学生填写
+    sendStudent () {
+      let self = this
+      if (self.studentId === '') {
+        self.layer.alert('请选关联学生', {
+          icon: 2
+        })
+      } else {
+        let params = new URLSearchParams()
+        params.append('id', self.studentId)
+        params.append('education_type', self.educationType)
+        db.postRequest('/Institution/ApplyMaterial/sendStudent', params).then(res => {
+          if (res.status === 1) {
+            self.sendStudentString = res.data
+            $('#sendInfo').modal({
+              backdrop: 'static',
+              show: true
+            })
+          } else {
+            self.layer.alert(res.msg, {
+              icon: 2
+            })
+          }
+        })
+      }
+    }
+  },
+  components: {
+    ShareIt
   }
 }
 </script>

@@ -1,21 +1,7 @@
 <template>
     <div>
+        <HeaderNav :id="id" :studentId="studentId" :educationType="educationType" :tabStatus="tabStatus"></HeaderNav>
         <div v-if="!loading">
-            <div class="clearfix pb-30">
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="headerTitle">申请资料</div>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
-                        <div class="form-group ml-10">
-                            <button type="button" class="btn btn-default" @click="$router.back()"><i class="iconfont">&#xe64f;</i>
-                                返回
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <HeaderNav :id="id" :tabStatus="tabStatus"></HeaderNav>
             <form id="ExamForm" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -1274,7 +1260,7 @@
                 </div>
                 <div class="clearfix text-center pt-35 pb-15">
                     <button type="button" class="btn btn-primary btn-lg" style="width: 200px;">下一页</button>
-                    <button type="button" class="btn btn-outline-primary btn-lg ml-20" style="width: 200px;">保存</button>
+                    <button type="submit" class="btn btn-outline-primary btn-lg ml-20" style="width: 200px;">保存</button>
                 </div>
             </form>
         </div>
@@ -1296,8 +1282,10 @@ export default {
     return {
       id: '',
       loading: true,
+      studentId: '',
       tabStatus: [0, 0, 0, 0],
       languageScore: 1,
+      educationType: 1,
       exam: {
         is_language_score: true,
         language_score: {type: 1, exam_time: '', total_score: '', listen: '', speak: '', read: '', write: ''},
@@ -1327,12 +1315,15 @@ export default {
         params.append('id', self.id)
         db.getRequest('/Institution/ApplyMaterial/editExam', params).then(res => {
           if (res.status === 1) {
+            self.tabStatus = res.data.tab_status
+            self.exam = res.data
             self.showTimeD()
             self.RefreshSelect()
             self.setIcheck()
           } else {
             console.log(res.msg)
           }
+          self.loading = false
         })
       }
     })

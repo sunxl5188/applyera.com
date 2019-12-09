@@ -1,31 +1,8 @@
 <template>
     <div>
-        <div class="clearfix pb-30">
-            <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="headerTitle">申请资料</div>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
-                    <div class="form-group ml-10" v-if="id">
-                        <button type="button" class="btn btn-default" @click="sendStudent()"><i class="iconfont">&#xe601;</i>
-                            发送给学生填写
-                        </button>
-                    </div>
-                    <div class="form-group ml-10">
-                        <button type="button" class="btn btn-default" @click="$router.back()"><i class="iconfont">&#xe64f;</i>
-                            返回
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 发送信息给学生start-->
-        <ShareIt :info="sendStudentString" v-if="id"></ShareIt>
-        <!-- 发送信息给学生end-->
+        <HeaderNav :id="id" :studentId="studentId" :educationType="educationType" :tabStatus="tabStatus"></HeaderNav>
         <div v-if="loading" v-html="LoadingImg()"></div>
         <div v-if="!loading">
-            <HeaderNav :id="id" :tabStatus="tabStatus"></HeaderNav>
             <form action="" method="POST" class="form-horizontal" id="addApply" @submit.prevent="validateBeforeSubmit">
                 <input type="hidden" name="id" id="id" :value="id" v-if="id!==''"/>
                 <div class="row">
@@ -46,7 +23,7 @@
                         <div class="form-group">
                             <label class="ml-15">申报类型 <font class="cf00">*</font></label>
                             <select name="education_type" class="form-control selectpicker"
-                                    v-model.number="education_type">
+                                    v-model.number="educationType">
                                 <option value="1">申请本科</option>
                                 <option value="2">申请硕士</option>
                             </select>
@@ -910,7 +887,7 @@
                     </div>
                 </div>
                 <div class="clearfix text-center pt-35 pb-15">
-                    <button type="button" class="btn btn-primary btn-lg" style="width:200px;">下一页</button>
+                    <button type="button" class="btn btn-primary btn-lg" style="width:200px;" @click="saveCurrent">下一页</button>
                     <button type="submit" class="btn btn-outline-primary btn-lg ml-20" style="width:200px;">保存</button>
                 </div>
             </form>
@@ -935,7 +912,6 @@ import FamilyComponent from '@/components/functions/applyInfo/FamilyComponent'
 import UEducationComponent from '@/components/functions/applyInfo/UEducationComponent'
 import MEducationComponent from '@/components/functions/applyInfo/MEducationComponent'
 import ExamComponent from '@/components/functions/applyInfo/ExamComponent'
-import ShareIt from '@#/functions/applyInfo/ShareIt'
 import CitySelect from '@#/shared/CitySelect'
 import '@~/js/VeeValidateConfig'
 import store from '@/vuex/Store'
@@ -949,7 +925,6 @@ export default {
     return {
       id: '',
       tabStatus: [0, 0, 0, 0],
-      sendStudentString: {},
       loading: true,
       studentId: '',
       studentNumber: '',
@@ -961,7 +936,7 @@ export default {
       workType: workType, // 工作类型
       workNature: workNature, // 工作性质
       EducationComponent: UEducationComponent,
-      education_type: 1,
+      educationType: 1,
       personal: {
         sex: 1,
         is_married: 2,
@@ -1005,130 +980,12 @@ export default {
             describe: ''
           }
         ]
-      },
-      family: {
-        parents_marriage: 1,
-        guardian: 1,
-        main_guardian_name: '',
-        main_guardian_last_name: '',
-        main_guardian_first_name: '',
-        main_guardian_alive: 1,
-        main_guardian_address_not_same: false,
-        main_guardian_nationality: '',
-        main_guardian_birthday: '',
-        main_guardian_school_level: '',
-        main_guardian_leave_time: '',
-        main_guardian_phone: '',
-        main_guardian_email: '',
-        main_guardian_school_name: '',
-        main_guardian_school_time: '',
-        main_guardian_work: '',
-        main_guardian_work_name: '',
-        main_guardian_work_position: '',
-
-        second_guardian_name: '',
-        second_guardian_last_name: '',
-        second_guardian_first_name: '',
-        second_guardian_nationality: '',
-        second_guardian_address_not_same: false,
-        second_guardian_alive: 1,
-        second_guardian_birthday: '',
-        second_guardian_leave_time: '',
-        second_guardian_phone: '',
-        second_guardian_email: '',
-        second_guardian_school_level: '',
-        second_guardian_school_name: '',
-        second_guardian_school_time: '',
-        second_guardian_work_name: '',
-        second_guardian_work_position: '',
-        second_guardian_work: '',
-        brother_is: false,
-        brother_info: [{type: 1, schoolLv: '', birthday: '', schoolTime: '', name: '', schoolName: '', reason: ''}]
-      },
-      education: {
-        highschool_name: '',
-        highschool_enter_time: '',
-        teacher_name: '',
-        teacher_last_name: '',
-        teacher_first_name: '',
-        teacher_position: '',
-        teacher_email: '',
-        teacher_phone: '',
-        is_highschool_boarding: 1,
-        is_not_graduated: '',
-        is_graduated_plan: '',
-        get_degree_is: '',
-        is_article: '',
-        is_scholarship: '',
-        is_drop: '',
-        is_mistake: '',
-        point: '',
-        graduated_plan_reason: 1,
-        gpa_import: 1,
-        degree: '',
-        course: [{
-          name: '',
-          plan: '',
-          type: ''
-        }],
-        activity: [{
-          grade: '',
-          name: '',
-          position: '',
-          time: '',
-          hour: '',
-          week: '',
-          join: 1,
-          detail: ''
-        }],
-        is_other_school: false,
-        other_school: [{degree: 1, name: '', time: '', reason: ''}],
-        is_study_university: false,
-        study_university: [{type: 1, schoolName: '', time: '', courseName: '', point: ''}],
-        is_honor: false,
-        honor: [{name: '', grade: '', honorLv: ''}],
-        career_interest: '',
-        career_planing: '',
-        drop_reason: '',
-        school_name: '',
-        enter_time: '',
-        rcmder: [{
-          career: '',
-          title: '',
-          relation: '',
-          phone: '',
-          email: '',
-          lv: '',
-          prov: '',
-          details: '',
-          city: '',
-          district: '',
-          name: ''
-        }]
-      },
-      exam: {
-        is_language_score: true,
-        language_score: {type: 1, exam_time: '', total_score: '', listen: '', speak: '', read: '', write: ''},
-        is_academic_score: true,
-        gre: [],
-        gre_subject: [],
-        gmat: [],
-        sat: [],
-        sat_subject: [],
-        college_enter_exam: [],
-        act: [],
-        a_level: [],
-        o_level: [],
-        gcse: [],
-        btec: [],
-        ib: []
       }
     }
   },
   mounted () {
     let self = this
     let id = self.$route.query.id
-
     self.$nextTick(() => {
       self.showTimes()
       // *******************************
@@ -1178,7 +1035,7 @@ export default {
       db.getRequest('/Institution/ApplyMaterial/editPersonal', params).then(res => {
         if (res.status === 1) {
           self.personal = res.data
-          self.education_type = res.data.education_type
+          self.educationType = res.data.education_type
           self.studentId = res.data.student_id
           self.studentNumber = res.data.student_number
           self.tabStatus = res.data.tab_status
@@ -1227,6 +1084,24 @@ export default {
         }
       })
     },
+    // 下一页保存
+    saveCurrent () {
+      let self = this
+      let formData = $('#addApply').serializeArray()
+      let params = new URLSearchParams()
+      formData.map(item => {
+        params.append(item.name, item.value)
+      })
+      params.append('verification', 1)
+      db.postRequest('', params).then(res => {
+        console.log(res.msg)
+        if (self.id) {
+          self.$router.push('/functions/applyInfo/family?id=' + self.id)
+        } else {
+          self.$router.push('/functions/applyInfo/family?id=' + res.data)
+        }
+      })
+    },
     // 添加语言*******************************
     addLanguage () {
       this.personal.language.push({name: ''})
@@ -1259,32 +1134,6 @@ export default {
     // 删除工作背景
     delWorkExp (i) {
       this.personal.work_experience.splice(i, 1)
-    },
-    // 发送给学生填写
-    sendStudent () {
-      let self = this
-      if (self.studentId === '') {
-        self.layer.alert('请选关联学生', {
-          icon: 2
-        })
-      } else {
-        let params = new URLSearchParams()
-        params.append('id', self.studentId)
-        params.append('education_type', self.education_type)
-        db.postRequest('/Institution/ApplyMaterial/sendStudent', params).then(res => {
-          if (res.status === 1) {
-            self.sendStudentString = res.data
-            $('#sendInfo').modal({
-              backdrop: 'static',
-              show: true
-            })
-          } else {
-            self.layer.alert(res.msg, {
-              shadeClose: false
-            })
-          }
-        })
-      }
     },
     RefreshSelect () {
       setTimeout(function () {
@@ -1357,8 +1206,7 @@ export default {
     UEducationComponent,
     MEducationComponent,
     ExamComponent,
-    CitySelect,
-    ShareIt
+    CitySelect
   }
 }
 </script>

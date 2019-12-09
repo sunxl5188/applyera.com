@@ -1,21 +1,7 @@
 <template>
     <div>
+        <HeaderNav :id="id" :studentId="studentId" :educationType="educationType" :tabStatus="tabStatus"></HeaderNav>
         <div v-if="!loading">
-            <div class="clearfix pb-30">
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="headerTitle">申请资料</div>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
-                        <div class="form-group ml-10">
-                            <button type="button" class="btn btn-default" @click="$router.back()"><i class="iconfont">&#xe64f;</i>
-                                返回
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <HeaderNav :id="id" :tabStatus="tabStatus"></HeaderNav>
             <comment :is="commentId" :education="education"></comment>
         </div>
         <div v-if="loading" v-html="LoadingImg()"></div>
@@ -34,8 +20,10 @@ export default {
     return {
       id: '',
       loading: true,
+      studentId: '',
       tabStatus: [0, 0, 0, 0],
       commentId: MEducationComponent,
+      educationType: 1,
       education: {
         highschool_name: '',
         highschool_enter_time: '',
@@ -109,9 +97,12 @@ export default {
         params.append('id', self.id)
         db.getRequest('/Institution/ApplyMaterial/editEducation', params).then(res => {
           if (res.status === 1) {
+            self.tabStatus = res.data.tab_status
+            self.education = res.data
           } else {
             console.log(res.msg)
           }
+          self.loading = false
         })
       }
     })
