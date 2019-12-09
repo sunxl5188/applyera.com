@@ -37,7 +37,9 @@
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                     <label class="col-sm-4 control-label">申请材料</label>
-                    <div class="col-sm-8 lh34">{{list.apply_num}}</div>
+                    <div class="col-sm-8 lh34">
+                        <router-link :to="{path:'/functions/applyInfo/detail',query:{id:list.apply_id}}" class="cded">{{list.apply_num}}</router-link>
+                    </div>
                 </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -46,6 +48,20 @@
                     <div class="col-sm-8 lh34">
                         <a href="#" class="cded" data-toggle="modal" data-backdrop="static"
                            data-target="#modalId">打开附件</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">发起时间</label>
+                    <div class="col-sm-8 lh34">{{list.created_time}}</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">备注</label>
+                    <div class="col-sm-11" style="padding-top:7px;">
+                        <div contenteditable="true" data-placeholder="请输入备注" id="content" v-text="list.remark" @keyup="remark=$event.target.innerText"></div>
                     </div>
                 </div>
             </div>
@@ -59,7 +75,7 @@
                 </label>
             </span>
             <span class="pull-right">
-                <button type="button" class="btn btn-default" @click="downFile">下载</button>
+                <button type="button" class="btn btn-default" @click="downFile(1)">下载</button>
                 <button type="button" class="btn btn-default ml-15 followBtn">跟进</button>
             </span>
         </div>
@@ -118,9 +134,19 @@
                     </div>
                     <div class="modal-body" style="max-height: 400px;overflow-y: auto;">
                         <table class="table table-customize">
-                            <tbody>
+                            <thead>
+                            <tr>
+                                <th colspan="5">
+                                    <label>
+                                        <input type="checkbox" name="Fall" />
+                                        全选
+                                    </label>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody id="annexId">
                             <tr v-for="(item, i) in list.upload_list" :key="i">
-                                <td class="w10"><input type="checkbox" name="id[]" :value="item.id"/></td>
+                                <td class="w5"><input type="checkbox" name="id[]" :value="item.id"/></td>
                                 <td>{{item.file_name}}</td>
                                 <td>{{item.file_type}}</td>
                                 <td>{{item.file_size}}</td>
@@ -130,7 +156,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="downFile">下载</button>
+                        <button type="button" class="btn btn-primary" @click="downFile(2)">下载</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     </div>
                 </div>
@@ -301,7 +327,19 @@ export default {
       fArr: [],
       file_id: [],
       list: {},
-      pasteObj: []
+      pasteObj: [],
+      remark: ''
+    }
+  },
+  beforeDestroy () {
+    let self = this
+    let params = new URLSearchParams()
+    if (self.remark !== '' && self.list.remark !== self.remark) {
+      params.append('id', self.id)
+      params.append('remark', self.remark)
+      db.postRequest('/Institution/Apply/admOrderRemarkSave', params).then(res => {
+        console.log(res.msg)
+      })
     }
   },
   mounted () {
@@ -324,7 +362,7 @@ export default {
         }
       })
       // 附件列表
-      $('#modalId').on('click', '[type="checkbox"]', function () {
+      $('#annexId').on('click', '[type="checkbox"]', function () {
         if ($(this).is(':checked')) {
           self.fArr.push($(this).val())
         } else {
@@ -334,6 +372,18 @@ export default {
             }
           })
         }
+      })
+      // 附件列表全选
+      $(document).on('click', '[name="Fall"]', function () {
+        let boole = $(this).is(':checked')
+        $('#annexId [type="checkbox"]').each(function () {
+          $(this)[0].checked = boole
+          if (boole) {
+            self.fArr.push($(this).val())
+          } else {
+            self.fArr = []
+          }
+        })
       })
       // 材料提交显示
       $(document).on('click', '.addAnnotation', function () {
@@ -540,14 +590,24 @@ export default {
       $('#pasteModal').modal('hide')
     },
     // 打包rar
-    downFile () {
+    downFile (type) {
       let self = this
-      if (self.idArr.length === 0) {
+      let ids = ''
+      if (self.idArr.length === 0 && type === 1) {
+        self.layer.alert('请选择要操作的编号', {icon: 2})
+        return false
+      }
+      if (self.fArr.length === 0 && type === 2) {
         self.layer.alert('请选择要操作的编号', {icon: 2})
         return false
       }
       let a = document.querySelector('#saveFile')
-      a.href = window.ajaxBaseUrl + '/Institution/Apply/admOrderDownload?ids=' + self.idArr + '&token=' + self.$cookies.get('token')
+      if (type === 1) {
+        ids = self.idArr
+      } else {
+        ids = self.fArr
+      }
+      a.href = window.ajaxBaseUrl + '/Institution/Apply/admOrderDownload?ids=' + ids + '&token=' + self.$cookies.get('token')
       a.target = '_blank'
       a.click()
       $('[type="checkbox"]').each(function () {

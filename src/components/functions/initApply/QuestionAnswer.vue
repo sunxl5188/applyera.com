@@ -33,7 +33,7 @@
                                 </select>
                             </div>
                             <a class="btn btn-default" @click="getReferrer(item.id, item.rcmd_id_list)" v-if="item.rcmd_id_list.length > 0">编辑推荐人</a>
-                            <router-link to="/functions/applyInfo/detail" class="cded" v-if="rcmdList.length === 0">前往创建</router-link>
+                            <a href="#" class="cded" v-if="rcmdList.length === 0" data-toggle="modal" data-backdrop="static" data-target="#addReferrer">创建推荐人</a>
                         </td>
                     </tr>
                     <tr>
@@ -57,6 +57,7 @@
                 </div>
             </form>
             <!--编辑推荐人-->
+            <AddCommend :id="studentId" :referrer="referrer" @referrerBack="referrerBack"></AddCommend>
             <div class="modal fade bs-example-modal-lg" id="modalReferrer">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -66,14 +67,17 @@
                         </div>
                         <form action="" id="referrerForm" method="POST" class="form-horizontal" @submit.prevent="saveReferrer">
                             <div class="modal-body" style="max-height:500px;overflow-y:auto;padding-top:50px;padding-bottom:50px;">
-                                <div class="clearfix" v-for="(item, i) in referrer" :key="i" :class="{'mt-15 pt-25 bdt':i>0}">
+                                <div class="clearfix" v-for="(item, i) in Referrer" :key="i" :class="{'mt-15 pt-25 bdt':i>0}">
                                     <div class="row">
                                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                             <div class="form-group">
-                                                <label class="col-sm-5 control-label">推荐人姓名</label>
+                                                <label class="col-sm-5 control-label">推荐人姓名 <font class="cf00">*</font></label>
                                                 <div class="col-sm-7">
-                                                    <input type="hidden" name="rcmder[id][]" :value="item.id" />
-                                                    <input type="text" name="rcmder[name][]" v-model="item.name" class="form-control" placeholder="请输入推荐人姓名">
+                                                    <input type="hidden" :name="'rcmder[id]['+i+']'" :value="item.id" />
+                                                    <input type="text" name="rcmder[name][]" v-model="item.name" class="form-control" placeholder="请输入推荐人姓名" v-validate="'required'" data-vv-as="姓名">
+                                                    <div class="validateTip" v-show="errors.has('rcmder[name]['+i+']')">
+                                                        {{ errors.first('rcmder[name]['+i+']') }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -92,7 +96,14 @@
                                             <div class="form-group">
                                                 <label class="col-sm-5 control-label">推荐人称谓 <font class="cf00">*</font></label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" :name="'rcmder[title]['+i+']'" v-model="item.title" class="form-control" placeholder="请输入推荐人称谓" v-validate="'required'" data-vv-as="称谓">
+                                                    <select :name="'rcmder[title]['+i+']'" v-model="item.title"
+                                                            class="form-control selectpicker show-tick"
+                                                            v-validate="'required'" data-vv-as="推荐人称谓">
+                                                        <option value="">请选择</option>
+                                                        <option value="Miss">Miss</option>
+                                                        <option value="Ms">Ms</option>
+                                                        <option value="Mr">Mr</option>
+                                                    </select>
                                                     <div class="validateTip" v-show="errors.has('rcmder[title]['+i+']')">
                                                         {{ errors.first('rcmder[title]['+i+']') }}
                                                     </div>
@@ -103,17 +114,23 @@
                                     <div class="row">
                                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                             <div class="form-group">
-                                                <label class="col-sm-5 control-label">与我的关系</label>
+                                                <label class="col-sm-5 control-label">与我的关系 <font class="cf00">*</font></label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="rcmder[relation][]" v-model="item.relation" class="form-control" placeholder="请输入关系">
+                                                    <input type="text" :name="'rcmder[relation]['+i+']'" v-model="item.relation" class="form-control" placeholder="请输入关系" v-validate="'required'" data-vv-as="与我的关系">
+                                                    <div class="validateTip" v-show="errors.has('rcmder[relation]['+i+']')">
+                                                        {{ errors.first('rcmder[relation]['+i+']') }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                             <div class="form-group">
-                                                <label class="col-sm-5 control-label">联系电话</label>
+                                                <label class="col-sm-5 control-label">联系电话 <font class="cf00">*</font></label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="rcmder[phone][]" v-model="item.phone" class="form-control" placeholder="请输入联系电话">
+                                                    <input type="text" :name="'rcmder[phone]['+i+']'" v-model="item.phone" class="form-control" placeholder="请输入联系电话" v-validate="'required'" data-vv-as="联系电话">
+                                                    <div class="validateTip" v-show="errors.has('rcmder[phone]['+i+']')">
+                                                        {{ errors.first('rcmder[phone]['+i+']') }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -129,9 +146,9 @@
                                     <div class="row">
                                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                             <div class="form-group">
-                                                <label class="col-sm-5 control-label">推荐人优先级</label>
+                                                <label class="col-sm-5 control-label">推荐人优先级 <font class="cf00">*</font></label>
                                                 <div class="col-sm-7">
-                                                    <select name="rcmder[lv][]" v-model="item.lv" class="form-control selectpicker show-tick" data-container="body" data-size="10">
+                                                    <select :name="'rcmder[lv]['+i+']'" v-model="item.lv" class="form-control selectpicker show-tick" data-container="body" data-size="10" v-validate="'required'" data-vv-as="推荐人优先级">
                                                         <option value="">请选择</option>
                                                         <option value="1">第一推荐人</option>
                                                         <option value="2">第二推荐人</option>
@@ -139,6 +156,9 @@
                                                         <option value="4">第四推荐人</option>
                                                         <option value="5">第五推荐人</option>
                                                     </select>
+                                                    <div class="validateTip" v-show="errors.has('rcmder[lv]['+i+']')">
+                                                        {{ errors.first('rcmder[lv]['+i+']') }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,7 +166,7 @@
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label" style="width:14%;">推荐人地址</label>
+                                                <label class="col-sm-4 control-label" style="width:14%;">推荐人地址 <font class="cf00">*</font></label>
                                                 <div class="col-sm-8" style="width:86%;" id="citys">
                                                     <CitySelect
                                                             :p="item.prov"
@@ -156,7 +176,22 @@
                                                             :cName="'rcmder[city]['+i+']'"
                                                             :aName="'rcmder[district]['+i+']'"
                                                             @cityCallback="cityCallback"/>
-                                                    <input type="text" name="rcmder[details][]" v-model="item.details" class="form-control" style="display: inline-block;width: auto;vertical-align: middle;" placeholder="请输入详细地址"/>
+                                                    <input type="hidden" v-model="item.prov" :name="'code[prov]['+i+']'" v-validate="'required'" data-vv-as="省" />
+                                                    <input type="hidden" v-model="item.city" :name="'code[city]['+i+']'" v-validate="'required'" data-vv-as="市" />
+                                                    <input type="hidden" v-model="item.district" :name="'code[district]['+i+']'" v-validate="'required'" data-vv-as="区" />
+                                                    <input type="text" :name="'rcmder[details]['+i+']'" v-model="item.details" class="form-control" style="display: inline-block;width: auto;vertical-align: middle;" placeholder="请输入详细地址" v-validate="'required'" data-vv-as="详细地址"/>
+                                                    <div class="validateTip" v-show="errors.has('code[prov]['+i+']')">
+                                                        {{ errors.first('code[prov]['+i+']') }}
+                                                    </div>
+                                                    <div class="validateTip" v-show="errors.has('code[city]['+i+']')">
+                                                        {{ errors.first('code[city]['+i+']') }}
+                                                    </div>
+                                                    <div class="validateTip" v-show="errors.has('code[district]['+i+']')">
+                                                        {{ errors.first('code[district]['+i+']') }}
+                                                    </div>
+                                                    <div class="validateTip" v-show="errors.has('rcmder[details]['+i+']')">
+                                                        {{ errors.first('rcmder[details]['+i+']') }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -179,6 +214,7 @@
 import '@~/js/VeeValidateConfig'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import AddCommend from '@#/archives/student/AddCommend'
 import InitApplyNav from '@#/functions/initApply/InitApplyNav'
 import CitySelect from '@#/shared/CitySelect'
 import db from '@~/js/request'
@@ -191,11 +227,26 @@ export default {
       loading: true,
       ReIndex: '',
       omId: '',
+      studentId: '',
       state: [0, 0, 0, 0],
       list: [],
       docList: [],
       rcmdList: [],
-      referrer: []
+      referrer: {
+        id: '',
+        career: '',
+        title: '',
+        relation: '',
+        phone: '',
+        email: '',
+        lv: '',
+        prov: '',
+        details: '',
+        city: '',
+        district: '',
+        name: ''
+      },
+      Referrer: []
     }
   },
   mounted () {
@@ -225,6 +276,7 @@ export default {
           self.list = res.data.list
           self.docList = res.data.doc_list
           self.rcmdList = res.data.rcmd_list
+          self.studentId = res.data.student_id
         } else {
           console.log(res.msg)
         }
@@ -263,7 +315,7 @@ export default {
         }
       })
     },
-    // 获取推荐人信息
+    // 编辑推荐人信息
     getReferrer (omId, arr) {
       let self = this
       if (arr.length === 0) {
@@ -271,11 +323,11 @@ export default {
         return false
       }
       self.omId = omId
-      self.referrer = []
+      self.Referrer = []
       arr.map((item) => {
         self.rcmdList.map((items) => {
           if (parseInt(item) === items.id) {
-            self.referrer.push(items)
+            self.Referrer.push(items)
           }
         })
       })
@@ -299,6 +351,7 @@ export default {
             if (res.status === 1) {
               self.layer.alert(res.msg, {icon: 1}, function (i) {
                 self.layer.close(i)
+                self.getDetail()
                 $('#modalReferrer').modal('hide')
               })
             } else {
@@ -314,10 +367,14 @@ export default {
       let self = this
       setTimeout(function () {
         let i = self.ReIndex
-        self.referrer[i]['prov'] = data.province
-        self.referrer[i]['city'] = data.city
-        self.referrer[i]['district'] = data.area
+        self.Referrer[i]['prov'] = data.province
+        self.Referrer[i]['city'] = data.city
+        self.Referrer[i]['district'] = data.area
       }, 100)
+    },
+    // 回调推荐人
+    referrerBack () {
+      this.getDetail()
     },
     // 下一页
     nextPage () {
@@ -337,7 +394,7 @@ export default {
       })
     }
   },
-  components: { InitApplyNav, CitySelect }
+  components: { InitApplyNav, CitySelect, AddCommend }
 }
 </script>
 

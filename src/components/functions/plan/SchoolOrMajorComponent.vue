@@ -138,7 +138,8 @@
                                                             <label>
                                                                 <input type="checkbox" name="unq_id"
                                                                        @click="setSelectId($event,item)"/>
-                                                                {{item.majorch}}
+                                                                <div class="font12">{{item.majoren}}</div>
+                                                                <div>{{item.majorch}}</div>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -156,16 +157,16 @@
                             <div class="tab-pane fade" id="schoolMajor2">
                                 <div class="list-group pl-15 pr-15 bda fillet-8">
                                     <div class="row bdb" v-for="(item, i) in ActiveArr" :key="i">
-                                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" checked
-                                                           @click="ActiveArr.splice(i, 1)">
-                                                    {{item.majorch}}
+                                                    <input type="checkbox" checked @click="ActiveArr.splice(i, 1)">
+                                                    <div class="font12">{{item.majoren}}</div>
+                                                    <div>{{item.majorch}}</div>
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 lh40">
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 lh40">
                                             {{item.collagech}}
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center lh40">
