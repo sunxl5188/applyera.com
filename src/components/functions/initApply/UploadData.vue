@@ -201,9 +201,14 @@ export default {
             mimeTypes: '*!/!*'
           },
           formData: { apply_order_id: self.id, func: 'student_attachment' },
-          uploadFinished: function () {
-            self.layer.msg('上传成功')
-            self.getAnnex()
+          uploadSuccess: (file, response) => {
+            if (response.status === 0) {
+              self.layer.alert(response.msg, {icon: 2})
+              return false
+            } else {
+              self.layer.msg('上传成功')
+              self.getAnnex()
+            }
           },
           error: (e) => {
             if (e === 'Q_TYPE_DENIED' || e === 'F_EXCEED_SIZE') {
