@@ -9,12 +9,17 @@
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="col-sm-12">
                             <div class="form-group form-search">
-                                <label>关联学生 <font class="cf00">*</font></label>
-                                <input type="text" class="form-control" placeholder="请选择挡案"
+                                <label>关联学生 <font class="cf00">*</font>
+                                    <span>
+                                        <router-link to="/archives/student/edit" class="cded ml-15" v-if="id===''" style="font-weight:normal;">学生还没建档？请先建立档案</router-link>
+                                    </span>
+                                </label>
+                                <input type="hidden" name="student_id" v-model="studentId" />
+                                <input type="text" name="student_number" class="form-control" placeholder="请选择挡案"
                                        v-model="studentNumber"
                                        :readonly="id!==''">
                                 <i class="iconfont" data-toggle="modal" data-backdrop="static" data-target="#StudentComponent"
-                                   v-if="id===''">&#xe618;</i>
+                                   v-if="id===''" style="top:25px;">&#xe618;</i>
                             </div>
                         </div>
                     </div>
@@ -30,9 +35,6 @@
                         </div>
                     </div>
                     </div>
-                    <router-link to="/archives/student/edit" class="cded ml-15" v-if="id===''">学生还没建档？请先建立档案
-                    </router-link>
-
                     <StudentComponent @setStuden="getStudent"/>
                 </div>
                 <div class="row">
@@ -887,8 +889,8 @@
                     </div>
                 </div>
                 <div class="clearfix text-center pt-35 pb-15">
-                    <button type="button" class="btn btn-primary btn-lg" style="width:200px;" @click="saveCurrent">下一页</button>
-                    <button type="submit" class="btn btn-outline-primary btn-lg ml-20" style="width:200px;">保存</button>
+                    <button type="submit" class="btn btn-primary btn-lg" style="width:200px;">下一页</button>
+                    <button type="button" class="btn btn-outline-primary btn-lg ml-20" style="width:200px;" @click="saveCurrent">保存</button>
                 </div>
             </form>
 
@@ -906,12 +908,12 @@ import idType from '@@/json/idType'
 import visaType from '@@/json/visaType'
 import workType from '@@/json/workType'
 import workNature from '@@/json/workNature'
-import HeaderNav from '@/components/functions/applyInfo/HeaderNav'
-import StudentComponent from '@/components/functions/plan/StudentComponent'
-import FamilyComponent from '@/components/functions/applyInfo/FamilyComponent'
-import UEducationComponent from '@/components/functions/applyInfo/UEducationComponent'
-import MEducationComponent from '@/components/functions/applyInfo/MEducationComponent'
-import ExamComponent from '@/components/functions/applyInfo/ExamComponent'
+import HeaderNav from '@#/functions/applyInfo/HeaderNav'
+import StudentComponent from '@#/functions/plan/StudentComponent'
+import FamilyComponent from '@#/functions/applyInfo/FamilyComponent'
+import UEducationComponent from '@#/functions/applyInfo/UEducationComponent'
+import MEducationComponent from '@#/functions/applyInfo/MEducationComponent'
+import ExamComponent from '@#/functions/applyInfo/ExamComponent'
 import CitySelect from '@#/shared/CitySelect'
 import '@~/js/VeeValidateConfig'
 import store from '@/vuex/Store'
@@ -1068,13 +1070,16 @@ export default {
       for (let i = 0; i < formData.length; i++) {
         params.append(formData[i]['name'], formData[i]['value'])
       }
+      params.append('verify', 1)
       self.$validator.validateAll().then((result) => {
         if (result) {
-          db.postRequest('Institution/ApplyMaterial/add', params).then(res => {
+          db.postRequest('/Institution/ApplyMaterial/savePersonal', params).then(res => {
             if (res.status === 1) {
-              self.layer.alert(res.msg, {icon: 1}, function (i) {
-                self.layer.close(i)
-              })
+              if (self.id) {
+                self.$router.push('/functions/applyInfo/family?id=' + self.id)
+              } else {
+                self.$router.push('/functions/applyInfo/family?id=' + res.data.id)
+              }
             } else {
               self.layer.alert(res.msg)
             }
@@ -1087,18 +1092,26 @@ export default {
     // 下一页保存
     saveCurrent () {
       let self = this
+      if (self.studentNumber === '' && self.studentId === '') {
+        self.layer.alert('请先关联学生', {icon: 2})
+        return false
+      }
+      if (self.educationType === '') {
+        self.layer.alert('请选择申报类型', {icon: 2})
+        return false
+      }
       let formData = $('#addApply').serializeArray()
       let params = new URLSearchParams()
       formData.map(item => {
         params.append(item.name, item.value)
       })
-      params.append('verification', 1)
-      db.postRequest('', params).then(res => {
-        console.log(res.msg)
-        if (self.id) {
-          self.$router.push('/functions/applyInfo/family?id=' + self.id)
+      db.postRequest('/Institution/ApplyMaterial/savePersonal', params).then(res => {
+        if (res.status === 1) {
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+          })
         } else {
-          self.$router.push('/functions/applyInfo/family?id=' + res.data)
+          self.layer.alert(res.msg, {icon: 2})
         }
       })
     },

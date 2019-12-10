@@ -194,20 +194,25 @@ export default {
     },
     delItem (id) {
       let self = this
-      let params = new URLSearchParams()
-      params.append('id', id)
-      db.getRequest('Institution/ApplyMaterial/delete', params).then(res => {
-        if (res.status === 1) {
-          for (let i = 0; i < self.list.length; i++) {
-            if (self.list[i]['id'] === id) {
-              self.list.splice(i, 1)
+      self.layer.confirm('您确定要删除此信息？', {
+        icon: 2
+      }, function (i) {
+        self.layer.close(i)
+        let params = new URLSearchParams()
+        params.append('id', id)
+        db.getRequest('Institution/ApplyMaterial/delete', params).then(res => {
+          if (res.status === 1) {
+            for (let i = 0; i < self.list.length; i++) {
+              if (self.list[i]['id'] === id) {
+                self.list.splice(i, 1)
+              }
             }
+          } else {
+            self.layer.alert(res.msg, {
+              shadeClose: false
+            })
           }
-        } else {
-          self.layer.alert(res.msg, {
-            shadeClose: false
-          })
-        }
+        })
       })
     }
   },

@@ -2,7 +2,7 @@
     <div>
         <HeaderNav :id="id" :studentId="studentId" :educationType="educationType" :tabStatus="tabStatus"></HeaderNav>
         <div v-if="!loading">
-            <comment :is="commentId" :education="education"></comment>
+            <comment :is="commentId" :id="id" :education="education"></comment>
         </div>
         <div v-if="loading" v-html="LoadingImg()"></div>
     </div>
@@ -22,7 +22,7 @@ export default {
       loading: true,
       studentId: '',
       tabStatus: [0, 0, 0, 0],
-      commentId: MEducationComponent,
+      commentId: '',
       educationType: 1,
       education: {
         highschool_name: '',
@@ -98,7 +98,15 @@ export default {
         db.getRequest('/Institution/ApplyMaterial/editEducation', params).then(res => {
           if (res.status === 1) {
             self.tabStatus = res.data.tab_status
+            self.educationType = res.data.education_type
+            self.studentId = res.data.student_id
             self.education = res.data
+            if (res.data.education_type === 1) {
+              self.commentId = UEducationComponent
+            }
+            if (res.data.education_type === 2) {
+              self.commentId = MEducationComponent
+            }
           } else {
             console.log(res.msg)
           }

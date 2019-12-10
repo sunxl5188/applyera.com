@@ -2,7 +2,7 @@
     <div>
         <form id="EducationForm" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
             <!--****************************************************-->
-            <input type="hidden" name="education_type" id="education_type" value="1"/>
+            <input type="hidden" name="id" v-model="id"/>
             <!--推荐人-->
             <div class="clearfix lh34 mb-15 bdb">
                 <h4>
@@ -827,8 +827,8 @@
                 </div>
             </div>
             <div class="clearfix text-center pt-35 pb-15">
-                <button type="button" class="btn btn-primary btn-lg" style="width: 200px;">下一页</button>
-                <button type="button" class="btn btn-outline-primary btn-lg ml-20" style="width: 200px;">保存</button>
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 200px;">下一页</button>
+                <button type="button" class="btn btn-outline-primary btn-lg ml-20" style="width: 200px;" @click="saveCurrent">保存</button>
             </div>
         </form>
     </div>
@@ -841,11 +841,13 @@ import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import CitySelect from '@#/shared/CitySelect'
 import career from '@@/json/career.json'
 import degree from '@@/json/degree.json'
+import db from '@~/js/request'
 require('icheck')
 
 export default {
   name: 'UEducationComponent',
   props: {
+    id: '',
     education: {
       type: Object,
       default: () => {}
@@ -907,11 +909,49 @@ export default {
         })
       }, 800)
     },
+    // 验证保存
     validateBeforeSubmit () {
       let self = this
       self.$validator.validateAll().then((result) => {
-        let formData = $('#EducationForm').serializeArray()
-        self.$emit('EducationCallback', result, formData)
+        if (result) {
+          let formData = $('#EducationForm').serializeArray()
+          let params = new URLSearchParams()
+          for (let i = 0; i < formData.length; i++) {
+            params.append(formData[i]['name'], formData[i]['value'])
+          }
+          params.append('verify', 1)
+          db.postRequest('/Institution/ApplyMaterial/saveEducation', params).then(res => {
+            if (res.status === 1) {
+              self.$router.push('/functions/applyInfo/exam?id=' + self.id)
+            } else {
+              self.layer.alert(res.msg, {
+                icon: 2
+              })
+            }
+          })
+        } else {
+          self.layer.alert('数据没有填写完整', {icon: 2})
+        }
+      })
+    },
+    // 保存当前数据
+    saveCurrent () {
+      let self = this
+      let formData = $('#EducationForm').serializeArray()
+      let params = new URLSearchParams()
+      for (let i = 0; i < formData.length; i++) {
+        params.append(formData[i]['name'], formData[i]['value'])
+      }
+      db.postRequest('/Institution/ApplyMaterial/saveEducation', params).then(res => {
+        if (res.status === 1) {
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
       })
     },
     // 添加高中

@@ -3,6 +3,7 @@
         <HeaderNav :id="id" :studentId="studentId" :educationType="educationType" :tabStatus="tabStatus"></HeaderNav>
         <div v-if="!loading">
             <form id="FamilyForm" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
+                <input type="hidden" name="id" v-model="id" />
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="form-group">
@@ -250,8 +251,8 @@
                     </div>
                 </div>
                 <div class="clearfix text-center pt-35 pb-15">
-                    <button type="button" class="btn btn-primary btn-lg" style="width: 200px;">下一页</button>
-                    <button type="submit" class="btn btn-outline-primary btn-lg ml-20" style="width: 200px;">保存</button>
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 200px;">下一页</button>
+                    <button type="button" class="btn btn-outline-primary btn-lg ml-20" style="width: 200px;" @click="saveCurrent">保存</button>
                 </div>
             </form>
         </div>
@@ -335,6 +336,8 @@ export default {
         db.getRequest('/Institution/ApplyMaterial/editFamily', params).then(res => {
           if (res.status === 1) {
             self.tabStatus = res.data.tab_status
+            self.educationType = res.data.education_type
+            self.studentId = res.data.student_id
             self.family = res.data
             self.showTime()
             self.setIcheck()
@@ -391,6 +394,7 @@ export default {
     delbrother (i) {
       this.family.brother_info.splice(i, 1)
     },
+    // 验证保存
     validateBeforeSubmit () {
       let self = this
       if (self.family.guardian === 1 || self.family.guardian === 3 || self.family.guardian === 4) {
@@ -398,41 +402,37 @@ export default {
       }
       if (self.family.guardian === 2 || self.family.guardian === 3) {
         self.$refs.MotherChild.validateBeforeSubmit()
+        console.log(11111)
       }
 
       setTimeout(function () {
         let isTrue = false
+        let formData = $('#FamilyForm').serializeArray()
         if (self.family.guardian === 3 && self.result1 && self.result2) {
+          formData.push.apply(formData, self.formChild1)
+          formData.push.apply(formData, self.formChild2)
           isTrue = true
         } else if (self.family.guardian === 2 && self.result2) {
+          formData.push.apply(formData, self.formChild2)
           isTrue = true
         } else if ((self.family.guardian === 1 || self.family.guardian === 4) && self.result1) {
+          formData.push.apply(formData, self.formChild1)
           isTrue = true
         } else {
           isTrue = false
         }
-
         self.$validator.validateAll().then((result) => {
-          let res = false
-          let formData = $('#FamilyForm').serializeArray()
-          formData.push.apply(formData, self.formChild1)
-          formData.push.apply(formData, self.formChild2)
           if (result && isTrue) {
-            res = true
-          } else {
-            res = false
-          }
-          if (res) {
             let self = this
             let params = new URLSearchParams()
-            params.append('formData', formData)
-            db.postRequest('', params).then(res => {
+            formData.map(item => {
+              params.append(item.name, item.value)
+            })
+            params.append('verify', 1)
+            db.postRequest('/Institution/ApplyMaterial/saveFamily', params).then(res => {
               if (res.status === 1) {
-                self.layer.alert(res.msg, {icon: 1}, function (i) {
-                  self.layer.close(i)
-                })
+                self.$router.push('/functions/applyInfo/education?id=' + self.id)
               } else {
-                console.log(res.msg)
                 self.layer.alert(res.msg, {
                   icon: 2
                 })
@@ -440,6 +440,44 @@ export default {
             })
           } else {
             self.layer.alert('信息没有填写完整', {icon: 2})
+          }
+        })
+      }, 100)
+    },
+    // 保存当前数据
+    saveCurrent () {
+      let self = this
+      let formdata1 = ''
+      let formdata2 = ''
+      if (self.family.guardian === 1 || self.family.guardian === 3 || self.family.guardian === 4) {
+        formdata1 = $('#familyChild').serializeArray()
+      }
+      if (self.family.guardian === 2 || self.family.guardian === 3) {
+        formdata2 = $('#familyChild2').serializeArray()
+      }
+      setTimeout(() => {
+        let formData = $('#FamilyForm').serializeArray()
+        if (self.family.guardian === 3) {
+          formData.push.apply(formData, formdata1)
+          formData.push.apply(formData, formdata2)
+        } else if (self.family.guardian === 2) {
+          formData.push.apply(formData, formdata2)
+        } else if (self.family.guardian === 1 || self.family.guardian === 4) {
+          formData.push.apply(formData, formdata1)
+        }
+        let params = new URLSearchParams()
+        formData.map(item => {
+          params.append(item.name, item.value)
+        })
+        db.postRequest('/Institution/ApplyMaterial/saveFamily', params).then(res => {
+          if (res.status === 1) {
+            self.layer.alert(res.msg, {icon: 1}, function (i) {
+              self.layer.close(i)
+            })
+          } else {
+            self.layer.alert(res.msg, {
+              icon: 2
+            })
           }
         })
       }, 100)
