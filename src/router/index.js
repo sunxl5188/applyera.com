@@ -263,6 +263,16 @@ export default new Router({
                 requiresAuth: true,
                 group: ['function', 2, 3]
               }
+            },
+            {
+              path: 'applyType',
+              name: 'applyType',
+              component: resolve => require(['@#/functions/applyInfo/applyType'], resolve),
+              meta: {
+                title: '申请类型',
+                requiresAuth: true,
+                group: ['function', 2, 4]
+              }
             }
           ]
         },

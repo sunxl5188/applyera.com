@@ -230,8 +230,7 @@
                         <label>我有发表过文章 </label>
                         <div class="checkbox" style="display:inline-block;">
                             <label>
-                                <input type="checkbox" name="is_article" data-obj="education" data-name="is_article" v-model="education.is_article"
-                                       @change="showTimeC">&nbsp;
+                                <input type="checkbox" name="is_article" data-obj="education" data-name="is_article" v-model="education.is_article">&nbsp;
                             </label>
                         </div>
                         <div class="row" v-if="education.is_article">
@@ -269,8 +268,7 @@
                         <label>我有获得过奖学金 </label>
                         <div class="checkbox" style="display:inline-block;">
                             <label>
-                                <input type="checkbox" name="is_scholarship" data-obj="education" data-name="is_scholarship" v-model="education.is_scholarship"
-                                       @change="showTimeC">&nbsp;
+                                <input type="checkbox" name="is_scholarship" data-obj="education" data-name="is_scholarship" v-model="education.is_scholarship">&nbsp;
                             </label>
                         </div>
                         <div class="clearfix" v-if="education.is_scholarship">
@@ -336,8 +334,7 @@
                         <label>我曾经休学过半年以上 </label>
                         <div class="checkbox" style="display:inline-block;">
                             <label>
-                                <input type="checkbox" name="is_drop" data-obj="education" data-name="is_drop" v-model="education.is_drop"
-                                       @change="showTimeC">&nbsp;
+                                <input type="checkbox" name="is_drop" data-obj="education" data-name="is_drop" v-model="education.is_drop">&nbsp;
                             </label>
                         </div>
                         <div class="clearfix" v-if="education.is_drop">
@@ -579,6 +576,7 @@ export default {
             if (thisName !== undefined) {
               self[obj][thisName] = event.currentTarget.checked ? 1 : ''
               self.RefreshSelect()
+              self.showTimeC()
             }
           })
         })

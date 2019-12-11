@@ -51,7 +51,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-group ml-10">
-                                <router-link to="/functions/applyInfo/detail" class="btn btn-default"><i
+                                <router-link to="/functions/applyInfo/applyType" class="btn btn-default"><i
                                         class="iconfont">&#xe73e;</i>
                                     添加
                                 </router-link>

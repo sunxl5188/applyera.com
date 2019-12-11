@@ -8,38 +8,6 @@
                 <div class="row">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="col-sm-12">
-                            <div class="form-group form-search">
-                                <label>关联学生 <font class="cf00">*</font>
-                                    <span>
-                                        <router-link to="/archives/student/edit" class="cded ml-15" v-if="id===''" style="font-weight:normal;">学生还没建档？请先建立档案</router-link>
-                                    </span>
-                                </label>
-                                <input type="hidden" name="student_id" v-model="studentId" />
-                                <input type="text" name="student_number" class="form-control" placeholder="请选择挡案"
-                                       v-model="studentNumber"
-                                       :readonly="id!==''">
-                                <i class="iconfont" data-toggle="modal" data-backdrop="static" data-target="#StudentComponent"
-                                   v-if="id===''" style="top:25px;">&#xe618;</i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="ml-15">申报类型 <font class="cf00">*</font></label>
-                            <select name="education_type" class="form-control selectpicker"
-                                    v-model.number="educationType">
-                                <option value="1">申请本科</option>
-                                <option value="2">申请硕士</option>
-                            </select>
-                        </div>
-                    </div>
-                    </div>
-                    <StudentComponent @setStuden="getStudent"/>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <div class="col-sm-12">
                             <div class="form-group">
                                 <label>姓名 <font class="cf00">*</font></label>
                                 <input type="text" name="full_name" class="form-control"
@@ -760,7 +728,7 @@
                                                     <input type="text" :name="'work_exp[name]['+i+']'"
                                                            class="form-control"
                                                            placeholder="请用英文或拼音输入单位名称"
-                                                           v-validate="'required|alpha'"
+                                                           v-validate="'required|ens'"
                                                            data-vv-as="单位名称" v-model="item.name">
                                                     <div class="validateTip"
                                                          v-show='errors.has("work_exp[name]["+i+"]")'>
@@ -909,7 +877,6 @@ import visaType from '@@/json/visaType'
 import workType from '@@/json/workType'
 import workNature from '@@/json/workNature'
 import HeaderNav from '@#/functions/applyInfo/HeaderNav'
-import StudentComponent from '@#/functions/plan/StudentComponent'
 import FamilyComponent from '@#/functions/applyInfo/FamilyComponent'
 import UEducationComponent from '@#/functions/applyInfo/UEducationComponent'
 import MEducationComponent from '@#/functions/applyInfo/MEducationComponent'
@@ -987,7 +954,11 @@ export default {
   },
   mounted () {
     let self = this
-    let id = self.$route.query.id
+    let id = parseInt(self.$route.query.id) || ''
+    if (id === '' || Math.floor(id) !== id) {
+      self.layer.alert('非法操作', {icon: 2})
+      return false
+    }
     self.$nextTick(() => {
       self.showTimes()
       // *******************************
@@ -1075,11 +1046,7 @@ export default {
         if (result) {
           db.postRequest('/Institution/ApplyMaterial/savePersonal', params).then(res => {
             if (res.status === 1) {
-              if (self.id) {
-                self.$router.push('/functions/applyInfo/family?id=' + self.id)
-              } else {
-                self.$router.push('/functions/applyInfo/family?id=' + res.data.id)
-              }
+              self.$router.push('/functions/applyInfo/family?id=' + self.id)
             } else {
               self.layer.alert(res.msg)
             }
@@ -1214,7 +1181,6 @@ export default {
   },
   components: {
     HeaderNav,
-    StudentComponent,
     FamilyComponent,
     UEducationComponent,
     MEducationComponent,
