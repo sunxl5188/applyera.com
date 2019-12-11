@@ -402,7 +402,6 @@ export default {
       }
       if (self.family.guardian === 2 || self.family.guardian === 3) {
         self.$refs.MotherChild.validateBeforeSubmit()
-        console.log(11111)
       }
 
       setTimeout(function () {
@@ -423,7 +422,6 @@ export default {
         }
         self.$validator.validateAll().then((result) => {
           if (result && isTrue) {
-            let self = this
             let params = new URLSearchParams()
             formData.map(item => {
               params.append(item.name, item.value)

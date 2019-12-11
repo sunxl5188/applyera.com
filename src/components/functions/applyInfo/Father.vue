@@ -42,7 +42,7 @@
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label>国籍 <font class="cf00">*</font></label>
-                        <select name="main_guardian_nationality" class="form-control selectpicker"
+                        <select name="main_guardian_nationality" class="form-control selectpicker" data-live-search="true" data-size="10"
                                 v-validate="'required'" data-vv-as="国籍" v-model="family.main_guardian_nationality">
                             <option value="">请选择</option>
                             <option :value="item.id" v-for="(item, i) in nation" :key="i">{{item.cn}}

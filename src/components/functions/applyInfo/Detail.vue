@@ -193,7 +193,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>国籍 <font class="cf00">*</font></label>
-                                <select name="nationality" class="form-control selectpicker"
+                                <select name="nationality" class="form-control selectpicker" data-live-search="true" data-size="10"
                                         v-validate="'required'"
                                         data-vv-as="国籍" v-model="personal.nationality">
                                     <option value="">请选择</option>

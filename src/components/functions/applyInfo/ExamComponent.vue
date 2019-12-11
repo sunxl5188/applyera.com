@@ -1359,7 +1359,6 @@ export default {
     validateBeforeSubmit () {
       let self = this
       self.$validator.validateAll().then((result) => {
-        let self = this
         let formData = $('#ExamForm').serializeArray()
         if (result) {
           let params = new URLSearchParams()
