@@ -644,15 +644,15 @@ textarea{
 
 	&.last{
 		& input{
-			padding-left:10px;padding-right:45px;right:0;
+			padding-left:10px;padding-right:45px;right:0; top:-55px;
 		}
 
 		& button{
-			right:5px;
+			right:5px;top:-55px;
 		}
 
 		& .clearSearch{
-			right:30px;
+			right:30px;top:-48px;
 		}
 	}
 }

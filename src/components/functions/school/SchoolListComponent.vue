@@ -59,13 +59,13 @@
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="degree===9999999">
+                    <tr v-if="degree===2 && active1==='英国'">
                         <td class="text-center"><b>GPA</b></td>
                         <td>
                             <a href="javascript:void(0);" v-for="(item,index) in gpaArr" :key="index" v-text="item.title"
                                :class="gpa===item.value?'mr-15 active':'mr-15'"
                                @click="gpa=item.value;pagechange(1)"></a>
-                            <select name="schoolType" v-model.number="schoolType" class="form-control">
+                            <select name="schoolType" v-model.number="schoolType" class="form-control" @change="pagechange(1, '')">
                                 <option value="1">非985</option>
                                 <option value="2">985</option>
                             </select>
@@ -261,8 +261,8 @@ export default {
       params.append('keywords', self.keywords)
       params.append('sortRank', self.sortRank)
       params.append('sortComm', self.sortComm)
-      // params.append('gpa', self.gpa)
-      // params.append('school_type', self.schoolType)
+      params.append('gpa', self.gpa)
+      params.append('school_type', self.schoolType)
       for (let key in self.other) {
         params.append(key, self.other[key])
       }

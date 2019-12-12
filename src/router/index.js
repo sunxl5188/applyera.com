@@ -187,6 +187,12 @@ export default new Router({
               name: 'majordetailb',
               component: resolve => require(['@#/functions/school/MajorDetailB'], resolve),
               meta: {title: '硕士专业', requiresAuth: true, group: ['function', 0, 2]}
+            },
+            {
+              path: 'FoundationDetail',
+              name: 'FoundationDetail',
+              component: resolve => require(['@#/functions/school/FoundationDetail'], resolve),
+              meta: {title: '预科语言详情', requiresAuth: true, group: ['function', 0, 3]}
             }
           ]
         },
