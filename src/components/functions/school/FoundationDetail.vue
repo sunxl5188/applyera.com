@@ -46,12 +46,12 @@
                     <li class="menuItem"><a href="javascript:void(0);">宣传册</a></li>
                 </ul>
             </div>
-            <div class="schoolTitle" id="tabs1">申请要求</div>
+            <div class="schoolTitle" id="fdPage1">申请要求</div>
             <div class="clearfix">
                 <p>语言要求:雅思 5.5 (4.5)</p>
                 <p>学术要求:高二完成 均分85%以上</p>
             </div>
-            <div class="schoolTitle" id="tabs2">申请材料</div>
+            <div class="schoolTitle" id="fdPage2">申请材料</div>
             <div class="clearfix">
                 <span>成绩单</span>
                 <span>在读证明</span>
@@ -59,7 +59,7 @@
                 <span>学位证</span>
                 <span>护照</span>
             </div>
-            <div class="schoolTitle" id="tabs3">直升专业</div>
+            <div class="schoolTitle" id="fdPage3">直升专业</div>
             <div class="clearfix">
                 <p>BSc (Hons) Politics with Quantitative Research Methods with Study Abroad 政治与定量研究方法（含一年海外学习）</p>
                 <p>BSc (Hons) Politics with Quantitative Research Methods with Study Abroad 政治与定量研究方法（含一年海外学习）</p>
@@ -67,7 +67,7 @@
                 <p>BSc (Hons) Politics with Quantitative Research Methods with Study Abroad 政治与定量研究方法（含一年海外学习）</p>
                 <p>BSc (Hons) Politics with Quantitative Research Methods with Study Abroad 政治与定量研究方法（含一年海外学习）</p>
             </div>
-            <div class="schoolTitle" id="tabs4">宣传册</div>
+            <div class="schoolTitle" id="fdPage4">宣传册</div>
             <div class="clearfix">
                 <p>yukeejixajis.pdf  <a href="javascript:void(0);">下载</a> <a href="javascript:void(0);">预览</a></p>
             </div>
@@ -98,7 +98,7 @@ export default {
     setScroll () {
       let self = this
       setTimeout(function () {
-        let tabsArr = ['#tabs1', '#tabs2', '#tabs3', '#tabs4']
+        let tabsArr = ['#fdPage1', '#fdPage2', '#fdPage3', '#fdPage4']
         tabsArr.map(item => {
           self.tabs.push($(item).offset().top - 80)
         })
@@ -111,7 +111,7 @@ export default {
           self._stickUp()
         })
         self._stickUp()
-      }, 200)
+      }, 2000)
     },
     collection (id, type, event) {},
     _stickUp () {

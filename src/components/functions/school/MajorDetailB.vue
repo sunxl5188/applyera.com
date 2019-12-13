@@ -21,7 +21,8 @@
                     <div class="schoolTitle" id="tabs6">专业信息</div>
                     <div class="row lh34">
                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" v-for="(item, i) in baseInfo" :key="i">
-                            <span class="textOver poshyTop" :title="item.val" v-html="item.name+'：'+item.val"></span>
+                            <span>{{item.name}}:</span>
+                            <span data-toggle="tooltip" :title="item.val">{{item.val|cutString(20)}}</span>
                         </div>
                     </div>
 
@@ -218,7 +219,6 @@
 import MajorDetailHeader from '@/components/functions/school/MajorDetailHeader'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
-require('@@/js/tipsy/jquery.tipsy')
 
 export default {
   name: 'SchoolHeaderB',
@@ -296,14 +296,7 @@ export default {
               self._stickUp()
             })
             self._stickUp()
-
-            $('.poshyTop').tipsy({
-              gravity: 's', // 显示方向s:上,n:下,w:右,e:左
-              html: true, // 是否html
-              opacity: 1, // 层透明度 0-1
-              title: 'title', // 读取内容元素属性,默认为title 附：original-title
-              trigger: 'hover' // 事件模式 hover mouseenter focus
-            })
+            $('[data-toggle="tooltip"]').tooltip()
           }, 200)
         } else {
           console.log(res.msg)

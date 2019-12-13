@@ -162,6 +162,27 @@ Vue.prototype.highlight = function (str, keys) {
   return string
 }
 
+Vue.prototype.cutString = (strings, k) => {
+  if (strings == null) return false
+  let reg = /<[^>]*>/
+  let len = 0
+  let str = strings.replace(reg, strings)
+  for (let i = 0; i < str.length; i++) {
+    let c = str.charCodeAt(i)
+    // 单字节加1
+    if ((c >= 0x0001 && c <= 0x007e) || (c >= 0xff60 && c <= 0xff9f)) {
+      len++
+    } else {
+      len += 2
+    }
+  }
+  if (len > k) {
+    return strings.substr(0, k) + '...'
+  } else {
+    return strings
+  }
+}
+
 Vue.filter('state', function (i) {
   let text = ''
   switch (i) {
@@ -192,6 +213,27 @@ Vue.filter('bytesToSize', function (bytes) {
 Vue.filter('keepNum', (v, i) => {
   let val = Number(v)
   return val.toFixed(i)
+})
+
+Vue.filter('cutString', (strings, k) => {
+  if (strings == null) return false
+  let reg = /<[^>]*>/
+  let len = 0
+  let str = strings.replace(reg, strings)
+  for (let i = 0; i < str.length; i++) {
+    let c = str.charCodeAt(i)
+    // 单字节加1
+    if ((c >= 0x0001 && c <= 0x007e) || (c >= 0xff60 && c <= 0xff9f)) {
+      len++
+    } else {
+      len += 2
+    }
+  }
+  if (len > k) {
+    return strings.substr(0, k) + '...'
+  } else {
+    return strings
+  }
 })
 
 /* eslint-disable no-new */

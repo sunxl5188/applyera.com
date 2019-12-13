@@ -26,20 +26,25 @@
                     </thead>
                     <tbody>
                     <tr v-for="(item, i) in list" :key="i">
-                        <td :title="item.majoren +'<br>'+item.majorch" class="poshyTop">
+                        <td>
                             <router-link :to="{path:'/functions/schoollist/majordetaila', query:{id:item.unq_id}}">
                                 <div class="lh20 cded textOver">
-                                    <span v-html="highlight(item.majoren, keywords)"></span>
+                                    <span v-html="highlight(cutString(item.majoren, 30), keywords)" data-toggle="tooltip" :title="item.majoren +'<br>'+item.majorch"></span>
                                     <i class="iconfont cf00" v-if="item.is_hot">&#xe633;</i>
                                 </div>
-                                <div class="lh20" v-html="highlight(item.majorch,keywords)"></div>
+                                <div class="lh20">
+                                    <span v-html="highlight(cutString(item.majorch, 30),keywords)" data-toggle="tooltip" :title="item.majoren +'<br>'+item.majorch"></span>
+                                </div>
                             </router-link>
                         </td>
-                        <td :title="item.collageen!=='-'?item.collageen +'<br>'+item.collagech:''"
-                            :class="{poshyTop:item.collageen!=='-'}">
+                        <td>
                             <router-link :to="{path:'/functions/schoollist/majordetaila', query:{id:item.unq_id}}">
-                                <div class="lh20 textOver" v-html="highlight(item.collageen,keywords)"></div>
-                                <div class="lh20 c999" v-html="highlight(item.collagech,keywords)"></div>
+                                <div class="lh20">
+                                    <span v-html="highlight(cutString(item.collageen, 20),keywords)" :title="item.collageen!=='-'?item.collageen +'<br>'+item.collagech:''" data-toggle="tooltip"></span>
+                                </div>
+                                <div class="lh20 c999">
+                                    <span v-html="highlight(cutString(item.collagech, 20),keywords)" :title="item.collageen!=='-'?item.collageen +'<br>'+item.collagech:''" data-toggle="tooltip"></span>
+                                </div>
                             </router-link>
                         </td>
                         <td>{{item.majorarea}}</td>
@@ -105,13 +110,7 @@ export default {
           self.list = res.data.list
           self.total = res.data.total
           setTimeout(function () {
-            $('.poshyTop').tipsy({
-              gravity: 's', // 显示方向s:上,n:下,w:右,e:左
-              html: true, // 是否html
-              opacity: 1, // 层透明度 0-1
-              title: 'title', // 读取内容元素属性,默认为title 附：original-title
-              trigger: 'hover' // 事件模式 hover mouseenter focus
-            })
+            $('[data-toggle="tooltip"]').tooltip({html: true})
           }, 500)
         } else {
           console.log(res.msg)

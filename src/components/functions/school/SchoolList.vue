@@ -7,9 +7,12 @@
                 <li :class="{active:tabActive===3}"><a href="#tabs3" data-toggle="tab">我的收藏</a></li>
             </ul>
             <div class="tab-content mt-15">
-                <div class="tab-pane fade in active">
+                <keep-alive>
                     <component :is="currentComponent"></component>
-                </div>
+                </keep-alive>
+                <div class="tab-pane fade in active" id="tabs1"></div>
+                <div class="tab-pane fade in active" id="tabs2"></div>
+                <div class="tab-pane fade in active" id="tabs3"></div>
             </div>
         </div>
         <router-view></router-view>
@@ -17,9 +20,9 @@
 </template>
 
 <script>
-import SchoolListComponent from '@/components/functions/school/SchoolListComponent'
-import MajorComponent from '@/components/functions/school/MajorComponent'
-import CollectionComponent from '@/components/functions/school/CollectionComponent'
+import SchoolListComponent from '@#/functions/school/SchoolListComponent'
+import MajorComponent from '@#/functions/school/MajorComponent'
+import CollectionComponent from '@#/functions/school/CollectionComponent'
 import store from '@/vuex/Store'
 
 export default {

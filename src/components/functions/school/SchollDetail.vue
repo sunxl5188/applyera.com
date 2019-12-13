@@ -2,36 +2,34 @@
   <div>
     <div v-if="loading" v-html="LoadingImg()"></div>
     <div v-if="!loading">
-      <div :class="{'hidden':name!=='scholldetail'}">
+      <SchoolHeader :schoolInfo="headerInfo"/>
+      <ul class="nav nav-tabs" id="schoolDetail"><!--nav-justified-->
+        <li :class="{'active':tab===1}">
+          <a href="#tabs4" data-toggle="tab" data-id="SchoolDetailComponent">学校简介</a>
+        </li>
+        <li :class="{'active':tab===2}">
+          <a href="#tabs5" data-toggle="tab" data-id="MajorListA">本科专业</a>
+        </li>
+        <li :class="{'active':tab===3}">
+          <a href="#tabs6" data-toggle="tab" data-id="MajorListB">硕士专业</a>
+        </li>
+        <li :class="{'active':tab===4}">
+          <a href="#tabs8" data-toggle="tab" data-id="Foundation">预科语言</a>
+        </li>
+        <li :class="{'active':tab===5}">
+          <a href="#tabs7" data-toggle="tab" data-id="CaseList">过往案例</a>
+        </li>
+      </ul>
+      <div class="blk15"></div>
+      <div class="tab-content">
         <keep-alive>
-          <SchoolHeader :schoolInfo="headerInfo"/>
-        </keep-alive>
-        <ul class="nav nav-tabs" id="schoolDetail"><!--nav-justified-->
-          <li :class="{'active':tab===1}">
-            <a href="#tabs4" data-toggle="tab" data-id="SchoolDetailComponent">学校简介</a>
-          </li>
-          <li :class="{'active':tab===2}">
-            <a href="#tabs5" data-toggle="tab" data-id="MajorListA">本科专业</a>
-          </li>
-          <li :class="{'active':tab===3}">
-            <a href="#tabs6" data-toggle="tab" data-id="MajorListB">硕士专业</a>
-          </li>
-          <li :class="{'active':tab===4}">
-            <a href="#tabs8" data-toggle="tab" data-id="Foundation">预科语言</a>
-          </li>
-          <li :class="{'active':tab===5}">
-            <a href="#tabs7" data-toggle="tab" data-id="CaseList">过往案例</a>
-          </li>
-        </ul>
-        <div class="blk15"></div>
-        <div class="tab-content">
           <component :is="component" :id="id"></component>
-          <div class="tab-pane fade in active" id="tabs4"></div>
-          <div class="tab-pane fade" id="tabs5"></div>
-          <div class="tab-pane fade" id="tabs6"></div>
-          <div class="tab-pane fade" id="tabs7"></div>
-          <div class="tab-pane fade" id="tabs8"></div>
-        </div>
+        </keep-alive>
+        <div class="tab-pane fade in active" id="tabs4"></div>
+        <div class="tab-pane fade" id="tabs5"></div>
+        <div class="tab-pane fade" id="tabs6"></div>
+        <div class="tab-pane fade" id="tabs7"></div>
+        <div class="tab-pane fade" id="tabs8"></div>
       </div>
     </div>
   </div>

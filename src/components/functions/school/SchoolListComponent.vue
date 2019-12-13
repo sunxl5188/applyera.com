@@ -1,169 +1,171 @@
 <template>
     <div>
-        <div v-if="loading" v-html="LoadingImg()"></div>
-        <div v-if="!loading">
-            <div class="po_re schoolSearch">
-                <input type="text" name="keywords" class="form-control" v-model="keywords" placeholder="请输入关键字查询"
-                       autocomplete="off" @keyup.enter="pagechange(1,3)">
-                <i class="iconfont handPower clearSearch" @click="keywords='';pagechange(1)"
-                   v-if="keywords!==''">&#xe7f6;</i>
-                <button type="button" class="btn btn-primary btn-search" @click="pagechange(1,3)"></button>
-                <button type="button" class="btn btn-default btn-Collapse" @click="retract()">收起筛选<i
-                        class="iconfont">&#xe688;</i>
-                </button>
-            </div>
-            <div id="screenTable">
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td width="10%" class="text-center"><b>选择国家</b></td>
-                        <td>
-                            <a href="javascript:void(0);" v-for="(item,index) in country" :key="index" v-text="item"
-                               :class="active1===item?'mr-15 active':'mr-15'"
-                               @click="active1=item;other={sat: '-', act: '-', ielts: '-', toefl: '-', alevel: '-', ib: '-', gre: '-', gmat: '-'};pagechange(1)"></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>项目类型</b></td>
-                        <td>
-                            <a href="javascript:void(0);" :class="degree===1?'active':''"
-                               @click="degree=1;pagechange(1)">本科</a>
-                            <a href="javascript:void(0);" :class="degree===2?'active ml-15':' ml-15'"
-                               @click="degree=2;pagechange(1)">硕士</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>学科领域</b></td>
-                        <td>
-                            <a href="javascript:void(0);" v-for="(item,index) in subject" :key="index" v-text="item"
-                               :class="active2===item?'mr-15 active':'mr-15'" @click="active2=item;pagechange(1)"></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b class="lh26">国内排名</b></td>
-                        <td>
-                            <a href="javascript:void(0);" v-for="(item,index) in ranking" :key="index" v-text="item.title"
-                               :class="active3===item.value?'lh26 mr-15 active':'lh26 mr-15'"
-                               @click="active3=item.value;pagechange(1)"></a>
-                            <div class="pull-right text-right form-inline custom" style="width:340px;">
-                                <span>自定义：</span>
-                                <span><input type="text" name="rankingA" class="form-control"
-                                             style="width:70px;"
-                                             autocomplete="off" v-model="rankingA"></span>
-                                <span>-</span>
-                                <span><input type="text" name="rankingB" class="form-control"
-                                             style="width:70px;"
-                                             autocomplete="off" v-model="rankingB"></span>
-                                <span><button type="button" class="btn btn-primary ml-10"
-                                              @click="pagechange(1,1)">确定</button></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr v-if="degree===2 && active1==='英国'">
-                        <td class="text-center"><b>GPA</b></td>
-                        <td>
-                            <a href="javascript:void(0);" v-for="(item,index) in gpaArr" :key="index" v-text="item.title"
-                               :class="gpa===item.value?'mr-15 active':'mr-15'"
-                               @click="gpa=item.value;pagechange(1)"></a>
-                            <select name="schoolType" v-model.number="schoolType" class="form-control" @change="pagechange(1, '')">
-                                <option value="1">非985</option>
-                                <option value="2">985</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr v-if="degree===1">
-                        <td class="text-center"><b>每年学费</b></td>
-                        <td>
-                            <a href="javascript:void(0);" v-for="(item,index) in tuition" :key="index" v-text="item.title"
-                               :class="active4===item.value?'mr-15 active':'mr-15'"
-                               @click="active4=item.value;pagechange(1)"></a>
-                        </td>
-                    </tr>
-                    <!--本科*******************-->
-                    <tr v-for="(item,key) in langA" :key="key">
-                        <td class="text-center"><b>{{item.name}}</b></td>
-                        <td>
-                            <a href="javascript:void(0);" v-for="(items, i) in item.list" :key="i"
-                               :class="other[key]===items.key?'active mr-15':' mr-15'"
-                               @click="other[key] = items.key;pagechange(1)">{{items.text}}</a>
-                        </td>
-                    </tr>
-                    <!--硕士********************-->
-                    <tr v-for="(item,key) in langB" :key="key">
-                        <td class="text-center"><b>{{item.name}}</b></td>
-                        <td>
-                            <a href="javascript:void(0);" v-for="(items, i) in item.list" :key="i"
-                               :class="other[key]===items.key?'active mr-15':' mr-15'"
-                               @click="other[key] = items.key;pagechange(1)">{{items.text}}</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="po_re schoolSearch">
+            <input type="text" name="keywords" class="form-control" v-model="keywords" placeholder="请输入关键字查询"
+                   autocomplete="off" @keyup.enter="pagechange(1,3)">
+            <i class="iconfont handPower clearSearch" @click="keywords='';pagechange(1)"
+               v-if="keywords!==''">&#xe7f6;</i>
+            <button type="button" class="btn btn-primary btn-search" @click="pagechange(1,3)"></button>
+            <button type="button" class="btn btn-default btn-Collapse" @click="filterShow=!filterShow" v-if="!filterShow">收起筛选<i class="iconfont">&#xe688;</i></button>
+            <button type="button" class="btn btn-default btn-Collapse" @click="filterShow=!filterShow" v-if="filterShow">展开筛选<i class="iconfont">&#xe630;</i></button>
+        </div>
+        <div id="screenTable" :class="{'hiddenS':filterShow}" :style="'height:'+filterHeight+'px'">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td width="10%" class="text-center"><b>选择国家</b></td>
+                    <td>
+                        <a href="javascript:void(0);" v-for="(item,index) in country" :key="index" v-text="item"
+                           :class="active1===item?'mr-15 active':'mr-15'"
+                           @click="active1=item;other={sat: '-', act: '-', ielts: '-', toefl: '-', alevel: '-', ib: '-', gre: '-', gmat: '-'};pagechange(1)"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center"><b>项目类型</b></td>
+                    <td>
+                        <a href="javascript:void(0);" :class="degree===1?'active':''"
+                           @click="degree=1;pagechange(1)">本科</a>
+                        <a href="javascript:void(0);" :class="degree===2?'active ml-15':' ml-15'"
+                           @click="degree=2;pagechange(1)">硕士</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center"><b>学科领域</b></td>
+                    <td>
+                        <a href="javascript:void(0);" v-for="(item,index) in subject" :key="index" v-text="item"
+                           :class="active2===item?'mr-15 active':'mr-15'" @click="active2=item;pagechange(1)"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center"><b class="lh26">国内排名</b></td>
+                    <td>
+                        <a href="javascript:void(0);" v-for="(item,index) in ranking" :key="index" v-text="item.title"
+                           :class="active3===item.value?'lh26 mr-15 active':'lh26 mr-15'"
+                           @click="active3=item.value;pagechange(1)"></a>
+                        <div class="pull-right text-right form-inline custom" style="width:340px;">
+                            <span>自定义：</span>
+                            <span><input type="text" name="rankingA" class="form-control"
+                                         style="width:70px;"
+                                         autocomplete="off" v-model="rankingA"></span>
+                            <span>-</span>
+                            <span><input type="text" name="rankingB" class="form-control"
+                                         style="width:70px;"
+                                         autocomplete="off" v-model="rankingB"></span>
+                            <span><button type="button" class="btn btn-primary ml-10"
+                                          @click="pagechange(1,1)">确定</button></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr v-if="degree===2 && active1==='英国'">
+                    <td class="text-center"><b>GPA</b></td>
+                    <td>
+                        <a href="javascript:void(0);" v-for="(item,index) in gpaArr" :key="index" v-text="item.title"
+                           :class="gpa===item.value?'mr-15 active':'mr-15'"
+                           @click="gpa=item.value;pagechange(1)"></a>
+                        <select name="schoolType" v-model.number="schoolType" class="form-control" @change="pagechange(1, '')">
+                            <option value="1">非985</option>
+                            <option value="2">985</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr v-if="degree===1">
+                    <td class="text-center"><b>每年学费</b></td>
+                    <td>
+                        <a href="javascript:void(0);" v-for="(item,index) in tuition" :key="index" v-text="item.title"
+                           :class="active4===item.value?'mr-15 active':'mr-15'"
+                           @click="active4=item.value;pagechange(1)"></a>
+                    </td>
+                </tr>
+                <!--本科*******************-->
+                <tr v-for="(item,key) in langA" :key="key">
+                    <td class="text-center"><b>{{item.name}}</b></td>
+                    <td>
+                        <a href="javascript:void(0);" v-for="(items, i) in item.list" :key="i"
+                           :class="other[key]===items.key?'active mr-15':' mr-15'"
+                           @click="other[key] = items.key;pagechange(1)">{{items.text}}</a>
+                    </td>
+                </tr>
+                <!--硕士********************-->
+                <tr v-for="(item,key) in langB" :key="key">
+                    <td class="text-center"><b>{{item.name}}</b></td>
+                    <td>
+                        <a href="javascript:void(0);" v-for="(items, i) in item.list" :key="i"
+                           :class="other[key]===items.key?'active mr-15':' mr-15'"
+                           @click="other[key] = items.key;pagechange(1)">{{items.text}}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-            <div class="row">
-                <table class="table table-text-over table-customize">
-                    <thead>
-                    <tr>
-                        <th>学校名称</th>
-                        <th class="w20">所在地区</th>
-                        <th class="w10">
-                            <span class="div_vm">排名</span>
-                            <a href="javascript:void(0);"
-                               :class="sortRank===''?'icon-sort': (sortRank===1?'icon-sort up':'icon-sort down')"
-                               @click="sortAction(1)"></a>
-                        </th>
-                        <th class="w15" v-if="userInfo.access.show_commission===1">
-                            <span class="div_vm">佣金比例</span>
-                            <a href="javascript:void(0);"
-                               :class="sortComm===''?'icon-sort': (sortComm===1?'icon-sort up':'icon-sort down')"
-                               @click="sortAction(2)"></a>
-                        </th>
-                        <th class="w15">收藏</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(item, index) in list" :key="index">
-                        <td class="poshyTop" :title="item.englishname+'<br>'+item.schoolname">
-                            <div class="media">
-                                <div class="media-left">
+        <div class="row">
+            <table class="table table-text-over table-customize">
+                <thead>
+                <tr>
+                    <th>学校名称</th>
+                    <th class="w20">所在地区</th>
+                    <th class="w10">
+                        <span class="div_vm">排名</span>
+                        <a href="javascript:void(0);"
+                           :class="sortRank===''?'icon-sort': (sortRank===1?'icon-sort up':'icon-sort down')"
+                           @click="sortAction(1)"></a>
+                    </th>
+                    <th class="w15" v-if="userInfo.access.show_commission===1">
+                        <span class="div_vm">佣金比例</span>
+                        <a href="javascript:void(0);"
+                           :class="sortComm===''?'icon-sort': (sortComm===1?'icon-sort up':'icon-sort down')"
+                           @click="sortAction(2)"></a>
+                    </th>
+                    <th class="w15">收藏</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item, index) in list" :key="index">
+                    <td>
+                        <div class="media">
+                            <div class="media-left">
+                                <router-link
+                                        :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}">
+                                    <img class="media-object" :src="'//'+item.schoolbadge" alt="" width="40"
+                                         height="40">
+                                </router-link>
+                            </div>
+                            <div class="media-body" style="margin-bottom: 0;">
+                                <div class="lh20">
                                     <router-link
-                                            :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}">
-                                        <img class="media-object" :src="'//'+item.schoolbadge" alt="" width="40"
-                                             height="40">
+                                            :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}"
+                                            class="cded">
+                                        <span v-html="highlight(cutString(item.englishname, 30), keywords)" data-toggle="tooltip" :title="item.englishname+'<br>'+item.schoolname"></span>
                                     </router-link>
                                 </div>
-                                <div class="media-body" style="margin-bottom: 0;">
-                                    <div class="lh20">
-                                        <router-link
-                                                :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}"
-                                                class="cded">
-                                            <span v-html="highlight(item.englishname, keywords)"></span>
-                                        </router-link>
-                                    </div>
-                                    <div class="lh20 c999" v-html="highlight(item.schoolname, keywords)"></div>
+                                <div class="lh20 c999">
+                                    <span v-html="highlight(cutString(item.schoolname, 30), keywords)" data-toggle="tooltip" :title="item.englishname+'<br>'+item.schoolname"></span>
                                 </div>
                             </div>
-                        </td>
-                        <td v-text="item.chinesestate"></td>
-                        <td v-text="item.ranking"></td>
-                        <td v-text="item.commission_rate" v-if="userInfo.access.show_commission===1"></td>
-                        <td>
-                            <a href="javascript:void(0);" @click="collection(item.unq_id, 1, $event)"
-                               v-if="item.is_clt===0" class="btn btn-primary btn-sm is-round">加入收藏</a>
-                            <a href="javascript:void(0);" @click="collection(item.unq_id, 1, $event)"
-                               v-if="item.is_clt===1" class="btn btn-default btn-sm is-round">移出收藏</a>
-                        </td>
-                    </tr>
-                    <tr v-if="list.length === 0">
-                        <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center"
-                            v-html="NoData()"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <PagInAction :total="total" :current-page='current' :display="display" @pagechange="pagechange"/>
+                        </div>
+                    </td>
+                    <td v-text="item.chinesestate"></td>
+                    <td v-text="item.ranking"></td>
+                    <td v-text="item.commission_rate" v-if="userInfo.access.show_commission===1"></td>
+                    <td>
+                        <a href="javascript:void(0);" @click="collection(item.unq_id, 1, $event)"
+                           v-if="item.is_clt===0" class="btn btn-primary btn-sm is-round">加入收藏</a>
+                        <a href="javascript:void(0);" @click="collection(item.unq_id, 1, $event)"
+                           v-if="item.is_clt===1" class="btn btn-default btn-sm is-round">移出收藏</a>
+                    </td>
+                </tr>
+                <tr v-if="loading">
+                    <td :colspan="userInfo.access.show_commission===1?5:4"
+                        v-html="LoadingImg()"></td>
+                </tr>
+                <tr v-if="!loading && list.length === 0">
+                    <td :colspan="userInfo.access.show_commission===1?5:4"
+                        v-html="NoData()"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+        <PagInAction :total="total" :current-page='current' :display="display" @pagechange="pagechange"/>
     </div>
 </template>
 
@@ -180,6 +182,8 @@ export default {
   data () {
     return {
       loading: true,
+      filterShow: false,
+      filterHeight: '',
       active1: '美国',
       active2: '不限',
       active3: '不限',
@@ -220,6 +224,9 @@ export default {
       setTimeout(function () {
         self.pagechange()
       }, 500)
+      setTimeout(() => {
+        self.filterHeight = $('#screenTable').outerHeight()
+      }, 2000)
     })
   },
   methods: {
@@ -278,12 +285,8 @@ export default {
           console.log(res.msg)
         }
         setTimeout(function () {
-          $('.poshyTop').tipsy({
-            gravity: 's', // 显示方向s:上,n:下,w:右,e:左
-            html: true, // 是否html
-            opacity: 1, // 层透明度 0-1
-            title: 'title', // 读取内容元素属性,默认为title 附：original-title
-            trigger: 'hover' // 事件模式 hover mouseenter focus
+          $('[data-toggle="tooltip"]').tooltip({
+            html: true
           })
         }, 1000)
         self.loading = false
@@ -321,20 +324,6 @@ export default {
           }
         }
       })
-    },
-    // 展开收起筛选
-    retract () {
-      let $this = $('#screenTable')
-      if ($this.attr('style') === undefined) {
-        $this.height($this.outerHeight())
-      }
-      if ($this.height() > 0) {
-        $this.addClass('hiddenS')
-        $('.btn-Collapse').html('展开筛选<i class="iconfont">&#xe630;</i>')
-      } else {
-        $this.removeClass('hiddenS')
-        $('.btn-Collapse').html('收起筛选<i class="iconfont">&#xe688;</i>')
-      }
     }
   },
   components: {PagInAction}
