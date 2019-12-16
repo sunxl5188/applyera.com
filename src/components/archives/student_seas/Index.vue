@@ -334,7 +334,7 @@
 <script>
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
-import PagInAction from '@/components/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 let WebUploader = require('@@/js/webuploader/webuploader')

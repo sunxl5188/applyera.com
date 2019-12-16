@@ -253,7 +253,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import '@~/js/VeeValidateConfig'
 import store from '@/vuex/Store'
 import db from '@~/js/request'

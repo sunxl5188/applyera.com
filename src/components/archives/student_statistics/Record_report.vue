@@ -80,7 +80,7 @@ import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import echarts from 'echarts'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
-import PagInAction from '@/components/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 
 export default {
   name: 'Record_report',

@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 

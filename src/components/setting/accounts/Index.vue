@@ -289,7 +289,7 @@
 <script>
 import '@~/js/VeeValidateConfig'
 import store from '@/vuex/Store'
-import PagInAction from '@/components/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import db from '@~/js/request'
 
 export default {

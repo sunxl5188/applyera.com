@@ -196,7 +196,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import { mapState } from 'vuex'
 import store from '@/vuex/Store'
 import db from '@~/js/request'

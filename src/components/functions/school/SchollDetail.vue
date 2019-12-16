@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import SchoolHeader from '@#/functions/school/SchoolHeader'
 import SchoolDetailComponent from '@#/functions/school/SchoolDetailComponent'
 import MajorListA from '@#/functions/school/MajorListA'

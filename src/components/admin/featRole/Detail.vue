@@ -228,7 +228,7 @@
 
 <script>
 import '@~/js/VeeValidateConfig'
-import PagInAction from '@/components/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import CompanyComponent from '@/components/admin/featRole/CompanyComponent'
 import store from '@/vuex/Store'
 import db from '@~/js/request'

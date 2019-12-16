@@ -112,7 +112,7 @@ export default {
 }
 </script>
 <style lang="css">
-    @import "../../static/js/cropper/cropper.css";
+    @import "../../../static/js/cropper/cropper.css";
 </style>
 <style scoped lang="scss">
     .uploadBtn{

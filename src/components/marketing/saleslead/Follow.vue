@@ -247,7 +247,7 @@
 import 'bootstrap-select'
 import 'bootstrap-select/js/i18n/defaults-zh_CN'
 import '@~/js/VeeValidateConfig'
-import PagInAction from '@#/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import db from '@~/js/request'
 
 export default {

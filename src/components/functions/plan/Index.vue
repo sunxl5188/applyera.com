@@ -154,7 +154,7 @@
 
 <script>
 import nation from '@@/json/nation.json'
-import PagInAction from '@/components/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import db from '@~/js/request'
 import store from '@/vuex/Store'
 

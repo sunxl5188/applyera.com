@@ -199,7 +199,7 @@
 import '@~/js/VeeValidateConfig'
 import db from '@~/js/request'
 import store from '@/vuex/Store'
-import PagInAction from '@/components/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 let WebUploader = require('@@/js/webuploader/webuploader')
 
 export default {

@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import db from '@~/js/request'
 
 export default {

@@ -120,7 +120,7 @@
 <script>
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
-import PagInAction from '@#/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import db from '@~/js/request'
 
 export default {

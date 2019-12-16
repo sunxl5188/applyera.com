@@ -77,7 +77,7 @@
 
 <script>
 import WebUploader from '@@/js/webuploader/webuploader'
-import PagInAction from '@#/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import db from '@~/js/request'
 
 export default {

@@ -153,7 +153,7 @@
 
 <script>
 import '@~/js/VeeValidateConfig'
-import PagInAction from '@/components/PagInAction'
+import PagInAction from '@#/shared/PagInAction'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 

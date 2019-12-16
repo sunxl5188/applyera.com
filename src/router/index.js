@@ -52,19 +52,11 @@ export default new Router({
           }
         },
         {
-          path: 'home/imagecropper',
-          name: 'imagecropper',
-          component: resolve => require(['@#/ImageCropper'], resolve),
-          meta: {
-            title: '我的企业', requiresAuth: true, group: ['home', 4, '']
-          }
-        },
-        {
           path: 'home/workProcess',
           name: 'workProcess',
           component: resolve => require(['@#/WorkProcess'], resolve),
           meta: {
-            title: '工作流', requiresAuth: true, group: ['home', 5, '']
+            title: '工作流', requiresAuth: true, group: ['home', 4, '']
           }
         }
       ]
