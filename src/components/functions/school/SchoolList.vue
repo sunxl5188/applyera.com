@@ -7,7 +7,7 @@
                 <li :class="{active:tabActive===3}"><a href="#tabs3" data-toggle="tab">我的收藏</a></li>
             </ul>
             <div class="tab-content mt-15">
-                <keep-alive>
+                <keep-alive include="SchoolListComponent,MajorComponent">
                     <component :is="currentComponent"></component>
                 </keep-alive>
                 <div class="tab-pane fade in active" id="tabs1"></div>

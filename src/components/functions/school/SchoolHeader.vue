@@ -27,7 +27,7 @@
                 </div>
                 <div class="clearfix text-center">
                     <div class="row" v-if="userInfo.access.show_commission===1">
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                             <div class="lh36 cded font20">{{schoolInfo.ranking['content']}}</div>
                             <div class="lh20">{{schoolInfo.ranking.name}}</div>
                         </div>
@@ -35,7 +35,7 @@
                             <div class="lh36 cded font20">{{schoolInfo.qs_ranking["val"]}}</div>
                             <div class="lh20">{{schoolInfo.qs_ranking["name"]}}</div>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                             <div class="lh36 cded font20">
                                 {{schoolInfo.commission==="-"?"暂无":schoolInfo.commission}}
                             </div>
@@ -43,11 +43,11 @@
                         </div>
                     </div>
                     <div class="row" v-if="userInfo.access.show_commission!==1">
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                             <div class="lh36 cded font20">{{schoolInfo.ranking['content']}}</div>
                             <div class="lh20">{{schoolInfo.ranking.name}}</div>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                             <div class="lh36 cded font20">{{schoolInfo.qs_ranking["val"]}}</div>
                             <div class="lh20">{{schoolInfo.qs_ranking["name"]}}</div>
                         </div>

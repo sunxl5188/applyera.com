@@ -251,24 +251,24 @@
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                         <div class="checkbox pull-left">
                             <label>
-                                <input type="checkbox" name="language[type1][]" value="1"
-                                       v-model="item.type1"> 母语
+                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="母语"
+                                       v-model="item.type"> 母语
                             </label>
                             <label>
-                                <input type="checkbox" name="language[type2][]" value="1"
-                                       v-model="item.type2"> 精通口语
+                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="精通口语"
+                                       v-model="item.type"> 精通口语
                             </label>
                             <label>
-                                <input type="checkbox" name="language[type3][]" value="1"
-                                       v-model="item.type3"> 精通写作
+                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="精通写作"
+                                       v-model="item.type"> 精通写作
                             </label>
                             <label>
-                                <input type="checkbox" name="language[type4][]" value="1"
-                                       v-model="item.type4"> 精通阅读
+                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="精通阅读"
+                                       v-model="item.type"> 精通阅读
                             </label>
                             <label>
-                                <input type="checkbox" name="language[type5][]" value="1"
-                                       v-model="item.type5"> 家庭用语
+                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="家庭用语"
+                                       v-model="item.type"> 家庭用语
                             </label>
                         </div>
                         <div class="pull-right">
@@ -926,7 +926,7 @@ export default {
         phone: '',
         nationality: '',
         passport_id: '',
-        language: [{name: ''}],
+        language: [{name: '', type: []}],
         foreign_live_country: '',
         foreign_live_time: '',
         foreign_identity_country: '',
@@ -934,21 +934,19 @@ export default {
         dual_nationality_country: '',
         visa_country: '',
         visa_type: '',
-        work_experience: [
-          {
-            jobs: '',
-            type: '',
-            nature: '',
-            status: 'employed',
-            name: '',
-            time: '',
-            prov: '',
-            city: '',
-            hours: '',
-            weeks: '',
-            describe: ''
-          }
-        ]
+        work_experience: [{
+          jobs: '',
+          type: '',
+          nature: '',
+          status: 'employed',
+          name: '',
+          time: '',
+          prov: '',
+          city: '',
+          hours: '',
+          weeks: '',
+          describe: ''
+        }]
       }
     }
   },
