@@ -541,6 +541,12 @@ textarea{
 				}
 				&:nth-of-type(odd){background-color:#f9f9f9;}
 			}
+			&+tbody{
+				border:none;
+				& > tr{
+					&:nth-of-type(odd){background:#fff;}
+				}
+			}
 		}
 	}
 }

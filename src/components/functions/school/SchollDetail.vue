@@ -2,35 +2,37 @@
   <div>
     <div v-if="loading" v-html="LoadingImg()"></div>
     <div v-if="!loading">
-      <SchoolHeader :schoolInfo="headerInfo"/>
-      <ul class="nav nav-tabs" id="schoolDetail"><!--nav-justified-->
-        <li :class="{'active':tab===1}">
-          <a href="#tabs4" data-toggle="tab" data-id="SchoolDetailComponent">学校简介</a>
-        </li>
-        <li :class="{'active':tab===2}">
-          <a href="#tabs5" data-toggle="tab" data-id="MajorListA">本科专业</a>
-        </li>
-        <li :class="{'active':tab===3}">
-          <a href="#tabs6" data-toggle="tab" data-id="MajorListB">硕士专业</a>
-        </li>
-        <li :class="{'active':tab===4}">
-          <a href="#tabs8" data-toggle="tab" data-id="Foundation">预科语言</a>
-        </li>
-        <li :class="{'active':tab===5}">
-          <a href="#tabs7" data-toggle="tab" data-id="CaseList">过往案例</a>
-        </li>
-      </ul>
-      <div class="blk15"></div>
-      <div class="tab-content">
-        <keep-alive>
-          <component :is="component" :id="id"></component>
-        </keep-alive>
-        <div class="tab-pane fade in active" id="tabs4"></div>
-        <div class="tab-pane fade" id="tabs5"></div>
-        <div class="tab-pane fade" id="tabs6"></div>
-        <div class="tab-pane fade" id="tabs7"></div>
-        <div class="tab-pane fade" id="tabs8"></div>
-      </div>
+      <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+        <SchoolHeader :schoolInfo="headerInfo"/>
+      </transition>
+        <ul class="nav nav-tabs" id="schoolDetail"><!--nav-justified-->
+          <li :class="{'active':tab===1}">
+            <a href="#tabs4" data-toggle="tab" data-id="SchoolDetailComponent">学校简介</a>
+          </li>
+          <li :class="{'active':tab===2}">
+            <a href="#tabs5" data-toggle="tab" data-id="MajorListA">本科专业</a>
+          </li>
+          <li :class="{'active':tab===3}">
+            <a href="#tabs6" data-toggle="tab" data-id="MajorListB">硕士专业</a>
+          </li>
+          <li :class="{'active':tab===4}">
+            <a href="#tabs8" data-toggle="tab" data-id="Foundation">预科语言</a>
+          </li>
+          <li :class="{'active':tab===5}">
+            <a href="#tabs7" data-toggle="tab" data-id="CaseList">过往案例</a>
+          </li>
+        </ul>
+        <div class="blk15"></div>
+        <div class="tab-content">
+          <keep-alive>
+            <component :is="component" :id="id" :detailInfo="detailInfo"></component>
+          </keep-alive>
+          <div class="tab-pane fade in active" id="tabs4"></div>
+          <div class="tab-pane fade" id="tabs5"></div>
+          <div class="tab-pane fade" id="tabs6"></div>
+          <div class="tab-pane fade" id="tabs7"></div>
+          <div class="tab-pane fade" id="tabs8"></div>
+        </div>
     </div>
   </div>
 </template>
@@ -76,6 +78,7 @@ export default {
         'commission': '',
         'type': ''
       },
+      detailInfo: {},
       component: SchoolDetailComponent
     }
   },
@@ -111,7 +114,6 @@ export default {
       $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
         self.tab = $(e.target).parent().index() + 1
         self.component = e.target.getAttribute('data-id')
-        // self.$router.push({path: '/functions/schoollist/SchollDetail', query: {id: self.id, tab: self.tab}})
       })
     })
   },
@@ -127,6 +129,13 @@ export default {
       db.postRequest('Institution/Tools/schoolDetailNew', params).then(res => {
         if (res.status === 1) {
           self.headerInfo = res.data.headerInfo
+          self.detailInfo = {
+            baseInfo: res.data.baseInfo,
+            cityInfo: res.data.cityInfo,
+            intro: res.data.intro,
+            adms_office: res.data.adms_office,
+            rcmd_schools: res.data.rcmd_schools
+          }
         } else {
           console.log(res.msg)
         }

@@ -2,8 +2,8 @@
     <div>
         <div class="po_re schoolSearch">
             <input type="text" name="keywords" class="form-control" v-model="keywords" placeholder="请输入关键字查询"
-                   autocomplete="off" @keyup.enter="pagechange(1,3)">
-            <i class="iconfont handPower clearSearch" @click="keywords='';pagechange(1)"
+                   autocomplete="off">
+            <i class="iconfont handPower clearSearch" @click="keywords=''"
                v-if="keywords!==''">&#xe7f6;</i>
             <button type="button" class="btn btn-primary btn-search" @click="pagechange(1,3)"></button>
             <button type="button" class="btn btn-default btn-Collapse" @click="filterShow=!filterShow"
@@ -19,7 +19,7 @@
                     <td>
                         <a href="javascript:void(0);" v-for="(item,index) in country" :key="index" v-text="item"
                            class="mr-15" :class="{active:active1===item}"
-                           @click="active1=item;other={sat: '-', act: '-', ielts: '-', toefl: '-', alevel: '-', ib: '-', gre: '-', gmat: '-'};pagechange(1)"></a>
+                           @click="active1=item;pagechange(1)"></a>
                     </td>
                 </tr>
                 <tr>
@@ -137,49 +137,54 @@
                     <th class="w15">收藏</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr v-for="(item, index) in list" :key="index">
-                    <td>
-                        <div class="media">
-                            <div class="media-left">
-                                <router-link
-                                        :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}">
-                                    <img class="media-object" :src="'//'+item.schoolbadge" alt="" width="40"
-                                         height="40">
-                                </router-link>
-                            </div>
-                            <div class="media-body" style="margin-bottom: 0;">
-                                <div class="lh20">
+                <transition-group
+                        enter-active-class="animated zoomIn"
+                        leave-active-class="animated zoomOut"
+                        tag="tbody">
+                    <tr v-for="(item, ii) in list" :key="'list'+ii">
+                        <td>
+                            <div class="media">
+                                <div class="media-left">
                                     <router-link
-                                            :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}"
-                                            class="cded">
+                                            :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}">
+                                        <img class="media-object" :src="'//'+item.schoolbadge" alt="" width="40"
+                                             height="40">
+                                    </router-link>
+                                </div>
+                                <div class="media-body" style="margin-bottom: 0;">
+                                    <div class="lh20">
+                                        <router-link
+                                                :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}"
+                                                class="cded">
                                         <span v-html="highlight(cutString(item.englishname, 30), keywords)"
                                               data-toggle="tooltip"
                                               :title="item.englishname+'<br>'+item.schoolname"></span>
-                                    </router-link>
-                                </div>
-                                <div class="lh20 c999">
+                                        </router-link>
+                                    </div>
+                                    <div class="lh20 c999">
                                     <span v-html="highlight(cutString(item.schoolname, 30), keywords)"
                                           data-toggle="tooltip" :title="item.englishname+'<br>'+item.schoolname"></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                    <td v-text="item.chinesestate"></td>
-                    <td v-text="item.ranking"></td>
-                    <td v-text="item.commission_rate" v-if="userInfo.access.show_commission===1"></td>
-                    <td>
-                        <a href="javascript:void(0);" @click="collection(item.unq_id, 1, $event)"
-                           v-if="item.is_clt===0" class="btn btn-primary btn-sm is-round">加入收藏</a>
-                        <a href="javascript:void(0);" @click="collection(item.unq_id, 1, $event)"
-                           v-if="item.is_clt===1" class="btn btn-default btn-sm is-round">移出收藏</a>
-                    </td>
-                </tr>
-                <tr v-if="loading">
+                        </td>
+                        <td v-text="item.chinesestate"></td>
+                        <td v-text="item.ranking"></td>
+                        <td v-text="item.commission_rate" v-if="userInfo.access.show_commission===1"></td>
+                        <td>
+                            <a href="javascript:void(0);" @click="collection(item.unq_id, 1, $event)"
+                               v-if="item.is_clt===0" class="btn btn-primary btn-sm is-round">加入收藏</a>
+                            <a href="javascript:void(0);" @click="collection(item.unq_id, 1, $event)"
+                               v-if="item.is_clt===1" class="btn btn-default btn-sm is-round">移出收藏</a>
+                        </td>
+                    </tr>
+                </transition-group>
+                <tbody>
+                <tr v-if="loading" key="listL">
                     <td :colspan="userInfo.access.show_commission===1?5:4"
                         v-html="LoadingImg()"></td>
                 </tr>
-                <tr v-if="!loading && list.length === 0">
+                <tr v-if="!loading && list.length === 0" key="listN">
                     <td :colspan="userInfo.access.show_commission===1?5:4"
                         v-html="NoData()"></td>
                 </tr>
@@ -191,8 +196,10 @@
 </template>
 
 <script>
+import langJson from '@@/json/langList'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import _ from 'lodash'
 import PagInAction from '@#/shared/PagInAction'
 import { mapState } from 'vuex'
 import store from '@/vuex/Store'
@@ -250,13 +257,17 @@ export default {
       sortRank: '',
       sortComm: '',
       list: [],
-      langA: [],
-      langB: [],
-      other: { sat: '-', act: '-', ielts: '-', toefl: '-', alevel: '-', ib: '-', gre: '-', gmat: '-' }
+      langA: langJson[0][1],
+      langB: langJson[0][2],
+      other: { sat: '-', act: '-', ielts: '-', toefl: '-', alevel: '-', ib: '-', gre: '-', gmat: '-' },
+      langJson: langJson
     }
   },
   computed: {
     ...mapState(['userInfo', 'token'])
+  },
+  created () {
+    this.debouncedPagechange = _.debounce(this.pagechange, 1000)
   },
   beforeDestroy () {
     $('div[class^=\'tip\']').remove()
@@ -328,10 +339,22 @@ export default {
       self.loading = true
       db.postRequest('Institution/Tools/choseSchool', params).then(res => {
         if (res.status === 1) {
-          self.list = res.data.list
+          // self.list = res.data.list
           self.total = res.data.total
-          self.langA = res.data.lang.u
-          self.langB = res.data.lang.m
+          let len = res.data.list.length
+          if (len > 0) {
+            let count = 0
+            let T = setInterval(function () {
+              if (len === count) {
+                clearInterval(T)
+              } else {
+                self.list.push(res.data.list[count])
+                count = count + 1
+              }
+            }, 30)
+          } else {
+            self.list = []
+          }
         } else {
           console.log(res.msg)
         }
@@ -356,7 +379,7 @@ export default {
         self.sortComm = self.sortComm === 1 ? 2 : 1
         self.sortRank = ''
       }
-      self.pagechange()
+      self.pagechange(self.current)
     },
     // 收藏
     collection (id, type, event) {
@@ -378,9 +401,47 @@ export default {
           }
         }
       })
+    },
+    // 筛选附加项
+    setLangstate () {
+      let self = this
+      let i = ''
+      switch (self.active1) {
+        case '美国':
+          i = 0
+          break
+        case '英国':
+          i = 1
+          break
+        case '澳大利亚':
+          i = 2
+          break
+        case '加拿大':
+          i = 3
+          break
+      }
+      if (self.degree === 1) {
+        self.langA = self.langJson[i][self.degree]
+      } else {
+        self.langB = self.langJson[i][self.degree]
+      }
     }
   },
-  components: { PagInAction }
+  components: { PagInAction },
+  watch: {
+    // 监听搜索
+    keywords (v, o) {
+      this.debouncedPagechange()
+    },
+    active1 () {
+      this.setLangstate()
+      this.other = {sat: '-', act: '-', ielts: '-', toefl: '-', alevel: '-', ib: '-', gre: '-', gmat: '-'}
+    },
+    degree () {
+      this.setLangstate()
+      this.other = {sat: '-', act: '-', ielts: '-', toefl: '-', alevel: '-', ib: '-', gre: '-', gmat: '-'}
+    }
+  }
 }
 </script>
 
@@ -398,13 +459,16 @@ export default {
                 &:first-of-type {border-top:none;}
 
                 &:last-of-type {border-top:none;border-bottom:1px dashed #dedede;}
+
                 & .table {
                     margin:0;
+
                     & > tr {
                         border-bottom:none;
 
                         & > td {
                             padding:8px;
+
                             &:first-of-type {border-top:none;}
 
                             &:last-of-type {border-top:none;border-bottom:1px dashed #dedede;}
@@ -428,7 +492,8 @@ export default {
             & button { height:26px;padding:0 10px;font-size:12px;}
         }
     }
-    & .width100{width:100px;}
+
+    & .width100 {width:100px;}
 }
 </style>
 <style lang="scss">

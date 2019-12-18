@@ -1,7 +1,6 @@
 <template>
     <div class="schoolHeader">
-        <div v-if="loading" v-html="LoadingImg()"></div>
-        <div class="row" v-if="!loading">
+        <div class="row">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <div class="media">
                     <span class="media-left media-middle" style="padding-right:20px;">
@@ -84,12 +83,7 @@ export default {
       return store.state.userInfo
     }
   },
-  mounted () {
-    let self = this
-    setTimeout(function () {
-      self.loading = false
-    }, 500)
-  },
+  mounted () { },
   methods: {
     // 加入取消收藏
     collection (unqId, type, event) {
