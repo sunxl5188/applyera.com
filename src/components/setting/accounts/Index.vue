@@ -83,10 +83,10 @@
                             </td>
                         </tr>
                         <tr v-if="loading">
-                            <td colspan="7" v-html="LoadingImg()"></td>
+                            <td colspan="7" v-html="LoadingImg"></td>
                         </tr>
                         <tr v-if="list.length===0 && !loading">
-                            <td colspan="7" v-html="NoData()"></td>
+                            <td colspan="7" v-html="NoData"></td>
                         </tr>
                         </tbody>
                     </table>

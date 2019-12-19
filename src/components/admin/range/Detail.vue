@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <form action="" id="addFanweiForm" method="POST" class="form-horizontal"
                   @submit.prevent="validateBeforeSubmit">

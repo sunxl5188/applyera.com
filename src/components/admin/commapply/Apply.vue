@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <ul class="nav nav-tabs"><!--nav-justified-->
                 <li role="presentation" class="active"><a href="#Apply1" data-toggle="tab">机构申请页</a></li>

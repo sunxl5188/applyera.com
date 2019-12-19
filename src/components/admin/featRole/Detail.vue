@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <form action="" id="gongneng" method="POST" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
                 <input type="hidden" name="id" id="id" v-model="id" v-if="id!==undefined"/>

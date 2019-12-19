@@ -182,11 +182,11 @@
                 <tbody>
                 <tr v-if="loading" key="listL">
                     <td :colspan="userInfo.access.show_commission===1?5:4"
-                        v-html="LoadingImg()"></td>
+                        v-html="LoadingImg"></td>
                 </tr>
                 <tr v-if="!loading && list.length === 0" key="listN">
                     <td :colspan="userInfo.access.show_commission===1?5:4"
-                        v-html="NoData()"></td>
+                        v-html="NoData"></td>
                 </tr>
                 </tbody>
             </table>

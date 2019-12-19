@@ -125,7 +125,7 @@
                                                 class="iconfont">&#xe656;</i>删除</a>
                                     </span>
                                     </div>
-                                    <div class="clearfix" v-if="picList.length===0" v-html="NoData()"></div>
+                                    <div class="clearfix" v-if="picList.length===0" v-html="NoData"></div>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                         <td v-text="item.name"></td>
                                     </tr>
                                     <tr v-if="layBankList.length === 0">
-                                        <td colspan="2" v-html="NoData()"></td>
+                                        <td colspan="2" v-html="NoData"></td>
                                     </tr>
                                     </tbody>
                                 </table>

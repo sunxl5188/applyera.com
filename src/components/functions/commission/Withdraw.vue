@@ -13,7 +13,7 @@
                 </a>
             </div>
         </nav>
-        <div class="pad-30" v-if="loading" v-html="LoadingImg()"></div>
+        <div class="pad-30" v-if="loading" v-html="LoadingImg"></div>
         <div class="pad-30" v-if="!loading">
             <div style="min-width: 400px;max-width: 600px;margin:0 auto;" v-if="info.res===1">
                 <form action="" method="POST" class="form-horizontal" autocomplete="off"

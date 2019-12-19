@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <div class="po_re schoolSearch last">
                 <input type="text" name="keywordsB" class="form-control" v-model="keywords"
@@ -16,7 +16,7 @@
             </div>
             <div class="clearfix pt-10" v-if="userInfo.access.show_school_case===1">
                 <div class="clearfix">
-                    <div v-if="caseList.length === 0" v-html="NoData()"></div>
+                    <div v-if="caseList.length === 0" v-html="NoData"></div>
                     <div v-masonry transition-duration="0.3s" item-selector=".item" class="row">
                         <div v-masonry-tile class="item col-xs-4 col-sm-4 col-md-4 col-lg-4"
                              v-for="(item, i) in caseList" :key="i">

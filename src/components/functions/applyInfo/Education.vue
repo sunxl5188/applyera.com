@@ -4,7 +4,7 @@
         <div v-if="!loading">
             <comment :is="commentId" :id="id" :education="education"></comment>
         </div>
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
     </div>
 </template>
 

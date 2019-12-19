@@ -1,6 +1,6 @@
 <template>
     <div id="majorWrapB">
-        <div v-if="loading" v-html="LoadingImg()" class="pt-50"></div>
+        <div v-if="loading" v-html="LoadingImg" class="pt-50"></div>
         <div v-if="!loading">
             <!--header start-->
             <MajorDetailHeader :schoolInfo="schoolInfo"></MajorDetailHeader>

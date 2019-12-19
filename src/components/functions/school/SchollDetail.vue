@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loading" v-html="LoadingImg()"></div>
+    <div v-if="loading" v-html="LoadingImg"></div>
     <div v-if="!loading">
       <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <SchoolHeader :schoolInfo="headerInfo"/>

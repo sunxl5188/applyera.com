@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <div v-if="loading" v-html="LoadingImg()"></div>
+            <div v-if="loading" v-html="LoadingImg"></div>
             <div class="row" v-if="!loading">
                 <table class="table table-customize">
                     <thead>
@@ -53,7 +53,7 @@
                         <td>{{item.created_time}}</td>
                     </tr>
                     <tr v-if="list.length === 0">
-                        <td colspan="5" v-html="NoData()"></td>
+                        <td colspan="5" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>

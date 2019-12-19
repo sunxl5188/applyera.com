@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div class="clearfix" v-if="loading" v-html="LoadingImg()"></div>
+        <div class="clearfix" v-if="loading" v-html="LoadingImg"></div>
         <div class="clearfix" v-if="!loading">
             <form action="" id="roleForm" method="post" role="form">
                 <input type="hidden" name="permission_id" :value="id" v-if="id!==''"/>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <HeaderNav :id="id" :studentId="studentId" :educationType="educationType" :tabStatus="tabStatus"></HeaderNav>
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <form action="" method="POST" class="form-horizontal" id="addApply" @submit.prevent="validateBeforeSubmit">
                 <input type="hidden" name="id" id="id" :value="id" v-if="id!==''"/>

@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid bgWhite pt-25 pb-25" style="width:1000px;">
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
 
         <div v-if="!loading">
             <div class="clearfix pb-30">

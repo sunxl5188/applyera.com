@@ -3,7 +3,7 @@
         <div class="container-fluid" :style="name==='home'?'':'display: none;'">
 
             <div class="clearfix" v-if="loading">
-                <div class="pad-30 bgWhite" v-html="LoadingImg()"></div>
+                <div class="pad-30 bgWhite" v-html="LoadingImg"></div>
             </div>
 
             <div class="clearfix" v-if="!loading">

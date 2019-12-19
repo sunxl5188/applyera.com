@@ -152,12 +152,12 @@
                 </tbody>
                 <tbody v-if="!loading && list.length === 0">
                 <tr>
-                    <td colspan="7" v-html="NoData()"></td>
+                    <td colspan="7" v-html="NoData"></td>
                 </tr>
                 </tbody>
                 <tbody v-if="loading">
                 <tr>
-                    <td colspan="7" v-html="LoadingImg()"></td>
+                    <td colspan="7" v-html="LoadingImg"></td>
                 </tr>
                 </tbody>
             </table>

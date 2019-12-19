@@ -162,10 +162,10 @@
                 </transition-group>
                 <tbody>
                 <tr v-if="loading" key="majorA">
-                    <td :colspan="userInfo.access.show_commission?5:4" class="text-center" v-html="LoadingImg()"></td>
+                    <td :colspan="userInfo.access.show_commission?5:4" class="text-center" v-html="LoadingImg"></td>
                 </tr>
                 <tr v-if="loading===false && list.length === 0" key="majorB">
-                    <td :colspan="userInfo.access.show_commission?5:4" class="text-center" v-html="NoData()"></td>
+                    <td :colspan="userInfo.access.show_commission?5:4" class="text-center" v-html="NoData"></td>
                 </tr>
                 </tbody>
             </table>

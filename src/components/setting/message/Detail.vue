@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <div class="bdb-d">
                 <h4>{{info.title}}</h4>

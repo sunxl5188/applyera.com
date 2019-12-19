@@ -23,7 +23,7 @@
                                     <td>{{item.name}}</td>
                                 </tr>
                                 <tr v-if="CompanyList.length === 0">
-                                    <td colspan="2" v-html="NoData()"></td>
+                                    <td colspan="2" v-html="NoData"></td>
                                 </tr>
                                 </tbody>
                             </table>

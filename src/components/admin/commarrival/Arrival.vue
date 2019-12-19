@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <form action="" method="POST" class="form-horizontal" id="arrivalForm"
                   @submit.prevent="validateBeforeSubmit">
@@ -236,10 +236,10 @@
                                     <td>{{item.commission_fee_rate}}</td>
                                 </tr>
                                 <tr v-if="loading">
-                                    <td colspan="10" v-html="LoadingImg()"></td>
+                                    <td colspan="10" v-html="LoadingImg"></td>
                                 </tr>
                                 <tr v-if="!loading && studentList.length===0">
-                                    <td colspan="10" v-html="NoData()"></td>
+                                    <td colspan="10" v-html="NoData"></td>
                                 </tr>
                                 </tbody>
                             </table>

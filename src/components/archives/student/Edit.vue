@@ -1,6 +1,6 @@
 <template>
     <div class="bgGray" style="margin:-25px -15px;">
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <div class="pt-15 pb-15">
 
@@ -585,7 +585,7 @@
                                 <td width="20%">{{item.add_time}}</td>
                             </tr>
                             <tr v-if="tab3.student.length === 0">
-                                <td colspan="4" v-html="NoData()"></td>
+                                <td colspan="4" v-html="NoData"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -624,7 +624,7 @@
                                 <td>{{item.add_time}}</td>
                             </tr>
                             <tr v-if="tab3.user.length === 0">
-                                <td colspan="4" v-html="NoData()"></td>
+                                <td colspan="4" v-html="NoData"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -647,7 +647,7 @@
                                 <td>{{item.detail}}</td>
                             </tr>
                             <tr v-if="tab4.length===0">
-                                <td colspan="4" v-html="NoData()"></td>
+                                <td colspan="4" v-html="NoData"></td>
                             </tr>
                             </tbody>
                         </table>

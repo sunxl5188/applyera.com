@@ -43,7 +43,7 @@
                                     <td>{{item.create_time}}</td>
                                 </tr>
                                 <tr v-if="list.length === 0">
-                                    <td colspan="5" v-html="NoData()"></td>
+                                    <td colspan="5" v-html="NoData"></td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -60,10 +60,10 @@
               </td>
             </tr>
             <tr v-if="loading">
-              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg()"></td>
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg"></td>
             </tr>
             <tr v-if="loading===false && school.length === 0">
-              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData()"></td>
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData"></td>
             </tr>
             </tbody>
           </table>
@@ -121,10 +121,10 @@
               </td>
             </tr>
             <tr v-if="loading">
-              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg()"></td>
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg"></td>
             </tr>
             <tr v-if="loading===false && profession.length === 0">
-              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData()"></td>
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData"></td>
             </tr>
             </tbody>
           </table>
@@ -182,10 +182,10 @@
               </td>
             </tr>
             <tr v-if="loading">
-              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg()"></td>
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg"></td>
             </tr>
             <tr v-if="loading===false && major.length === 0">
-              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData()"></td>
+              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData"></td>
             </tr>
             </tbody>
           </table>

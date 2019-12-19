@@ -1,7 +1,7 @@
 <template>
     <div>
         <router-link :to="{path:'/functions/schoollist/FoundationDetail', query:{id:1}}">1111111111111111</router-link>
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <div class="po_re schoolSearch last">
                 <input type="text" name="keywords" class="form-control" v-model="keywords" placeholder="请输入关键字查询"
@@ -33,7 +33,7 @@
                     <td></td>
                 </tr>
                 <tr v-if="list.length===0">
-                    <td v-html="NoData()"></td>
+                    <td v-html="NoData"></td>
                 </tr>
                 </tbody>
             </table>

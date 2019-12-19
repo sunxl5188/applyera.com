@@ -47,7 +47,7 @@
                                     <td>{{item.price}}</td>
                                 </tr>
                                 <tr v-if="list.length === 0">
-                                    <td colspan="3" v-html="NoData()"></td>
+                                    <td colspan="3" v-html="NoData"></td>
                                 </tr>
                                 </tbody>
                             </table>

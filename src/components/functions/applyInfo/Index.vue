@@ -105,10 +105,10 @@
                         </td>
                     </tr>
                     <tr v-if="loading">
-                        <td colspan="6" class="text-center" v-html="LoadingImg()"></td>
+                        <td colspan="6" class="text-center" v-html="LoadingImg"></td>
                     </tr>
                     <tr v-if="loading===false && list.length === 0">
-                        <td colspan="6" class="text-center" v-html="NoData()"></td>
+                        <td colspan="6" class="text-center" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>

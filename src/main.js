@@ -42,7 +42,6 @@ router.beforeEach((to, from, next) => {
             return false
           } else {
             // 二级
-            console.log(arr[0], arr[1])
             if (arr[0] !== 'home' && access[arr[0]]['child'][arr[1]] === 0) {
               V.layer.alert('您无权访问该页面！', {icon: 2})
               return false
@@ -66,14 +65,8 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
 })
 
-Vue.prototype.LoadingImg = function () {
-  let html = '<div class="clearfix text-center Loading"><i></i><span>数据加载中...</span></div>'
-  return html
-}
-Vue.prototype.NoData = function () {
-  let html = '<div class="clearfix text-center"><i class="iconfont font26">&#xe6d8;</i><div>暂无数据</div></div>'
-  return html
-}
+Vue.prototype.LoadingImg = '<div class="clearfix text-center Loading"><i></i><span>数据加载中...</span></div>'
+Vue.prototype.NoData = '<div class="clearfix text-center"><i class="iconfont font26">&#xe6d8;</i><div>暂无数据</div></div>'
 
 Vue.prototype.refresh = function () {
   let V = new Vue()

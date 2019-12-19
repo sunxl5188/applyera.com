@@ -47,7 +47,7 @@
                 <td v-for="(items, k) in item" :key="k">{{items}}</td>
             </tr>
             <tr v-if="list.length===0">
-                <td colspan="6" v-html="NoData()"></td>
+                <td colspan="6" v-html="NoData"></td>
             </tr>
             </tbody>
         </table>
