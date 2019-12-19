@@ -58,13 +58,14 @@ import Tentacle from '@#/marketing/saleslead/Tentacle'
 import Follow from '@#/marketing/saleslead/Follow'
 import Settlement from '@#/marketing/saleslead/Settlement'
 import Clipboard from 'clipboard'
+import db from '@~/js/request'
 
 export default {
   name: 'Index',
   data () {
     return {
       name: 'saleslead',
-      linkUrl: 'http://www',
+      linkUrl: '',
       currentComponent: Tentacle
     }
   },
@@ -77,6 +78,15 @@ export default {
       })
       // 创建复制按钮
       self.copyBtn = new Clipboard('.copyBtn')
+      // 获取弹窗URL地址
+      let params = new URLSearchParams()
+      db.postRequest('/Institution/SourceSubmit/getUrl', params).then(res => {
+        if (res.status === 1) {
+          self.linkUrl = res.data.url
+        } else {
+          console.log(res.msg)
+        }
+      })
     })
   },
   methods: {

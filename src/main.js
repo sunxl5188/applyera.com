@@ -42,8 +42,9 @@ router.beforeEach((to, from, next) => {
             return false
           } else {
             // 二级
+            console.log(arr[0], arr[1])
             if (arr[0] !== 'home' && access[arr[0]]['child'][arr[1]] === 0) {
-              V.layer.alert('您无权访问该页面！')
+              V.layer.alert('您无权访问该页面！', {icon: 2})
               return false
             }
           }
