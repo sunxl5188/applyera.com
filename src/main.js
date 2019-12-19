@@ -63,6 +63,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
+  // 11
 })
 
 Vue.prototype.LoadingImg = '<div class="clearfix text-center Loading"><i></i><span>数据加载中...</span></div>'
