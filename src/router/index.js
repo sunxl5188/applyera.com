@@ -243,7 +243,7 @@ export default new Router({
           meta: {
             title: '文书作答',
             requiresAuth: true,
-            group: ['function', 3, '']
+            group: ['function', 6, '']
           },
           children: [
             {
@@ -253,7 +253,7 @@ export default new Router({
               meta: {
                 title: '题目作答',
                 requiresAuth: true,
-                group: ['function', 3, 0]
+                group: ['function', 6, 0]
               }
             },
             {
@@ -263,7 +263,7 @@ export default new Router({
               meta: {
                 title: '文书作答',
                 requiresAuth: true,
-                group: ['function', 3, 1]
+                group: ['function', 6, 1]
               }
             }
           ]
@@ -275,7 +275,7 @@ export default new Router({
           meta: {
             title: '发起申请',
             requiresAuth: true,
-            group: ['function', 4, '']
+            group: ['function', 3, '']
           },
           children: [
             {
@@ -327,7 +327,7 @@ export default new Router({
           meta: {
             title: '申请跟踪',
             requiresAuth: true,
-            group: ['function', 5, '']
+            group: ['function', 4, '']
           }
         },
         {
@@ -337,7 +337,7 @@ export default new Router({
           meta: {
             title: '佣金管理',
             requiresAuth: true,
-            group: ['function', 6, '']
+            group: ['function', 5, '']
           },
           children: [
             {
