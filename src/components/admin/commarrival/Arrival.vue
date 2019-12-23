@@ -244,7 +244,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <PagInAction :total="total" :display="display" @pagechange="pagechange"></PagInAction>
+                        <pagination :total="total" :display="display" @pagechange="pagechange"></pagination>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -253,7 +253,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import '@~/js/VeeValidateConfig'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -411,7 +411,7 @@ export default {
       }
     }
   },
-  components: {PagInAction}
+  components: {pagination}
 }
 </script>
 

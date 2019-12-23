@@ -161,7 +161,7 @@
                 </tr>
                 </tbody>
             </table>
-            <PagInAction :total="total" @pagechange="pagechange"></PagInAction>
+            <pagination :total="total" @pagechange="pagechange"></pagination>
         </div>
         <!--申请费-->
         <div class="modal fade bs-example-modal-lg" id="applyFee">
@@ -232,7 +232,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -360,7 +360,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   }
 }
 </script>

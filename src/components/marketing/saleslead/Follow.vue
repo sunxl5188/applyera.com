@@ -114,7 +114,7 @@
       </tr>
       </tbody>
     </table>
-    <PagInAction :total="total" :current-page="current" @pagechange="pageChange"></PagInAction>
+    <pagination :total="total" :current-page="current" @pagechange="pageChange"></pagination>
     <!--审核线索-->
     <div class="modal fade bs-example-modal-lg" id="modal-id">
       <div class="modal-dialog modal-lg">
@@ -247,7 +247,7 @@
 import 'bootstrap-select'
 import 'bootstrap-select/js/i18n/defaults-zh_CN'
 import '@~/js/VeeValidateConfig'
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
 export default {
@@ -481,7 +481,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   }
 }
 </script>

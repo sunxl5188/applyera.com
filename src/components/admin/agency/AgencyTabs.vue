@@ -183,7 +183,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <PagInAction :total="total" :current-page='current' :display='display'
+                                <pagination :total="total" :current-page='current' :display='display'
                                              @pagechange="pagechange"/>
                             </div>
                         </div>
@@ -199,7 +199,7 @@
 import '@~/js/VeeValidateConfig'
 import db from '@~/js/request'
 import store from '@/vuex/Store'
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 let WebUploader = require('@@/js/webuploader/webuploader')
 
 export default {
@@ -427,7 +427,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   }
 }
 </script>

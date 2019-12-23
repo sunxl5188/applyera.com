@@ -85,7 +85,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <PagInAction :total="total" :current-page='current' @pagechange="pagechange"
+                <pagination :total="total" :current-page='current' @pagechange="pagechange"
                              v-if="list.length > 0"/>
             </div>
 
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -182,7 +182,7 @@ export default {
       }, 100)
     }
   },
-  components: {PagInAction},
+  components: {pagination},
   watch: {
     $route (to, from) {
       let self = this

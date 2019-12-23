@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <div class="po_re schoolSearch">
                 <input type="text" name="keywords" class="form-control" v-model="keywords" placeholder="请输入关键字查询"
@@ -162,13 +162,13 @@
                     </tbody>
                 </table>
             </div>
-            <PagInAction :total="total" :current-page='current' :display="display" @pagechange="pagechange"/>
+            <pagination :total="total" :current-page='current' :display="display" @pagechange="pagechange"/>
         </div>
     </div>
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import { mapState } from 'vuex'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -337,7 +337,7 @@ export default {
       }
     }
   },
-  components: {PagInAction}
+  components: {pagination}
 }
 </script>
 

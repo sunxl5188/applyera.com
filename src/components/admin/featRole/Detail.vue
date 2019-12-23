@@ -217,7 +217,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <PagInAction :display="display" :total="total1" @pagechange="getUsers"></PagInAction>
+                            <pagination :display="display" :total="total1" @pagechange="getUsers"></pagination>
                         </div>
                     </div>
                 </div><!-- /.modal-content -->
@@ -228,7 +228,7 @@
 
 <script>
 import '@~/js/VeeValidateConfig'
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import CompanyComponent from '@/components/admin/featRole/CompanyComponent'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -393,7 +393,7 @@ export default {
       })
     }
   },
-  components: {PagInAction, CompanyComponent}
+  components: {pagination, CompanyComponent}
 }
 </script>
 

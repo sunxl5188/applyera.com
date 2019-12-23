@@ -171,14 +171,14 @@
             </table>
         </div>
 
-        <PagInAction :total="total" :current-page='current' :display="display" @pagechange="pagechange"/>
+        <pagination :total="total" :current-page='current' :display="display" @pagechange="pagechange"/>
     </div>
 </template>
 
 <script>
 import langJson from '@@/json/langList'
 import _ from 'lodash'
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import { mapState } from 'vuex'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -347,7 +347,7 @@ export default {
       }
     }
   },
-  components: { PagInAction },
+  components: { pagination },
   watch: {
     keywords () {
       this.debouncedPagechange()

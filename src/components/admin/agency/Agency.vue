@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import pagination from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 

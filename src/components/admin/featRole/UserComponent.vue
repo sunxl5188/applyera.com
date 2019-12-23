@@ -42,8 +42,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <PagInAction :total="total" :display="display" @pagechange="pagechange"
-                                 v-if="list.length > 0"></PagInAction>
+                    <pagination :total="total" :display="display" @pagechange="pagechange"
+                                 v-if="list.length > 0"></pagination>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -106,7 +106,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   }
 }
 </script>

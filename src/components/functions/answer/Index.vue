@@ -111,7 +111,7 @@
                 </tr>
                 </tbody>
             </table>
-            <PagInAction :total="total" :current-page="current" @pagechange="pageChange"/>
+            <pagination :total="total" :current-page="current" @pagechange="pageChange"/>
         </div>
         <router-view/>
     </div>
@@ -120,7 +120,7 @@
 <script>
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
 export default {
@@ -230,7 +230,7 @@ export default {
       }, 500)
     }
   },
-  components: { PagInAction },
+  components: { pagination },
   watch: {
     $route (to, from) {
       this.name = to.name

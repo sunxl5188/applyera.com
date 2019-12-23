@@ -153,7 +153,7 @@
 
 <script>
 import '@~/js/VeeValidateConfig'
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -253,7 +253,7 @@ export default {
       })
     }
   },
-  components: {PagInAction}
+  components: {pagination}
 }
 </script>
 

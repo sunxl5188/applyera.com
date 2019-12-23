@@ -1,6 +1,5 @@
 <template>
     <div>
-        <router-link :to="{path:'/functions/schoollist/FoundationDetail', query:{id:1}}">1111111111111111</router-link>
         <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <div class="po_re schoolSearch last">
@@ -26,30 +25,41 @@
                 </thead>
                 <tbody>
                 <tr v-for="(item, i) in list" :key="i">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>
+                        <div>
+                            <router-link :to="{path:'/functions/schoollist/FoundationDetail',query:{id:item.unq_id, cid: item.apply_type}}" class="cded">{{item.major_cn}}</router-link>
+                        </div>
+                        <div>{{item.major_en}}</div>
+                    </td>
+                    <td>{{item.duration}}</td>
+                    <td>{{item.lang_req}}</td>
+                    <td>{{item.commission}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm is-round" v-if="item.is_clt===0">加入收藏</button>
+                        <button type="button" class="btn btn-default btn-sm is-round" v-if="item.is_clt===1">移出收藏</button>
+                    </td>
                 </tr>
                 <tr v-if="list.length===0">
                     <td v-html="NoData"></td>
                 </tr>
                 </tbody>
             </table>
+            <pagination :total="total" :currentPage="current" @pageChange="pageChange"></pagination>
         </div>
     </div>
 </template>
 
 <script>
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
 export default {
   name: 'Foundation',
   store,
-  props: ['id'],
+  props: {
+    id: String
+  },
   data () {
     return {
       loading: true,
@@ -61,15 +71,18 @@ export default {
     }
   },
   computed: {},
-  mounted () {},
+  mounted () {
+    this.pageChange()
+  },
   methods: {
     pageChange (page) {
       let self = this
       let p = page || 1
       let params = new URLSearchParams()
       self.loading = true
+      params.append('school_unq_id', self.id)
       params.append('page', p)
-      db.postRequest('', params).then(res => {
+      db.postRequest('/Institution/Tools/prepList', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.list
           self.total = res.data.total
@@ -89,6 +102,7 @@ export default {
       } else if (self.sortComm === 2) {
         self.sortComm = 1
       }
+      self.pageChange()
     },
     addCollection (a, id, t) {
       let self = this
@@ -119,7 +133,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   }
 }
 </script>

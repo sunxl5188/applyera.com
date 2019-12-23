@@ -196,7 +196,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import { mapState } from 'vuex'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -327,7 +327,7 @@ export default {
       self.getCollection()
     }
   },
-  components: { PagInAction },
+  components: { pagination },
   watch: {}
 }
 </script>

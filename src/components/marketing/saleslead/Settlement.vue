@@ -68,7 +68,7 @@
         </tr>
         </tbody>
       </table>
-      <PagInAction :total="total" :current-page="current" @pagechange="pageChange"></PagInAction>
+      <pagination :total="total" :current-page="current" @pagechange="pageChange"></pagination>
       <div id="picker" style="position: absolute;left: -99999px;">上传凭证</div>
     </div>
     <router-view/>
@@ -77,7 +77,7 @@
 
 <script>
 import WebUploader from '@@/js/webuploader/webuploader'
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
 export default {
@@ -221,7 +221,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   },
   watch: {
     $route (to, from) {

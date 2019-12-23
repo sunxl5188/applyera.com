@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import SchoolHeader from '@#/functions/school/SchoolHeader'
 import SchoolDetailComponent from '@#/functions/school/SchoolDetailComponent'
 import MajorListA from '@#/functions/school/MajorListA'
@@ -145,7 +145,7 @@ export default {
   },
   components: {
     SchoolHeader,
-    PagInAction,
+    pagination,
     SchoolDetailComponent,
     MajorListA,
     MajorListB,

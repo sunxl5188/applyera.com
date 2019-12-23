@@ -105,14 +105,14 @@
                 </tr>
                 </tbody>
             </table>
-            <PagInAction :total="total" :current-page="current" @pagechange="pageChange" />
+            <pagination :total="total" :current-page="current" @pagechange="pageChange" />
         </div>
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
 export default {
@@ -167,7 +167,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   },
   watch: {
     $route (to, from) {

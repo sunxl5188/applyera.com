@@ -57,7 +57,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <PagInAction :total="total" :current-page="currentPage" @pagechange="pagechange"></PagInAction>
+                <pagination :total="total" :current-page="currentPage" @pagechange="pagechange"></pagination>
             </div>
         </div>
         <router-view></router-view>
@@ -66,7 +66,7 @@
 
 <script>
 import store from '@/vuex/Store'
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
 export default {
@@ -154,7 +154,7 @@ export default {
       })
     }
   },
-  components: {PagInAction},
+  components: {pagination},
   watch: {
     $route (to, from) {
       this.name = (to.name).toLocaleLowerCase()

@@ -55,7 +55,7 @@
                             <span class="pull-left pt-20 pb-20">
                                 <a href="javascript:void(0);" class="cded lh34" @click="evaluaCallback()">找不到合适的? 点击添加自定义</a></span>
                             <div class="pull-right">
-                                <PagInAction :total="total" :current-page='current' @pagechange="pagechange"/>
+                                <pagination :total="total" :current-page='current' @pagechange="pagechange"/>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import PagInAction from '@#/shared/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -131,7 +131,7 @@ export default {
       $('#AddEvaluation').modal('hide')
     }
   },
-  components: {PagInAction},
+  components: {pagination},
   watch: {}
 }
 </script>
