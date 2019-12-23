@@ -108,7 +108,7 @@
                         <th>学校名称</th>
                         <th class="w20">所在地区</th>
                         <th class="w10">
-                            <span class="div_vm">排名</span>
+                            <span class="div_vm">本国排名</span>
                             <a href="javascript:void(0);"
                                :class="sortRank===''?'icon-sort': (sortRank===1?'icon-sort up':'icon-sort down')"
                                @click="sortAction(1)"></a>
