@@ -31,7 +31,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-right"><b>院校排名</b></td>
+                    <td class="text-right"><b>本国排名</b></td>
                     <td>
                         <a href="javascript:void(0);" v-for="(item,index) in ranking" :key="index" v-text="item.title"
                            :class="active3===item.value?'mr-15 active':'mr-15'"
@@ -47,7 +47,7 @@
                 </tr>
                 <!--本科*******************-->
                 <tr v-if="active2===1">
-                    <td colspan="2" style="padding: 0;">
+                    <td colspan="2" style="padding: 0;border-bottom: none;">
                         <table class="table">
                             <tr v-for="(item,key) in langA" :key="'u'+key">
                                 <td class="text-right width100"><b>{{item.name}}</b></td>
@@ -62,7 +62,7 @@
                 </tr>
                 <!--硕士********************-->
                 <tr v-if="active2===2">
-                    <td colspan="2" style="padding: 0;">
+                    <td colspan="2" style="padding: 0;border-bottom: none;">
                         <table class="table">
                             <tr v-for="(item,key) in langB" :key="'m'+key">
                                 <td class="text-right width100"><b>{{item.name}}</b></td>
@@ -73,6 +73,27 @@
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+                <tr v-if="active2===2 && active1==='英国'">
+                    <td class="text-right"><b>GPA</b></td>
+                    <td style="border-top: 1px dashed #dedede;">
+                        <a href="javascript:void(0);" class="mr-15" :class="{active:schoolType==='不限'}" @click="schoolType='不限'
+                        pagechange(1)">不限</a>
+                        <a href="javascript:void(0);" class="mr-15" :class="{active:schoolType===1}" @click="schoolType=1
+                        pagechange(1)">985</a>
+                        <a href="javascript:void(0);" class="mr-15" :class="{active:schoolType===2}" @click="schoolType=2
+                        pagechange(1)">211</a>
+                        <a href="javascript:void(0);" class="mr-15" :class="{active:schoolType===3}" @click="schoolType=3
+                        pagechange(1)">双非</a>
+                    </td>
+                </tr>
+                <tr v-if="active2===2 && active1==='英国'">
+                    <td>&nbsp;</td>
+                    <td>
+                        <a href="javascript:void(0);" v-for="(item,index) in gpaArr" :key="index" v-text="item.title"
+                           class="mr-15" :class="{'active':gpa===item.value}"
+                           @click="gpa=item.value;pagechange(1)"></a>
                     </td>
                 </tr>
                 </tbody>
@@ -86,7 +107,7 @@
                     <th>专业名称</th>
                     <th class="w25">学校名称</th>
                     <th class="w10">
-                        <span class="div_vm">排名</span>
+                        <span class="div_vm">本国排名</span>
                         <a href="javascript:void(0);"
                            :class="sortRank===''?'icon-sort': (sortRank===1?'icon-sort up':'icon-sort down')"
                            @click="sortAction(1)"></a>
@@ -189,6 +210,7 @@ export default {
   data () {
     return {
       loading: true,
+      ActionT: '',
       filterShow: false,
       active1: '美国',
       active2: 1,
@@ -197,12 +219,22 @@ export default {
       country: ['美国', '英国', '澳大利亚', '加拿大'],
       ranking: [{ title: '不限', value: '不限' }, { title: '1-20', value: '1-20' }, { title: '21-40', value: '21-40' }, { title: '41-60', value: '41-60' }, { title: '61-80', value: '61-80' }, { title: '81-100', value: '81-100' }, { title: '101-150', value: '101-150' }, { title: '150以上', value: '150-9999' }],
       tuition: ['不限', '商科与管理', '会计金融与经济', '人文与社会科学', '自然与应用科学', '工程学', '建筑与艺术', '医学', '待定'],
+      gpaArr: [
+        { title: '不限', value: '不限' },
+        { title: '74及以下(2.5以下)', value: '1-74' },
+        { title: '75-79 (2.5-2.9)', value: '75-79' },
+        { title: '80-84 (3.0-3.4)', value: '80-84' },
+        { title: '85-89 (3.5-3.9)', value: '85-89' },
+        { title: '90及以上 (4)', value: '90-9999' }
+      ],
       total: 0,
       current: 1,
       display: 50,
       keywords: '',
       sortRank: '',
       sortComm: '',
+      schoolType: '不限',
+      gpa: '不限',
       list: [],
       langA: [],
       langB: [],
@@ -226,10 +258,11 @@ export default {
       self.langB = self.langJson[0][2]
       self.pagechange()
       setTimeout(() => {
-        $('#screenTable2').height($('#screenTable2').outerHeight(true))
+        let $this = $('#screenTable2')
+        $this.height($this.outerHeight(true))
       }, 2000)
       // 点击筛选择时触发
-      $(document).on('click', '#screenTable a', function () {
+      $(document).on('click', '#screenTable2 a', function () {
         let $this = $('#screenTable2')
         setTimeout(() => {
           $this.removeAttr('style')
@@ -242,6 +275,9 @@ export default {
     pagechange (p, custom) {
       let self = this
       let params = new URLSearchParams()
+      if (self.ActionT) {
+        clearInterval(self.ActionT)
+      }
       if (p > 1) {
         self.current = p
       }
@@ -260,6 +296,8 @@ export default {
       params.append('keywords', self.keywords)
       params.append('sortRank', self.sortRank)
       params.append('sortComm', self.sortComm)
+      params.append('gpa', self.gpa)
+      params.append('gpa_type', self.schoolType)
       for (let key in self.other) {
         params.append(key, self.other[key])
       }
@@ -271,9 +309,9 @@ export default {
           let len = res.data.list.length
           if (len > 0) {
             let count = 0
-            let T = setInterval(function () {
+            self.ActionT = setInterval(function () {
               if (len === count) {
-                clearInterval(T)
+                clearInterval(self.ActionT)
                 setTimeout(function () {
                   $('[data-toggle="tooltip"]').tooltip({ html: true })
                 }, 500)

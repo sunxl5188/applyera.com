@@ -87,6 +87,7 @@ export default {
   data () {
     return {
       loading: true,
+      ActionT: '',
       keywords: '',
       total: 0,
       current: 1,
@@ -110,6 +111,9 @@ export default {
     pageChange (p, t) {
       let self = this
       let params = new URLSearchParams()
+      if (self.ActionT) {
+        clearInterval(self.ActionT)
+      }
       if (t === 'search' && self.keywords === '') {
         self.layer.alert('请输入关键字搜索', {icon: 2})
       }
@@ -126,9 +130,9 @@ export default {
           let len = res.data.list.length
           if (len > 0) {
             let count = 0
-            let T = setInterval(function () {
+            self.ActionT = setInterval(function () {
               if (len === count) {
-                clearInterval(T)
+                clearInterval(self.ActionT)
                 setTimeout(function () {
                   $('[data-toggle="tooltip"]').tooltip({html: true})
                 }, 500)
