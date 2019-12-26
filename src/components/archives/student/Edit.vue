@@ -378,9 +378,8 @@
 
                                             <div class="form-group">
                                                 <div class="col-sm-9">
-                                                    <span id="next_contact_time" contenteditable="true"
-                                                          data-placeholder="设置跟进"></span>
-                                                    <div class="dropdown" style="display: inline-block;">
+                                                    <span id="next_contact_time" class="handPower" data-placeholder="设置跟进"></span>
+                                                    <div class="dropdown" style="display: inline-block;" data-toggle="tooltip" title="跟进重复">
                                                         <i :class="repeat!==0?'iconfont font20 cded':'iconfont font20 c999'"
                                                            style="cursor:pointer;"
                                                            data-toggle="dropdown">&#xe8bf;</i>
@@ -393,7 +392,7 @@
                                                         </ul>
                                                     </div>
 
-                                                    <div class="dropdown" style="display: inline-block;">
+                                                    <div class="dropdown" style="display: inline-block;" data-toggle="tooltip" title="跟进提醒">
                                                         <i :class="remind!==0?'iconfont font20 cded':'iconfont font20 c999'"
                                                            style="cursor:pointer;"
                                                            data-toggle="dropdown">&#xe6b4;</i>
@@ -790,61 +789,63 @@
                                                            placeholder="请输入在读年级" v-model="header_info.reading_grade">
                                                 </div>
                                             </div>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <div class="form-group">
-                                                    <label>语言成绩</label>
-                                                    <div class="row">
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                                             style="padding-right:5px;">
-                                                            <select name="lang_score_type" class="selectpicker"
-                                                                    data-width="fit"
-                                                                    style="display:inline-block;"
-                                                                    v-model="header_info.lang_score_type">
-                                                                <option value="">请选择</option>
-                                                                <option value="雅思">雅思</option>
-                                                                <option value="托福">托福</option>
-                                                                <option value="PTE">PTE</option>
-                                                                <option value="无">无</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                                             style="padding-left:5px;">
-                                                            <input type="text" name="lang_score" class="form-control"
-                                                                   placeholder="请输入" v-model="header_info.lang_score">
-                                                        </div>
-                                                    </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <div class="row">
+                                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                         <div class="form-group">
+                                                             <label>语言成绩</label>
+                                                             <select name="lang_score_type" class="selectpicker"
+                                                                     data-width="fit"
+                                                                     style="display:inline-block;"
+                                                                     v-model="header_info.lang_score_type">
+                                                                 <option value="">请选择</option>
+                                                                 <option value="雅思">雅思</option>
+                                                                 <option value="托福">托福</option>
+                                                                 <option value="PTE">PTE</option>
+                                                                 <option value="无">无</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                         <div class="form-group">
+                                                             <label>&nbsp;</label>
+                                                             <input type="text" name="lang_score" class="form-control"
+                                                                    placeholder="请输入" v-model="header_info.lang_score">
+                                                         </div>
+                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <div class="form-group">
-                                                    <label>学术成绩</label>
-                                                    <div class="row">
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                                             style="padding-right: 5px;">
-                                                            <select name="acad_score_type" class="selectpicker"
-                                                                    data-width="fit"
-                                                                    style="display:inline-block;"
-                                                                    v-model="header_info.acad_score_type">
-                                                                <option value="">请选择</option>
-                                                                <option value="GRE">GRE</option>
-                                                                <option value="GMAT">GMAT</option>
-                                                                <option value="SAT">SAT</option>
-                                                                <option value="ACT">ACT</option>
-                                                                <option value="A-Level">ALevel</option>
-                                                                <option value="O-Level">OLevel</option>
-                                                                <option value="GCSE">GCSE</option>
-                                                                <option value="BTEC">BTEC</option>
-                                                                <option value="IB">IB</option>
-                                                                <option value="高考">高考</option>
-                                                                <option value="无">无</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                                             style="padding-left:5px;">
-                                                            <input type="text" name="acad_score" class="form-control"
-                                                                   placeholder="请输入" v-model="header_info.acad_score">
-                                                        </div>
-                                                    </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <div class="row">
+                                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                         <div class="form-group">
+                                                             <label>学术成绩</label>
+                                                             <select name="acad_score_type" class="selectpicker"
+                                                                     data-width="fit"
+                                                                     style="display:inline-block;"
+                                                                     v-model="header_info.acad_score_type">
+                                                                 <option value="">请选择</option>
+                                                                 <option value="GRE">GRE</option>
+                                                                 <option value="GMAT">GMAT</option>
+                                                                 <option value="SAT">SAT</option>
+                                                                 <option value="ACT">ACT</option>
+                                                                 <option value="A-Level">ALevel</option>
+                                                                 <option value="O-Level">OLevel</option>
+                                                                 <option value="GCSE">GCSE</option>
+                                                                 <option value="BTEC">BTEC</option>
+                                                                 <option value="IB">IB</option>
+                                                                 <option value="高考">高考</option>
+                                                                 <option value="无">无</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                         <div class="form-group">
+                                                             <label>学术成绩</label>
+                                                             <input type="text" name="acad_score" class="form-control"
+                                                                    placeholder="请输入" v-model="header_info.acad_score">
+                                                         </div>
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -1243,19 +1244,6 @@ export default {
     self.getDetail()
     self.$nextTick(() => {
       setTimeout(function () {
-        self.laydate.render({
-          elem: '#times2',
-          type: 'datetime'
-        })
-        self.laydate.render({
-          elem: '#times3',
-          type: 'datetime'
-        })
-        self.laydate.render({
-          elem: '#next_contact_time',
-          type: 'datetime'
-        })
-
         $(document).on('click', '[name="fid[]"]', function () {
           if ($(this).is(':checked') === true) {
             self.fid.push($(this).val())
@@ -1364,13 +1352,18 @@ export default {
         }
         self.loading = false
         self.header_info.is_common = parseInt(self.$route.query.isCommon) || 0
-        setTimeout(function () {
+        self.$nextTick(() => {
+          $('[data-toggle="tooltip"]').tooltip()
+          self.laydate.render({
+            elem: '#next_contact_time',
+            type: 'datetime'
+          })
           if (self.id === '') {
             $('#editStudentInfo').modal('show')
           }
           $('.selectpicker').selectpicker('refresh')
           self.createUpload()
-        }, 1000)
+        })
       })
     },
     deleteData () {
@@ -1453,7 +1446,6 @@ export default {
             self.layer.close(index)
             if (res.status === 1) {
               self.header_info = res.data
-              self.id = res.data.stu_id
               let countryArr = []
               res.data.intention_country.map(item => {
                 self.nation.map(items => {
@@ -1463,13 +1455,19 @@ export default {
                 })
               })
               self.country = countryArr.join(',')
-              self.layer.alert(res.msg, {
-                icon: 1
-              }, function (i) {
+              self.layer.alert(res.msg, {icon: 1}, function (i) {
                 self.layer.close(i)
                 $('#editStudentInfo').modal('hide')
                 if (self.id === '') {
                   self.$router.push('/archives/student/edit?id=' + res.data.stu_id)
+                  self.id = res.data.stu_id
+                  self.$nextTick(() => {
+                    $('[data-toggle="tooltip"]').tooltip()
+                    self.laydate.render({
+                      elem: '#next_contact_time',
+                      type: 'datetime'
+                    })
+                  })
                 }
               })
             } else {
@@ -1922,6 +1920,10 @@ export default {
             &.Z {background-color:#00a350;}
         }
     }
+}
+
+#next_contact_time{
+    &:empty:before{content:attr(data-placeholder);transition:all 0.4s; cursor:pointer;color:rgba(0, 0, 0, 0.5);}
 }
 
 .row {

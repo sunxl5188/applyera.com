@@ -7,10 +7,6 @@
                     <i class="iconfont">&#xe64f;</i>
                     <span>返回</span>
                 </a>
-                <a href="javascript:void(0);" @click="refresh" class="c666 ml-10">
-                    <i class="iconfont">&#xe64e;</i>
-                    <span>刷新</span>
-                </a>
             </div>
         </nav>
         <div class="pad-30" v-if="loading" v-html="LoadingImg"></div>

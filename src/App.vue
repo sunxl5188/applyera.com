@@ -23,18 +23,18 @@
                     <ul class="nav navbar-nav">
                         <li>
                             <router-link to="/home/workProcess" class="iconLink">
-                                <i class="iconfont">&#xe64c;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="工作流" data-placement="bottom">&#xe64c;</i>
                             </router-link>
                         </li>
                         <li>
                             <router-link to="/home/taskdate" class="iconLink">
-                                <i class="iconfont">&#xe63b;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="日历" data-placement="bottom">&#xe63b;</i>
                             </router-link>
                         </li>
                         <li>
                             <router-link to="/setting/message" class="iconLink">
                                 <i class="number" v-if="msgNum>0">{{msgNum}}</i>
-                                <i class="iconfont">&#xe67d;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="消息" data-placement="bottom">&#xe67d;</i>
                             </router-link>
                         </li>
                         <li class="dropdown" id="userBtnList">
@@ -127,7 +127,7 @@
                         </div>
                     </li>
                     <li class="list-group-item" v-if="userInfo.access.marketing.show===1">
-                        <a href="javascript:void(0);"><i class="iconfont">&#xe600;</i><span>营销</span></a>
+                        <a href="javascript:void(0);"><i class="iconfont">&#xe6e4;</i><span>营销</span></a>
                         <div class="list-group">
                             <router-link to="/marketing/saleslead" class="list-group-item"
                                          v-if="userInfo.access.marketing.child[0]===1">销售线索
@@ -154,9 +154,6 @@
                             </router-link>
                             <router-link to="/setting/follow" class="list-group-item"
                                          v-if="userInfo.access.setting.child[5]===1">跟进状态
-                            </router-link>
-                            <router-link to="/setting/message" class="list-group-item"
-                                         v-if="userInfo.access.setting.child[6]===1">公告通知
                             </router-link>
                             <router-link to="/setting/contact" class="list-group-item"
                                          v-if="userInfo.access.setting.child[7]===1">联系人
@@ -287,6 +284,10 @@ export default {
     }, 500)
 
     setTimeout(function () {
+      $('[data-toggle="tooltip"]').tooltip({
+        template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="white-space: nowrap;"></div></div>'
+      })
+
       $('.list-group-item.active div.list-group').height($('.list-group-item.active div.list-group a').length * 40)
 
       $(document).on('click', '.fullLeft>ul>li>a', function () {
@@ -403,7 +404,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss">
 #userBtnList {
     position:relative;

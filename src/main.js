@@ -69,17 +69,6 @@ router.afterEach((to, from) => {
 Vue.prototype.LoadingImg = '<div class="clearfix text-center Loading"><i></i><span>数据加载中...</span></div>'
 Vue.prototype.NoData = '<div class="clearfix text-center"><i class="iconfont font26">&#xe6d8;</i><div>暂无数据</div></div>'
 
-Vue.prototype.refresh = function () {
-  let V = new Vue()
-  V.layer.msg('正在刷新页面...', {
-    shade: 0.8,
-    time: 1500
-  }, function (e) {
-    V.layer.close(e)
-    window.location.reload()
-  })
-}
-
 Vue.prototype.currentTime = function (type) {
   let date = new Date()
   let Y = date.getFullYear()

@@ -127,7 +127,8 @@
                         <th>
                             创建时间
                             <a href="javascript:void(0);"
-                               :class="time_sort===0?'iconfont sort':(time_sort===1?'iconfont sort up':'iconfont sort down')"
+                               class="iconfont sort"
+                               :class="time_sort===0?'':(time_sort===1?'down':'up')"
                                @click="listSort"></a>
                         </th>
                         <th class="w10">状态</th>
@@ -255,7 +256,7 @@
                                 <div class="col-sm-6">
                                     <select name="adviser_id" class="form-control" v-validate="'required'"
                                             data-vv-as="新负责人">
-                                        <option value="">请选择用户</option>
+                                        <option value="">请选择负责人</option>
                                         <option :value="item.id" v-for="(item,i) in service_adviser_list" :key="i">{{item.name}}
                                         </option>
                                     </select>
@@ -535,7 +536,7 @@ export default {
     },
     validateBeforeSubmitConsultant (scope) {
       let self = this
-      let advName = $('[name="adviser_id"]').find('option:selected').text().replace('请选择用户', '')
+      let advName = $('[name="adviser_id"]').find('option:selected').text().replace('请选择负责人', '')
       self.$validator.validateAll(scope).then((result) => {
         if (result) {
           if (self.idArr.length === 0) {
@@ -550,7 +551,7 @@ export default {
           self.idArr.map(item => {
             params.append('student_id[]', item)
           })
-          self.layer.confirm("是否确定把所选的学生转移至 <b class='cf00'>" + advName + '</b>（选择的用户）？转移成功后，原负责人不能再维护跟进和更新此学生数据。', {
+          self.layer.confirm("是否确定把所选的学生转移至 <b class='cf00'>" + advName + '</b>转移成功后，原负责人不能再维护跟进和更新此学生数据。', {
             icon: 3
           }, function (ii) {
             self.layer.close(ii)
@@ -585,21 +586,26 @@ export default {
         self.layer.alert('请选择需要操作的学生', {icon: 2})
         return false
       } else {
-        self.idArr.map(item => {
-          params.append('student_id[]', item)
+        self.layer.confirm('学生将移至学生公海，届时学生将对所有机构顾问可见。您确认将学生转移至公海吗？', {
+          icon: 3
+        }, function (i) {
+          self.layer.close(i)
+          self.idArr.map(item => {
+            params.append('student_id[]', item)
+          })
+          db.postRequest('/Institution/Student/backStudent', params).then(res => {
+            if (res.status === 1) {
+              self.layer.alert(res.msg, {icon: 1}, function (i) {
+                self.layer.close(i)
+                self.pagechange(self.current)
+                self.idArr = []
+              })
+            } else {
+              self.layer.alert(res.msg, {icon: 2})
+            }
+          })
         })
       }
-      db.postRequest('/Institution/Student/backStudent', params).then(res => {
-        if (res.status === 1) {
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
-            self.layer.close(i)
-            self.pagechange(self.current)
-            self.idArr = []
-          })
-        } else {
-          self.layer.alert(res.msg, {icon: 2})
-        }
-      })
     }
   },
   components: {pagination},

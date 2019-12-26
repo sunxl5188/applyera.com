@@ -59,10 +59,6 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="form-group ml-10">
-                            <button type="button" class="btn btn-default refresh" @click="refresh()"></button>
-                        </div>
-
                     </div>
                 </div>
             </div>

@@ -24,23 +24,19 @@
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
-                <div class="pt-10 pb-15">
-                    <button type="button" class="btn btn-primary btn-sm is-round" v-if="schoolInfo.is_collect===0"
-                            @click="collection(schoolInfo.major_unq_id, schoolInfo.type, 1)">加入收藏
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm is-round" v-if="schoolInfo.is_collect===1"
-                            @click="collection(schoolInfo.major_unq_id, schoolInfo.type, 2)">移出收藏
-                    </button>
-                </div>
-                <div>
-                    <router-link :to="{path:'/functions/schoollist/SchollDetail',query:{id:schoolInfo.school_unq_id,tab:1}}"
-                                 class="btn btn-default btn-sm is-round">学校详情
-                    </router-link>
+                <div class="clearfix text-right pb-15">
+                    <a href="javascript:void(0);" v-if="schoolInfo.is_collect===0"
+                       @click="collection(schoolInfo.major_unq_id, schoolInfo.type, 1)"><i class="iconfont">&#xe642;</i> <span class="div_vm">加入收藏</span>
+                    </a>
+                    <a href="javascript:void(0);" v-if="schoolInfo.is_collect===1"
+                       @click="collection(schoolInfo.major_unq_id, schoolInfo.type, 2)"><i class="iconfont cf90">&#xe69a;</i> <span class="div_vm">移出收藏</span>
+                    </a>
+                    <a href="javascript:void(0);" class="ml-15" @click="$router.back()"><i class="iconfont">&#xe64f;</i> <span class="div_vm">返回</span></a>
                 </div>
             </div>
         </div>
-        <div class="row pt-20">
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" v-for="(item, i) in schoolInfo.bottom" :key="i">
+        <div class="clearfix pt-20">
+            <div class="pull-left w10" v-for="(item, i) in schoolInfo.bottom" :key="i">
                 <div class="lh22 cded font18">{{item.val}}</div>
                 <div class="lh22">{{item.name}}</div>
             </div>

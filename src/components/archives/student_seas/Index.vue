@@ -231,34 +231,6 @@
             </div>
         </div>
 
-        <!--删除列表信息-->
-        <div class="modal fade" id="delete-id">
-            <div class="modal-dialog ">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">提示</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
-                                <i class="iconfont font60 cf90">&#xe669;</i>
-                            </div>
-                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 lh24">
-                                <p>学生删除会同时自动清除此学生关联的<span class="cded">联系人</span>状语从句：<span class="cded">申请资料</span>。该操作成功之后，将<span
-                                        class="cded">无法恢复</span>。</p>
-                                <p>如果学生已完成留学合同的支付，则无法删除该学生</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary" @click="deleteAction">确定</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!--编辑学生-->
         <div class="modal fade" id="editStudent-id">
             <div class="modal-dialog ">
@@ -450,10 +422,11 @@ export default {
         self.layer.alert('请选择需要操作的学生', {icon: 2})
         return false
       }
-
-      $('#delete-id').modal({
-        backdrop: 'static',
-        show: true
+      self.layer.confirm('学生被删除后数据将无法恢复，您确定要删除该学生吗？', {
+        icon: 3
+      }, function (i) {
+        self.layer.close(i)
+        self.deleteAction()
       })
     },
     deleteAction () {

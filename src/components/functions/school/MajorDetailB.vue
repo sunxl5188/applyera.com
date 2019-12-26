@@ -358,7 +358,7 @@ export default {
           _this.find('li').removeClass('active')
           _this.find('li').eq(2).addClass('active')
         }
-        if (WinTop > self.tabs[3]) {
+        if (WinTop > self.tabs[3] || WinTop === document.body.offsetHeight - window.innerHeight + 50) {
           _this.find('li').removeClass('active')
           _this.find('li').eq(3).addClass('active')
         }

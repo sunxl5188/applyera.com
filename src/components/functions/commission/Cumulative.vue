@@ -62,12 +62,6 @@
                             </ul>
                         </div>
                     </div>
-
-                    <div class="form-group ml-10">
-                        <button type="button" class="btn btn-default" @click="refresh"><i class="iconfont">&#xe64e;</i>
-                            刷新
-                        </button>
-                    </div>
                     <div class="form-group ml-10">
                         <button type="button" class="btn btn-default" @click="$router.back()"><i class="iconfont">&#xe64f;</i>返回
                         </button>

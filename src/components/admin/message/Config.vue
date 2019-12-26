@@ -13,11 +13,6 @@
                                 添加
                             </router-link>
                         </div>
-                        <div class="form-group ml-10">
-                            <button type="button" class="btn btn-default" @click="refresh"><i
-                                    class="iconfont">&#xe64e;</i> 刷新
-                            </button>
-                        </div>
                     </div>
 
                 </div>

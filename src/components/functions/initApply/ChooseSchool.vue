@@ -93,7 +93,7 @@
                                 <option value="">请选择</option>
                                 <option value="custom">自定义专业</option>
                                 <option :value="items.unq_id" v-for="(items, k) in item.majorList" :key="k">
-                                    {{items.major_cn}}({{items.major_en}})
+                                    {{items.major_cn}}({{items.major_en}}){{replaceStr(items.degree)}}
                                 </option>
                             </select>
                         </div>
@@ -365,6 +365,12 @@ export default {
           }
         }
       })
+    },
+    // 过滤-
+    replaceStr (str) {
+      if (str !== undefined || str !== '') {
+        return str.replace('-', '')
+      }
     }
   },
   components: {
