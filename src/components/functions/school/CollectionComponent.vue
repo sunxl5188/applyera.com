@@ -4,6 +4,7 @@
       <a href="#majortab1" data-toggle="tab" class="btn btn-default btn-primary">收藏学校</a>
       <a href="#majortab2" data-toggle="tab" class="btn btn-default">本科专业</a>
       <a href="#majortab3" data-toggle="tab" class="btn btn-default">硕士专业</a>
+      <!--<a href="#majortab4" data-toggle="tab" class="btn btn-default">预科语言</a>-->
     </div>
     <div class="blk15"></div>
     <div class="tab-content">
@@ -120,9 +121,6 @@
                    @click="clearCollection(item.unq_id, 2)">移出收藏</a>
               </td>
             </tr>
-            <tr v-if="loading">
-              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg"></td>
-            </tr>
             <tr v-if="loading===false && profession.length === 0">
               <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData"></td>
             </tr>
@@ -181,9 +179,6 @@
                    @click="clearCollection(item.unq_id, 3)">移出收藏</a>
               </td>
             </tr>
-            <tr v-if="loading">
-              <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="LoadingImg"></td>
-            </tr>
             <tr v-if="loading===false && major.length === 0">
               <td :colspan="userInfo.access.show_commission===1?5:4" class="text-center" v-html="NoData"></td>
             </tr>
@@ -191,6 +186,38 @@
           </table>
         </div>
       </div>
+      <!--<div class="tab-pane fade" id="majortab4">
+        <div class="row">
+          <table class="table table-text-over table-customize">
+            <thead>
+            <tr>
+              <th>专业名称</th>
+              <th class="w10">课程时长</th>
+              <th class="w20">语言要求</th>
+              <th class="w15">
+                <span class="div_vm">佣金比例</span>
+                <a href="javascript:void(0);"
+                   :class="sortComm2===''?'icon-sort': (sortComm2===1?'icon-sort up':'icon-sort down')"
+                   @click="sortAction(6)"></a>
+              </th>
+              <th class="w15">收藏</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr v-if="loading===false && major.length === 0">
+              <td colspan="5" v-html="NoData"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -327,8 +354,7 @@ export default {
       self.getCollection()
     }
   },
-  components: { pagination },
-  watch: {}
+  components: { pagination }
 }
 </script>
 

@@ -114,6 +114,7 @@ export default {
       $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
         self.tab = $(e.target).parent().index() + 1
         self.component = e.target.getAttribute('data-id')
+        self.$router.push({path: '/functions/schoollist/SchollDetail', query: {id: self.id, tab: self.tab}})
       })
     })
   },

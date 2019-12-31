@@ -127,10 +127,12 @@
                         </div>
                     </li>
                     <li class="list-group-item" v-if="userInfo.access.marketing.show===1">
-                        <a href="javascript:void(0);"><i class="iconfont">&#xe6e4;</i><span>营销</span></a>
+                        <a href="javascript:void(0);"><i class="iconfont">&#xe6e4;</i><span>市场</span></a>
                         <div class="list-group">
                             <router-link to="/marketing/saleslead" class="list-group-item"
-                                         v-if="userInfo.access.marketing.child[0]===1">销售线索
+                                         v-if="userInfo.access.marketing.child[0]===1">市场线索
+                            </router-link>
+                            <router-link to="/marketing/saleslead" class="list-group-item">线上支付
                             </router-link>
                         </div>
                     </li>
@@ -195,6 +197,8 @@
                             </router-link>
                             <router-link to="/admin/application" class="list-group-item">院校申请
                             </router-link>
+                            <router-link to="/admin/topic" class="list-group-item">题目更新
+                            </router-link>
                         </div>
                     </li>
                 </ul>
@@ -235,6 +239,8 @@
 </template>
 
 <script>
+import 'malihu-custom-scrollbar-plugin'
+import 'jquery-mousewheel'
 import store from '@/vuex/Store'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import db from '@~/js/request'
@@ -284,13 +290,16 @@ export default {
     }, 500)
 
     setTimeout(function () {
+      $('.fullLeft').mCustomScrollbar({
+        axis: 'y'
+      })
       $('[data-toggle="tooltip"]').tooltip({
         template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="white-space: nowrap;"></div></div>'
       })
 
       $('.list-group-item.active div.list-group').height($('.list-group-item.active div.list-group a').length * 40)
 
-      $(document).on('click', '.fullLeft>ul>li>a', function () {
+      $(document).on('click', '.fullLeft ul>li>a', function () {
         let $this = $(this).parent()
         let H = $this.find('.list-group a').length * 40
         $this.find('.list-group').height(H)

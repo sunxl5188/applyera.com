@@ -225,7 +225,7 @@
                                                 <option value="AU">澳币</option>
                                                 <option value="CA">加币</option>
                                             </select>
-                                            <input type="number" min="0" name="pay_fee[]" class="form-control div_vm" placeholder="请输入金额"
+                                            <input type="number" min="0.01" step="0.01" name="pay_fee[]" class="form-control div_vm" placeholder="请输入金额"
                                                    style="display:inline-block;width:auto;" v-model="item.pay_fee"/>
                                             <input type="hidden" name="pay_uploads[]" v-model="item.pay_uploads" />
                                             <button type="button" class="btn btn-default" @click="uploadClick('s'+i)">上传凭证</button>
@@ -613,6 +613,8 @@ export default {
       $('[type="checkbox"]').each(function () {
         $(this)[0].checked = false
       })
+      self.idArr = []
+      self.fArr = []
     }
   }
 }

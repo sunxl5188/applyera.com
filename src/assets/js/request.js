@@ -6,7 +6,7 @@ let self = new Vue()
 class Request {
   constructor () {
     this.baseUrl = window.ajaxBaseUrl || 'http://www.applyoversea.com'
-    this.timeOut = 3000
+    this.timeOut = 5000
     this.responsetype = 'json'
     this.responseEncoding = 'utf8'
     // this.headers = {"X-Requested-with":"XMLHttpRequest"}

@@ -28,8 +28,8 @@
                                         <option value="1">申请本科</option>
                                         <option value="2">申请硕士</option>
                                     </select>
-                                    <div class="validateTip" v-show="errors.has('education_type')">
-                                        {{ errors.first('education_type') }}
+                                    <div class="validateTip" v-show="errors.has('apply_type')">
+                                        {{ errors.first('apply_type') }}
                                     </div>
                                 </div>
                             </div>
@@ -50,6 +50,7 @@ import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import '@~/js/VeeValidateConfig'
 import db from '@~/js/request'
+
 export default {
   name: 'ApplyType',
   data () {
@@ -61,23 +62,23 @@ export default {
   },
   mounted () {
     let self = this
+    self.setSelect()
     self.$nextTick(() => {
       $('#applyType').height($(window).height() - 150)
-      let self = this
       let params = new URLSearchParams()
       db.postRequest('/Institution/Apply/studentList', params).then(res => {
         if (res.status === 1) {
           self.list = res.data
-          $('#modalApplyType').modal({
-            backdrop: 'static',
-            show: true
+          self.$nextTick(() => {
+            self.setSelect()
+            $('#modalApplyType').modal({
+              backdrop: 'static',
+              show: true
+            })
           })
         } else {
           console.log(res.msg)
         }
-      })
-      $('#modalApplyType').on('shown.bs.modal', function () {
-        self.setSelect()
       })
     })
   },

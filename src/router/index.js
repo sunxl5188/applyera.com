@@ -882,6 +882,16 @@ export default new Router({
               }
             }
           ]
+        },
+        {
+          path: 'topic',
+          name: 'topic',
+          component: resolve => require(['@#/admin/Topic'], resolve),
+          meta: {
+            title: '题目更新',
+            requiresAuth: true,
+            group: ['applyoversea', 11, '']
+          }
         }
       ]
     },
