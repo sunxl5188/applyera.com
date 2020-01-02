@@ -6,20 +6,20 @@
         <SchoolHeader :schoolInfo="headerInfo"/>
       </transition>
         <ul class="nav nav-tabs" id="schoolDetail"><!--nav-justified-->
-          <li :class="{'active':tab===1}">
-            <a href="#tabs4" data-toggle="tab" data-id="SchoolDetailComponent">学校简介</a>
+          <li :class="{'active':tab===1}" @click="setTabs(1)">
+            <a href="javascript:void(0);">学校简介</a>
           </li>
-          <li :class="{'active':tab===2}">
-            <a href="#tabs5" data-toggle="tab" data-id="MajorListA">本科专业</a>
+          <li :class="{'active':tab===2}" @click="setTabs(2)">
+            <a href="javascript:void(0);">本科专业</a>
           </li>
-          <li :class="{'active':tab===3}">
-            <a href="#tabs6" data-toggle="tab" data-id="MajorListB">硕士专业</a>
+          <li :class="{'active':tab===3}" @click="setTabs(3)">
+            <a href="javascript:void(0);">硕士专业</a>
           </li>
-          <li :class="{'active':tab===4}">
-            <a href="#tabs8" data-toggle="tab" data-id="Foundation">预科语言</a>
+          <li :class="{'active':tab===4}" @click="setTabs(4)">
+            <a href="javascript:void(0);">预科语言</a>
           </li>
-          <li :class="{'active':tab===5}">
-            <a href="#tabs7" data-toggle="tab" data-id="CaseList">过往案例</a>
+          <li :class="{'active':tab===5}" @click="setTabs(5)">
+            <a href="javascript:void(0);">过往案例</a>
           </li>
         </ul>
         <div class="blk15"></div>
@@ -27,11 +27,6 @@
           <keep-alive>
             <component :is="component" :id="id" :detailInfo="detailInfo"></component>
           </keep-alive>
-          <div class="tab-pane fade in active" id="tabs4"></div>
-          <div class="tab-pane fade" id="tabs5"></div>
-          <div class="tab-pane fade" id="tabs6"></div>
-          <div class="tab-pane fade" id="tabs7"></div>
-          <div class="tab-pane fade" id="tabs8"></div>
         </div>
     </div>
   </div>
@@ -111,17 +106,33 @@ export default {
       if (tab === 5) {
         self.component = CaseList
       }
-      $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
-        self.tab = $(e.target).parent().index() + 1
-        self.component = e.target.getAttribute('data-id')
-        self.$router.push({path: '/functions/schoollist/SchollDetail', query: {id: self.id, tab: self.tab}})
-      })
     })
   },
   beforeDestroy () {
     $('div[class^=\'tip\']').remove()
   },
   methods: {
+    setTabs (type) {
+      let self = this
+      self.tab = type
+      switch (type) {
+        case 1:
+          self.component = SchoolDetailComponent
+          break
+        case 2:
+          self.component = MajorListA
+          break
+        case 3:
+          self.component = MajorListB
+          break
+        case 4:
+          self.component = Foundation
+          break
+        case 5:
+          self.component = CaseList
+          break
+      }
+    },
     getSchoolInfo () {
       let self = this
       let params = new URLSearchParams()

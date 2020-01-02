@@ -132,7 +132,7 @@
                             <router-link to="/marketing/saleslead" class="list-group-item"
                                          v-if="userInfo.access.marketing.child[0]===1">市场线索
                             </router-link>
-                            <router-link to="/marketing/saleslead" class="list-group-item">线上支付
+                            <router-link to="/marketing/product" class="list-group-item">产品管理
                             </router-link>
                         </div>
                     </li>

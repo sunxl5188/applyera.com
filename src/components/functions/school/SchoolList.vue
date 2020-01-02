@@ -2,17 +2,14 @@
     <div class="container-fluid bgWhite pt-25 pb-25">
         <div id="school" :style="name==='schoollist'?'':'display:none;'">
             <ul class="nav nav-tabs"><!--nav-justified-->
-                <li :class="{active:tabActive===1}"><a href="#tabs1" data-toggle="tab">查找院校</a></li>
-                <li :class="{active:tabActive===2}"><a href="#tabs2" data-toggle="tab">查找专业</a></li>
-                <li :class="{active:tabActive===3}"><a href="#tabs3" data-toggle="tab">我的收藏</a></li>
+                <li :class="{active:tabActive===1}" @click="setTabs(1)"><a href="javascript:void(0);">查找院校</a></li>
+                <li :class="{active:tabActive===2}" @click="setTabs(2)"><a href="javascript:void(0);">查找专业</a></li>
+                <li :class="{active:tabActive===3}" @click="setTabs(3)"><a href="javascript:void(0);">我的收藏</a></li>
             </ul>
             <div class="tab-content mt-15">
                 <keep-alive include="SchoolListComponent,MajorComponent">
                     <component :is="currentComponent"></component>
                 </keep-alive>
-                <div class="tab-pane fade in active" id="tabs1"></div>
-                <div class="tab-pane fade in active" id="tabs2"></div>
-                <div class="tab-pane fade in active" id="tabs3"></div>
             </div>
         </div>
         <router-view></router-view>
@@ -50,23 +47,25 @@ export default {
       if (self.name === 'schoollist') {
         self.currentComponent = SchoolListComponent
       }
-      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        if (e.target.getAttribute('href') === '#tabs1') {
-          self.currentComponent = SchoolListComponent
-          self.tabActive = 1
-        }
-        if (e.target.getAttribute('href') === '#tabs2') {
-          self.currentComponent = MajorComponent
-          self.tabActive = 2
-        }
-        if (e.target.getAttribute('href') === '#tabs3') {
-          self.currentComponent = CollectionComponent
-          self.tabActive = 3
-        }
-      })
     })
   },
-  methods: {},
+  methods: {
+    setTabs (type) {
+      let self = this
+      self.tabActive = type
+      switch (type) {
+        case 1:
+          self.currentComponent = SchoolListComponent
+          break
+        case 2:
+          self.currentComponent = MajorComponent
+          break
+        case 3:
+          self.currentComponent = CollectionComponent
+          break
+      }
+    }
+  },
   components: {
     SchoolListComponent,
     MajorComponent,

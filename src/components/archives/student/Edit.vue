@@ -1359,7 +1359,10 @@ export default {
             type: 'datetime'
           })
           if (self.id === '') {
-            $('#editStudentInfo').modal('show')
+            $('#editStudentInfo').modal({
+              backdrop: 'static',
+              show: true
+            })
           }
           $('.selectpicker').selectpicker('refresh')
           self.createUpload()

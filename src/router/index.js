@@ -602,7 +602,7 @@ export default new Router({
       component: resolve => require(['@#/marketing/Index'], resolve),
       meta: {
         requiresAuth: true,
-        title: '营销',
+        title: '市场',
         group: ['marketing', '', '']
       },
       children: [
@@ -618,6 +618,24 @@ export default new Router({
               path: 'TentacleDetail',
               name: 'TentacleDetail',
               component: resolve => require(['@#/marketing/saleslead/TentacleDetail'], resolve),
+              meta: {
+                title: '销售线索详情', requiresAuth: true, group: ['marketing', 0, 0]
+              }
+            }
+          ]
+        },
+        {
+          path: 'product',
+          name: 'product',
+          component: resolve => require(['@#/marketing/Product'], resolve),
+          meta: {
+            title: '产品管理', requiresAuth: true, group: ['marketing', 1, '']
+          },
+          children: [
+            {
+              path: 'detail',
+              name: 'ProductDetail',
+              component: resolve => require(['@#/marketing/ProductDetail'], resolve),
               meta: {
                 title: '销售线索详情', requiresAuth: true, group: ['marketing', 0, 0]
               }

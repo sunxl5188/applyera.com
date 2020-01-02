@@ -728,7 +728,7 @@ span[contenteditable], div[contenteditable]{
 }
 
 .headerTitle{
-	position:relative;padding-left:15px;font-size:16px;line-height:34px;
+	position:relative;padding-left:15px;font-size:16px;line-height:34px;display:inline-block;
 
 	&:before{
 		content:'';width:4px;height:20px;display:block;overflow:hidden;position:absolute;left:0;top:50%;margin-top:-10px;background-color:#39f;

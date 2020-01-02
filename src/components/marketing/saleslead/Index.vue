@@ -4,7 +4,7 @@
             <div class="clearfix pb-15">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="headerTitle">销售线索</div>
+                        <div class="headerTitle">市场线索</div>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                         <a href="#" class="c999" data-toggle="modal" data-backdrop="static" data-target="#modalSalesLeads">
@@ -39,9 +39,9 @@
                 </div>
             </div>
             <ul class="nav nav-tabs"><!--nav-justified-->
-                <li class="active" @click="currentComponent='Tentacle'"><a href="#tabs1" data-toggle="tab">销售触手</a></li>
-                <li @click="currentComponent='Follow'"><a href="#tabs2" data-toggle="tab">线索跟进</a></li>
-                <li @click="currentComponent='Settlement'"><a href="#tabs3" data-toggle="tab">线索结算</a></li>
+                <li :class="{active:tab===1}" @click="setTabs(1)"><a href="javascript:void(0);">市场人员</a></li>
+                <li :class="{active:tab===2}" @click="setTabs(2)"><a href="javascript:void(0);">线索跟进</a></li>
+                <li :class="{active:tab===3}" @click="setTabs(3)"><a href="javascript:void(0);">线索结算</a></li>
             </ul>
             <div class="blk20"></div>
         </div>
@@ -66,6 +66,7 @@ export default {
     return {
       name: 'saleslead',
       linkUrl: '',
+      tab: 1,
       currentComponent: Tentacle
     }
   },
@@ -90,6 +91,21 @@ export default {
     })
   },
   methods: {
+    setTabs (type) {
+      let self = this
+      switch (type) {
+        case 1:
+          self.currentComponent = Tentacle
+          break
+        case 2:
+          self.currentComponent = Follow
+          break
+        case 3:
+          self.currentComponent = Settlement
+          break
+      }
+      self.tab = type
+    },
     CopyText () {
       let self = this
       let clipboard = self.copyBtn
