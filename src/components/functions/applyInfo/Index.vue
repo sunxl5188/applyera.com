@@ -59,7 +59,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <table class="table table-customize">
                     <thead>
@@ -106,11 +105,9 @@
                     </tr>
                     </tbody>
                 </table>
-
                 <pagination :total="total" :current-page='current' @pagechange="pagechange"
                              v-if="list.length > 0"></pagination>
             </div>
-
         </div>
         <router-view></router-view>
     </div>
