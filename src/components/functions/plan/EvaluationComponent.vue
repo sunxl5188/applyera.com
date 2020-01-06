@@ -17,15 +17,14 @@
                             <form action="" method="POST" class="form-inline">
                                 <div class="form-group">
                                     <label>档案编号</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" v-model="number">
                                 </div>
                                 <div class="form-group ml-20">
                                     <label>考评标题</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" v-model="title">
                                 </div>
                                 <div class="form-group ml-20">
                                     <button type="button" class="btn btn-primary" @click="pagechange(1)">搜索</button>
-                                    <button type="reset" class="btn btn-default ml-20" @click="clearData">清空</button>
                                 </div>
                             </form>
                         </div>
@@ -109,12 +108,6 @@ export default {
           console.log(res.msg)
         }
       })
-    },
-    clearData () {
-      let self = this
-      self.number = ''
-      self.title = ''
-      self.pagechange(1)
     },
     evaluaCallback (i) {
       let self = this

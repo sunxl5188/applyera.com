@@ -794,10 +794,7 @@
                                                      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                          <div class="form-group">
                                                              <label>语言成绩</label>
-                                                             <select name="lang_score_type" class="selectpicker"
-                                                                     data-width="fit"
-                                                                     style="display:inline-block;"
-                                                                     v-model="header_info.lang_score_type">
+                                                             <select name="lang_score_type" class="form-control selectpicker show-tick" v-model="header_info.lang_score_type">
                                                                  <option value="">请选择</option>
                                                                  <option value="雅思">雅思</option>
                                                                  <option value="托福">托福</option>
@@ -820,10 +817,7 @@
                                                      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                          <div class="form-group">
                                                              <label>学术成绩</label>
-                                                             <select name="acad_score_type" class="selectpicker"
-                                                                     data-width="fit"
-                                                                     style="display:inline-block;"
-                                                                     v-model="header_info.acad_score_type">
+                                                             <select name="acad_score_type" class="form-control selectpicker show-tick" v-model="header_info.acad_score_type">
                                                                  <option value="">请选择</option>
                                                                  <option value="GRE">GRE</option>
                                                                  <option value="GMAT">GMAT</option>
@@ -841,7 +835,7 @@
                                                      </div>
                                                      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                          <div class="form-group">
-                                                             <label>学术成绩</label>
+                                                             <label>&nbsp;</label>
                                                              <input type="text" name="acad_score" class="form-control"
                                                                     placeholder="请输入" v-model="header_info.acad_score">
                                                          </div>
@@ -867,8 +861,7 @@
                                                     <label>申请学位</label>
                                                     <div class="clearfix">
                                                         <select name="intention_degree"
-                                                                class="form-control selectpicker"
-                                                                data-width="fit" v-model="header_info.intention_degree">
+                                                                class="form-control selectpicker show-tick"  v-model="header_info.intention_degree">
                                                             <option value="">请选择申请学位</option>
                                                             <option value="本科">本科</option>
                                                             <option value="本科预科">本科预科</option>
@@ -877,6 +870,7 @@
                                                             <option value="硕士预科">硕士预科</option>
                                                             <option value="博士">博士</option>
                                                             <option value="硕博连读">硕博连读</option>
+                                                            <option value="国际大一">国际大一</option>
                                                             <option value="ESL(语言班)">ESL(语言班)</option>
                                                             <option value="高中">高中</option>
                                                             <option value="初中">初中</option>
@@ -903,8 +897,7 @@
                                                     <label>意向国家</label>
                                                     <div class="clearfix">
                                                         <select name="intention_country[]"
-                                                                class="form-control selectpicker"
-                                                                data-width="fit"
+                                                                class="form-control selectpicker show-tick"
                                                                 data-size="5"
                                                                 multiple
                                                                 data-live-search="true"

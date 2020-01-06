@@ -35,9 +35,9 @@
                             <table class="table table-hover table-bordered table-condensed table-text-over">
                                 <thead>
                                 <tr>
-                                    <th class="text-center" width="33.3333%">档案编号</th>
-                                    <th class="text-center" width="33.3333%">费用预算项目</th>
-                                    <th class="text-center" width="33.3333%">金额（元）</th>
+                                    <th width="33.3333%">档案编号</th>
+                                    <th width="33.3333%">费用预算项目</th>
+                                    <th width="33.3333%">金额</th>
                                 </tr>
                                 </thead>
                                 <tbody>

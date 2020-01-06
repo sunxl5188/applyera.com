@@ -18,37 +18,38 @@
                             <input type="text" name="keywords" v-model="keywords" class="form-control"
                                    placeholder="请输入关键字搜索"
                                    style="padding-left:30px;"
-                                   @keyup.enter="pagechange()">
+                                   @keyup.enter="pageChange()">
                         </div>
                         <div class="form-group ml-10">
                             <div class="dropdown">
-                                <button class="btn btn-default filter"
+                                <button class="btn filter" :class="country || date || userId ? 'btn-primary' : 'btn-default'"
                                         type="button" data-toggle="dropdown"></button>
                                 <ul class="dropdown-menu dropdown-menu-right filterOption" style="padding:15px 20px;">
                                     <div class="pl-15 pr-15" style="width:180px;">
                                         <form action="" method="POST" class="form-horizontal">
                                             <div class="form-group">
                                                 <label>所属国家</label>
-                                                <select class="form-control">
+                                                <select class="form-control" v-model="country">
                                                     <option value="">请选择</option>
                                                     <option :value="item.id" v-for="(item, i) in nation" :key="i">{{item.cn}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>生成日期</label>
-                                                <input type="text" name="times" class="form-control times"/>
+                                                <input type="text" name="date" class="form-control times" placeholder="请选择"/>
                                             </div>
                                             <div class="form-group">
                                                 <label>发布者</label>
-                                                <select class="form-control">
+                                                <select class="form-control" v-model="userId">
                                                     <option value="">请选择</option>
+                                                    <option :value="item.id" v-for="(item, i) in userList" :key="i">{{item.user_name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group text-center">
                                                 <button type="reset" class="btn btn-default" @click="clearData">重置
                                                 </button>
                                                 <button type="button" class="btn btn-primary ml-10"
-                                                        @click="pagechange()">
+                                                        @click="pageChange()">
                                                     开始筛选
                                                 </button>
                                             </div>
@@ -59,12 +60,12 @@
                         </div>
                         <div class="form-group">
                             <div class="form-group ml-10">
-                                <button type="button" class="btn btn-default"><i
+                                <button type="button" class="btn btn-default" @click="deleteId('all')"><i
                                         class="iconfont">&#xe656;</i>
                                 </button>
                             </div>
                             <div class="form-group ml-10">
-                                <router-link to="/functions/plan/edit" class="btn btn-default"><i
+                                <router-link to="/marketing/product/detail" class="btn btn-default"><i
                                         class="iconfont">&#xe73e;</i>
                                     添加
                                 </router-link>
@@ -109,31 +110,31 @@
                     <th>名称</th>
                     <th>价格</th>
                     <th class="w10">发布者</th>
-                    <th class="w10">发布时间</th>
+                    <th class="w20">发布时间</th>
                     <th class="w5"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr v-for="(item, i) in list" :key="i">
                     <td>
-                        <input type="checkbox" name="id[]" value="">
+                        <input type="checkbox" name="id[]" :value="item.id">
                     </td>
-                    <td>1212</td>
-                    <td>美国</td>
-                    <td>名称</td>
-                    <td>￥50</td>
-                    <td>XX</td>
-                    <td>2010-10-10</td>
+                    <td>{{item.order_no}}</td>
+                    <td>{{item.country}}</td>
+                    <td>{{item.prod_name}}</td>
+                    <td>￥{{item.fee_cny}}</td>
+                    <td>{{item.user_name}}</td>
+                    <td>{{item.add_time}}</td>
                     <td class="text-center">
                         <div class="dropdown">
                             <a href="javascript:void(0);" data-toggle="dropdown"><i
                                     class="iconfont">&#xe66b;</i></a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <router-link :to="{path:'/marketing/product/detail', query:{ id:1 }}">查看
+                                    <router-link :to="{path:'/marketing/product/detail', query:{ id:item.id }}">查看
                                     </router-link>
                                 </li>
-                                <li><a href="javascript:void(0);" @click="deleteId(1)">删除</a></li>
+                                <li><a href="javascript:void(0);" @click="deleteId(item.id)">删除</a></li>
                             </ul>
                         </div>
                     </td>
@@ -166,11 +167,16 @@ export default {
       loading: true,
       name: '',
       keywords: '',
-      linkUrl: '11111111',
+      country: '',
+      date: '',
+      userId: '',
+      linkUrl: '',
       nation: nation,
       current: 1,
       total: 0,
-      list: []
+      list: [],
+      arrId: [],
+      userList: []
     }
   },
   created () { // 在实例创建完成后
@@ -181,23 +187,57 @@ export default {
     self.name = self.$route.name
     self.copyBtn = new Clipboard('.copyBtn')
     self.$nextTick(() => {
+      if (self.name === 'product') {
+        self.getUserList()
+        self.pageChange()
+      }
       self.laydate.render({
         elem: '.times',
-        type: 'datetime',
+        type: 'date',
+        range: true,
         done: (value) => {
-
+          self.date = value
+        }
+      })
+      // 点击checkbox
+      $(document).on('click', '[name="id[]"]', function () {
+        let isCheck = $(this).is(':checked')
+        let val = $(this).val()
+        if (isCheck) {
+          self.arrId.push(val)
+        } else {
+          self.arrId.map((item, i) => {
+            if (item === val) {
+              self.arrId.splice(i, 1)
+            }
+          })
         }
       })
     })
   },
   methods: {
+    getUserList () {
+      let self = this
+      let params = new URLSearchParams()
+      db.getRequest('/Institution/PayProd/userList', params).then(res => {
+        if (res.status === 1) {
+          self.userList = res.data
+        } else {
+          console.log(res.msg)
+        }
+      })
+    },
     pageChange (page) {
       let self = this
       let p = page || 1
       let params = new URLSearchParams()
       self.loading = true
       params.append('page', p)
-      db.postRequest('', params).then(res => {
+      params.append('keywords', self.keywords)
+      params.append('country', self.country)
+      params.append('date', self.date)
+      params.append('userId', self.userId)
+      db.postRequest('/Institution/PayProd/index', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.list
           self.total = res.data.total
@@ -208,8 +248,40 @@ export default {
         self.loading = false
       })
     },
-    clearData () {},
-    deleteId (id) {},
+    clearData () {
+      this.keywords = ''
+      this.country = ''
+      this.date = ''
+      this.userId = ''
+    },
+    deleteId (type) {
+      let self = this
+      let params = new URLSearchParams()
+      if (self.arrId.length === 0 && type === 'all') {
+        self.layer.alert('请选择操作编号', {icon: 2})
+        return false
+      }
+      self.layer.confirm('您确定要删除此信息？', {
+        icon: 3
+      }, function (i) {
+        self.layer.close(i)
+        if (type === 'all') {
+          self.arrId.map(item => {
+            params.append('ids[]', item)
+          })
+        } else {
+          params.append('ids[]', type)
+        }
+        db.postRequest('/Institution/PayProd/del', params).then(res => {
+          if (res.status === 1) {
+            self.pageChange()
+            self.layer.alert(res.msg, {icon: 1})
+          } else {
+            self.layer.alert(res.msg, {icon: 2})
+          }
+        })
+      })
+    },
     CopyText () {
       let self = this
       let clipboard = self.copyBtn
@@ -226,8 +298,11 @@ export default {
     keywords () {
       this.debouncedPagechange()
     },
-    $route (to) {
+    $route (to, from) {
       this.name = to.name
+      if (to.name === 'product') {
+        this.pageChange()
+      }
     }
   }
 }

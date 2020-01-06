@@ -200,7 +200,6 @@
                                                     cName="birth_city"
                                                     :aDisplay="false"
                                                     @cityCallback="cityCallback"/>
-
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <input type="hidden" name="birth_province_code"
@@ -1192,6 +1191,7 @@ export default {
     #addApply {
         & .bornArea {
             & .form-inline {
+                display:block !important;
                 & .bootstrap-select {
                     width:48% !important;
                 }

@@ -185,8 +185,8 @@
                         <div class="recordingBody">
                             <div class="recordingContent">
                                 <div class="media" v-for="(item,i) in followObj" :key="i">
-                                    <a class="media-left" href="#">
-                                        <img :src="item.head_img || 'http://placehold.it/50x50/FF5733/ffffff'"
+                                    <a class="media-left" href="javascript:void(0);">
+                                        <img :src="item.head_img || '../../../static/images/defaultface.png'"
                                              style="width:50px; height:50px;" class="img-circle">
                                     </a>
                                     <div class="media-body">

@@ -83,7 +83,9 @@ export default {
       return store.state.userInfo
     }
   },
-  mounted () { },
+  mounted () {
+    console.log(this.$root)
+  },
   methods: {
     // 加入取消收藏
     collection (unqId, type, event) {

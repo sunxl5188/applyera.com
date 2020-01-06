@@ -113,7 +113,6 @@ export default {
       siteUrl: window.ajaxBaseUrl
     }
   },
-  computed: {},
   mounted () {
     let self = this
     self.id = self.$route.query.id || ''

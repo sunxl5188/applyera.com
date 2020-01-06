@@ -9,6 +9,10 @@
         <div class="modal fade bs-example-modal-lg" id="schoolMajor">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
                     <div class="modal-body">
                         <ul class="nav nav-tabs"><!--nav-justified-->
                             <li role="presentation" class="active"><a href="#schoolMajor1" data-toggle="tab">快速选择</a>
@@ -181,9 +185,6 @@
                     </div>
                     <div class="modal-footer">
                         <a href="javascript:void(0);" class="cded" @click="customData">找不到合适的？点击添加自定义</a>
-                        <button type="button" class="btn btn-default ml-15" data-dismiss="modal"
-                                @click="ActiveArr=[];unqId=''">取消
-                        </button>
                         <button type="button" class="btn btn-primary ml-15" :disabled="ActiveArr.length===0?true:false"
                                 @click="parentData">
                             确定(已选:{{ActiveArr.length}})
@@ -230,7 +231,7 @@
                             <dd v-if="applyType===1">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        STA成绩：{{majorDateInfo.sat}}
+                                        SAT成绩：{{majorDateInfo.sat}}
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         ACT成绩：{{majorDateInfo.act}}
@@ -258,6 +259,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import store from '@/vuex/Store'
@@ -326,6 +328,10 @@ export default {
     $(document).on('click', '.schoolList li', function () {
       $(this).siblings('li').removeClass('active').end().addClass('active')
     })
+    $(document).on('hide.bs.modal', '#schoolMajor', function () {
+      self.ActiveArr = []
+      self.unqId = ''
+    })
   },
   methods: {
     getMajorList (clear) {
@@ -384,6 +390,11 @@ export default {
       self.ranking = '不限'
       self.tuition = '不限'
       self.majorArea = '不限'
+      self.schoolList = ''
+      self.majorArr = ''
+      _.delay(() => {
+        $('.selectpicker').selectpicker('refresh')
+      }, 500)
     },
     setSelectId (ev, obj) {
       let self = this

@@ -1023,7 +1023,10 @@ export default {
         return false
       }
       if (self.applyType === 1 || self.applyType === 2) {
-        $('#schoolMajor').modal('show')
+        $('#schoolMajor').modal({
+          backdrop: 'static',
+          show: true
+        })
       }
       if (self.applyType === 3) {
         self.$refs.schoolMajor.customData()
