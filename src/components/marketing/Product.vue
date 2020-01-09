@@ -282,7 +282,7 @@ export default {
         }
         db.postRequest('/Institution/PayProd/del', params).then(res => {
           if (res.status === 1) {
-            self.pageChange()
+            self.pageChange(self.current)
             self.layer.alert(res.msg, {icon: 1})
           } else {
             self.layer.alert(res.msg, {icon: 2})
@@ -308,9 +308,6 @@ export default {
     },
     $route (to, from) {
       this.name = to.name
-      if (to.name === 'product') {
-        this.pageChange()
-      }
     }
   }
 }

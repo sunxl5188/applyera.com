@@ -130,6 +130,9 @@ export default {
           })
           db.postRequest('/Institution/PayProd/save', params).then(res => {
             if (res.status === 1) {
+              if (self.id === '') {
+                self.$parent.pageChange()
+              }
               self.layer.alert(res.msg, { icon: 1 }, function (i) {
                 self.layer.close(i)
                 self.$router.push('/marketing/product')
