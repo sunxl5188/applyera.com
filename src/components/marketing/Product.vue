@@ -120,7 +120,7 @@
                         <input type="checkbox" name="id[]" :value="item.id">
                     </td>
                     <td>{{item.order_no}}</td>
-                    <td>{{item.country}}</td>
+                    <td>{{item.country|countryActive}}</td>
                     <td>{{item.prod_name}}</td>
                     <td>￥{{item.fee_cny}}</td>
                     <td>{{item.user_name}}</td>
@@ -211,6 +211,14 @@ export default {
               self.arrId.splice(i, 1)
             }
           })
+        }
+      })
+      // 获取如何设置URL
+      db.postRequest('/Institution/PayProd/createUrl', {}).then(res => {
+        if (res.status === 1) {
+          self.linkUrl = res.data
+        } else {
+          console.log(res.msg)
         }
       })
     })

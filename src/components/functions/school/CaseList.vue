@@ -3,10 +3,9 @@
         <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <div class="po_re schoolSearch last">
-                <input type="text" name="keywordsB" class="form-control" v-model="keywords"
-                       @keyup.enter="getCase()" placeholder="请输入关键字查询"
+                <input type="text" name="keywordsB" class="form-control" v-model="keywords" placeholder="请输入关键字查询"
                        autocomplete="off">
-                <i class="iconfont handPower clearSearch" @click="keywords='';getCase()" v-if="keywords!==''">&#xe7f6;</i>
+                <i class="iconfont handPower clearSearch" @click="keywords=''" v-if="keywords!==''">&#xe7f6;</i>
                 <button type="button" class="btn btn-primary btn-search" @click="getCase()"></button>
             </div>
 
@@ -39,6 +38,7 @@
 
 <script>
 import pagination from '@#/shared/Pagination'
+import * as _ from 'lodash'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -59,6 +59,9 @@ export default {
     userInfo () {
       return store.state.userInfo
     }
+  },
+  created () {
+    this.debouncedPagechange = _.debounce(this.getCase, 1000)
   },
   mounted () {
     this.getCase()
@@ -90,6 +93,11 @@ export default {
   },
   components: {
     pagination
+  },
+  watch: {
+    keywords () {
+      this.debouncedPagechange()
+    }
   }
 }
 </script>

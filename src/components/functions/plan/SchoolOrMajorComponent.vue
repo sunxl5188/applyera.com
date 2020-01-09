@@ -328,7 +328,7 @@ export default {
     $(document).on('click', '.schoolList li', function () {
       $(this).siblings('li').removeClass('active').end().addClass('active')
     })
-    $(document).on('hide.bs.modal', '#schoolMajor', function () {
+    $(document).on('hidden.bs.modal', '#schoolMajor', function () {
       self.ActiveArr = []
       self.unqId = ''
     })
@@ -411,7 +411,6 @@ export default {
     },
     parentData () {
       let self = this
-      $('#schoolMajor').modal('hide')
       let params = new URLSearchParams()
       params.append('type', self.applyType)
       for (let i = 0; i < self.ActiveArr.length; i++) {

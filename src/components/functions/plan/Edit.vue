@@ -243,29 +243,30 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="(item,i) in schoolInfoTable" :key="'tjyx'+i">
-                                    <td>{{item.ranking}} <input type="hidden" name="recommend_table[ranking][]"
+                                    <td>{{item.ranking}} <input type="hidden" :name="'recommend_table[ranking]['+i+']'"
                                                                 :value="item.ranking"/></td>
-                                    <td>{{item.country}}<input type="hidden" name="recommend_table[country][]"
+                                    <td>{{item.country}}<input type="hidden" :name="'recommend_table[country]['+i+']'"
                                                                :value="item.country"/></td>
                                     <td>
                                         <div class="lh18">{{item.school_en}}</div>
                                         <div class="lh18">{{item.school}}</div>
-                                        <input type="hidden" name="recommend_table[school_en][]"
+                                        <input type="hidden" :name="'recommend_table[school_en]['+i+']'"
                                                :value="item.school_en"/>
-                                        <input type="hidden" name="recommend_table[school][]" :value="item.school"/>
+                                        <input type="hidden" :name="'recommend_table[school]['+i+']'" :value="item.school"/>
                                     </td>
                                     <td>
                                         <div class="lh18">{{item.major_en}}</div>
                                         <div class="lh18">{{item.major}}</div>
-                                        <input type="hidden" name="recommend_table[major_en][]" :value="item.major_en"/>
-                                        <input type="hidden" name="recommend_table[major][]" :value="item.major"/>
+                                        <input type="hidden" :name="'recommend_table[major_en]['+i+']'" :value="item.major_en"/>
+                                        <input type="hidden" :name="'recommend_table[major]['+i+']'" :value="item.major"/>
                                     </td>
                                     <td class="text-left">
-                                        <input type="hidden" name="recommend_table[time_table][]"
+                                        <input type="hidden" :name="'recommend_table[time_table]['+i+']'"
                                                :value="item.time_table"/>
-                                        <select class="form-control selectpicker" name="recommend_table[time_select][]" v-model="item.time_select">
+                                        <select class="form-control selectpicker" :name="'recommend_table[time_select]['+i+']'" v-model="item.time_select" v-if="item.time_table.length>0">
                                             <option :value="items" v-for="(items,k) in item.time_table" :key="'sel'+k">{{items}}</option>
                                         </select>
+                                        <input type="text" :name="'recommend_table[time_select]['+i+']'" v-model="item.time_select" class="form-control" placeholder="请输入截止时间" v-if="item.time_table.length===0">
                                     </td>
                                 </tr>
                                 </tbody>
@@ -714,8 +715,8 @@ export default {
       Evaluation: [], // 能力考评
       planTime: [], // 时间规划
       budget: [], // 费用预算
-      customField: [],
-      customObject: []
+      customField: [], // 自定义字段
+      customObject: [] // 自定义学校
     }
   },
   computed: {
@@ -866,6 +867,9 @@ export default {
       $('#ElementContent input[type="hidden"]').each(function () {
         params.append($(this).attr('name'), $(this).val())
       })
+      $('#ElementContent input[name^="recommend_table[time_select]"]').each(function () {
+        params.append($(this).attr('name'), $(this).val())
+      })
       $('#ElementContent select.selectpicker').each(function () {
         if ($(this).attr('name') === 'ins_student_intention_country') {
           params.append('ins_student_intention_country', $(this).val())
@@ -891,7 +895,7 @@ export default {
           }
         } else {
           self.layer.alert(res.msg, {
-            shadeClose: false
+            icon: 2
           })
         }
       })
@@ -996,6 +1000,19 @@ export default {
       })
       arr.map((item, i) => {
         obj['custom'].push({field_name: item, field_value: arr2[i]})
+      })
+      self.schoolInfoTable.push({
+        major: obj.major_cn,
+        major_en: obj.major_en,
+        school: obj.school_cn,
+        school_en: obj.school_en,
+        applyReq: '',
+        country: '-',
+        majorIntro: '',
+        ranking: '-',
+        time_select: '',
+        time_table: [],
+        tuitionReq: ''
       })
       self.customObject.push(obj)
       self.customField = []

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from '@/vuex/Store'
+import * as _ from 'lodash'
 import 'url-search-params-polyfill'
 import axios from 'axios'
 let self = new Vue()
@@ -80,10 +81,12 @@ class Request {
               })
             }
             if (res.headers.hasOwnProperty('token')) {
-              if (res.headers.token) {
-                sessionStorage.setItem('token', res.headers.token)
-                self.$cookies.set('token', res.headers.token)
-                store.state.token = res.headers.token
+              if (res.headers.token !== '') {
+                _.delay(() => {
+                  sessionStorage.setItem('token', res.headers.token)
+                  self.$cookies.set('token', res.headers.token)
+                  store.state.token = res.headers.token
+                }, 1500)
               }
             }
             resolve(res.data)

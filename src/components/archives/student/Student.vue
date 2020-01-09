@@ -586,7 +586,7 @@ export default {
         self.layer.alert('请选择需要操作的学生', {icon: 2})
         return false
       } else {
-        self.layer.confirm('学生将移至学生公海，届时学生将对所有机构顾问可见。您确认将学生转移至公海吗？', {
+        self.layer.confirm('学生将被移至学生公海，届时该学生将对您所在机构的所有顾问老师可见。您确认将学生转移至学生公海吗？', {
           icon: 3
         }, function (i) {
           self.layer.close(i)
