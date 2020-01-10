@@ -31,10 +31,13 @@
                         <label class="col-sm-4 control-label">所属国家</label>
                         <div class="col-sm-8">
                             <select name="country" class="form-control selectpicker show-tick" data-size="10"
-                                    data-live-search="true" v-model="info.country">
+                                    data-live-search="true" v-model="info.country" v-validate="'required'" data-vv-as="所属国家">
                                 <option value="">请选择</option>
                                 <option :value="item.id" v-for="(item, i) in nation" :key="i">{{item.cn}}</option>
                             </select>
+                            <div class="validateTip" v-show="errors.has('country')">
+                                {{ errors.first('country') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,7 +45,10 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">产品名称</label>
                         <div class="col-sm-8">
-                            <input name="name" type="text" class="form-control" v-model="info.prod_name" placeholder="请输入新品名称(不超过6个字)">
+                            <input name="name" type="text" class="form-control" v-model="info.prod_name" placeholder="请输入新品名称(不超过6个字)" v-validate="'required'" data-vv-as="产品名称">
+                            <div class="validateTip" v-show="errors.has('name')">
+                                {{ errors.first('name') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,7 +57,10 @@
                         <label class="col-sm-4 control-label">产品价格</label>
                         <div class="col-sm-8">
                             <input type="text" name="fee" class="form-control" v-model="info.fee_cny"
-                                   placeholder="请输入产品价格"/>
+                                   placeholder="请输入产品价格" v-validate="'required|money'" data-vv-as="产品价格" />
+                            <div class="validateTip" v-show="errors.has('fee')">
+                                {{ errors.first('fee') }}
+                            </div>
                         </div>
                     </div>
                 </div>
