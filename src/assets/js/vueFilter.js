@@ -104,6 +104,13 @@ Vue.prototype.cutString = (strings, k) => {
   }
 }
 
+Vue.prototype.checkNumber = (event, len) => {
+  if (event.target.value) {
+    let str = event.target.value.replace(/[^\d]/g, '')
+    event.target.value = str.substr(0, len)
+  }
+}
+
 Vue.filter('state', function (i) {
   let text = ''
   switch (i) {

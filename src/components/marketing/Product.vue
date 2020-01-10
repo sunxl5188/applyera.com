@@ -282,7 +282,9 @@ export default {
           if (res.status === 1) {
             self.arrId = []
             self.pageChange(self.current)
-            $('[name="id[]"]')[0].checked = false
+            $('[name^="id"]').each((i, e) => {
+              e.checked = false
+            })
             self.layer.alert(res.msg, {icon: 1})
           } else {
             self.layer.alert(res.msg, {icon: 2})

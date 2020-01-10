@@ -50,7 +50,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">产品价格</label>
                         <div class="col-sm-8">
-                            <input type="number" step="0.01" min="0" name="fee" class="form-control" v-model="info.fee_cny"
+                            <input type="text" name="fee" class="form-control" v-model="info.fee_cny"
                                    placeholder="请输入产品价格"/>
                         </div>
                     </div>
