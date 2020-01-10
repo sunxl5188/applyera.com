@@ -1,34 +1,37 @@
 <template>
   <div>
-    <div v-if="loading" v-html="LoadingImg"></div>
-    <div v-if="!loading">
-      <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-        <SchoolHeader :schoolInfo="headerInfo"/>
-      </transition>
-        <ul class="nav nav-tabs" id="schoolDetail"><!--nav-justified-->
-          <li :class="{'active':tab===1}" @click="setTabs(1)">
-            <a href="javascript:void(0);">学校简介</a>
-          </li>
-          <li :class="{'active':tab===2}" @click="setTabs(2)">
-            <a href="javascript:void(0);">本科专业</a>
-          </li>
-          <li :class="{'active':tab===3}" @click="setTabs(3)">
-            <a href="javascript:void(0);">硕士专业</a>
-          </li>
-          <li :class="{'active':tab===4}" @click="setTabs(4)">
-            <a href="javascript:void(0);">预科语言</a>
-          </li>
-          <li :class="{'active':tab===5}" @click="setTabs(5)">
-            <a href="javascript:void(0);">过往案例</a>
-          </li>
-        </ul>
-        <div class="blk15"></div>
-        <div class="tab-content">
-          <keep-alive>
-            <component :is="component" :id="id" :detailInfo="detailInfo"></component>
-          </keep-alive>
-        </div>
+    <div v-show="name==='scholldetail'">
+      <div v-if="loading" v-html="LoadingImg"></div>
+      <div v-if="!loading">
+        <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+          <SchoolHeader :schoolInfo="headerInfo"/>
+        </transition>
+          <ul class="nav nav-tabs" id="schoolDetail"><!--nav-justified-->
+            <li :class="{'active':tab===1}" @click="setTabs(1)">
+              <a href="javascript:void(0);">学校简介</a>
+            </li>
+            <li :class="{'active':tab===2}" @click="setTabs(2)">
+              <a href="javascript:void(0);">本科专业</a>
+            </li>
+            <li :class="{'active':tab===3}" @click="setTabs(3)">
+              <a href="javascript:void(0);">硕士专业</a>
+            </li>
+            <li :class="{'active':tab===4}" @click="setTabs(4)">
+              <a href="javascript:void(0);">预科语言</a>
+            </li>
+            <li :class="{'active':tab===5}" @click="setTabs(5)">
+              <a href="javascript:void(0);">过往案例</a>
+            </li>
+          </ul>
+          <div class="blk15"></div>
+          <div class="tab-content">
+            <keep-alive>
+              <component :is="component" :id="id" :detailInfo="detailInfo"></component>
+            </keep-alive>
+          </div>
+      </div>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 

@@ -166,7 +166,27 @@ export default new Router({
               path: 'scholldetail',
               name: 'scholldetail',
               component: resolve => require(['@#/functions/school/SchollDetail'], resolve),
-              meta: {title: '学校详情', requiresAuth: true, group: ['function', 0, 0]}
+              meta: {title: '学校详情', requiresAuth: true, group: ['function', 0, 0]},
+              children: [
+                {
+                  path: 'benke',
+                  name: 'benke',
+                  component: resolve => require(['@#/functions/school/MajorDetailA'], resolve),
+                  meta: {title: '本科专业', requiresAuth: true, group: ['function', 0, 1]}
+                },
+                {
+                  path: 'shuoshi',
+                  name: 'shuoshi',
+                  component: resolve => require(['@#/functions/school/MajorDetailB'], resolve),
+                  meta: {title: '硕士专业', requiresAuth: true, group: ['function', 0, 2]}
+                },
+                {
+                  path: 'FoundationDetail',
+                  name: 'FoundationDetail',
+                  component: resolve => require(['@#/functions/school/FoundationDetail'], resolve),
+                  meta: {title: '预科语言详情', requiresAuth: true, group: ['function', 0, 3]}
+                }
+              ]
             },
             {
               path: 'majordetaila',
@@ -179,12 +199,6 @@ export default new Router({
               name: 'majordetailb',
               component: resolve => require(['@#/functions/school/MajorDetailB'], resolve),
               meta: {title: '硕士专业', requiresAuth: true, group: ['function', 0, 2]}
-            },
-            {
-              path: 'FoundationDetail',
-              name: 'FoundationDetail',
-              component: resolve => require(['@#/functions/school/FoundationDetail'], resolve),
-              meta: {title: '预科语言详情', requiresAuth: true, group: ['function', 0, 3]}
             }
           ]
         },

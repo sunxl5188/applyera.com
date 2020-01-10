@@ -28,7 +28,7 @@
                         tag="tbody">
                     <tr v-for="(item, i) in list" :key="'majorA'+i">
                         <td>
-                            <router-link :to="{path:'/functions/schoollist/majordetaila', query:{id:item.unq_id}}">
+                            <router-link :to="{path:'/functions/schoollist/scholldetail/benke', query:{id:item.unq_id}}">
                                 <div class="lh20 cded textOver">
                                         <span v-html="highlight(cutString(item.majoren, 30), keywords)"
                                               data-toggle="tooltip" :title="item.majoren +'<br>'+item.majorch"></span>
@@ -41,7 +41,7 @@
                             </router-link>
                         </td>
                         <td>
-                            <router-link :to="{path:'/functions/schoollist/majordetaila', query:{id:item.unq_id}}">
+                            <router-link :to="{path:'/functions/schoollist/scholldetail/benke', query:{id:item.unq_id}}">
                                 <div class="lh20">
                                         <span v-html="highlight(cutString(item.collageen, 20),keywords)"
                                               :title="item.collageen!=='-'?item.collageen +'<br>'+item.collagech:''"

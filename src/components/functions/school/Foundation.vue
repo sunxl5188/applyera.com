@@ -26,10 +26,10 @@
                 <tr v-for="(item, i) in list" :key="i">
                     <td>
                         <div>
-                            <router-link :to="{path:'/functions/schoollist/FoundationDetail',query:{id:item.unq_id}}" class="cded" v-html="highlight(item.major_cn,keywords)"></router-link>
+                            <router-link :to="{path:'/functions/schoollist/scholldetail/FoundationDetail',query:{id:item.unq_id}}" class="cded" v-html="highlight(item.major_cn,keywords)"></router-link>
                         </div>
                         <div>
-                            <router-link :to="{path:'/functions/schoollist/FoundationDetail',query:{id:item.unq_id}}" class="cded" v-html="highlight(item.major_en,keywords)"></router-link>
+                            <router-link :to="{path:'/functions/schoollist/scholldetail/FoundationDetail',query:{id:item.unq_id}}" class="cded" v-html="highlight(item.major_en,keywords)"></router-link>
                         </div>
                     </td>
                     <td>{{item.duration}}</td>

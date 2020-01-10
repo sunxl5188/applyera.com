@@ -29,7 +29,7 @@
                         tag="tbody">
                     <tr v-for="(item, i) in list" :key="'majorB'+i">
                         <td>
-                            <router-link :to="{path:'/functions/schoollist/majordetailb', query:{id:item.unq_id}}">
+                            <router-link :to="{path:'/functions/schoollist/scholldetail/shuoshi', query:{id:item.unq_id}}">
                                 <div class="lh20 cded textOver">
                                     <span v-html="highlight(cutString(item.major_en, 30), keywords)" :title="item.major_en +'<br>'+item.major_cn" data-toggle="tooltip"></span>
                                     <i class="iconfont cf00" v-if="item.is_hot">&#xe633;</i>
@@ -40,7 +40,7 @@
                             </router-link>
                         </td>
                         <td>
-                            <router-link :to="{path:'/functions/schoollist/majordetailb', query:{id:item.unq_id}}">
+                            <router-link :to="{path:'/functions/schoollist/scholldetail/shuoshi', query:{id:item.unq_id}}">
                                 <div class="lh20"><span v-html="highlight(cutString(item.college_en,30), keywords)" :title="item.college_en!=='-'?item.college_en +'<br>'+item.college_cn:''" data-toggle="tooltip"></span></div>
                                 <div class="lh20 c999"><span v-html="highlight(cutString(item.college_cn,20), keywords)" :title="item.college_en!=='-'?item.college_en +'<br>'+item.college_cn:''" data-toggle="tooltip"></span></div>
                             </router-link>
