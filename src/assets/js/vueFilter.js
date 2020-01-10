@@ -72,9 +72,9 @@ Vue.prototype.countdown = function (objName, wait) {
 
 Vue.prototype.highlight = function (str, keys) {
   let string = ''
-  let re = new RegExp('' + keys + '', 'gi')
+  // let re = new RegExp('' + keys + '', 'gi')
   if (str && keys) {
-    string = str.replace(re, function (word) {
+    string = str.replace(keys, function (word) {
       return "<span class='cf90'>" + word + '</span>'
     })
   } else {

@@ -82,8 +82,8 @@
                     </svg>
                     <span class="div_vm">{{item}}</span>
                     <span class="div_vm">
-                        <a href="#" class="ml-15 cded" @click="downFile(item)">下载</a>
-                        <a :href="siteUrl + item" class="ml-10 cded" target="_blank">预览</a>
+                        <a href="javascript:void(0);" class="ml-15 cded" @click="downFile(item)">下载</a>
+                        <a href="javascript:void(0);" class="ml-10 cded" @click="viewPdf(siteUrl + item)">预览</a>
                     </span>
                 </p>
             </div>
@@ -212,6 +212,7 @@ export default {
     },
     downFile (fileUrl) {
       let self = this
+      let index = self.layer.load(1, { shade: [0.5] })
       self.loadXMLDoc(fileUrl, 'post', true, 'blob', function (xhr) {
         let x = xhr.currentTarget
         let fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1, fileUrl.length)
@@ -220,6 +221,7 @@ export default {
           zip.file(fileName, x.response)
           zip.generateAsync({ type: 'blob' })
             .then(function (content) {
+              self.layer.close(index)
               fileSave.saveAs(content, 'download.zip')
             })
         }
@@ -244,6 +246,14 @@ export default {
       } else {
         console.log('浏览器不支持XMLHTTP。')
       }
+    },
+    viewPdf (url) {
+      let self = this
+      self.layer.open({
+        type: 2,
+        area: ['1000px', document.body.clientHeight - 50 + 'px'],
+        content: url
+      })
     }
   }
 }

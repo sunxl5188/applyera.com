@@ -2,8 +2,8 @@
   <div>
     <div class="po_re schoolSearch">
       <input type="text" name="keywords" class="form-control" v-model="keyword" placeholder="搜索所有内容"
-             autocomplete="off" @keyup.enter="pageChange()">
-      <i class="iconfont handPower clearSearch" @click="keyword='';pageChange()"
+             autocomplete="off">
+      <i class="iconfont handPower clearSearch" @click="keyword=''"
          v-if="keyword!==''">&#xe7f6;</i>
       <button type="button" class="btn btn-primary btn-search" @click="pageChange(1)"></button>
       <button type="button" class="btn btn-default btn-Collapse" @click="retract()">收起筛选<i
@@ -247,6 +247,7 @@
 import 'bootstrap-select'
 import 'bootstrap-select/js/i18n/defaults-zh_CN'
 import '@~/js/VeeValidateConfig'
+import * as _ from 'lodash'
 import pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
@@ -271,6 +272,9 @@ export default {
       layDetail: {},
       filter: {}
     }
+  },
+  created () {
+    this.debouncePagechange = _.debounce(this.pageChange, 1000)
   },
   mounted () {
     let self = this
@@ -480,8 +484,11 @@ export default {
       })
     }
   },
-  components: {
-    pagination
+  components: {pagination},
+  watch: {
+    keyword () {
+      this.debouncePagechange()
+    }
   }
 }
 </script>

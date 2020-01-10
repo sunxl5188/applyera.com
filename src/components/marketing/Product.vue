@@ -149,7 +149,7 @@
             </table>
             <Pagination :total="total" :currentPage="current" @pagechange="pageChange"></Pagination>
         </div>
-        <router-view></router-view>
+        <router-view @pageChange="pageChange"></router-view>
     </div>
 </template>
 
@@ -187,10 +187,8 @@ export default {
     self.name = self.$route.name
     self.copyBtn = new Clipboard('.copyBtn')
     self.$nextTick(() => {
-      if (self.name === 'product') {
-        self.getUserList()
-        self.pageChange()
-      }
+      self.getUserList()
+      self.pageChange()
       self.laydate.render({
         elem: '.times',
         type: 'date',
@@ -282,7 +280,9 @@ export default {
         }
         db.postRequest('/Institution/PayProd/del', params).then(res => {
           if (res.status === 1) {
+            self.arrId = []
             self.pageChange(self.current)
+            $('[name="id[]"]')[0].checked = false
             self.layer.alert(res.msg, {icon: 1})
           } else {
             self.layer.alert(res.msg, {icon: 2})

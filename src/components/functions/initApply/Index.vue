@@ -9,11 +9,10 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                         <div class="form-group form-search">
                             <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
-                            <i class="iconfont handPower clearSearch" @click="keywords='';pagechange()" v-if="keywords">&#xe7f6;</i>
+                            <i class="iconfont handPower clearSearch" @click="keywords=''" v-if="keywords">&#xe7f6;</i>
                             <input type="text" name="keywords" v-model="keywords" class="form-control"
                                    placeholder="请输入关键字搜索"
-                                   style="padding-left:30px;"
-                                   @keyup.enter="pagechange()">
+                                   style="padding-left:30px;">
                         </div>
 
                         <div class="form-group ml-10">
@@ -139,6 +138,7 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -163,6 +163,9 @@ export default {
     token () {
       return store.state.token
     }
+  },
+  created () {
+    this.debouncePagechange = _.debounce(this.pagechange, 1000)
   },
   mounted () {
     let self = this
@@ -235,6 +238,9 @@ export default {
   },
   components: {pagination},
   watch: {
+    keywords () {
+      this.debouncePagechange()
+    },
     $route (to, from) {
       let self = this
       self.name = (to.name).toLocaleLowerCase()

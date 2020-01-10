@@ -284,7 +284,6 @@ export default {
         })
       }
     })
-
     setTimeout(function () {
       self.loading = false
     }, 500)
@@ -404,7 +403,6 @@ export default {
       $this.css({ 'min-height': viewH + 'px' })
     }
   },
-  components: {},
   watch: {
     $route (to, from) {
       let self = this

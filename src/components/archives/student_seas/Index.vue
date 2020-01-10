@@ -14,10 +14,10 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                         <div class="form-group form-search">
                             <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
-                            <i class="iconfont handPower clearSearch" v-if="keywords" @click="keywords='';pagechange()">&#xe7f6;</i>
+                            <i class="iconfont handPower clearSearch" v-if="keywords" @click="keywords=''">&#xe7f6;</i>
                             <input type="text" v-model="keywords" class="form-control"
                                    placeholder="搜索所有内容"
-                                   style="padding-left:30px;" @keyup.enter="pagechange()">
+                                   style="padding-left:30px;">
                         </div>
                         <div class="form-group ml-10">
                             <button type="button" class="btn btn-default" @click="filterShow=!filterShow">
@@ -161,10 +161,10 @@
                     </td>
                 </tr>
                 <tr v-if="loading">
-                    <td colspan="6" v-html="LoadingImg"></td>
+                    <td colspan="7" v-html="LoadingImg"></td>
                 </tr>
                 <tr v-if="!loading && list.length === 0">
-                    <td colspan="6" v-html="NoData"></td>
+                    <td colspan="7" v-html="NoData"></td>
                 </tr>
                 </tbody>
             </table>
@@ -306,6 +306,7 @@
 <script>
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import * as _ from 'lodash'
 import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -344,6 +345,9 @@ export default {
     token () {
       return store.state.token
     }
+  },
+  created () {
+    this.debouncePagechange = _.debounce(this.pagechange, 1000)
   },
   mounted () {
     let self = this
@@ -681,6 +685,9 @@ export default {
     'v-pagination': pagination
   },
   watch: {
+    keywords () {
+      this.debouncePagechange()
+    },
     $route (to, from) {
       this.name = to.name
       if (this.name === 'student_seas') {
