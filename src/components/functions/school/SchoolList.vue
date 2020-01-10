@@ -2,9 +2,9 @@
     <div class="container-fluid bgWhite pt-25 pb-25">
         <div id="school" :style="name==='schoollist'?'':'display:none;'">
             <ul class="nav nav-tabs"><!--nav-justified-->
-                <li :class="{active:tabActive===1}" @click="setTabs(1)"><a href="javascript:void(0);">查找院校</a></li>
-                <li :class="{active:tabActive===2}" @click="setTabs(2)"><a href="javascript:void(0);">查找专业</a></li>
-                <li :class="{active:tabActive===3}" @click="setTabs(3)"><a href="javascript:void(0);">我的收藏</a></li>
+                <li :class="{active:tabActive===''||tabActive===1}" @click="tabActive=1"><router-link to="/functions/schoollist?tabActive=1" exact>查找院校</router-link></li>
+                <li :class="{active:tabActive===2}" @click="tabActive=2"><router-link to="/functions/schoollist?tabActive=2" exact>查找专业</router-link></li>
+                <li :class="{active:tabActive===3}" @click="tabActive=3"><router-link to="/functions/schoollist?tabActive=3" exact>我的收藏</router-link></li>
             </ul>
             <div class="tab-content mt-15">
                 <keep-alive include="SchoolListComponent,MajorComponent">
@@ -32,7 +32,7 @@ export default {
       schoolComponent: '',
       majorComponent: '',
       collection: '',
-      tabActive: 1
+      tabActive: ''
     }
   },
   computed: {
@@ -43,41 +43,34 @@ export default {
   mounted () {
     let self = this
     self.name = (self.$route.name).toLocaleLowerCase()
+    self.tabActive = self.$route.query.tabActive || ''
     self.$nextTick(() => {
-      if (self.name === 'schoollist') {
+      if (self.tabActive === '' || self.tabActive === 1) {
         self.currentComponent = SchoolListComponent
       }
     })
   },
-  methods: {
-    setTabs (type) {
-      let self = this
-      self.tabActive = type
-      switch (type) {
-        case 1:
-          self.currentComponent = SchoolListComponent
-          break
-        case 2:
-          self.currentComponent = MajorComponent
-          break
-        case 3:
-          self.currentComponent = CollectionComponent
-          break
-      }
-    }
-  },
+  methods: {},
   components: {
     SchoolListComponent,
     MajorComponent,
     CollectionComponent
   },
   watch: {
+    tabActive () {
+      switch (this.tabActive) {
+        case 2:
+          this.currentComponent = MajorComponent
+          break
+        case 3:
+          this.currentComponent = CollectionComponent
+          break
+        default:
+          this.currentComponent = SchoolListComponent
+      }
+    },
     $route (to, form) {
       this.name = (to.name).toLocaleLowerCase()
-      if (this.name === 'schoollist') {
-        this.currentComponent = SchoolListComponent
-        this.tabActive = 1
-      }
     }
   }
 }

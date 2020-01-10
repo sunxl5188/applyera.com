@@ -168,6 +168,9 @@ export default {
     CaseList
   },
   watch: {
+    id () {
+      this.getSchoolInfo()
+    },
     $route (to, from) {
       this.name = to.name
     }

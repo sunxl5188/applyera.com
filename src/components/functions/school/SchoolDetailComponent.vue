@@ -25,16 +25,16 @@
         <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" v-for="(item, i) in detailInfo.rcmd_schools" :key="i">
                 <div class="pt-15 pb-15">
-                    <div class="media">
+                    <div class="media RelatedSchool">
                         <div class="media-left">
-                            <router-link
+                            <router-link :data-id="item.unq_id"
                                     :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}">
                                 <img class="media-object" :src="item.schoolbadge" width="40" height="40">
                             </router-link>
                         </div>
                         <div class="media-body">
                             <h5 class="media-heading">
-                                <router-link
+                                <router-link :data-id="item.unq_id"
                                         :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}"
                                         class="cded">{{item.englishname}}
                                 </router-link>
@@ -56,6 +56,15 @@ export default {
   },
   data () {
     return {}
+  },
+  mounted () {
+    let self = this
+    self.$nextTick(() => {
+      $(document).on('click', '.RelatedSchool a', function () {
+        let id = $(this).attr('data-id')
+        self.$parent.$data.id = id
+      })
+    })
   }
 }
 </script>
