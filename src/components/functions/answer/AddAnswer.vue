@@ -159,9 +159,7 @@
                                                 <a href="javascript:void(0);" class="pull-right cded" v-if="k === 0" v-show="item[0]['solve_status']===0" @click="delComment(items.id, 'solve', items.front_code)">解决</a>
                                             </div>
                                             <div class="clearfix commentContent font12 c999 lh20 pb-5 pt-5"
-                                                 contenteditable="false">
-                                                {{items.content}}
-                                            </div>
+                                                 contenteditable="false">{{items.content}}</div>
                                             <div class="editBtn" v-show="item[0]['solve_status']===0" v-if="items.is_self===1">
                                                 <a href="javascript:void(0);" class="cded edit">编辑</a>
                                                 <a href="javascript:void(0);" class="cded save hidden">保存</a>
@@ -728,7 +726,7 @@ export default {
         if (res.status === 1) {
           console.log(res.msg)
         } else {
-          console.log(res.msg)
+          self.layer.alert(res.msg, {icon: 2})
         }
       })
     }
