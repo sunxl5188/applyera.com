@@ -123,9 +123,9 @@
                 <div class="studentTabs">
                     <ul class="nav nav-tabs"><!--nav-justified-->
                         <li class="active"><a href="#tabs1" data-toggle="tab">学生概况</a></li>
-                        <li><a href="#tabs2" data-toggle="tab">学生资料</a></li>
-                        <li><a href="#tabs3" data-toggle="tab">附件管理</a></li>
-                        <li><a href="#tabs4" data-toggle="tab">操作日志</a></li>
+                        <li><a href="#tabs2" data-toggle="tab">附件管理</a></li>
+                        <li><a href="#tabs3" data-toggle="tab">操作日志</a></li>
+                        <li><a href="#tabs4" data-toggle="tab">学生资料</a></li>
                     </ul>
                 </div>
 
@@ -417,8 +417,119 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="tab-pane fade bgWhite pad-15" id="tabs2">
+                        <div class="clearfix pt-15 pb-25">
+                            <div class="pull-left lh34 c999">小贴士: 支持扩展名: rar,zip,doc,docx,pdf,jpg</div>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-primary btn-sm upload" @click="uploadStart">上传文件
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm ml-10" @click="fileDown">下载</button>
+                                <button type="button" class="btn btn-default btn-sm ml-10" @click="deletefile">删除
+                                </button>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-customize">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
+                                    <span class="div_vm">学生端</span>
+                                </th>
+                                <th width="20%"></th>
+                                <th width="15%"></th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, i) in tab3.student" :key="i">
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="index[]" :value="item.id"/>
+                                            {{item.file_name}}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select class="form-control selectpicker show-tick" data-size="10"
+                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
+                                        <option value="">请选择</option>
+                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td width="15%">{{item.file_size}}</td>
+                                <td width="20%">{{item.add_time}}</td>
+                            </tr>
+                            <tr v-if="tab3.student.length === 0">
+                                <td colspan="4" v-html="NoData"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--机构端-->
+                        <table class="table table-bordered table-customize">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
+                                    <span class="div_vm">机构端</span>
+                                </th>
+                                <th width="20%"></th>
+                                <th width="15%"></th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, i) in tab3.user" :key="i">
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="index[]" :value="item.id"/>
+                                            {{item.file_name}}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select class="form-control selectpicker show-tick" data-size="10"
+                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
+                                        <option value="">请选择</option>
+                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>{{item.file_size}}</td>
+                                <td>{{item.add_time}}</td>
+                            </tr>
+                            <tr v-if="tab3.user.length === 0">
+                                <td colspan="4" v-html="NoData"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade bgWhite pad-15" id="tabs3">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="15%">操作时间</th>
+                                <th width="15%">操作人员</th>
+                                <th width="15%">操作类型</th>
+                                <th>操作内容</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item,i) in tab4" :key="i">
+                                <td>{{item.time}}</td>
+                                <td>{{item.operator}}</td>
+                                <td>{{item.type}}</td>
+                                <td>{{item.detail}}</td>
+                            </tr>
+                            <tr v-if="tab4.length===0">
+                                <td colspan="4" v-html="NoData"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade bgWhite pad-15" id="tabs4">
                         <div class="commonTitle">
                             <span>推荐人</span>
                             <span class="pull-right">
@@ -538,118 +649,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade bgWhite pad-15" id="tabs3">
-                        <div class="clearfix pt-15 pb-25">
-                            <div class="pull-left lh34 c999">小贴士: 支持扩展名: rar,zip,doc,docx,pdf,jpg</div>
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-primary btn-sm upload" @click="uploadStart">上传文件
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm ml-10" @click="fileDown">下载</button>
-                                <button type="button" class="btn btn-default btn-sm ml-10" @click="deletefile">删除
-                                </button>
-                            </div>
-                        </div>
-                        <table class="table table-bordered table-customize">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
-                                    <span class="div_vm">学生端</span>
-                                </th>
-                                <th width="20%"></th>
-                                <th width="15%"></th>
-                                <th width="20%"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item, i) in tab3.student" :key="i">
-                                <td>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="index[]" :value="item.id"/>
-                                            {{item.file_name}}
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-control selectpicker show-tick" data-size="10"
-                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
-                                        <option value="">请选择</option>
-                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
-                                        </option>
-                                    </select>
-                                </td>
-                                <td width="15%">{{item.file_size}}</td>
-                                <td width="20%">{{item.add_time}}</td>
-                            </tr>
-                            <tr v-if="tab3.student.length === 0">
-                                <td colspan="4" v-html="NoData"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <!--机构端-->
-                        <table class="table table-bordered table-customize">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
-                                    <span class="div_vm">机构端</span>
-                                </th>
-                                <th width="20%"></th>
-                                <th width="15%"></th>
-                                <th width="20%"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item, i) in tab3.user" :key="i">
-                                <td>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="index[]" :value="item.id"/>
-                                            {{item.file_name}}
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-control selectpicker show-tick" data-size="10"
-                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
-                                        <option value="">请选择</option>
-                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
-                                        </option>
-                                    </select>
-                                </td>
-                                <td>{{item.file_size}}</td>
-                                <td>{{item.add_time}}</td>
-                            </tr>
-                            <tr v-if="tab3.user.length === 0">
-                                <td colspan="4" v-html="NoData"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade bgWhite pad-15" id="tabs4">
-                        <table class="table table-hover table-bordered">
-                            <thead>
-                            <tr>
-                                <th width="15%">操作时间</th>
-                                <th width="15%">操作人员</th>
-                                <th width="15%">操作类型</th>
-                                <th>操作内容</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item,i) in tab4" :key="i">
-                                <td>{{item.time}}</td>
-                                <td>{{item.operator}}</td>
-                                <td>{{item.type}}</td>
-                                <td>{{item.detail}}</td>
-                            </tr>
-                            <tr v-if="tab4.length===0">
-                                <td colspan="4" v-html="NoData"></td>
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
 
@@ -807,7 +806,7 @@
                                                          <div class="form-group">
                                                              <label>&nbsp;</label>
                                                              <input type="text" name="lang_score" class="form-control"
-                                                                    placeholder="请输入" v-model="header_info.lang_score">
+                                                                    placeholder="请输入成绩" v-model="header_info.lang_score">
                                                          </div>
                                                      </div>
                                                 </div>
@@ -837,7 +836,7 @@
                                                          <div class="form-group">
                                                              <label>&nbsp;</label>
                                                              <input type="text" name="acad_score" class="form-control"
-                                                                    placeholder="请输入" v-model="header_info.acad_score">
+                                                                    placeholder="请输入成绩" v-model="header_info.acad_score">
                                                          </div>
                                                      </div>
                                                 </div>

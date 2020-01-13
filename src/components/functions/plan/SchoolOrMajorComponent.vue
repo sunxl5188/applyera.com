@@ -120,10 +120,9 @@
                                                      style="margin:0 -15px;">
                                                     <input type="text" name="name" class="form-control input-lg"
                                                            style="border:none;" placeholder="请输入专业名称"
-                                                           autocomplete="off" v-model="KEYWORDS"
-                                                           @keyup.enter="getMajorList()">
+                                                           autocomplete="off" v-model="KEYWORDS">
                                                     <i class="iconfont handPower clearSearch"
-                                                       @click="KEYWORDS='';getMajorList()" v-if="KEYWORDS!==''"
+                                                       @click="KEYWORDS=''" v-if="KEYWORDS!==''"
                                                        style="right:35px;top:6px;width:20px;">&#xe7f6;</i>
                                                     <i class="iconfont" @click="getMajorList()"
                                                        style="top: 7px;">&#xe618;</i>
@@ -142,8 +141,8 @@
                                                             <label>
                                                                 <input type="checkbox" name="unq_id"
                                                                        @click="setSelectId($event,item)"/>
-                                                                <div class="font12">{{item.majoren}}</div>
-                                                                <div>{{item.majorch}}</div>
+                                                                <div class="font12" v-html="highlight(item.majoren, KEYWORDS)"></div>
+                                                                <div v-html="highlight(item.majorch, KEYWORDS)"></div>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -313,6 +312,9 @@ export default {
       }
     }
   },
+  created () {
+    this.debounceGetMajorList = _.debounce(this.getMajorList, 1000)
+  },
   mounted () {
     let self = this
     self.$nextTick(() => {
@@ -464,6 +466,11 @@ export default {
           console.log(res.msg)
         }
       })
+    }
+  },
+  watch: {
+    KEYWORDS () {
+      this.debounceGetMajorList()
     }
   }
 }

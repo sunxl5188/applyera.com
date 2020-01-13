@@ -33,15 +33,15 @@
                             <table class="table table-hover table-bordered table-condensed table-text-over">
                                 <thead>
                                 <tr>
-                                    <th class="text-center w15">档案编号</th>
-                                    <th class="text-center w15">考评标题</th>
-                                    <th class="text-center">考评建议内容</th>
+                                    <th class="w15">档案编号</th>
+                                    <th class="w15">考评标题</th>
+                                    <th>考评建议内容</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="(item, i) in list" :key="i" class="handPower" @click="evaluaCallback(i)">
-                                    <td>{{item.number}}</td>
-                                    <td>{{item.title}}</td>
+                                    <td v-html="highlight(item.number, number)"></td>
+                                    <td v-html="highlight(item.title, title)"></td>
                                     <td>{{item.content}}</td>
                                 </tr>
                                 <tr v-if="list.length === 0">
