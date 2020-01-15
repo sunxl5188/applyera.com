@@ -17,15 +17,14 @@
                             <form action="" method="POST" class="form-inline">
                                 <div class="form-group">
                                     <label>档案编号</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" v-model="number">
                                 </div>
                                 <div class="form-group ml-20">
                                     <label>考评标题</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" v-model="title">
                                 </div>
                                 <div class="form-group ml-20">
                                     <button type="button" class="btn btn-primary" @click="pagechange(1)">搜索</button>
-                                    <button type="reset" class="btn btn-default ml-20" @click="clearData">清空</button>
                                 </div>
                             </form>
                         </div>
@@ -34,19 +33,19 @@
                             <table class="table table-hover table-bordered table-condensed table-text-over">
                                 <thead>
                                 <tr>
-                                    <th class="text-center w15">档案编号</th>
-                                    <th class="text-center w15">考评标题</th>
-                                    <th class="text-center">考评建议内容</th>
+                                    <th class="w15">档案编号</th>
+                                    <th class="w15">考评标题</th>
+                                    <th>考评建议内容</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="(item, i) in list" :key="i" class="handPower" @click="evaluaCallback(i)">
-                                    <td>{{item.number}}</td>
-                                    <td>{{item.title}}</td>
+                                    <td v-html="highlight(item.number, number)"></td>
+                                    <td v-html="highlight(item.title, title)"></td>
                                     <td>{{item.content}}</td>
                                 </tr>
                                 <tr v-if="list.length === 0">
-                                    <td colspan="3" v-html="NoData()"></td>
+                                    <td colspan="3" v-html="NoData"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -55,7 +54,7 @@
                             <span class="pull-left pt-20 pb-20">
                                 <a href="javascript:void(0);" class="cded lh34" @click="evaluaCallback()">找不到合适的? 点击添加自定义</a></span>
                             <div class="pull-right">
-                                <PagInAction :total="total" :current-page='current' @pagechange="pagechange"/>
+                                <pagination :total="total" :current-page='current' @pagechange="pagechange"/>
                             </div>
                         </div>
                     </div>
@@ -66,7 +65,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -110,12 +109,6 @@ export default {
         }
       })
     },
-    clearData () {
-      let self = this
-      self.number = ''
-      self.title = ''
-      self.pagechange(1)
-    },
     evaluaCallback (i) {
       let self = this
       if (i === undefined) {
@@ -131,7 +124,7 @@ export default {
       $('#AddEvaluation').modal('hide')
     }
   },
-  components: {PagInAction},
+  components: {pagination},
   watch: {}
 }
 </script>

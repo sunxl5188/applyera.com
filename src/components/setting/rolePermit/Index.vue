@@ -52,15 +52,15 @@
                         </td>
                     </tr>
                     <tr v-if="loading">
-                        <td colspan="5" v-html="LoadingImg()"></td>
+                        <td colspan="5" v-html="LoadingImg"></td>
                     </tr>
                     <tr v-if="list.length===0 && !loading">
-                        <td colspan="5" v-html="NoData()"></td>
+                        <td colspan="5" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>
 
-                <PagInAction :total="total" :current-page="current" @pagechange="pagechange"></PagInAction>
+                <pagination :total="total" :current-page="current" @pagechange="pagechange"></pagination>
             </div>
         </div>
         <router-view></router-view>
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -133,7 +133,7 @@ export default {
       })
     }
   },
-  components: {PagInAction},
+  components: {pagination},
   watch: {
     $route (to, from) {
       this.name = to.name

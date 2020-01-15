@@ -23,18 +23,18 @@
                     <ul class="nav navbar-nav">
                         <li>
                             <router-link to="/home/workProcess" class="iconLink">
-                                <i class="iconfont">&#xe64c;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="工作流" data-placement="bottom">&#xe64c;</i>
                             </router-link>
                         </li>
                         <li>
                             <router-link to="/home/taskdate" class="iconLink">
-                                <i class="iconfont">&#xe63b;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="日历" data-placement="bottom">&#xe63b;</i>
                             </router-link>
                         </li>
                         <li>
                             <router-link to="/setting/message" class="iconLink">
                                 <i class="number" v-if="msgNum>0">{{msgNum}}</i>
-                                <i class="iconfont">&#xe67d;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="消息" data-placement="bottom">&#xe67d;</i>
                             </router-link>
                         </li>
                         <li class="dropdown" id="userBtnList">
@@ -127,10 +127,12 @@
                         </div>
                     </li>
                     <li class="list-group-item" v-if="userInfo.access.marketing.show===1">
-                        <a href="javascript:void(0);"><i class="iconfont">&#xe600;</i><span>营销</span></a>
+                        <a href="javascript:void(0);"><i class="iconfont">&#xe6e4;</i><span>市场</span></a>
                         <div class="list-group">
                             <router-link to="/marketing/saleslead" class="list-group-item"
-                                         v-if="userInfo.access.marketing.child[0]===1">销售线索
+                                         v-if="userInfo.access.marketing.child[0]===1">市场线索
+                            </router-link>
+                            <router-link to="/marketing/product" class="list-group-item">产品管理
                             </router-link>
                         </div>
                     </li>
@@ -154,9 +156,6 @@
                             </router-link>
                             <router-link to="/setting/follow" class="list-group-item"
                                          v-if="userInfo.access.setting.child[5]===1">跟进状态
-                            </router-link>
-                            <router-link to="/setting/message" class="list-group-item"
-                                         v-if="userInfo.access.setting.child[6]===1">公告通知
                             </router-link>
                             <router-link to="/setting/contact" class="list-group-item"
                                          v-if="userInfo.access.setting.child[7]===1">联系人
@@ -198,6 +197,8 @@
                             </router-link>
                             <router-link to="/admin/application" class="list-group-item">院校申请
                             </router-link>
+                            <router-link to="/admin/topic" class="list-group-item">题目更新
+                            </router-link>
                         </div>
                     </li>
                 </ul>
@@ -238,6 +239,8 @@
 </template>
 
 <script>
+import 'malihu-custom-scrollbar-plugin'
+import 'jquery-mousewheel'
 import store from '@/vuex/Store'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import db from '@~/js/request'
@@ -281,15 +284,21 @@ export default {
         })
       }
     })
-
     setTimeout(function () {
       self.loading = false
     }, 500)
 
     setTimeout(function () {
+      $('.fullLeft').mCustomScrollbar({
+        axis: 'y'
+      })
+      $('[data-toggle="tooltip"]').tooltip({
+        template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="white-space: nowrap;"></div></div>'
+      })
+
       $('.list-group-item.active div.list-group').height($('.list-group-item.active div.list-group a').length * 40)
 
-      $(document).on('click', '.fullLeft>ul>li>a', function () {
+      $(document).on('click', '.fullLeft ul>li>a', function () {
         let $this = $(this).parent()
         let H = $this.find('.list-group a').length * 40
         $this.find('.list-group').height(H)
@@ -394,7 +403,6 @@ export default {
       $this.css({ 'min-height': viewH + 'px' })
     }
   },
-  components: {},
   watch: {
     $route (to, from) {
       let self = this
@@ -403,7 +411,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss">
 #userBtnList {
     position:relative;

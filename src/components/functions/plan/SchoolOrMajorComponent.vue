@@ -9,6 +9,10 @@
         <div class="modal fade bs-example-modal-lg" id="schoolMajor">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
                     <div class="modal-body">
                         <ul class="nav nav-tabs"><!--nav-justified-->
                             <li role="presentation" class="active"><a href="#schoolMajor1" data-toggle="tab">快速选择</a>
@@ -116,10 +120,9 @@
                                                      style="margin:0 -15px;">
                                                     <input type="text" name="name" class="form-control input-lg"
                                                            style="border:none;" placeholder="请输入专业名称"
-                                                           autocomplete="off" v-model="KEYWORDS"
-                                                           @keyup.enter="getMajorList()">
+                                                           autocomplete="off" v-model="KEYWORDS">
                                                     <i class="iconfont handPower clearSearch"
-                                                       @click="KEYWORDS='';getMajorList()" v-if="KEYWORDS!==''"
+                                                       @click="KEYWORDS=''" v-if="KEYWORDS!==''"
                                                        style="right:35px;top:6px;width:20px;">&#xe7f6;</i>
                                                     <i class="iconfont" @click="getMajorList()"
                                                        style="top: 7px;">&#xe618;</i>
@@ -138,8 +141,8 @@
                                                             <label>
                                                                 <input type="checkbox" name="unq_id"
                                                                        @click="setSelectId($event,item)"/>
-                                                                <div class="font12">{{item.majoren}}</div>
-                                                                <div>{{item.majorch}}</div>
+                                                                <div class="font12" v-html="highlight(item.majoren, KEYWORDS)"></div>
+                                                                <div v-html="highlight(item.majorch, KEYWORDS)"></div>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -181,9 +184,6 @@
                     </div>
                     <div class="modal-footer">
                         <a href="javascript:void(0);" class="cded" @click="customData">找不到合适的？点击添加自定义</a>
-                        <button type="button" class="btn btn-default ml-15" data-dismiss="modal"
-                                @click="ActiveArr=[];unqId=''">取消
-                        </button>
                         <button type="button" class="btn btn-primary ml-15" :disabled="ActiveArr.length===0?true:false"
                                 @click="parentData">
                             确定(已选:{{ActiveArr.length}})
@@ -230,7 +230,7 @@
                             <dd v-if="applyType===1">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        STA成绩：{{majorDateInfo.sat}}
+                                        SAT成绩：{{majorDateInfo.sat}}
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         ACT成绩：{{majorDateInfo.act}}
@@ -258,6 +258,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import store from '@/vuex/Store'
@@ -311,6 +312,9 @@ export default {
       }
     }
   },
+  created () {
+    this.debounceGetMajorList = _.debounce(this.getMajorList, 1000)
+  },
   mounted () {
     let self = this
     self.$nextTick(() => {
@@ -325,6 +329,10 @@ export default {
     })
     $(document).on('click', '.schoolList li', function () {
       $(this).siblings('li').removeClass('active').end().addClass('active')
+    })
+    $(document).on('hidden.bs.modal', '#schoolMajor', function () {
+      self.ActiveArr = []
+      self.unqId = ''
     })
   },
   methods: {
@@ -384,6 +392,11 @@ export default {
       self.ranking = '不限'
       self.tuition = '不限'
       self.majorArea = '不限'
+      self.schoolList = ''
+      self.majorArr = ''
+      _.delay(() => {
+        $('.selectpicker').selectpicker('refresh')
+      }, 500)
     },
     setSelectId (ev, obj) {
       let self = this
@@ -400,7 +413,6 @@ export default {
     },
     parentData () {
       let self = this
-      $('#schoolMajor').modal('hide')
       let params = new URLSearchParams()
       params.append('type', self.applyType)
       for (let i = 0; i < self.ActiveArr.length; i++) {
@@ -454,6 +466,11 @@ export default {
           console.log(res.msg)
         }
       })
+    }
+  },
+  watch: {
+    KEYWORDS () {
+      this.debounceGetMajorList()
     }
   }
 }

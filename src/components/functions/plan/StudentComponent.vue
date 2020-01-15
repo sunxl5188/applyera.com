@@ -43,12 +43,12 @@
                                     <td>{{item.create_time}}</td>
                                 </tr>
                                 <tr v-if="list.length === 0">
-                                    <td colspan="5" v-html="NoData()"></td>
+                                    <td colspan="5" v-html="NoData"></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <PagInAction :total="total" :current-page='current' :display="display"
+                        <pagination :total="total" :current-page='current' :display="display"
                                      @pagechange="pagechange"/>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -115,7 +115,7 @@ export default {
       $('#StudentComponent').modal('hide')
     }
   },
-  components: {PagInAction}
+  components: {pagination}
 }
 </script>
 

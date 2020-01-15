@@ -9,11 +9,10 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                         <div class="form-group form-search">
                             <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
-                            <i class="iconfont handPower clearSearch" @click="keyword='';pageChange()" v-if="keyword">&#xe7f6;</i>
-                            <input type="text" name="keywords" v-model="keyword" class="form-control"
+                            <i class="iconfont handPower clearSearch" @click="keywords=''" v-if="keywords">&#xe7f6;</i>
+                            <input type="text" name="keywords" v-model="keywords" class="form-control"
                                    placeholder="请输入关键字搜索"
-                                   style="padding-left:30px;"
-                                   @keyup.enter="pageChange()">
+                                   style="padding-left:30px;">
                         </div>
                         <div class="form-group ml-10">
                             <div class="customizeDropdown">
@@ -29,7 +28,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>负责顾问</label>
-                                                <select class="form-control selectpicker show-tick" v-model="user_id">
+                                                <select class="form-control selectpicker show-tick" data-live-search="true" data-size="10" v-model="user_id">
                                                     <option value="">请选择</option>
                                                     <option :value="i" v-for="(item, i) in userArr" :key="i">{{item}}
                                                     </option>
@@ -83,7 +82,7 @@
                 <tbody>
                 <tr v-for="(item, i) in list" :key="i">
                     <td>
-                        <router-link :to="{path:'/functions/answer/addAnswer',query:{id:item.id}}" class="cded" v-html="highlight(item.stu_name, keyword)"></router-link>
+                        <router-link :to="{path:'/functions/answer/addAnswer',query:{id:item.id}}" class="cded" v-html="highlight(item.stu_name, keywords)"></router-link>
                     </td>
                     <td>{{item.school_name}}</td>
                     <td>{{item.oper_name}}</td>
@@ -104,23 +103,24 @@
                     </td>
                 </tr>
                 <tr v-if="loading">
-                    <td colspan="6" v-html="LoadingImg()"></td>
+                    <td colspan="6" v-html="LoadingImg"></td>
                 </tr>
                 <tr v-if="!loading && list.length === 0">
-                    <td colspan="6" v-html="NoData()"></td>
+                    <td colspan="6" v-html="NoData"></td>
                 </tr>
                 </tbody>
             </table>
-            <PagInAction :total="total" :current-page="current" @pagechange="pageChange"/>
+            <pagination :total="total" :current-page="current" @pagechange="pageChange"/>
         </div>
         <router-view/>
     </div>
 </template>
 
 <script>
+import * as _ from 'lodash'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
-import PagInAction from '@#/PagInAction'
+import pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
 export default {
@@ -129,7 +129,7 @@ export default {
     return {
       loading: true,
       name: 'answer',
-      keyword: '',
+      keywords: '',
       user_id: '',
       add_time: '',
       status: '',
@@ -140,6 +140,9 @@ export default {
       userArr: [],
       statusArr: []
     }
+  },
+  created () {
+    this.debouncePagechange = _.debounce(this.pageChange, 1000)
   },
   mounted () {
     let self = this
@@ -162,7 +165,7 @@ export default {
       params.append('user_id', self.user_id)
       params.append('status', self.status)
       params.append('add_time', self.add_time)
-      params.append('keywords', self.keyword)
+      params.append('keywords', self.keywords)
       params.append('sort', self.time_sort)
       params.append('page', page || 1)
       self.loading = true
@@ -181,11 +184,14 @@ export default {
       })
     },
     clearData () {
-      this.keyword = ''
+      this.keywords = ''
       this.user_id = ''
       this.add_time = ''
       this.status = ''
       this.pageChange()
+      _.delay(() => {
+        $('.selectpicker').selectpicker('refresh')
+      }, 100)
     },
     listSort () {
       let self = this
@@ -230,8 +236,11 @@ export default {
       }, 500)
     }
   },
-  components: { PagInAction },
+  components: { pagination },
   watch: {
+    keywords () {
+      this.debouncePagechange()
+    },
     $route (to, from) {
       this.name = to.name
       if (this.name === 'answer') {

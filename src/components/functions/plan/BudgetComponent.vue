@@ -35,9 +35,9 @@
                             <table class="table table-hover table-bordered table-condensed table-text-over">
                                 <thead>
                                 <tr>
-                                    <th class="text-center" width="33.3333%">档案编号</th>
-                                    <th class="text-center" width="33.3333%">费用预算项目</th>
-                                    <th class="text-center" width="33.3333%">金额（元）</th>
+                                    <th width="33.3333%">档案编号</th>
+                                    <th width="33.3333%">费用预算项目</th>
+                                    <th width="33.3333%">金额</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -47,7 +47,7 @@
                                     <td>{{item.price}}</td>
                                 </tr>
                                 <tr v-if="list.length === 0">
-                                    <td colspan="3" v-html="NoData()"></td>
+                                    <td colspan="3" v-html="NoData"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -61,7 +61,7 @@
                             </a>
                         </div>
                         <div class="pull-right">
-                            <PagInAction :total="total" :current-page='current' @pagechange="pagechange"></PagInAction>
+                            <pagination :total="total" :current-page='current' @pagechange="pagechange"></pagination>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -135,7 +135,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   },
   watch: {}
 }

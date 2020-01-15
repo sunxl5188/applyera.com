@@ -13,12 +13,11 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                         <div class="form-group form-search">
                             <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
-                            <i class="iconfont handPower clearSearch" @click="student_name='';pagechange()"
+                            <i class="iconfont handPower clearSearch" @click="student_name=''"
                                v-if="student_name!==''">&#xe7f6;</i>
                             <input type="text" name="student_name" v-model="student_name" class="form-control"
                                    placeholder="请输入学生姓名搜索"
-                                   style="padding-left:30px;"
-                                   @keyup.enter="pagechange()">
+                                   style="padding-left:30px;">
                         </div>
                         <div class="form-group ml-10">
                             <div class="dropdown">
@@ -127,7 +126,8 @@
                         <th>
                             创建时间
                             <a href="javascript:void(0);"
-                               :class="time_sort===0?'iconfont sort':(time_sort===1?'iconfont sort up':'iconfont sort down')"
+                               class="iconfont sort"
+                               :class="time_sort===0?'':(time_sort===1?'down':'up')"
                                @click="listSort"></a>
                         </th>
                         <th class="w10">状态</th>
@@ -172,10 +172,10 @@
                         </td>
                     </tr>
                     <tr v-if="loading">
-                        <td colspan="8" class="text-center" v-html="LoadingImg()"></td>
+                        <td colspan="8" class="text-center" v-html="LoadingImg"></td>
                     </tr>
                     <tr v-if="loading===false && list.length === 0">
-                        <td colspan="8" class="text-center" v-html="NoData()"></td>
+                        <td colspan="8" class="text-center" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -255,7 +255,7 @@
                                 <div class="col-sm-6">
                                     <select name="adviser_id" class="form-control" v-validate="'required'"
                                             data-vv-as="新负责人">
-                                        <option value="">请选择用户</option>
+                                        <option value="">请选择负责人</option>
                                         <option :value="item.id" v-for="(item,i) in service_adviser_list" :key="i">{{item.name}}
                                         </option>
                                     </select>
@@ -281,7 +281,8 @@
 
 <script>
 import '@~/js/VeeValidateConfig'
-import pagination from '@/components/PagInAction'
+import * as _ from 'lodash'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 let WebUploader = require('@@/js/webuploader/webuploader')
@@ -315,6 +316,9 @@ export default {
     token () {
       return store.state.token
     }
+  },
+  created () {
+    this.debouncePagechange = _.debounce(this.pagechange, 1000)
   },
   mounted () {
     let self = this
@@ -535,7 +539,7 @@ export default {
     },
     validateBeforeSubmitConsultant (scope) {
       let self = this
-      let advName = $('[name="adviser_id"]').find('option:selected').text().replace('请选择用户', '')
+      let advName = $('[name="adviser_id"]').find('option:selected').text().replace('请选择负责人', '')
       self.$validator.validateAll(scope).then((result) => {
         if (result) {
           if (self.idArr.length === 0) {
@@ -550,7 +554,7 @@ export default {
           self.idArr.map(item => {
             params.append('student_id[]', item)
           })
-          self.layer.confirm("是否确定把所选的学生转移至 <b class='cf00'>" + advName + '</b>（选择的用户）？转移成功后，原负责人不能再维护跟进和更新此学生数据。', {
+          self.layer.confirm("是否确定把所选的学生转移至 <b class='cf00'>" + advName + '</b>转移成功后，原负责人不能再维护跟进和更新此学生数据。', {
             icon: 3
           }, function (ii) {
             self.layer.close(ii)
@@ -585,25 +589,33 @@ export default {
         self.layer.alert('请选择需要操作的学生', {icon: 2})
         return false
       } else {
-        self.idArr.map(item => {
-          params.append('student_id[]', item)
+        self.layer.confirm('学生将被移至学生公海，届时该学生将对您所在机构的所有顾问老师可见。您确认将学生转移至学生公海吗？', {
+          icon: 3
+        }, function (i) {
+          self.layer.close(i)
+          self.idArr.map(item => {
+            params.append('student_id[]', item)
+          })
+          db.postRequest('/Institution/Student/backStudent', params).then(res => {
+            if (res.status === 1) {
+              self.layer.alert(res.msg, {icon: 1}, function (i) {
+                self.layer.close(i)
+                self.pagechange(self.current)
+                self.idArr = []
+              })
+            } else {
+              self.layer.alert(res.msg, {icon: 2})
+            }
+          })
         })
       }
-      db.postRequest('/Institution/Student/backStudent', params).then(res => {
-        if (res.status === 1) {
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
-            self.layer.close(i)
-            self.pagechange(self.current)
-            self.idArr = []
-          })
-        } else {
-          self.layer.alert(res.msg, {icon: 2})
-        }
-      })
     }
   },
   components: {pagination},
   watch: {
+    student_name () {
+      this.debouncePagechange()
+    },
     $route (to, from) {
       let self = this
       self.name = (to.name).toLocaleLowerCase()

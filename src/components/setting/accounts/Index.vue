@@ -3,34 +3,36 @@
         <div class="row">
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <div class="list-group department">
-                    <li class="list-group-item hover">
-                        <span class="iconfont c999 font14 shrink">&#xe61e;</span>
-                        <div>
+                    <ul style="padding-left: 0;">
+                        <li class="list-group-item hover">
+                            <span class="iconfont c999 font14 shrink">&#xe61e;</span>
+                            <div>
                             <span class="handPower"
                                   @click="department_id=0;pagechange()">全公司({{departmentCount}}人)</span>
-                            <i class="iconfont cded pull-right handPower popovers font12 lh36"
-                               @click="level=0;department_id=0">&#xe66a;</i>
-                        </div>
-                        <ul class="list-group">
-                            <li class="list-group-item" v-for="(item,i) in department" :key="i">
-                                <span class="iconfont c999 font14 shrink ml-10">&#xe61e;</span>
-                                <div>
-                                    <span class="handPower" @click="department_id=item.id;pagechange()">{{item.department_name}}({{item.count}}人)</span>
-                                    <i class="iconfont cded pull-right handPower popovers font12 lh36"
-                                       @click="level=1;department_id=item.parent_id;parentId=item.parent_id;depId=item.id">&#xe66a;</i>
-                                </div>
-                                <ul class="list-group" v-if="item.child.length > 0">
-                                    <li class="list-group-item" v-for="(items,m) in item.child" :key="m">
-                                        <div class="ml-20">
-                                            <span class="handPower" @click="department_id=items.id;pagechange()">{{items.department_name}}({{items.count}}人)</span>
-                                            <i class="iconfont cded pull-right handPower popovers font12 lh36"
-                                               @click="level=2;department_id=items.id;parentId=items.parent_id;depId=items.id">&#xe66a;</i>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                                <i class="iconfont cded pull-right handPower popovers font12 lh36"
+                                   @click="level=0;department_id=0">&#xe66a;</i>
+                            </div>
+                            <ul class="list-group">
+                                <li class="list-group-item" v-for="(item,i) in department" :key="i">
+                                    <span class="iconfont c999 font14 shrink ml-10">&#xe61e;</span>
+                                    <div>
+                                        <span class="handPower" @click="department_id=item.id;pagechange()">{{item.department_name}}({{item.count}}人)</span>
+                                        <i class="iconfont cded pull-right handPower popovers font12 lh36"
+                                           @click="level=1;department_id=item.parent_id;parentId=item.parent_id;depId=item.id">&#xe66a;</i>
+                                    </div>
+                                    <ul class="list-group" v-if="item.child.length > 0">
+                                        <li class="list-group-item" v-for="(items,m) in item.child" :key="m">
+                                            <div class="ml-20">
+                                                <span class="handPower" @click="department_id=items.id;pagechange()">{{items.department_name}}({{items.count}}人)</span>
+                                                <i class="iconfont cded pull-right handPower popovers font12 lh36"
+                                                   @click="level=2;department_id=items.id;parentId=items.parent_id;depId=items.id">&#xe66a;</i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
@@ -83,14 +85,14 @@
                             </td>
                         </tr>
                         <tr v-if="loading">
-                            <td colspan="7" v-html="LoadingImg()"></td>
+                            <td colspan="7" v-html="LoadingImg"></td>
                         </tr>
                         <tr v-if="list.length===0 && !loading">
-                            <td colspan="7" v-html="NoData()"></td>
+                            <td colspan="7" v-html="NoData"></td>
                         </tr>
                         </tbody>
                     </table>
-                    <PagInAction :total="total" :current-page="current" @pagechange="pagechange"></PagInAction>
+                    <pagination :total="total" :current-page="current" @pagechange="pagechange"></pagination>
                 </div>
             </div>
         </div>
@@ -289,7 +291,7 @@
 <script>
 import '@~/js/VeeValidateConfig'
 import store from '@/vuex/Store'
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
 export default {
@@ -349,8 +351,9 @@ export default {
         // 部门分类=>鼠标移入时显示按钮
         $(document).on('mouseenter mouseleave', '.department li div', function (event) {
           if (event.type === 'mouseenter') {
-            if ($('.department li').length > 1) {
-              $('.department li').removeClass('hover')
+            let $this = $('.department li')
+            if ($this.length > 1) {
+              $this.removeClass('hover')
             }
             $(this).parent().addClass('hover')
           }
@@ -631,7 +634,7 @@ export default {
       })
     }
   },
-  components: {PagInAction}
+  components: {pagination}
 }
 </script>
 

@@ -45,12 +45,6 @@
                                 添加
                             </router-link>
                         </div>
-                        <div class="form-group ml-10">
-                            <button type="button" class="btn btn-default" @click="refresh"><i
-                                    class="iconfont">&#xe64e;</i> 刷新
-                            </button>
-                        </div>
-
                     </div>
 
                 </div>
@@ -88,10 +82,10 @@
                         <td v-text="item.statusStr"></td>
                     </tr>
                     <tr v-if="loading">
-                        <td colspan="6" class="text-center" v-html="LoadingImg()"></td>
+                        <td colspan="6" class="text-center" v-html="LoadingImg"></td>
                     </tr>
                     <tr v-if="loading===false && list.length===0">
-                        <td colspan="6" class="text-center" v-html="NoData()"></td>
+                        <td colspan="6" class="text-center" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -105,7 +99,7 @@
 </template>
 
 <script>
-import pagination from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 

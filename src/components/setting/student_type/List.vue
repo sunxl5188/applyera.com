@@ -10,10 +10,10 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                         <div class="form-group form-search">
                             <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
-                            <i class="iconfont handPower clearSearch" v-if="keyword" @click="keyword='';pagechange(1)">&#xe7f6;</i>
+                            <i class="iconfont handPower clearSearch" v-if="keyword" @click="keyword=''">&#xe7f6;</i>
                             <input type="text" name="keyword" class="form-control"
                                    placeholder="搜索"
-                                   style="padding-left:30px;" v-model="keyword" @keyup.enter="pagechange(1)">
+                                   style="padding-left:30px;" v-model="keyword">
                         </div>
                         <div class="form-group ml-10">
                             <div class="dropdown">
@@ -105,15 +105,15 @@
                         </td>
                     </tr>
                     <tr v-if="loading">
-                        <td colspan="8" class="text-center" v-html="LoadingImg()"></td>
+                        <td colspan="8" class="text-center" v-html="LoadingImg"></td>
                     </tr>
                     <tr v-if="loading===false && list.length === 0">
-                        <td colspan="8" class="text-center" v-html="NoData()"></td>
+                        <td colspan="8" class="text-center" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>
-                <PagInAction :total="total" :current-page='current' @pagechange="pagechange"
-                             v-if="list.length > 0"></PagInAction>
+                <pagination :total="total" :current-page='current' @pagechange="pagechange"
+                             v-if="list.length > 0"></pagination>
             </div>
         </div>
         <router-view></router-view>
@@ -121,7 +121,8 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import * as _ from 'lodash'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -146,6 +147,9 @@ export default {
       return store.state.token
     }
   },
+  created () {
+    this.debouncePagechange = _.debounce(this.pagechange, 1000)
+  },
   mounted () {
     let self = this
     self.name = self.$route.name
@@ -169,7 +173,7 @@ export default {
     pagechange (p) {
       let self = this
       let params = new URLSearchParams()
-      self.list = []
+      self.loading = true
       params.append('keyword', self.keyword)
       params.append('created_time', self.created_time)
       params.append('status', self.status)
@@ -223,8 +227,11 @@ export default {
       })
     }
   },
-  components: {PagInAction},
+  components: {pagination},
   watch: {
+    keyword () {
+      this.debouncePagechange()
+    },
     $route (to, from) {
       this.name = to.name
       this.pagechange(this.current)

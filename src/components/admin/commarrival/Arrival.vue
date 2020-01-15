@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <form action="" method="POST" class="form-horizontal" id="arrivalForm"
                   @submit.prevent="validateBeforeSubmit">
@@ -236,15 +236,15 @@
                                     <td>{{item.commission_fee_rate}}</td>
                                 </tr>
                                 <tr v-if="loading">
-                                    <td colspan="10" v-html="LoadingImg()"></td>
+                                    <td colspan="10" v-html="LoadingImg"></td>
                                 </tr>
                                 <tr v-if="!loading && studentList.length===0">
-                                    <td colspan="10" v-html="NoData()"></td>
+                                    <td colspan="10" v-html="NoData"></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <PagInAction :total="total" :display="display" @pagechange="pagechange"></PagInAction>
+                        <pagination :total="total" :display="display" @pagechange="pagechange"></pagination>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -253,7 +253,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import '@~/js/VeeValidateConfig'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -411,7 +411,7 @@ export default {
       }
     }
   },
-  components: {PagInAction}
+  components: {pagination}
 }
 </script>
 

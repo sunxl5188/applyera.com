@@ -12,8 +12,7 @@
                             <i class="iconfont handPower clearSearch" @click="keywords='';pagechange()" v-if="keywords">&#xe7f6;</i>
                             <input type="text" name="keywords" v-model="keywords" class="form-control"
                                    placeholder="请输入关键字搜索"
-                                   style="padding-left:30px;"
-                                   @keyup.enter="pagechange()">
+                                   style="padding-left:30px;">
                         </div>
                         <div class="form-group ml-10">
                             <div class="dropdown">
@@ -51,21 +50,15 @@
                         </div>
                         <div class="form-group">
                             <div class="form-group ml-10">
-                                <router-link to="/functions/applyInfo/detail" class="btn btn-default"><i
+                                <router-link to="/functions/applyInfo/applyType" class="btn btn-default"><i
                                         class="iconfont">&#xe73e;</i>
                                     添加
                                 </router-link>
-                            </div>
-                            <div class="form-group ml-10">
-                                <button type="button" class="btn btn-default" @click="refresh"><i class="iconfont">&#xe64e;</i>
-                                    刷新
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <table class="table table-customize">
                     <thead>
@@ -105,25 +98,24 @@
                         </td>
                     </tr>
                     <tr v-if="loading">
-                        <td colspan="6" class="text-center" v-html="LoadingImg()"></td>
+                        <td colspan="6" class="text-center" v-html="LoadingImg"></td>
                     </tr>
                     <tr v-if="loading===false && list.length === 0">
-                        <td colspan="6" class="text-center" v-html="NoData()"></td>
+                        <td colspan="6" class="text-center" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>
-
-                <PagInAction :total="total" :current-page='current' @pagechange="pagechange"
-                             v-if="list.length > 0"></PagInAction>
+                <pagination :total="total" :current-page='current' @pagechange="pagechange"
+                             v-if="list.length > 0"></pagination>
             </div>
-
         </div>
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import _ from 'lodash'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -146,6 +138,9 @@ export default {
     token () {
       return store.state.token
     }
+  },
+  created () {
+    this.debouncedPagechange = _.debounce(this.pagechange, 1000)
   },
   mounted () {
     let self = this
@@ -194,25 +189,33 @@ export default {
     },
     delItem (id) {
       let self = this
-      let params = new URLSearchParams()
-      params.append('id', id)
-      db.getRequest('Institution/ApplyMaterial/delete', params).then(res => {
-        if (res.status === 1) {
-          for (let i = 0; i < self.list.length; i++) {
-            if (self.list[i]['id'] === id) {
-              self.list.splice(i, 1)
+      self.layer.confirm('您确定要删除此信息？', {
+        icon: 2
+      }, function (i) {
+        self.layer.close(i)
+        let params = new URLSearchParams()
+        params.append('id', id)
+        db.getRequest('Institution/ApplyMaterial/delete', params).then(res => {
+          if (res.status === 1) {
+            for (let i = 0; i < self.list.length; i++) {
+              if (self.list[i]['id'] === id) {
+                self.list.splice(i, 1)
+              }
             }
+          } else {
+            self.layer.alert(res.msg, {
+              shadeClose: false
+            })
           }
-        } else {
-          self.layer.alert(res.msg, {
-            shadeClose: false
-          })
-        }
+        })
       })
     }
   },
-  components: {PagInAction},
+  components: {pagination},
   watch: {
+    keywords () {
+      this.debouncedPagechange()
+    },
     $route (to, from) {
       let self = this
       self.name = (to.name).toLocaleLowerCase()

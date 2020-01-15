@@ -14,10 +14,10 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                         <div class="form-group form-search">
                             <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
-                            <i class="iconfont handPower clearSearch" v-if="keywords" @click="keywords='';pagechange()">&#xe7f6;</i>
+                            <i class="iconfont handPower clearSearch" v-if="keywords" @click="keywords=''">&#xe7f6;</i>
                             <input type="text" v-model="keywords" class="form-control"
                                    placeholder="搜索所有内容"
-                                   style="padding-left:30px;" @keyup.enter="pagechange()">
+                                   style="padding-left:30px;">
                         </div>
                         <div class="form-group ml-10">
                             <button type="button" class="btn btn-default" @click="filterShow=!filterShow">
@@ -161,10 +161,10 @@
                     </td>
                 </tr>
                 <tr v-if="loading">
-                    <td colspan="6" v-html="LoadingImg()"></td>
+                    <td colspan="7" v-html="LoadingImg"></td>
                 </tr>
                 <tr v-if="!loading && list.length === 0">
-                    <td colspan="6" v-html="NoData()"></td>
+                    <td colspan="7" v-html="NoData"></td>
                 </tr>
                 </tbody>
             </table>
@@ -185,8 +185,8 @@
                         <div class="recordingBody">
                             <div class="recordingContent">
                                 <div class="media" v-for="(item,i) in followObj" :key="i">
-                                    <a class="media-left" href="#">
-                                        <img :src="item.head_img || 'http://placehold.it/50x50/FF5733/ffffff'"
+                                    <a class="media-left" href="javascript:void(0);">
+                                        <img :src="item.head_img || '../../../static/images/defaultface.png'"
                                              style="width:50px; height:50px;" class="img-circle">
                                     </a>
                                     <div class="media-body">
@@ -226,34 +226,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--删除列表信息-->
-        <div class="modal fade" id="delete-id">
-            <div class="modal-dialog ">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">提示</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
-                                <i class="iconfont font60 cf90">&#xe669;</i>
-                            </div>
-                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 lh24">
-                                <p>学生删除会同时自动清除此学生关联的<span class="cded">联系人</span>状语从句：<span class="cded">申请资料</span>。该操作成功之后，将<span
-                                        class="cded">无法恢复</span>。</p>
-                                <p>如果学生已完成留学合同的支付，则无法删除该学生</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary" @click="deleteAction">确定</button>
                     </div>
                 </div>
             </div>
@@ -334,7 +306,8 @@
 <script>
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
-import PagInAction from '@/components/PagInAction'
+import * as _ from 'lodash'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 let WebUploader = require('@@/js/webuploader/webuploader')
@@ -372,6 +345,9 @@ export default {
     token () {
       return store.state.token
     }
+  },
+  created () {
+    this.debouncePagechange = _.debounce(this.pagechange, 1000)
   },
   mounted () {
     let self = this
@@ -450,10 +426,11 @@ export default {
         self.layer.alert('请选择需要操作的学生', {icon: 2})
         return false
       }
-
-      $('#delete-id').modal({
-        backdrop: 'static',
-        show: true
+      self.layer.confirm('学生被删除后数据将无法恢复，您确定要删除该学生吗？', {
+        icon: 3
+      }, function (i) {
+        self.layer.close(i)
+        self.deleteAction()
       })
     },
     deleteAction () {
@@ -705,9 +682,12 @@ export default {
     }
   },
   components: {
-    'v-pagination': PagInAction
+    'v-pagination': pagination
   },
   watch: {
+    keywords () {
+      this.debouncePagechange()
+    },
     $route (to, from) {
       this.name = to.name
       if (this.name === 'student_seas') {

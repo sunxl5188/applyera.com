@@ -194,7 +194,7 @@
                                                 class="iconfont">&#xe631;</i>预览</a>
                                     </span>
                                         </div>
-                                        <div class="clearfix" v-if="picList.length===0" v-html="NoData()"></div>
+                                        <div class="clearfix" v-if="picList.length===0" v-html="NoData"></div>
                                     </div>
                                 </div>
                             </div>

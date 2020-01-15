@@ -125,7 +125,7 @@
                                                 class="iconfont">&#xe656;</i>删除</a>
                                     </span>
                                     </div>
-                                    <div class="clearfix" v-if="picList.length===0" v-html="NoData()"></div>
+                                    <div class="clearfix" v-if="picList.length===0" v-html="NoData"></div>
                                 </div>
                             </div>
                         </div>
@@ -179,11 +179,11 @@
                                         <td v-text="item.name"></td>
                                     </tr>
                                     <tr v-if="layBankList.length === 0">
-                                        <td colspan="2" v-html="NoData()"></td>
+                                        <td colspan="2" v-html="NoData"></td>
                                     </tr>
                                     </tbody>
                                 </table>
-                                <PagInAction :total="total" :current-page='current' :display='display'
+                                <pagination :total="total" :current-page='current' :display='display'
                                              @pagechange="pagechange"/>
                             </div>
                         </div>
@@ -199,7 +199,7 @@
 import '@~/js/VeeValidateConfig'
 import db from '@~/js/request'
 import store from '@/vuex/Store'
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 let WebUploader = require('@@/js/webuploader/webuploader')
 
 export default {
@@ -427,7 +427,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   }
 }
 </script>

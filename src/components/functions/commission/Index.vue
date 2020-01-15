@@ -9,7 +9,7 @@
                 </div>
             </div>
 
-            <div class="clearfix" v-if="loading" v-html="LoadingImg()"></div>
+            <div class="clearfix" v-if="loading" v-html="LoadingImg"></div>
             <div class="clearfix" v-if="!loading">
                 <div class="row kangbang">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -73,7 +73,7 @@
                             <td>{{item.commission}}</td>
                         </tr>
                         <tr v-if="list.expectList.length === 0">
-                            <td colspan="5" v-html="NoData()"></td>
+                            <td colspan="5" v-html="NoData"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -107,7 +107,7 @@
                             <td>{{item.status}}</td>
                         </tr>
                         <tr v-if="list.detailList.length === 0">
-                            <td colspan="5" v-html="NoData()"></td>
+                            <td colspan="5" v-html="NoData"></td>
                         </tr>
                         </tbody>
                     </table>

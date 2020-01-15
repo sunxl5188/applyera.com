@@ -1,7 +1,7 @@
 <template>
     <div>
         <form id="EducationForm" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
-            <input type="hidden" name="education_type" id="education_type" value="2"/>
+            <input type="hidden" name="id" v-model="id"/>
             <div class="clearfix lh34 mb-15 bdb">
                 <h4>
                     <b>推荐人</b>
@@ -230,8 +230,7 @@
                         <label>我有发表过文章 </label>
                         <div class="checkbox" style="display:inline-block;">
                             <label>
-                                <input type="checkbox" name="is_article" data-obj="education" data-name="is_article" v-model="education.is_article"
-                                       @change="showTimeC">&nbsp;
+                                <input type="checkbox" name="is_article" data-obj="education" data-name="is_article" v-model="education.is_article">&nbsp;
                             </label>
                         </div>
                         <div class="row" v-if="education.is_article">
@@ -269,8 +268,7 @@
                         <label>我有获得过奖学金 </label>
                         <div class="checkbox" style="display:inline-block;">
                             <label>
-                                <input type="checkbox" name="is_scholarship" data-obj="education" data-name="is_scholarship" v-model="education.is_scholarship"
-                                       @change="showTimeC">&nbsp;
+                                <input type="checkbox" name="is_scholarship" data-obj="education" data-name="is_scholarship" v-model="education.is_scholarship">&nbsp;
                             </label>
                         </div>
                         <div class="clearfix" v-if="education.is_scholarship">
@@ -336,8 +334,7 @@
                         <label>我曾经休学过半年以上 </label>
                         <div class="checkbox" style="display:inline-block;">
                             <label>
-                                <input type="checkbox" name="is_drop" data-obj="education" data-name="is_drop" v-model="education.is_drop"
-                                       @change="showTimeC">&nbsp;
+                                <input type="checkbox" name="is_drop" data-obj="education" data-name="is_drop" v-model="education.is_drop">&nbsp;
                             </label>
                         </div>
                         <div class="clearfix" v-if="education.is_drop">
@@ -422,21 +419,28 @@
                     </div>
                 </div>
             </div>
+            <div class="clearfix text-center pt-35 pb-15">
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 200px;">下一页</button>
+                <button type="button" class="btn btn-outline-primary btn-lg ml-20" style="width: 200px;" @click="saveCurrent">保存</button>
+            </div>
         </form>
     </div>
 </template>
 
 <script>
+import '@~/js/VeeValidateConfig'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import CitySelect from '@#/shared/CitySelect'
 import career from '@@/json/career.json'
 import degree from '@@/json/degree.json'
+import db from '@~/js/request'
 require('icheck')
 
 export default {
   name: 'MEducationComponent',
   props: {
+    id: '',
     education: {
       type: Object,
       default: () => {}
@@ -504,11 +508,49 @@ export default {
         })
       }, 1500)
     },
+    // 验证保存
     validateBeforeSubmit () {
       let self = this
       self.$validator.validateAll().then((result) => {
-        let formData = $('#EducationForm').serializeArray()
-        self.$emit('EducationCallback', result, formData)
+        if (result) {
+          let formData = $('#EducationForm').serializeArray()
+          let params = new URLSearchParams()
+          for (let i = 0; i < formData.length; i++) {
+            params.append(formData[i]['name'], formData[i]['value'])
+          }
+          params.append('verify', 1)
+          db.postRequest('/Institution/ApplyMaterial/saveEducation', params).then(res => {
+            if (res.status === 1) {
+              self.$router.push('/functions/applyInfo/exam?id=' + self.id)
+            } else {
+              self.layer.alert(res.msg, {
+                icon: 2
+              })
+            }
+          })
+        } else {
+          self.layer.alert('数据没有填写完整', {icon: 2})
+        }
+      })
+    },
+    // 保存当前数据
+    saveCurrent () {
+      let self = this
+      let formData = $('#EducationForm').serializeArray()
+      let params = new URLSearchParams()
+      for (let i = 0; i < formData.length; i++) {
+        params.append(formData[i]['name'], formData[i]['value'])
+      }
+      db.postRequest('/Institution/ApplyMaterial/saveEducation', params).then(res => {
+        if (res.status === 1) {
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+          })
+        } else {
+          self.layer.alert(res.msg, {
+            icon: 2
+          })
+        }
       })
     },
     RefreshSelect () {
@@ -534,6 +576,7 @@ export default {
             if (thisName !== undefined) {
               self[obj][thisName] = event.currentTarget.checked ? 1 : ''
               self.RefreshSelect()
+              self.showTimeC()
             }
           })
         })

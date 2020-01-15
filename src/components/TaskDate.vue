@@ -168,7 +168,7 @@
                                         </label>
                                     </div>
 
-                                    <div class="dropdown" style="display: inline-block;">
+                                    <div class="dropdown" style="display: inline-block;" data-toggle="tooltip" title="设置重复">
                                         <i :class="repeat!==0?'iconfont font20 cded ml-15':'iconfont font20 c999 ml-15'"
                                            style="cursor:pointer;"
                                            data-toggle="dropdown">&#xe8bf;</i>
@@ -189,7 +189,7 @@
                                         </ul>
                                     </div>
 
-                                    <div class="dropdown" style="display: inline-block;">
+                                    <div class="dropdown" style="display: inline-block;" data-toggle="tooltip" title="设置提醒">
                                         <i :class="remind!==0?'iconfont font20 cded ml-15':'iconfont font20 c999 ml-15'"
                                            style="cursor:pointer;"
                                            data-toggle="dropdown">&#xe6b4;</i>
@@ -322,6 +322,8 @@ export default {
             $('.fc-bg td').popover('hide')
           }
         })
+
+        $('[data-toggle="tooltip"]').tooltip()
       }, 500)
       // 点击上一个月、周、天
       $(document).on('click', '.fc-header-toolbar [aria-label="prev"]', function () {

@@ -40,10 +40,6 @@
                             <div class="form-group ml-10">
                                 <router-link to="/admin/bank/addbank" class="btn btn-default"><i class="iconfont">&#xe73e;</i> 添加</router-link>
                             </div>
-                            <div class="form-group ml-10">
-                                <button type="button" class="btn btn-default" @click="refresh"><i class="iconfont">&#xe64e;</i> 刷新</button>
-                            </div>
-
                         </div>
 
                     </div>
@@ -78,14 +74,14 @@
                         <td>{{item.statusStr}}</td>
                     </tr>
                     <tr v-if="loading">
-                        <td colspan="5" class="text-center" v-html="LoadingImg()"></td>
+                        <td colspan="5" class="text-center" v-html="LoadingImg"></td>
                     </tr>
                     <tr v-if="loading===false && list.length === 0">
-                        <td colspan="5" class="text-center" v-html="NoData()"></td>
+                        <td colspan="5" class="text-center" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>
-                <PagInAction :total="total" :current-page='current' @pagechange="pagechange"
+                <pagination :total="total" :current-page='current' @pagechange="pagechange"
                              v-if="list.length > 0"/>
             </div>
 
@@ -95,7 +91,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -182,7 +178,7 @@ export default {
       }, 100)
     }
   },
-  components: {PagInAction},
+  components: {pagination},
   watch: {
     $route (to, from) {
       let self = this

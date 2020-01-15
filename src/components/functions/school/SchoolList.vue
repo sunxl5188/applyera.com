@@ -2,14 +2,14 @@
     <div class="container-fluid bgWhite pt-25 pb-25">
         <div id="school" :style="name==='schoollist'?'':'display:none;'">
             <ul class="nav nav-tabs"><!--nav-justified-->
-                <li :class="{active:tabActive===1}"><a href="#tabs1" data-toggle="tab">查找院校</a></li>
-                <li :class="{active:tabActive===2}"><a href="#tabs2" data-toggle="tab">查找专业</a></li>
-                <li :class="{active:tabActive===3}"><a href="#tabs3" data-toggle="tab">我的收藏</a></li>
+                <li :class="{active:tabActive===''||tabActive===1}" @click="tabActive=1"><router-link to="/functions/schoollist?tabActive=1" exact>查找院校</router-link></li>
+                <li :class="{active:tabActive===2}" @click="tabActive=2"><router-link to="/functions/schoollist?tabActive=2" exact>查找专业</router-link></li>
+                <li :class="{active:tabActive===3}" @click="tabActive=3"><router-link to="/functions/schoollist?tabActive=3" exact>我的收藏</router-link></li>
             </ul>
             <div class="tab-content mt-15">
-                <div class="tab-pane fade in active">
+                <keep-alive include="SchoolListComponent,MajorComponent">
                     <component :is="currentComponent"></component>
-                </div>
+                </keep-alive>
             </div>
         </div>
         <router-view></router-view>
@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import SchoolListComponent from '@/components/functions/school/SchoolListComponent'
-import MajorComponent from '@/components/functions/school/MajorComponent'
-import CollectionComponent from '@/components/functions/school/CollectionComponent'
+import SchoolListComponent from '@#/functions/school/SchoolListComponent'
+import MajorComponent from '@#/functions/school/MajorComponent'
+import CollectionComponent from '@#/functions/school/CollectionComponent'
 import store from '@/vuex/Store'
 
 export default {
@@ -32,7 +32,7 @@ export default {
       schoolComponent: '',
       majorComponent: '',
       collection: '',
-      tabActive: 1
+      tabActive: ''
     }
   },
   computed: {
@@ -43,24 +43,11 @@ export default {
   mounted () {
     let self = this
     self.name = (self.$route.name).toLocaleLowerCase()
+    self.tabActive = self.$route.query.tabActive || ''
     self.$nextTick(() => {
-      if (self.name === 'schoollist') {
+      if (self.tabActive === '' || self.tabActive === 1) {
         self.currentComponent = SchoolListComponent
       }
-      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        if (e.target.getAttribute('href') === '#tabs1') {
-          self.currentComponent = SchoolListComponent
-          self.tabActive = 1
-        }
-        if (e.target.getAttribute('href') === '#tabs2') {
-          self.currentComponent = MajorComponent
-          self.tabActive = 2
-        }
-        if (e.target.getAttribute('href') === '#tabs3') {
-          self.currentComponent = CollectionComponent
-          self.tabActive = 3
-        }
-      })
     })
   },
   methods: {},
@@ -70,12 +57,20 @@ export default {
     CollectionComponent
   },
   watch: {
+    tabActive () {
+      switch (this.tabActive) {
+        case 2:
+          this.currentComponent = MajorComponent
+          break
+        case 3:
+          this.currentComponent = CollectionComponent
+          break
+        default:
+          this.currentComponent = SchoolListComponent
+      }
+    },
     $route (to, form) {
       this.name = (to.name).toLocaleLowerCase()
-      if (this.name === 'schoollist') {
-        this.currentComponent = SchoolListComponent
-        this.tabActive = 1
-      }
     }
   }
 }

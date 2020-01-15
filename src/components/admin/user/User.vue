@@ -49,12 +49,6 @@
                                     class="iconfont">&#xe73e;</i> 添加
                             </router-link>
                         </div>
-                        <div class="form-group ml-10">
-                            <button type="button" class="btn btn-default" @click="refresh"><i
-                                    class="iconfont">&#xe64e;</i> 刷新
-                            </button>
-                        </div>
-
                     </div>
 
                 </div>
@@ -67,6 +61,8 @@
                         <th width="18%">操作</th>
                         <th width="12%">用户编号</th>
                         <th>用户名称</th>
+                        <th>所属机构</th>
+                        <th>账户类型</th>
                         <th width="20%">创建时间</th>
                         <th width="10%">状态</th>
                     </tr>
@@ -87,19 +83,21 @@
                         </td>
                         <td>{{item.number}}</td>
                         <td>{{item.name}}</td>
+                        <td>{{item.company_name}}</td>
+                        <td>{{item.account_type}}</td>
                         <td>{{item.created_time}}</td>
                         <td>{{item.status|state}}</td>
                     </tr>
                     <tr v-if="loading">
-                        <td colspan="5" class="text-center" v-html="LoadingImg()"></td>
+                        <td colspan="7" class="text-center" v-html="LoadingImg"></td>
                     </tr>
                     <tr v-if="loading===false && list.length===0">
-                        <td colspan="5" class="text-center" v-html="NoData()"></td>
+                        <td colspan="7" class="text-center" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>
-                <PagInAction :total="total" :current-page='current' @pagechange="pagechange"
-                             v-if="list.length > 0"></PagInAction>
+                <pagination :total="total" :current-page='current' @pagechange="pagechange"
+                             v-if="list.length > 0"></pagination>
             </div>
 
         </div>
@@ -108,7 +106,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -205,7 +203,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   },
   watch: {
     $route (to, from) {

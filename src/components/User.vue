@@ -440,7 +440,7 @@
 
 <script>
 import cityJson from '@@/json/city'
-import ImageCropper from '@/components/ImageCropper'
+import ImageCropper from '@#/shared/ImageCropper'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 

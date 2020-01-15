@@ -1,12 +1,14 @@
 @charset "utf-8";
 @import "iconfont/iconfont.css";
 @import "bootstrap.min.css";
+@import "../../node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
 @import "animate.min.css";
 @import "../js/laydate/theme/default/laydate.css";
 @import "bootstrap-select";
 @import "../js/webuploader/webuploader";
 @import "../js/tipsy/tipsy.css";
 @import "../js/kindeditor/themes/default/default.css";
+@import "../../node_modules/icheck/skins/all.css";
 
 html, body{width:100%;min-width:1200px;background:#fff; font-family:"Microsoft YaHei";}
 
@@ -290,7 +292,7 @@ textarea{
 	& .fullLeft{
 		width:200px;height:100%;-webkit-transition:all .3s ease 0s;-moz-transition:all .3s ease 0s;-ms-transition:all .3s ease 0s;transition:all .3s ease 0s;background-color:#fff;position:fixed;left:0;top:0;z-index:10;box-shadow:0 0 3px #ddd;overflow-y:auto;
 
-		& > div.logo{
+		& div.logo{
 			width:100%;height:50px;display:table;text-align:center;
 
 			& > a{
@@ -300,7 +302,7 @@ textarea{
 			}
 		}
 
-		& > .list-group{
+		& .list-group{
 			padding-top:50px;
 
 			& > li{
@@ -327,7 +329,7 @@ textarea{
 				}
 
 				& > .list-group{
-					margin-bottom:0;height:0;overflow:hidden;-webkit-transition:all .5s ease 0s;-moz-transition:all .5s ease 0s;-ms-transition:all .5s ease 0s;transition:all .5s ease 0s;
+					margin-bottom:0;height:0;overflow:hidden;-webkit-transition:all .5s ease 0s;-moz-transition:all .5s ease 0s;-ms-transition:all .5s ease 0s;transition:all .5s ease 0s;padding-top:0;
 
 					& > .list-group-item{
 						border-bottom:none;padding-top:10px;padding-bottom:10px;padding-left:60px;border-right:3px solid transparent;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;
@@ -351,7 +353,7 @@ textarea{
 						&:after{content:'\e688';}
 					}
 
-					& > .list-group{height:auto;}
+					& .list-group{height:auto;}
 				}
 			}
 		}
@@ -540,6 +542,12 @@ textarea{
 				}
 				&:nth-of-type(odd){background-color:#f9f9f9;}
 			}
+			&+tbody{
+				border:none;
+				& > tr{
+					&:nth-of-type(odd){background:#fff;}
+				}
+			}
 		}
 	}
 }
@@ -643,15 +651,15 @@ textarea{
 
 	&.last{
 		& input{
-			padding-left:10px;padding-right:45px;right:0;
+			padding-left:10px;padding-right:45px;right:0; top:-55px;
 		}
 
 		& button{
-			right:5px;
+			right:5px;top:-55px;
 		}
 
 		& .clearSearch{
-			right:30px;
+			right:30px;top:-48px;
 		}
 	}
 }
@@ -720,7 +728,7 @@ span[contenteditable], div[contenteditable]{
 }
 
 .headerTitle{
-	position:relative;padding-left:15px;font-size:16px;line-height:34px;
+	position:relative;padding-left:15px;font-size:16px;line-height:34px;display:inline-block;
 
 	&:before{
 		content:'';width:4px;height:20px;display:block;overflow:hidden;position:absolute;left:0;top:50%;margin-top:-10px;background-color:#39f;
@@ -869,7 +877,6 @@ span[contenteditable], div[contenteditable]{
 			border:none;background:transparent !important;
 
 			& .filter-option-inner-inner {
-				//white-space:nowrap;-ms-text-overflow:ellipsis;text-overflow:ellipsis;overflow:hidden;max-width:300px;min-width:150px;
 				word-wrap:break-word;white-space:normal;
 			}
 

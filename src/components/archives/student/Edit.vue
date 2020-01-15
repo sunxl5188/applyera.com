@@ -1,6 +1,6 @@
 <template>
     <div class="bgGray" style="margin:-25px -15px;">
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <div class="pt-15 pb-15">
 
@@ -123,9 +123,9 @@
                 <div class="studentTabs">
                     <ul class="nav nav-tabs"><!--nav-justified-->
                         <li class="active"><a href="#tabs1" data-toggle="tab">学生概况</a></li>
-                        <li><a href="#tabs2" data-toggle="tab">学生资料</a></li>
-                        <li><a href="#tabs3" data-toggle="tab">附件管理</a></li>
-                        <li><a href="#tabs4" data-toggle="tab">操作日志</a></li>
+                        <li><a href="#tabs2" data-toggle="tab">附件管理</a></li>
+                        <li><a href="#tabs3" data-toggle="tab">操作日志</a></li>
+                        <li><a href="#tabs4" data-toggle="tab">学生资料</a></li>
                     </ul>
                 </div>
 
@@ -378,9 +378,8 @@
 
                                             <div class="form-group">
                                                 <div class="col-sm-9">
-                                                    <span id="next_contact_time" contenteditable="true"
-                                                          data-placeholder="设置跟进"></span>
-                                                    <div class="dropdown" style="display: inline-block;">
+                                                    <span id="next_contact_time" class="handPower" data-placeholder="设置跟进"></span>
+                                                    <div class="dropdown" style="display: inline-block;" data-toggle="tooltip" title="跟进重复">
                                                         <i :class="repeat!==0?'iconfont font20 cded':'iconfont font20 c999'"
                                                            style="cursor:pointer;"
                                                            data-toggle="dropdown">&#xe8bf;</i>
@@ -393,7 +392,7 @@
                                                         </ul>
                                                     </div>
 
-                                                    <div class="dropdown" style="display: inline-block;">
+                                                    <div class="dropdown" style="display: inline-block;" data-toggle="tooltip" title="跟进提醒">
                                                         <i :class="remind!==0?'iconfont font20 cded':'iconfont font20 c999'"
                                                            style="cursor:pointer;"
                                                            data-toggle="dropdown">&#xe6b4;</i>
@@ -418,8 +417,119 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="tab-pane fade bgWhite pad-15" id="tabs2">
+                        <div class="clearfix pt-15 pb-25">
+                            <div class="pull-left lh34 c999">小贴士: 支持扩展名: rar,zip,doc,docx,pdf,jpg</div>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-primary btn-sm upload" @click="uploadStart">上传文件
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm ml-10" @click="fileDown">下载</button>
+                                <button type="button" class="btn btn-default btn-sm ml-10" @click="deletefile">删除
+                                </button>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-customize">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
+                                    <span class="div_vm">学生端</span>
+                                </th>
+                                <th width="20%"></th>
+                                <th width="15%"></th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, i) in tab3.student" :key="i">
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="index[]" :value="item.id"/>
+                                            {{item.file_name}}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select class="form-control selectpicker show-tick" data-size="10"
+                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
+                                        <option value="">请选择</option>
+                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td width="15%">{{item.file_size}}</td>
+                                <td width="20%">{{item.add_time}}</td>
+                            </tr>
+                            <tr v-if="tab3.student.length === 0">
+                                <td colspan="4" v-html="NoData"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--机构端-->
+                        <table class="table table-bordered table-customize">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
+                                    <span class="div_vm">机构端</span>
+                                </th>
+                                <th width="20%"></th>
+                                <th width="15%"></th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, i) in tab3.user" :key="i">
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="index[]" :value="item.id"/>
+                                            {{item.file_name}}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select class="form-control selectpicker show-tick" data-size="10"
+                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
+                                        <option value="">请选择</option>
+                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>{{item.file_size}}</td>
+                                <td>{{item.add_time}}</td>
+                            </tr>
+                            <tr v-if="tab3.user.length === 0">
+                                <td colspan="4" v-html="NoData"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade bgWhite pad-15" id="tabs3">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="15%">操作时间</th>
+                                <th width="15%">操作人员</th>
+                                <th width="15%">操作类型</th>
+                                <th>操作内容</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item,i) in tab4" :key="i">
+                                <td>{{item.time}}</td>
+                                <td>{{item.operator}}</td>
+                                <td>{{item.type}}</td>
+                                <td>{{item.detail}}</td>
+                            </tr>
+                            <tr v-if="tab4.length===0">
+                                <td colspan="4" v-html="NoData"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade bgWhite pad-15" id="tabs4">
                         <div class="commonTitle">
                             <span>推荐人</span>
                             <span class="pull-right">
@@ -539,118 +649,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade bgWhite pad-15" id="tabs3">
-                        <div class="clearfix pt-15 pb-25">
-                            <div class="pull-left lh34 c999">小贴士: 支持扩展名: rar,zip,doc,docx,pdf,jpg</div>
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-primary btn-sm upload" @click="uploadStart">上传文件
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm ml-10" @click="fileDown">下载</button>
-                                <button type="button" class="btn btn-default btn-sm ml-10" @click="deletefile">删除
-                                </button>
-                            </div>
-                        </div>
-                        <table class="table table-bordered table-customize">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
-                                    <span class="div_vm">学生端</span>
-                                </th>
-                                <th width="20%"></th>
-                                <th width="15%"></th>
-                                <th width="20%"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item, i) in tab3.student" :key="i">
-                                <td>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="index[]" :value="item.id"/>
-                                            {{item.file_name}}
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-control selectpicker show-tick" data-size="10"
-                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
-                                        <option value="">请选择</option>
-                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
-                                        </option>
-                                    </select>
-                                </td>
-                                <td width="15%">{{item.file_size}}</td>
-                                <td width="20%">{{item.add_time}}</td>
-                            </tr>
-                            <tr v-if="tab3.student.length === 0">
-                                <td colspan="4" v-html="NoData()"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <!--机构端-->
-                        <table class="table table-bordered table-customize">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
-                                    <span class="div_vm">机构端</span>
-                                </th>
-                                <th width="20%"></th>
-                                <th width="15%"></th>
-                                <th width="20%"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item, i) in tab3.user" :key="i">
-                                <td>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="index[]" :value="item.id"/>
-                                            {{item.file_name}}
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-control selectpicker show-tick" data-size="10"
-                                            v-model="item.file_type" @change="editAnnex(item.id, item.file_type)">
-                                        <option value="">请选择</option>
-                                        <option :value="k" v-for="(items, k) in tab3.type_mapping" :key="k">{{items}}
-                                        </option>
-                                    </select>
-                                </td>
-                                <td>{{item.file_size}}</td>
-                                <td>{{item.add_time}}</td>
-                            </tr>
-                            <tr v-if="tab3.user.length === 0">
-                                <td colspan="4" v-html="NoData()"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade bgWhite pad-15" id="tabs4">
-                        <table class="table table-hover table-bordered">
-                            <thead>
-                            <tr>
-                                <th width="15%">操作时间</th>
-                                <th width="15%">操作人员</th>
-                                <th width="15%">操作类型</th>
-                                <th>操作内容</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item,i) in tab4" :key="i">
-                                <td>{{item.time}}</td>
-                                <td>{{item.operator}}</td>
-                                <td>{{item.type}}</td>
-                                <td>{{item.detail}}</td>
-                            </tr>
-                            <tr v-if="tab4.length===0">
-                                <td colspan="4" v-html="NoData()"></td>
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
 
@@ -790,61 +788,57 @@
                                                            placeholder="请输入在读年级" v-model="header_info.reading_grade">
                                                 </div>
                                             </div>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <div class="form-group">
-                                                    <label>语言成绩</label>
-                                                    <div class="row">
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                                             style="padding-right:5px;">
-                                                            <select name="lang_score_type" class="selectpicker"
-                                                                    data-width="fit"
-                                                                    style="display:inline-block;"
-                                                                    v-model="header_info.lang_score_type">
-                                                                <option value="">请选择</option>
-                                                                <option value="雅思">雅思</option>
-                                                                <option value="托福">托福</option>
-                                                                <option value="PTE">PTE</option>
-                                                                <option value="无">无</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                                             style="padding-left:5px;">
-                                                            <input type="text" name="lang_score" class="form-control"
-                                                                   placeholder="请输入" v-model="header_info.lang_score">
-                                                        </div>
-                                                    </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <div class="row">
+                                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                         <div class="form-group">
+                                                             <label>语言成绩</label>
+                                                             <select name="lang_score_type" class="form-control selectpicker show-tick" v-model="header_info.lang_score_type">
+                                                                 <option value="">请选择</option>
+                                                                 <option value="雅思">雅思</option>
+                                                                 <option value="托福">托福</option>
+                                                                 <option value="PTE">PTE</option>
+                                                                 <option value="无">无</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                         <div class="form-group">
+                                                             <label>&nbsp;</label>
+                                                             <input type="text" name="lang_score" class="form-control"
+                                                                    placeholder="请输入成绩" v-model="header_info.lang_score">
+                                                         </div>
+                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <div class="form-group">
-                                                    <label>学术成绩</label>
-                                                    <div class="row">
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                                             style="padding-right: 5px;">
-                                                            <select name="acad_score_type" class="selectpicker"
-                                                                    data-width="fit"
-                                                                    style="display:inline-block;"
-                                                                    v-model="header_info.acad_score_type">
-                                                                <option value="">请选择</option>
-                                                                <option value="GRE">GRE</option>
-                                                                <option value="GMAT">GMAT</option>
-                                                                <option value="SAT">SAT</option>
-                                                                <option value="ACT">ACT</option>
-                                                                <option value="A-Level">ALevel</option>
-                                                                <option value="O-Level">OLevel</option>
-                                                                <option value="GCSE">GCSE</option>
-                                                                <option value="BTEC">BTEC</option>
-                                                                <option value="IB">IB</option>
-                                                                <option value="高考">高考</option>
-                                                                <option value="无">无</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
-                                                             style="padding-left:5px;">
-                                                            <input type="text" name="acad_score" class="form-control"
-                                                                   placeholder="请输入" v-model="header_info.acad_score">
-                                                        </div>
-                                                    </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <div class="row">
+                                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                         <div class="form-group">
+                                                             <label>学术成绩</label>
+                                                             <select name="acad_score_type" class="form-control selectpicker show-tick" v-model="header_info.acad_score_type">
+                                                                 <option value="">请选择</option>
+                                                                 <option value="GRE">GRE</option>
+                                                                 <option value="GMAT">GMAT</option>
+                                                                 <option value="SAT">SAT</option>
+                                                                 <option value="ACT">ACT</option>
+                                                                 <option value="A-Level">ALevel</option>
+                                                                 <option value="O-Level">OLevel</option>
+                                                                 <option value="GCSE">GCSE</option>
+                                                                 <option value="BTEC">BTEC</option>
+                                                                 <option value="IB">IB</option>
+                                                                 <option value="高考">高考</option>
+                                                                 <option value="无">无</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                         <div class="form-group">
+                                                             <label>&nbsp;</label>
+                                                             <input type="text" name="acad_score" class="form-control"
+                                                                    placeholder="请输入成绩" v-model="header_info.acad_score">
+                                                         </div>
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -866,8 +860,7 @@
                                                     <label>申请学位</label>
                                                     <div class="clearfix">
                                                         <select name="intention_degree"
-                                                                class="form-control selectpicker"
-                                                                data-width="fit" v-model="header_info.intention_degree">
+                                                                class="form-control selectpicker show-tick"  v-model="header_info.intention_degree">
                                                             <option value="">请选择申请学位</option>
                                                             <option value="本科">本科</option>
                                                             <option value="本科预科">本科预科</option>
@@ -876,6 +869,7 @@
                                                             <option value="硕士预科">硕士预科</option>
                                                             <option value="博士">博士</option>
                                                             <option value="硕博连读">硕博连读</option>
+                                                            <option value="国际大一">国际大一</option>
                                                             <option value="ESL(语言班)">ESL(语言班)</option>
                                                             <option value="高中">高中</option>
                                                             <option value="初中">初中</option>
@@ -902,8 +896,7 @@
                                                     <label>意向国家</label>
                                                     <div class="clearfix">
                                                         <select name="intention_country[]"
-                                                                class="form-control selectpicker"
-                                                                data-width="fit"
+                                                                class="form-control selectpicker show-tick"
                                                                 data-size="5"
                                                                 multiple
                                                                 data-live-search="true"
@@ -1243,19 +1236,6 @@ export default {
     self.getDetail()
     self.$nextTick(() => {
       setTimeout(function () {
-        self.laydate.render({
-          elem: '#times2',
-          type: 'datetime'
-        })
-        self.laydate.render({
-          elem: '#times3',
-          type: 'datetime'
-        })
-        self.laydate.render({
-          elem: '#next_contact_time',
-          type: 'datetime'
-        })
-
         $(document).on('click', '[name="fid[]"]', function () {
           if ($(this).is(':checked') === true) {
             self.fid.push($(this).val())
@@ -1364,13 +1344,21 @@ export default {
         }
         self.loading = false
         self.header_info.is_common = parseInt(self.$route.query.isCommon) || 0
-        setTimeout(function () {
+        self.$nextTick(() => {
+          $('[data-toggle="tooltip"]').tooltip()
+          self.laydate.render({
+            elem: '#next_contact_time',
+            type: 'datetime'
+          })
           if (self.id === '') {
-            $('#editStudentInfo').modal('show')
+            $('#editStudentInfo').modal({
+              backdrop: 'static',
+              show: true
+            })
           }
           $('.selectpicker').selectpicker('refresh')
           self.createUpload()
-        }, 1000)
+        })
       })
     },
     deleteData () {
@@ -1453,7 +1441,6 @@ export default {
             self.layer.close(index)
             if (res.status === 1) {
               self.header_info = res.data
-              self.id = res.data.stu_id
               let countryArr = []
               res.data.intention_country.map(item => {
                 self.nation.map(items => {
@@ -1463,13 +1450,19 @@ export default {
                 })
               })
               self.country = countryArr.join(',')
-              self.layer.alert(res.msg, {
-                icon: 1
-              }, function (i) {
+              self.layer.alert(res.msg, {icon: 1}, function (i) {
                 self.layer.close(i)
                 $('#editStudentInfo').modal('hide')
                 if (self.id === '') {
                   self.$router.push('/archives/student/edit?id=' + res.data.stu_id)
+                  self.id = res.data.stu_id
+                  self.$nextTick(() => {
+                    $('[data-toggle="tooltip"]').tooltip()
+                    self.laydate.render({
+                      elem: '#next_contact_time',
+                      type: 'datetime'
+                    })
+                  })
                 }
               })
             } else {
@@ -1922,6 +1915,10 @@ export default {
             &.Z {background-color:#00a350;}
         }
     }
+}
+
+#next_contact_time{
+    &:empty:before{content:attr(data-placeholder);transition:all 0.4s; cursor:pointer;color:rgba(0, 0, 0, 0.5);}
 }
 
 .row {

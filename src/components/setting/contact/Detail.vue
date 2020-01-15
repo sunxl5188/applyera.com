@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="loading" v-html="LoadingImg()" class="pad-30"></div>
+        <div v-if="loading" v-html="LoadingImg" class="pad-30"></div>
         <div v-if="!loading">
             <div class="clearfix pb-30">
                 <div class="row">

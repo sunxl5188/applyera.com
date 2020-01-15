@@ -41,10 +41,6 @@
                         </div>
                     </div>
                     <div class="form-group ml-10">
-                        <button type="button" class="btn btn-default" @click="refresh"><i class="iconfont">&#xe64e;</i> 刷新
-                        </button>
-                    </div>
-                    <div class="form-group ml-10">
                         <button type="button" class="btn btn-default" @click="$router.back()"><i class="iconfont">&#xe64f;</i>
                             返回
                         </button>
@@ -74,10 +70,10 @@
                 </td>
             </tr>
             <tr v-if="loading">
-                <td colspan="5" v-html="LoadingImg()"></td>
+                <td colspan="5" v-html="LoadingImg"></td>
             </tr>
             <tr v-if="!loading && list.length===0">
-                <td colspan="5" v-html="NoData()"></td>
+                <td colspan="5" v-html="NoData"></td>
             </tr>
             </tbody>
             <tfoot>
@@ -86,12 +82,12 @@
             </tr>
             </tfoot>
         </table>
-        <PagInAction :total="total" @pagechange="pagechange"></PagInAction>
+        <pagination :total="total" @pagechange="pagechange"></pagination>
     </div>
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -150,7 +146,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   }
 }
 </script>

@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <form action="" id="addFanweiForm" method="POST" class="form-horizontal"
                   @submit.prevent="validateBeforeSubmit">
@@ -153,7 +153,7 @@
 
 <script>
 import '@~/js/VeeValidateConfig'
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -253,7 +253,7 @@ export default {
       })
     }
   },
-  components: {PagInAction}
+  components: {pagination}
 }
 </script>
 

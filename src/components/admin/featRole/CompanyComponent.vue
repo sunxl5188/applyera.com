@@ -23,11 +23,11 @@
                                     <td>{{item.name}}</td>
                                 </tr>
                                 <tr v-if="CompanyList.length === 0">
-                                    <td colspan="2" v-html="NoData()"></td>
+                                    <td colspan="2" v-html="NoData"></td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <PagInAction :display="display" :total="total" @pagechange="getCompany"></PagInAction>
+                            <pagination :display="display" :total="total" @pagechange="getCompany"></pagination>
                         </div>
                     </div>
                 </div><!-- /.modal-content -->
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -80,7 +80,7 @@ export default {
       this.$emit('companyCallback', obj)
     }
   },
-  components: {PagInAction}
+  components: {pagination}
 }
 </script>
 

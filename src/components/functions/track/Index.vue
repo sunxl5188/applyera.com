@@ -62,11 +62,6 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="form-group ml-10">
-                        <button type="button" class="btn btn-default" @click="refresh"><i class="iconfont">&#xe64e;</i>
-                            刷新
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -152,16 +147,16 @@
                 </tbody>
                 <tbody v-if="!loading && list.length === 0">
                 <tr>
-                    <td colspan="7" v-html="NoData()"></td>
+                    <td colspan="7" v-html="NoData"></td>
                 </tr>
                 </tbody>
                 <tbody v-if="loading">
                 <tr>
-                    <td colspan="7" v-html="LoadingImg()"></td>
+                    <td colspan="7" v-html="LoadingImg"></td>
                 </tr>
                 </tbody>
             </table>
-            <PagInAction :total="total" @pagechange="pagechange"></PagInAction>
+            <pagination :total="total" @pagechange="pagechange"></pagination>
         </div>
         <!--申请费-->
         <div class="modal fade bs-example-modal-lg" id="applyFee">
@@ -232,7 +227,7 @@
 </template>
 
 <script>
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 
@@ -360,7 +355,7 @@ export default {
     }
   },
   components: {
-    PagInAction
+    pagination
   }
 }
 </script>

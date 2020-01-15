@@ -1,7 +1,7 @@
 <template>
     <div>
         <InitApplyNav :state="state" step="step3" :id="id"/>
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <form id="questionForm" method="POST" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
                 <div class="clearfix">

@@ -52,19 +52,11 @@ export default new Router({
           }
         },
         {
-          path: 'home/imagecropper',
-          name: 'imagecropper',
-          component: resolve => require(['@#/ImageCropper'], resolve),
-          meta: {
-            title: '我的企业', requiresAuth: true, group: ['home', 4, '']
-          }
-        },
-        {
           path: 'home/workProcess',
           name: 'workProcess',
           component: resolve => require(['@#/WorkProcess'], resolve),
           meta: {
-            title: '工作流', requiresAuth: true, group: ['home', 5, '']
+            title: '工作流', requiresAuth: true, group: ['home', 4, '']
           }
         }
       ]
@@ -174,7 +166,27 @@ export default new Router({
               path: 'scholldetail',
               name: 'scholldetail',
               component: resolve => require(['@#/functions/school/SchollDetail'], resolve),
-              meta: {title: '学校详情', requiresAuth: true, group: ['function', 0, 0]}
+              meta: {title: '学校详情', requiresAuth: true, group: ['function', 0, 0]},
+              children: [
+                {
+                  path: 'benke',
+                  name: 'benke',
+                  component: resolve => require(['@#/functions/school/MajorDetailA'], resolve),
+                  meta: {title: '本科专业', requiresAuth: true, group: ['function', 0, 1]}
+                },
+                {
+                  path: 'shuoshi',
+                  name: 'shuoshi',
+                  component: resolve => require(['@#/functions/school/MajorDetailB'], resolve),
+                  meta: {title: '硕士专业', requiresAuth: true, group: ['function', 0, 2]}
+                },
+                {
+                  path: 'FoundationDetail',
+                  name: 'FoundationDetail',
+                  component: resolve => require(['@#/functions/school/FoundationDetail'], resolve),
+                  meta: {title: '预科语言详情', requiresAuth: true, group: ['function', 0, 3]}
+                }
+              ]
             },
             {
               path: 'majordetaila',
@@ -226,12 +238,52 @@ export default new Router({
           children: [
             {
               path: 'detail',
-              name: 'applyInfo-info',
+              name: 'applyInfoDetail',
               component: resolve => require(['@#/functions/applyInfo/detail'], resolve),
               meta: {
                 title: '资料详情',
                 requiresAuth: true,
                 group: ['function', 2, 0]
+              }
+            },
+            {
+              path: 'family',
+              name: 'family',
+              component: resolve => require(['@#/functions/applyInfo/FamilyComponent'], resolve),
+              meta: {
+                title: '家庭信息',
+                requiresAuth: true,
+                group: ['function', 2, 1]
+              }
+            },
+            {
+              path: 'education',
+              name: 'education',
+              component: resolve => require(['@#/functions/applyInfo/Education'], resolve),
+              meta: {
+                title: '教育背景',
+                requiresAuth: true,
+                group: ['function', 2, 2]
+              }
+            },
+            {
+              path: 'exam',
+              name: 'exam',
+              component: resolve => require(['@#/functions/applyInfo/ExamComponent'], resolve),
+              meta: {
+                title: '考试成绩',
+                requiresAuth: true,
+                group: ['function', 2, 3]
+              }
+            },
+            {
+              path: 'applyType',
+              name: 'applyType',
+              component: resolve => require(['@#/functions/applyInfo/applyType'], resolve),
+              meta: {
+                title: '申请类型',
+                requiresAuth: true,
+                group: ['function', 2, 4]
               }
             }
           ]
@@ -564,7 +616,7 @@ export default new Router({
       component: resolve => require(['@#/marketing/Index'], resolve),
       meta: {
         requiresAuth: true,
-        title: '营销',
+        title: '市场',
         group: ['marketing', '', '']
       },
       children: [
@@ -580,6 +632,24 @@ export default new Router({
               path: 'TentacleDetail',
               name: 'TentacleDetail',
               component: resolve => require(['@#/marketing/saleslead/TentacleDetail'], resolve),
+              meta: {
+                title: '销售线索详情', requiresAuth: true, group: ['marketing', 0, 0]
+              }
+            }
+          ]
+        },
+        {
+          path: 'product',
+          name: 'product',
+          component: resolve => require(['@#/marketing/Product'], resolve),
+          meta: {
+            title: '产品管理', requiresAuth: true, group: ['marketing', 1, '']
+          },
+          children: [
+            {
+              path: 'detail',
+              name: 'ProductDetail',
+              component: resolve => require(['@#/marketing/ProductDetail'], resolve),
               meta: {
                 title: '销售线索详情', requiresAuth: true, group: ['marketing', 0, 0]
               }
@@ -844,6 +914,16 @@ export default new Router({
               }
             }
           ]
+        },
+        {
+          path: 'topic',
+          name: 'topic',
+          component: resolve => require(['@#/admin/Topic'], resolve),
+          meta: {
+            title: '题目更新',
+            requiresAuth: true,
+            group: ['applyoversea', 11, '']
+          }
         }
       ]
     },

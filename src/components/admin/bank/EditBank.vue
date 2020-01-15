@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="clearfix" v-if="Object.keys(list).length ===0" v-html="LoadingImg()"></div>
+        <div class="clearfix" v-if="Object.keys(list).length ===0" v-html="LoadingImg"></div>
         <div class="clearfix" v-if="Object.keys(list).length>0">
             <form id="editForm" class="form-horizontal" autocomplete="off"
                   @submit.prevent="validateBeforeSubmit">

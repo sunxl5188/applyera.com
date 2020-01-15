@@ -13,17 +13,12 @@
                                 添加
                             </router-link>
                         </div>
-                        <div class="form-group ml-10">
-                            <button type="button" class="btn btn-default" @click="refresh"><i
-                                    class="iconfont">&#xe64e;</i> 刷新
-                            </button>
-                        </div>
                     </div>
 
                 </div>
             </div>
 
-            <div v-if="loading" v-html="LoadingImg()"></div>
+            <div v-if="loading" v-html="LoadingImg"></div>
             <div class="row" v-if="!loading">
                 <table class="table table-customize">
                     <thead>
@@ -53,11 +48,11 @@
                         <td>{{item.created_time}}</td>
                     </tr>
                     <tr v-if="list.length === 0">
-                        <td colspan="5" v-html="NoData()"></td>
+                        <td colspan="5" v-html="NoData"></td>
                     </tr>
                     </tbody>
                 </table>
-                <PagInAction :total="total" :current-page="currentPage" @pagechange="pagechange"></PagInAction>
+                <pagination :total="total" :current-page="currentPage" @pagechange="pagechange"></pagination>
             </div>
         </div>
         <router-view></router-view>
@@ -66,7 +61,7 @@
 
 <script>
 import store from '@/vuex/Store'
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
 export default {
@@ -154,7 +149,7 @@ export default {
       })
     }
   },
-  components: {PagInAction},
+  components: {pagination},
   watch: {
     $route (to, from) {
       this.name = (to.name).toLocaleLowerCase()

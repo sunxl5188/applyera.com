@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div v-if="loading" v-html="LoadingImg()"></div>
+        <div v-if="loading" v-html="LoadingImg"></div>
         <div v-if="!loading">
             <form action="" id="gongneng" method="POST" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
                 <input type="hidden" name="id" id="id" v-model="id" v-if="id!==undefined"/>
@@ -217,7 +217,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <PagInAction :display="display" :total="total1" @pagechange="getUsers"></PagInAction>
+                            <pagination :display="display" :total="total1" @pagechange="getUsers"></pagination>
                         </div>
                     </div>
                 </div><!-- /.modal-content -->
@@ -228,7 +228,7 @@
 
 <script>
 import '@~/js/VeeValidateConfig'
-import PagInAction from '@/components/PagInAction'
+import pagination from '@#/shared/Pagination'
 import CompanyComponent from '@/components/admin/featRole/CompanyComponent'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
@@ -393,7 +393,7 @@ export default {
       })
     }
   },
-  components: {PagInAction, CompanyComponent}
+  components: {pagination, CompanyComponent}
 }
 </script>
 

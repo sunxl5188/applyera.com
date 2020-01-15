@@ -1,7 +1,6 @@
 <template>
     <div class="schoolHeader">
-        <div v-if="loading" v-html="LoadingImg()"></div>
-        <div class="row" v-if="!loading">
+        <div class="row">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <div class="media">
                     <span class="media-left media-middle" style="padding-right:20px;">
@@ -15,10 +14,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
-                <div class="clearfix">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="clearfix text-right pb-15">
+                    <a href="javascript:void(0);" v-if="schoolInfo.is_clt===0"
+                            @click="collection(schoolInfo.unq_id,schoolInfo.type,$event)"><i class="iconfont">&#xe642;</i> <span class="div_vm">加入收藏</span>
+                    </a>
+                    <a href="javascript:void(0);" v-if="schoolInfo.is_clt===1"
+                            @click="collection(schoolInfo.unq_id,schoolInfo.type,$event)"><i class="iconfont cf90">&#xe69a;</i> <span class="div_vm">取消收藏</span>
+                    </a>
+                    <a href="javascript:void(0);" class="ml-15" @click="$router.back()"><i class="iconfont">&#xe64f;</i> <span class="div_vm">返回</span></a>
+                </div>
+                <div class="clearfix text-center">
                     <div class="row" v-if="userInfo.access.show_commission===1">
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                             <div class="lh36 cded font20">{{schoolInfo.ranking['content']}}</div>
                             <div class="lh20">{{schoolInfo.ranking.name}}</div>
                         </div>
@@ -26,7 +34,7 @@
                             <div class="lh36 cded font20">{{schoolInfo.qs_ranking["val"]}}</div>
                             <div class="lh20">{{schoolInfo.qs_ranking["name"]}}</div>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                             <div class="lh36 cded font20">
                                 {{schoolInfo.commission==="-"?"暂无":schoolInfo.commission}}
                             </div>
@@ -34,28 +42,16 @@
                         </div>
                     </div>
                     <div class="row" v-if="userInfo.access.show_commission!==1">
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                             <div class="lh36 cded font20">{{schoolInfo.ranking['content']}}</div>
                             <div class="lh20">{{schoolInfo.ranking.name}}</div>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                             <div class="lh36 cded font20">{{schoolInfo.qs_ranking["val"]}}</div>
                             <div class="lh20">{{schoolInfo.qs_ranking["name"]}}</div>
                         </div>
                     </div>
                 </div>
-
-                <div class="clearfix pt-20">
-                    <button type="button" class="btn btn-primary btn-block"
-                            v-if="schoolInfo.is_clt===0"
-                            @click="collection(schoolInfo.unq_id,schoolInfo.type,$event)">加入收藏
-                    </button>
-                    <button type="button" class="btn btn-default btn-block"
-                            v-if="schoolInfo.is_clt===1"
-                            @click="collection(schoolInfo.unq_id,schoolInfo.type,$event)">取消收藏
-                    </button>
-                </div>
-
             </div>
         </div>
     </div>
@@ -87,12 +83,7 @@ export default {
       return store.state.userInfo
     }
   },
-  mounted () {
-    let self = this
-    setTimeout(function () {
-      self.loading = false
-    }, 500)
-  },
+  mounted () {},
   methods: {
     // 加入取消收藏
     collection (unqId, type, event) {
@@ -124,7 +115,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .schoolHeader {
-        padding:25px 30px;height:161px;
-    }
+    .schoolHeader {}
 </style>

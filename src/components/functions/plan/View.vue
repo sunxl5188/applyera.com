@@ -1,7 +1,7 @@
 <template>
     <div id="editplanShow" class="bgGray">
         <div class="editplanWrap">
-            <div class="pad30" v-if="loading" v-html="LoadingImg()"></div>
+            <div class="pad30" v-if="loading" v-html="LoadingImg"></div>
             <div v-if="!loading">
                 <div class="header-wrap bgGray">
                     <div class="row">
