@@ -226,7 +226,9 @@
                                                 <option value="CA">加币</option>
                                             </select>
                                             <input type="number" min="0.01" step="0.01" name="pay_fee[]" class="form-control div_vm" placeholder="请输入金额"
-                                                   style="display:inline-block;width:auto;" v-model="item.pay_fee"/>
+                                                   style="display:inline-block;width:100px;" v-model="item.pay_fee"/>
+                                            <input type="number" min="0.01" step="0.01" name="pay_fee_cny[]" class="form-control div_vm" placeholder="请输入金额"
+                                                   style="display:inline-block;width:100px;" v-model="item.pay_fee_cny"/>
                                             <input type="hidden" name="pay_uploads[]" v-model="item.pay_uploads" />
                                             <button type="button" class="btn btn-default" @click="uploadClick('s'+i)">上传凭证</button>
                                         </div>

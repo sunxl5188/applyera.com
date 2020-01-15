@@ -84,7 +84,7 @@
                             <div class="form-group">
                                 <label>性别 <font class="cf00">*</font></label>
                                 <div class="checkbox">
-                                    <label for="sex1">
+                                    <label for="sex1" style="padding-left: 0;">
                                         <input type="radio" name="sex" id="sex1" value="1"
                                                v-model="personal.sex"> 男
                                     </label>
@@ -101,7 +101,7 @@
                             <div class="form-group">
                                 <label>婚姻状态 <font class="cf00">*</font></label>
                                 <div class="checkbox">
-                                    <label>
+                                    <label style="padding-left: 0;">
                                         <input type="radio" name="is_married" value="1"
                                                v-model.number="personal.is_married"> 已婚
                                     </label>
@@ -231,44 +231,48 @@
                     <span>熟练程度（多选）</span>
                 </div>
 
-                <div class="clearfix" v-for="(item,i) in personal.language" :key="i">
+                <div class="row" v-for="(item,i) in personal.language" :key="i">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <div class="form-group">
-                            <select :name="'language[name]['+i+']'" class="form-control selectpicker"
-                                    v-validate="'required'"
-                                    data-vv-as="语言" v-model="item.name" data-size="10" data-live-search="true">
-                                <option value="">请选择</option>
-                                <option :value="items.id" v-for="(items,k) in lang" :key="k">
-                                    {{items.cn}}
-                                </option>
-                            </select>
-                            <div class="validateTip" v-show="errors.has('language[name]['+i+']')">
-                                {{ errors.first("language[name]["+i+"]") }}
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <select :name="'language[name]['+i+']'" class="form-control selectpicker show-tick"
+                                        v-validate="'required'"
+                                        data-vv-as="语言" v-model="item.name" data-size="10" data-live-search="true">
+                                    <option value="">请选择</option>
+                                    <option :value="items.id" v-for="(items,k) in lang" :key="k">
+                                        {{items.cn}}
+                                    </option>
+                                </select>
+                                <div class="validateTip" v-show="errors.has('language[name]['+i+']')">
+                                    {{ errors.first("language[name]["+i+"]") }}
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                         <div class="checkbox pull-left">
-                            <label>
-                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="母语"
-                                       v-model="item.type"> 母语
-                            </label>
-                            <label>
-                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="精通口语"
-                                       v-model="item.type"> 精通口语
-                            </label>
-                            <label>
-                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="精通写作"
-                                       v-model="item.type"> 精通写作
-                            </label>
-                            <label>
-                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="精通阅读"
-                                       v-model="item.type"> 精通阅读
-                            </label>
-                            <label>
-                                <input type="checkbox" :name="'language[type][' + i + '][]'" value="家庭用语"
-                                       v-model="item.type"> 家庭用语
-                            </label>
+                            <div style="margin-left: -20px;">
+                                <label>
+                                    <input type="checkbox" :name="'language[type][' + i + '][]'" value="母语"
+                                           v-model="item.type"> 母语
+                                </label>
+                                <label>
+                                    <input type="checkbox" :name="'language[type][' + i + '][]'" value="精通口语"
+                                           v-model="item.type"> 精通口语
+                                </label>
+                                <label>
+                                    <input type="checkbox" :name="'language[type][' + i + '][]'" value="精通写作"
+                                           v-model="item.type"> 精通写作
+                                </label>
+                                <label>
+                                    <input type="checkbox" :name="'language[type][' + i + '][]'" value="精通阅读"
+                                           v-model="item.type"> 精通阅读
+                                </label>
+                                <label>
+                                    <input type="checkbox" :name="'language[type][' + i + '][]'" value="家庭用语"
+                                           v-model="item.type"> 家庭用语
+                                </label>
+                            </div>
                         </div>
                         <div class="pull-right">
                             <i class="iconfont handPower lh34 cded" v-if="i === 0" @click="addLanguage()">&#xe622;</i>
@@ -1191,9 +1195,11 @@ export default {
     #addApply {
         & .bornArea {
             & .form-inline {
-                display:block !important;
+                display:block !important;clear:both;
                 & .bootstrap-select {
                     width:48% !important;
+                    &:first-of-type{float:left;}
+                    &:last-of-type{float:right;}
                 }
             }
 
