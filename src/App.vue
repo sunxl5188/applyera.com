@@ -10,12 +10,11 @@
                             <li class="breadcrumb-item">
                                 <router-link to="/" exact>首页</router-link>
                             </li>
-                            <li :class="(i+1) === breadCrumb.length ? 'breadcrumb-item active':'breadcrumb-item'"
-                                v-for="(item, i) in breadCrumb" :key="i" v-if="i>0">
-                                <router-link :to="{path:item.path}" v-if="(i+1) < breadCrumb.length">
+                            <li class="breadcrumb-item" :class="{active:(i+1) === breadArr.length}" v-for="(item, i) in breadArr" :key="i">
+                                <router-link :to="{path:item.path}" v-if="(i+1) < breadArr.length">
                                     {{item.meta.title}}
                                 </router-link>
-                                <span v-if="(i+1) === breadCrumb.length">{{item.meta.title}}</span>
+                                <span v-if="(i+1) === breadArr.length">{{item.meta.title}}</span>
                             </li>
                         </ol>
                     </div>
@@ -239,6 +238,7 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 import 'malihu-custom-scrollbar-plugin'
 import 'jquery-mousewheel'
 import store from '@/vuex/Store'
@@ -262,7 +262,10 @@ export default {
   },
   computed: {
     ...mapState(['userInfo', 'token', 'msgNum']),
-    ...mapGetters(['checkLogin'])
+    ...mapGetters(['checkLogin']),
+    breadArr () {
+      return _.filter(this.breadCrumb, (item, i) => i > 0)
+    }
   },
   mounted () {
     let self = this

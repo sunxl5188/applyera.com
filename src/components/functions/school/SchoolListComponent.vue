@@ -199,10 +199,10 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import langJson from '@@/json/langList'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
-import _ from 'lodash'
 import Pagination from '@#/shared/Pagination'
 import { mapState } from 'vuex'
 import store from '@/vuex/Store'

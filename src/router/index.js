@@ -485,7 +485,7 @@ export default new Router({
               path: 'showability',
               name: 'showability',
               component: resolve => require(['@#/setting/ability/ShowAbility'], resolve),
-              meta: {title: '查看能力考评', requiresAuth: true, group: ['setting', 2, 2]}
+              meta: {title: '能力考评详情', requiresAuth: true, group: ['setting', 2, 2]}
             }
           ]
         },
@@ -625,7 +625,7 @@ export default new Router({
           name: 'saleslead',
           component: resolve => require(['@#/marketing/saleslead/Index'], resolve),
           meta: {
-            title: '销售线索', requiresAuth: true, group: ['marketing', 0, '']
+            title: '市场线索', requiresAuth: true, group: ['marketing', 0, '']
           },
           children: [
             {
@@ -633,7 +633,7 @@ export default new Router({
               name: 'TentacleDetail',
               component: resolve => require(['@#/marketing/saleslead/TentacleDetail'], resolve),
               meta: {
-                title: '销售线索详情', requiresAuth: true, group: ['marketing', 0, 0]
+                title: '市场线索详情', requiresAuth: true, group: ['marketing', 0, 0]
               }
             }
           ]
@@ -651,7 +651,7 @@ export default new Router({
               name: 'ProductDetail',
               component: resolve => require(['@#/marketing/ProductDetail'], resolve),
               meta: {
-                title: '销售线索详情', requiresAuth: true, group: ['marketing', 0, 0]
+                title: '产品详情', requiresAuth: true, group: ['marketing', 0, 0]
               }
             }
           ]
