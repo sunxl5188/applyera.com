@@ -32,7 +32,7 @@
             <div class="w25">
               <select name="from_user_id" class="form-control selectpicker" v-model="from_user_id"
                       @change="pageChange()">
-                <option value=""> 请选择销售触手</option>
+                <option value=""> 请选择渠道</option>
                 <option :value="key" v-for="(item, key) in filter.sou_users" :key="key">{{item}}</option>
               </select>
             </div>
@@ -434,7 +434,7 @@ export default {
     deleteList () {
       let self = this
       if (self.activeId.length === 0) {
-        self.layer.alert('请选择要操作的学生编号', { icon: 2 })
+        self.layer.alert('请选择要操作的学生', { icon: 2 })
         return false
       }
       self.layer.confirm('您确定要删除此信息？', {
@@ -463,7 +463,7 @@ export default {
     settlement () {
       let self = this
       if (self.activeId.length === 0) {
-        self.layer.alert('请选择要操作的学生编号', { icon: 2 })
+        self.layer.alert('请选择要操作的学生', { icon: 2 })
         return false
       }
       let params = new URLSearchParams()
@@ -517,6 +517,10 @@ export default {
 
       &:hover, &:focus {background-color:#39f;}
     }
+  }
+
+  #customTime{
+    &:before{color:#333;cursor:pointer;}
   }
 
   & .active {background-color:#39f;color:#fff;line-height:22px;padding-left:.8rem;padding-right:.8rem;-webkit-border-radius:.25em;-moz-border-radius:.25em;border-radius:.25em;}

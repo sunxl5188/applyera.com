@@ -373,7 +373,7 @@ textarea{
 		& .fullLeft{
 			width:60px;overflow:hidden;
 
-			& > .list-group{
+			& .list-group{
 				& > li{
 					& > a{
 						& > span{display:none;}
@@ -400,7 +400,7 @@ textarea{
 					}
 				}
 
-				& > .list-group{
+				& .list-group{
 					& > li{
 						& > a{
 							& > span{display:inline-block;}

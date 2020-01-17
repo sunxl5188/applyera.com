@@ -7,25 +7,29 @@
                         <li class="list-group-item hover">
                             <span class="iconfont c999 font14 shrink">&#xe61e;</span>
                             <div>
-                            <span class="handPower"
-                                  @click="department_id=0;pagechange()">全公司({{departmentCount}}人)</span>
-                                <i class="iconfont cded pull-right handPower popovers font12 lh36"
-                                   @click="level=0;department_id=0">&#xe66a;</i>
+                            <span class="handPower" @click="department_id=0;pagechange()">
+                                <em class="iconfont">&#xe69b;</em>
+                                全公司({{departmentCount}}人)
+                            </span>
+                                <i class="iconfont cded pull-right handPower popovers lh36"
+                                   @click="level=0;department_id=0">&#xe66b;</i>
                             </div>
                             <ul class="list-group">
                                 <li class="list-group-item" v-for="(item,i) in department" :key="i">
-                                    <span class="iconfont c999 font14 shrink ml-10">&#xe61e;</span>
+                                    <span class="iconfont c999 font14 shrink ml-10" v-if="item.child.length>0">&#xe61e;</span>
+                                    <span class="iconfont c999 font14 ml-10" v-if="item.child.length===0"></span>
                                     <div>
+                                        <em class="iconfont">&#xe69b;</em>
                                         <span class="handPower" @click="department_id=item.id;pagechange()">{{item.department_name}}({{item.count}}人)</span>
-                                        <i class="iconfont cded pull-right handPower popovers font12 lh36"
-                                           @click="level=1;department_id=item.parent_id;parentId=item.parent_id;depId=item.id">&#xe66a;</i>
+                                        <i class="iconfont cded pull-right handPower popovers lh36"
+                                           @click="level=1;department_id=item.parent_id;parentId=item.parent_id;depId=item.id">&#xe66b;</i>
                                     </div>
-                                    <ul class="list-group" v-if="item.child.length > 0">
+                                    <ul class="list-group">
                                         <li class="list-group-item" v-for="(items,m) in item.child" :key="m">
                                             <div class="ml-20">
                                                 <span class="handPower" @click="department_id=items.id;pagechange()">{{items.department_name}}({{items.count}}人)</span>
-                                                <i class="iconfont cded pull-right handPower popovers font12 lh36"
-                                                   @click="level=2;department_id=items.id;parentId=items.parent_id;depId=items.id">&#xe66a;</i>
+                                                <i class="iconfont cded pull-right handPower popovers lh36"
+                                                   @click="level=2;department_id=items.id;parentId=items.parent_id;depId=items.id">&#xe66b;</i>
                                             </div>
                                         </li>
                                     </ul>
@@ -188,13 +192,16 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">所属角色</label>
                                         <div class="col-sm-9">
-                                            <select name="role_id" class="form-control" v-validate="'required'"
-                                                    data-vv-as="角色" v-model="accounts.role_id">
-                                                <option value="">请选择</option>
-                                                <option :value="item.id" v-for="(item,i) in roleList" :key="i">{{item.name}}</option>
-                                            </select>
-                                            <div class="validateTip" v-show="errors.has('role_id')">
-                                                {{ errors.first("role_id") }}
+                                            <div class="cf00" v-if="roleList.length===0">请先设置角色权限</div>
+                                            <div v-if="roleList.length>0">
+                                                <select name="role_id" class="form-control" v-validate="'required'"
+                                                        data-vv-as="角色" v-model="accounts.role_id">
+                                                    <option value="">请选择</option>
+                                                    <option :value="item.id" v-for="(item,i) in roleList" :key="i">{{item.name}}</option>
+                                                </select>
+                                                <div class="validateTip" v-show="errors.has('role_id')">
+                                                    {{ errors.first("role_id") }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -205,11 +212,7 @@
                                         <div class="col-sm-9">
                                             <select name="department_id"
                                                     class="form-control departmentSelect"
-                                                    v-validate="'required'" data-vv-as="部门"
                                                     v-model.number="accounts.department_id"></select>
-                                            <div class="validateTip" v-show="errors.has('department_id')">
-                                                {{ errors.first("department_id") }}
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -329,6 +332,9 @@ export default {
     }
   },
   computed: {
+    userInfo () {
+      return store.state.userInfo
+    },
     token () {
       return store.state.token
     }
@@ -411,7 +417,7 @@ export default {
         $(document).on('click', 'span.shrink', function () {
           if ($(this).siblings('ul').is(':visible')) {
             $(this).siblings('ul').slideUp()
-            $(this).html('&#xe61f;')
+            $(this).html('&#xe621;')
           } else {
             $(this).siblings('ul').slideDown()
             $(this).html('&#xe61e;')
@@ -568,11 +574,11 @@ export default {
     },
     treeData () {
       let self = this
-      let option = '<option value="">请选择</option>'
+      let option = '<option value="">' + self.userInfo.company + '</option>'
       let tree = self.department
       if (Object.prototype.toString.call(tree) === '[object Array]') {
         tree.map(item => {
-          option += "<option value='" + item.id + "'>" + item.department_name + '</option>'
+          option += "<option value='" + item.id + "'>├&nbsp;" + item.department_name + '</option>'
           if (item.child.length > 0) {
             option += self.treeChild(item.child)
           }
@@ -590,7 +596,7 @@ export default {
             blank += '&nbsp;&nbsp;'
           }
         }
-        blank = blank + '&nbsp;&nbsp;├&nbsp;&nbsp;'
+        blank = blank + '&nbsp;&nbsp;├&nbsp;'
         option += "<option value='" + item.id + "'>" + blank + item.department_name + '</option>'
         if (item.child.length > 0) {
           option += self.treeChild(item.child)
@@ -650,6 +656,9 @@ export default {
     }
 
     .department{
+        & em.iconfont{
+            color:#7ea2d4;
+        }
         & .list-group-item{
             padding:0;
             -webkit-border-radius:0;
@@ -659,11 +668,11 @@ export default {
             line-height:36px;
 
             & > span.iconfont{
-                float:left;width:20px;height:36px;line-height:40px;overflow:hidden;cursor:pointer;text-align:center;
+                float:left;width:20px;height:36px;line-height:40px;overflow:hidden;text-align:center;
+                &.shrink{cursor:pointer;}
             }
-
             & > div{
-                & > .iconfont{
+                & > i.iconfont{
                     display:none;
                     outline:none !important;
                 }

@@ -22,7 +22,7 @@
                             <h4 class="modal-title">如何设置</h4>
                         </div>
                         <div class="modal-body">
-                            <p>欢迎您使用申学纪销售线索功能，本功能旨在帮助机构老师提高与销售触手(即贵机构的市场人员或市场渠道) 的沟通。提交线索的链接可以被放置在机构的公众号，或者直接发送给市场人员。市场人员可直接将线索提交至系统。</p>
+                            <p>欢迎您使用申学纪渠道工具功能，生源提供者可直接将生源信息通过该链接提交至贵机构的后台，提交生源的链接可以放置在贵机构的公众号或者直接发送给相关渠道。</p>
                             <p>STEP 1 复制链接</p>
                             <p class="form-inline">
                                 <input type="text" name="linkUrl" id="linkUrl" v-model="linkUrl" class="form-control" style="width: 80%;" value="" readonly >
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <ul class="nav nav-tabs"><!--nav-justified-->
-                <li :class="{active:tab===1}" @click="setTabs(1)"><a href="javascript:void(0);">市场人员</a></li>
+                <li :class="{active:tab===1}" @click="setTabs(1)"><a href="javascript:void(0);">渠道管理</a></li>
                 <li :class="{active:tab===2}" @click="setTabs(2)"><a href="javascript:void(0);">线索跟进</a></li>
                 <li :class="{active:tab===3}" @click="setTabs(3)"><a href="javascript:void(0);">线索结算</a></li>
             </ul>

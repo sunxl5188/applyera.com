@@ -234,6 +234,10 @@ export default {
     }
   }
 
+  #customTime{
+    &:before{color:#333;cursor:pointer;}
+  }
+
   & .active {background-color:#39f;color:#fff;line-height:22px;padding-left:.8rem;padding-right:.8rem;-webkit-border-radius:.25em;-moz-border-radius:.25em;border-radius:.25em;}
 }
 </style>

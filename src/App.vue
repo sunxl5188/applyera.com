@@ -129,7 +129,7 @@
                         <a href="javascript:void(0);"><i class="iconfont">&#xe6e4;</i><span>市场</span></a>
                         <div class="list-group">
                             <router-link to="/marketing/saleslead" class="list-group-item"
-                                         v-if="userInfo.access.marketing.child[0]===1">市场线索
+                                         v-if="userInfo.access.marketing.child[0]===1">渠道工具
                             </router-link>
                             <router-link to="/marketing/product" class="list-group-item">产品管理
                             </router-link>
