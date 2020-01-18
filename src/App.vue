@@ -131,7 +131,8 @@
                             <router-link to="/marketing/saleslead" class="list-group-item"
                                          v-if="userInfo.access.marketing.child[0]===1">渠道工具
                             </router-link>
-                            <router-link to="/marketing/product" class="list-group-item">产品管理
+                            <router-link to="/marketing/product" class="list-group-item"
+                                         v-if="userInfo.access.marketing.child[1]===1">产品管理
                             </router-link>
                         </div>
                     </li>

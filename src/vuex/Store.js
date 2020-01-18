@@ -15,9 +15,15 @@ const state = {
 const mutations = {
   // 登录后保存状态
   setUserInfo (state, data) {
-    Cookies.set('userInfo', data, data.date)
-    Cookies.set('token', data.token, data.date)
-    Cookies.set('isLogin', 1, data.date)
+    if (data.date !== '') {
+      Cookies.set('userInfo', data, data.date)
+      Cookies.set('token', data.token, data.date)
+      Cookies.set('isLogin', 1, data.date)
+    } else {
+      Cookies.set('userInfo', data)
+      Cookies.set('token', data.token)
+      Cookies.set('isLogin', 1)
+    }
     state.userInfo = data
     state.isLogin = 1
     state.token = data.token

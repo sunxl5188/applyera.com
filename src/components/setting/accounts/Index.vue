@@ -9,7 +9,7 @@
                             <div>
                             <span class="handPower" @click="department_id=0;pagechange()">
                                 <em class="iconfont">&#xe69b;</em>
-                                全公司({{departmentCount}}人)
+                                {{userInfo.company}}({{departmentCount}}人)
                             </span>
                                 <i class="iconfont cded pull-right handPower popovers lh36"
                                    @click="level=0;department_id=0">&#xe66b;</i>
