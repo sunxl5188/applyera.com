@@ -41,11 +41,12 @@
                         <h4>{{item.name}}</h4>
                         <div class="checkbox pt-10" v-if="item.child.length>0">
                             <label class="checkbox-inline" v-for="(items, kk) in item.child" :key="kk" v-if="id!==''">
-                                <input type="checkbox" name="func_id[]" :value="items.id" :checked="userList.func_id[k]['child'][kk]['check']===1">
+                                <input type="checkbox" name="func_id[]" :value="items.id"
+                                       :checked="userList.func_id[k]['child'][kk]['check']===1">
                                 {{items.name}}
                             </label>
                             <label class="checkbox-inline" v-for="(items, kk) in item.child" :key="kk" v-if="id===''">
-                                <input type="checkbox" name="func_id[]" :value="items.id" >
+                                <input type="checkbox" name="func_id[]" :value="items.id">
                                 {{items.name}}
                             </label>
                         </div>
@@ -110,8 +111,11 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
+
+require('icheck')
 
 export default {
   name: 'Detail',
@@ -153,7 +157,7 @@ export default {
       })
       db.postRequest('Institution/Account/permissionEdit', params).then(res => {
         if (res.status === 1) {
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
+          self.layer.alert(res.msg, { icon: 1 }, function (i) {
             self.layer.close(i)
             self.$router.push('/setting/rolePermit')
           })
@@ -170,6 +174,15 @@ export default {
       db.postRequest('Institution/Account/permissionInfo', {}).then(res => {
         if (res.status === 1) {
           self.list = res.data
+          _.delay(() => {
+            $('input[name="func_id[]"], input[name="data_permission"]').iCheck({
+              labelHover: false,
+              cursor: true,
+              checkboxClass: 'icheckbox_minimal-blue',
+              radioClass: 'iradio_minimal-blue',
+              increaseArea: '20%'
+            })
+          }, 1000)
         } else {
           console.log(res.msg)
         }
@@ -198,11 +211,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .row {
-        display:flex;
-        display:-webkit-flex;
-        flex-direction:row;
-        flex-wrap:wrap;
-        align-content:flex-start;
-    }
+.row {
+    display:flex;
+    display:-webkit-flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-content:flex-start;
+}
+.list-group{
+    & .checkbox-inline{padding-left:0 !important;}
+    & .radio-inline{padding-left:0 !important;}
+}
 </style>

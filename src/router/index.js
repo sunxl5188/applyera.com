@@ -453,7 +453,7 @@ export default new Router({
               component: resolve => require(['@#/setting/rolePermit/Detail'], resolve),
               meta: {
                 requiresAuth: true,
-                title: '角色编辑',
+                title: '权限分配',
                 group: ['setting', 1, 0]
               }
             }

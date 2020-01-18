@@ -746,7 +746,7 @@ export default {
               name: '数据表',
               type: 'pie',
               radius: [25, 100],
-              center: ['18%', '50%'],
+              center: ['25%', '50%'],
               roseType: 'radius',
               label: {
                 normal: {

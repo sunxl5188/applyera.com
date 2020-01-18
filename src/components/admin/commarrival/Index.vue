@@ -5,7 +5,7 @@
             <div class="clearfix pb-30">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="headerTitle">学生管理</div>
+                        <div class="headerTitle">佣金到账</div>
                     </div>
 
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">

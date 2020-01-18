@@ -195,9 +195,11 @@
                             <router-link to="/admin/message/config" class="list-group-item"
                                          v-if="userInfo.access.applyoversea.child[9]===1">消息配置
                             </router-link>
-                            <router-link to="/admin/application" class="list-group-item">院校申请
+                            <router-link to="/admin/application" class="list-group-item"
+                                         v-if="userInfo.access.applyoversea.child[10]===1">院校申请
                             </router-link>
-                            <router-link to="/admin/topic" class="list-group-item">题目更新
+                            <router-link to="/admin/topic" class="list-group-item"
+                                         v-if="userInfo.access.applyoversea.child[11]===1">题目更新
                             </router-link>
                         </div>
                     </li>
