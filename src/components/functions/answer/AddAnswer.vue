@@ -149,7 +149,8 @@
                                     <div class="media-item" :class="{gtTwo:item.length>1}"
                                          v-for="(items, k) in item" :key="k" :data-id="items.id">
                                         <div class="media-left">
-                                            <img :src="items.head_img || '../../../../static/images/defaultface.png'"
+                                            <img src="../../../../static/images/defaultface.png" alt="">
+                                            <img :src="items.head_img || '../../static/images/defaultface.png'"
                                                  width="30" height="30" class="img-circle"/>
                                         </div>
                                         <div class="media-body">
@@ -170,7 +171,7 @@
                                 </div>
                                 <div class="media" v-show="item[0]['solve_status']===0">
                                     <div class="media-left">
-                                        <img :src="userInfo.headphoto || 'https://via.placeholder.com/30x30/cccccc/ffffff'"
+                                        <img :src="userInfo.headphoto  || '../../static/images/defaultface.png'"
                                              width="30" height="30" class="img-circle"/>
                                     </div>
                                     <div class="media-body">

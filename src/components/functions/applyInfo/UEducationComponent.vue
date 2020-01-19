@@ -1088,3 +1088,16 @@ export default {
 <style scoped lang="scss">
 .form-group {margin-left:0 !important;margin-right:0 !important;}
 </style>
+<style lang="scss">
+#citys{
+    & .form-inline{
+        width:55%;float:left;
+        & .bootstrap-select{
+            width:32%;
+        }
+    }
+    & input{
+        width:45% !important;float:right;
+    }
+}
+</style>

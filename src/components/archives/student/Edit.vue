@@ -121,7 +121,7 @@
                         <li class="active"><a href="#tabs1" data-toggle="tab">学生概况</a></li>
                         <li><a href="#tabs2" data-toggle="tab">附件管理</a></li>
                         <li><a href="#tabs3" data-toggle="tab">操作日志</a></li>
-                        <li><a href="#tabs4" data-toggle="tab">学生资料</a></li>
+                        <li><a href="#tabs4" data-toggle="tab">其他资料</a></li>
                     </ul>
                 </div>
 
@@ -164,9 +164,9 @@
 
                                 <div class="panel panel-default">
                                     <div class="panel-heading clearfix">
-                                        <span class="pull-left">申请资料</span>
+                                        <span class="pull-left">申请跟踪</span>
                                         <span class="pull-right">
-                                             <router-link to="/functions/applyInfo/applyType">
+                                             <router-link to="/functions/initApply/ChooseSchool?source=1">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
@@ -179,7 +179,7 @@
                                                 <td width="20%">{{item.status}}</td>
                                                 <td>
                                                     <router-link
-                                                            :to="{path:'/functions/applyInfo/detail',query:{id:item.apply_material_id}}"
+                                                            :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.apply_material_id,source:1}}"
                                                             class="cded">{{item.apply_num}}
                                                     </router-link>
                                                 </td>
@@ -187,8 +187,8 @@
                                             </tbody>
                                         </table>
                                         <div class="panel-noData" v-if="tab1.material.length === 0">
-                                            <p class="c999">该学生还没有申请资料</p>
-                                            <router-link to="/functions/applyInfo/applyType" class="cded">点击前往创建
+                                            <p class="c999">该学生还没有申请中的院校</p>
+                                            <router-link to="/functions/initApply/ChooseSchool?source=1" class="cded">点击前往创建
                                             </router-link>
                                         </div>
                                     </div>
@@ -441,7 +441,7 @@
                                 <td>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="index[]" :value="item.id"/>
+                                            <input type="checkbox" name="fid[]" :value="item.id"/>
                                             {{item.file_name}}
                                         </label>
                                     </div>
@@ -480,7 +480,7 @@
                                 <td>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="index[]" :value="item.id"/>
+                                            <input type="checkbox" name="fid[]" :value="item.id"/>
                                             {{item.file_name}}
                                         </label>
                                     </div>

@@ -121,10 +121,7 @@
                     <th class="w15">收藏</th>
                 </tr>
                 </thead>
-                <transition-group
-                        enter-active-class="animated zoomIn"
-                        leave-active-class="animated zoomOut"
-                        tag="tbody">
+                <tbody>
                     <tr v-for="(item, index) in list" :key="'major'+index">
                         <td>
                             <router-link :to="{path:'/functions/schoollist/majordetaila',query:{id:item.unq_id}}"
@@ -180,7 +177,7 @@
                                @click="collection(item.unq_id, item.type, $event)" v-if="item.is_clt===1">移出收藏</a>
                         </td>
                     </tr>
-                </transition-group>
+                </tbody>
                 <tbody>
                 <tr v-if="loading" key="majorA">
                     <td :colspan="userInfo.access.show_commission?5:4" class="text-center" v-html="LoadingImg"></td>
@@ -306,23 +303,7 @@ export default {
       db.postRequest('Institution/Tools/choseMajor', params).then(res => {
         if (res.status === 1) {
           self.total = res.data.total
-          let len = res.data.list.length
-          if (len > 0) {
-            let count = 0
-            self.ActionT = setInterval(function () {
-              if (len === count) {
-                clearInterval(self.ActionT)
-                setTimeout(function () {
-                  $('[data-toggle="tooltip"]').tooltip({ html: true })
-                }, 500)
-              } else {
-                self.list.push(res.data.list[count])
-                count = count + 1
-              }
-            }, 30)
-          } else {
-            self.list = []
-          }
+          self.list = res.data.list
         } else {
           console.log(res.msg)
         }

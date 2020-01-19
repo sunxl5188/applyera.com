@@ -140,10 +140,7 @@
                     <th class="w15">收藏</th>
                 </tr>
                 </thead>
-                <transition-group
-                        enter-active-class="animated zoomIn"
-                        leave-active-class="animated zoomOut"
-                        tag="tbody">
+                <tbody>
                     <tr v-for="(item, ii) in list" :key="'list'+ii">
                         <td>
                             <div class="media">
@@ -181,7 +178,7 @@
                                v-if="item.is_clt===1" class="btn btn-default btn-sm is-round">移出收藏</a>
                         </td>
                     </tr>
-                </transition-group>
+                </tbody>
                 <tbody>
                 <tr v-if="loading" key="listL">
                     <td :colspan="userInfo.access.show_commission===1?5:4"
@@ -346,9 +343,9 @@ export default {
       self.loading = true
       db.postRequest('Institution/Tools/choseSchool', params).then(res => {
         if (res.status === 1) {
-          // self.list = res.data.list
+          self.list = res.data.list
           self.total = res.data.total
-          let len = res.data.list.length
+          /* let len = res.data.list.length
           if (len > 0) {
             let count = 0
             self.ActionT = setInterval(function () {
@@ -361,7 +358,7 @@ export default {
             }, 30)
           } else {
             self.list = []
-          }
+          } */
         } else {
           console.log(res.msg)
         }

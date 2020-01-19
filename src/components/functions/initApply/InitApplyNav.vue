@@ -7,9 +7,14 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                     <div class="form-group">
-                        <router-link :to="{path:'/functions/initApply',query:{id:id}}" exact class="btn btn-default ml-10">
+                        <a href="javascript:void(0);" class="btn btn-default ml-10" v-if="source==='1'" @click="$router.back()">
                             <i class="iconfont">&#xe64f;</i>
-                            返回</router-link>
+                            返回
+                        </a>
+                        <router-link :to="{path:'/functions/initApply',query:{id:id}}" exact class="btn btn-default ml-10" v-if="source===''">
+                            <i class="iconfont">&#xe64f;</i>
+                            返回
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -78,9 +83,12 @@ export default {
     }
   },
   data () {
-    return {}
+    return {
+      source: ''
+    }
   },
   mounted () {
+    this.source = this.$route.query.source || ''
     this.$nextTick(() => {
       $('[data-toggle="tooltip"]').tooltip()
     })
