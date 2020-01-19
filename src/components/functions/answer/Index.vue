@@ -4,7 +4,7 @@
             <div class="clearfix pb-30">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="headerTitle">题目作答</div>
+                        <div class="headerTitle">文书作答</div>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                         <div class="form-group form-search">

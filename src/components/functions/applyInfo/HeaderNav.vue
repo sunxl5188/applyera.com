@@ -12,8 +12,10 @@
                         </button>
                     </div>
                     <div class="form-group ml-10">
-                        <router-link to="/functions/applyInfo" exact class="btn btn-default"><i class="iconfont">&#xe64f;</i>
-                            返回</router-link>
+                        <a href="javascript:void(0);" exact class="btn btn-default" @click="$router.back()">
+                            <i class="iconfont">&#xe64f;</i>
+                            返回
+                        </a>
                     </div>
                 </div>
             </div>

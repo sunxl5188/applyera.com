@@ -405,15 +405,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="blk20"></div>
-                    <button type="button" class="btn btn-block btn-info" data-target="#schoolMajor"
-                            @click="viewSchoolModal">
-                        <i class="iconfont font22">&#xe73e;</i>
-                        <span class="div_vm">添加学校及专业</span>
-                    </button>
-
-                    <SchoolOrMajorComponent :applyType="applyType" :btnHide="true" ref="schoolMajor"
-                                            @getmajorinfo="getmajorinfo"></SchoolOrMajorComponent>
 
                     <!--自定义-->
                     <div class="schoolMajorCustom" v-for="(item, i) in customObject" :key="i">
@@ -474,6 +465,16 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="blk20"></div>
+                    <button type="button" class="btn btn-block btn-info" data-target="#schoolMajor"
+                            @click="viewSchoolModal">
+                        <i class="iconfont font22">&#xe73e;</i>
+                        <span class="div_vm">添加学校及专业</span>
+                    </button>
+
+                    <SchoolOrMajorComponent :applyType="applyType" :btnHide="true" ref="schoolMajor"
+                                            @getmajorinfo="getmajorinfo"></SchoolOrMajorComponent>
 
                     <!--page5-->
 
@@ -663,6 +664,7 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import nation from '@@/json/nation.json'
@@ -903,7 +905,12 @@ export default {
     // 返回学校及专业信息
     getmajorinfo (obj) {
       if (obj.recommend[0].type === '') {
-        $('#addCustom').modal('show')
+        _.delay(() => {
+          $('#addCustom').modal({
+            backdrop: 'static',
+            show: true
+          })
+        }, 1000)
       } else {
         this.schoolInfo.push.apply(this.schoolInfo, obj.recommend)
         this.schoolInfoTable.push.apply(this.schoolInfoTable, obj.recommend_table)

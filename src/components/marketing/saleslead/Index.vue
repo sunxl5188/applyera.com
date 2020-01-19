@@ -4,7 +4,7 @@
             <div class="clearfix pb-15">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <div class="headerTitle">市场线索</div>
+                        <div class="headerTitle">渠道工具</div>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                         <a href="#" class="c999" data-toggle="modal" data-backdrop="static" data-target="#modalSalesLeads">

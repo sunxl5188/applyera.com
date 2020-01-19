@@ -36,15 +36,11 @@
                                     <div class="clearfix pl-50">
                                         <div class="clearfix lh26 c999">
                                             <span>学生类型</span>
-                                            <span class="ml-10" v-for="(item, i) in student_type" :key="i"
-                                                  v-if="item.id === header_info.stu_type">
-                        {{item.stu_type}}
-                      </span>
+                                            <span>{{studentType}}</span>
                                         </div>
                                         <div class="clearfix lh26 c999">
                                             <span>当前状态</span><span class="ml-10">
-                                                <span v-for="(item, i) in signStatusArr" :key="i"
-                                                      v-if="item.id===header_info.sign_status">{{item.status_name}}</span>
+                                            <span>{{statusName}}</span>
                                             </span>
                                         </div>
                                         <div class="clearfix lh26 c999">
@@ -170,7 +166,7 @@
                                     <div class="panel-heading clearfix">
                                         <span class="pull-left">申请资料</span>
                                         <span class="pull-right">
-                                             <router-link to="/functions/applyInfo/detail">
+                                             <router-link to="/functions/applyInfo/applyType">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
@@ -192,7 +188,7 @@
                                         </table>
                                         <div class="panel-noData" v-if="tab1.material.length === 0">
                                             <p class="c999">该学生还没有申请资料</p>
-                                            <router-link to="/functions/applyInfo/detail" class="cded">点击前往创建
+                                            <router-link to="/functions/applyInfo/applyType" class="cded">点击前往创建
                                             </router-link>
                                         </div>
                                     </div>
@@ -1126,6 +1122,7 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import '@~/js/VeeValidateConfig'
@@ -1228,6 +1225,14 @@ export default {
         district: '',
         name: ''
       }
+    }
+  },
+  computed: {
+    studentType () {
+      return _.filter(this.student_type, (item) => item.id === this.header_info.stu_type)[0]['stu_type']
+    },
+    statusName () {
+      return _.filter(this.signStatusArr, (item) => item.id === this.header_info.sign_status)[0]['status_name']
     }
   },
   mounted () {

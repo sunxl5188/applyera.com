@@ -147,12 +147,12 @@
                             <div class="col-xs-1-5 col-sm-1-5 col-md-1-5 col-lg-1-5">
                                 <div class="media">
                                     <div class="media-left">
-                                        <a href="javascript:void(0);">
+                                        <router-link to="/archives/student_statistics/type_statistics">
                                             <i class="iconfont">&#xe61c;</i>
-                                        </a>
+                                        </router-link>
                                     </div>
                                     <div class="media-body">
-                                        <div class="font14 lh20">数据统计 (待开放）</div>
+                                        <div class="font14 lh20"><router-link to="/archives/student_statistics/type_statistics">统计分析</router-link></div>
                                         <div class="font12 c999 lh20">数据统计更快提升效率</div>
                                     </div>
                                 </div>
@@ -218,12 +218,12 @@
                             <div class="col-xs-1-5 col-sm-1-5 col-md-1-5 col-lg-1-5">
                                 <div class="media">
                                     <div class="media-left">
-                                        <a href="javascript:void(0);">
+                                        <router-link to="/marketing/saleslead">
                                             <i class="iconfont">&#xe61b;</i>
-                                        </a>
+                                        </router-link>
                                     </div>
                                     <div class="media-body">
-                                        <div class="font14 lh20">营销管理 (待开放)</div>
+                                        <div class="font14 lh20"><router-link to="/marketing/saleslead">渠道工具</router-link></div>
                                         <div class="font12 c999 lh20">快速获取生源</div>
                                     </div>
                                 </div>
