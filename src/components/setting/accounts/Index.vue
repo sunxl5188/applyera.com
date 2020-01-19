@@ -45,8 +45,7 @@
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></div>
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
                             <div class="form-group ml-10">
-                                <button type="button" class="btn btn-default" data-toggle="modal" data-backdrop="static"
-                                        data-target="#addAccounts" @click="layTitle='新增账号信息'"><i class="iconfont">&#xe73e;</i>
+                                <button type="button" class="btn btn-default" @click="addAccount"><i class="iconfont">&#xe73e;</i>
                                     新增
                                 </button>
                             </div>
@@ -292,6 +291,9 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
+import 'bootstrap-select'
+import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import '@~/js/VeeValidateConfig'
 import store from '@/vuex/Store'
 import pagination from '@#/shared/Pagination'
@@ -638,6 +640,16 @@ export default {
           })
         }
       })
+    },
+    addAccount () {
+      let self = this
+      self.layTitle = '新增账号信息'
+      _.delay(() => {
+        $('#addAccounts').modal({
+          backdrop: 'static',
+          show: true
+        })
+      }, 500)
     }
   },
   components: {pagination}
