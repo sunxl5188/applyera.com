@@ -290,14 +290,12 @@ export default {
         })
       }
     })
-    setTimeout(function () {
+
+    _.delay(() => {
       self.loading = false
     }, 500)
 
-    setTimeout(function () {
-      $('.fullLeft').mCustomScrollbar({
-        axis: 'y'
-      })
+    _.delay(() => {
       $('[data-toggle="tooltip"]').tooltip({
         template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="white-space: nowrap;"></div></div>'
       })
@@ -351,6 +349,12 @@ export default {
 
       self.setView()
     }, 1000)
+
+    _.delay(() => {
+      $('.fullLeft').mCustomScrollbar({
+        axis: 'y'
+      })
+    }, 3000)
 
     let msgTime = setInterval(function () {
       db.getRequest('Institution/Notice/getNotifyNumber', {}).then(res => {
