@@ -1,133 +1,136 @@
 <template>
     <div>
+      <div v-if="loading" v-html="LoadingImg"></div>
+      <div v-if="!loading">
         <InitApplyNav :state="state" :id="id"/>
         <form id="schoolApply" method="POST" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
-            <input type="hidden" name="id" :value="id" v-if="id" />
-            <div class="row form-horizontal">
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">选择学生</label>
-                        <div class="col-sm-8">
-                            <select name="student_id" class="form-control selectpicker show-tick" data-live-search="true"
-                                    data-size="15" v-model="studentId" @change="getMaterial(studentId)">
-                                <option value="">请选择</option>
-                                <option :value="item.id" v-for="(item, i) in studentList" :key="i">{{item.stu_name}}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
+          <input type="hidden" name="id" :value="id" v-if="id" />
+          <div class="row form-horizontal">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">选择学生</label>
+                <div class="col-sm-8">
+                  <select name="student_id" class="form-control selectpicker show-tick" data-live-search="true"
+                          data-size="15" v-model="studentId" @change="getMaterial(studentId)">
+                    <option value="">请选择</option>
+                    <option :value="item.id" v-for="(item, i) in studentList" :key="i">{{item.stu_name}}
+                    </option>
+                  </select>
                 </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">申请材料</label>
-                        <div class="col-sm-8">
-                            <select name="apply_id" class="form-control selectpicker show-tick" data-live-serach="true"
-                                    data-size="15" v-model="materialId" @change="setApplyType">
-                                <option value="">请选择</option>
-                                <option :value="item.id" v-for="(item, i) in materialList" :key="i">
-                                    {{item.apply_num}}({{item.apply_type}})
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">申报类型</label>
-                        <div class="col-sm-8">
-                            <select name="apply_type" class="form-control selectpicker show-tick" data-live-serach="true"
-                                    data-size="15" v-model="applyType">
-                                <option value="">请选择</option>
-                                <option value="1">本科</option>
-                                <option value="2">硕士</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix font12 text-center">
-                    <i class="iconfont cded">&#xe610;</i>
-                    如果该生尚未填写申请资料，请先前往"
-                    <router-link to="/functions/applyInfo/detail" class="cded">申请资料</router-link>
-                    "填写
-                </div>
+              </div>
             </div>
-            <div class="blk30"></div>
-            <table class="table table-customize schoolList">
-                <thead>
-                <tr>
-                    <th class="w5">
-                        <i class="iconfont handPower cded" @click="addSchool">&#xe622;</i>
-                    </th>
-                    <th class="w20"><span class="pl-15">院校名称</span></th>
-                    <th class="w20"><span class="pl-15">专业名称</span></th>
-                    <th class="w15">专业网址</th>
-                    <th class="w25"><span class="pl-10">申请批次</span></th>
-                    <th><span class="pl-10">可得佣金</span></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(item, i) in schoolArr" :key="i">
-                    <td><i class="iconfont handPower cded lh38" @click="deleteSchool(i)">&#xe61f5;</i></td>
-                    <td>
-                        <div v-show="item.school_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
-                            <select name="major_list[school_unq_id][]" class="form-control selectpicker show-tick"
-                                    data-size="10" data-live-search="true" data-width="190px"
-                                    v-model="item.school_unq_id"
-                                    @change="getMajorList(i, applyType, item.school_unq_id)">
-                                <option value="">请选择</option>
-                                <option value="custom">自定义学校</option>
-                                <option :value="items.unq_id" v-for="(items, k) in schoolList" :key="k">
-                                    {{items.school_name_cn}}({{items.school_name}})
-                                </option>
-                            </select>
-                        </div>
-                        <input type="text" name="major_list[school_name][]" class="form-control"
-                               placeholder="请输入自定义学校名称" v-model="item.school_name"
-                               v-show="item.school_unq_id === 'custom'">
-                    </td>
-                    <td>
-                        <div v-show="item.major_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
-                            <select name="major_list[major_unq_id][]" class="form-control selectpicker show-tick"
-                                    data-size="10" data-live-search="true" data-width="190px"
-                                    v-model="item.major_unq_id" @change="getBatch(i, applyType, item.major_unq_id)">
-                                <option value="">请选择</option>
-                                <option value="custom">自定义专业</option>
-                                <option :value="items.unq_id" v-for="(items, k) in item.majorList" :key="k">
-                                    {{items.major_cn}}({{items.major_en}}){{replaceStr(items.degree)}}
-                                </option>
-                            </select>
-                        </div>
-                        <input type="text" name="major_list[major_name][]" class="form-control" placeholder="请输入自定义专业名称"
-                               v-model="item.major_name" v-show="item.major_unq_id === 'custom'">
-                    </td>
-                    <td>
-                        <input type="hidden" name="major_list[major_website][]" v-model="item.major_website" />
-                        <a :href="item.major_website" target="_blank" class="cded lh34" v-if="item.major_unq_id !=='custom'">点击前往</a>
-                        <span v-if="item.major_unq_id === 'custom'" class="c999">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">申请材料</label>
+                <div class="col-sm-8">
+                  <select name="apply_id" class="form-control selectpicker show-tick" data-live-serach="true"
+                          data-size="15" v-model="materialId" @change="setApplyType">
+                    <option value="">请选择</option>
+                    <option :value="item.id" v-for="(item, i) in materialList" :key="i">
+                      {{item.apply_num}}({{item.apply_type}})
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label class="col-sm-4 control-label">申报类型</label>
+                <div class="col-sm-8">
+                  <select name="apply_type" class="form-control selectpicker show-tick" data-live-serach="true"
+                          data-size="15" v-model="applyType">
+                    <option value="">请选择</option>
+                    <option value="1">本科</option>
+                    <option value="2">硕士</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix font12 text-center">
+              <i class="iconfont cded">&#xe610;</i>
+              如果该生尚未填写申请资料，请先前往"
+              <router-link to="/functions/applyInfo/detail" class="cded">申请资料</router-link>
+              "填写
+            </div>
+          </div>
+          <div class="blk30"></div>
+          <table class="table table-customize schoolList">
+            <thead>
+            <tr>
+              <th class="w5">
+                <i class="iconfont handPower cded" @click="addSchool">&#xe622;</i>
+              </th>
+              <th class="w20"><span class="pl-15">院校名称</span></th>
+              <th class="w20"><span class="pl-15">专业名称</span></th>
+              <th class="w15">专业网址</th>
+              <th class="w25"><span class="pl-10">申请批次</span></th>
+              <th><span class="pl-10">可得佣金</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, i) in schoolArr" :key="i">
+              <td><i class="iconfont handPower cded lh38" @click="deleteSchool(i)">&#xe61f5;</i></td>
+              <td>
+                <div v-show="item.school_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
+                  <select name="major_list[school_unq_id][]" class="form-control selectpicker show-tick"
+                          data-size="10" data-live-search="true" data-width="190px"
+                          v-model="item.school_unq_id"
+                          @change="getMajorList(i, applyType, item.school_unq_id)">
+                    <option value="">请选择</option>
+                    <option value="custom">自定义学校</option>
+                    <option :value="items.unq_id" v-for="(items, k) in schoolList" :key="k">
+                      {{items.school_name_cn}}({{items.school_name}})
+                    </option>
+                  </select>
+                </div>
+                <input type="text" name="major_list[school_name][]" class="form-control"
+                       placeholder="请输入自定义学校名称" v-model="item.school_name"
+                       v-show="item.school_unq_id === 'custom'">
+              </td>
+              <td>
+                <div v-show="item.major_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
+                  <select name="major_list[major_unq_id][]" class="form-control selectpicker show-tick"
+                          data-size="10" data-live-search="true" data-width="190px"
+                          v-model="item.major_unq_id" @change="getBatch(i, applyType, item.major_unq_id)">
+                    <option value="">请选择</option>
+                    <option value="custom">自定义专业</option>
+                    <option :value="items.unq_id" v-for="(items, k) in item.majorList" :key="k">
+                      {{items.major_cn}}({{items.major_en}}){{replaceStr(items.degree)}}
+                    </option>
+                  </select>
+                </div>
+                <input type="text" name="major_list[major_name][]" class="form-control" placeholder="请输入自定义专业名称"
+                       v-model="item.major_name" v-show="item.major_unq_id === 'custom'">
+              </td>
+              <td>
+                <input type="hidden" name="major_list[major_website][]" v-model="item.major_website" />
+                <a :href="item.major_website" target="_blank" class="cded lh34" v-if="item.major_unq_id !=='custom'">点击前往</a>
+                <span v-if="item.major_unq_id === 'custom'" class="c999">
                             <input type="text" name="name" class="form-control" v-model="item.major_website" placeholder="请输入专业网址" />
                         </span>
-                    </td>
-                    <td>
-                        <input type="text" name="major_list[term][]" class="form-control" placeholder="请填写申请批次"
-                               v-model="item.term" :list="'term'+i" autocomplete="off" />
-                        <datalist :id="'term'+i">
-                            <option :value="items" v-for="(items, i) in item.batchList" :key="i"></option>
-                        </datalist>
-                    </td>
-                    <td>
+              </td>
+              <td>
+                <input type="text" name="major_list[term][]" class="form-control" placeholder="请填写申请批次"
+                       v-model="item.term" :list="'term'+i" autocomplete="off" />
+                <datalist :id="'term'+i">
+                  <option :value="items" v-for="(items, i) in item.batchList" :key="i"></option>
+                </datalist>
+              </td>
+              <td>
                         <span class="lh34">
                             <input type="text" name="major_list[comm][]" class="form-control" v-model="item.comm"
                                    readonly />
                         </span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="clearfix text-center">
-                <button type="button" class="btn btn-default" @click="nextPage">下一页</button>
-                <button type="submit" class="btn btn-primary ml-20">保存</button>
-            </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="clearfix text-center">
+            <button type="button" class="btn btn-default" @click="nextPage">下一页</button>
+            <button type="submit" class="btn btn-primary ml-20">保存</button>
+          </div>
         </form>
+      </div>
     </div>
 </template>
 
@@ -173,6 +176,9 @@ export default {
     self.studentId = self.$route.query.sid || ''
     self.$nextTick(() => {
       self.getSchoolList()
+      if (self.studentId !== '' && self.id === '') {
+        self.getMaterial(self.studentId)
+      }
       if (self.id !== '') {
         self.getDetail(self.id)
       }
