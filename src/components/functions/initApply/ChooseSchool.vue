@@ -22,7 +22,7 @@
                         <label class="col-sm-4 control-label">申请材料</label>
                         <div class="col-sm-8">
                             <select name="apply_id" class="form-control selectpicker show-tick" data-live-serach="true"
-                                    data-size="15" v-model="materialId">
+                                    data-size="15" v-model="materialId" @change="setApplyType">
                                 <option value="">请选择</option>
                                 <option :value="item.id" v-for="(item, i) in materialList" :key="i">
                                     {{item.apply_num}}({{item.apply_type}})
@@ -135,6 +135,7 @@
 import '@~/js/VeeValidateConfig'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
+import * as _ from 'lodash'
 import InitApplyNav from '@#/functions/initApply/InitApplyNav'
 import db from '@~/js/request'
 
@@ -151,7 +152,7 @@ export default {
       // --------------------
       studentId: '',
       materialId: '',
-      applyType: 1,
+      applyType: '',
       applyEmail: '',
       schoolArr: [{
         school_unq_id: '',
@@ -169,6 +170,7 @@ export default {
   mounted () {
     let self = this
     self.id = self.$route.query.id || ''
+    self.studentId = self.$route.query.sid || ''
     self.$nextTick(() => {
       self.getSchoolList()
       if (self.id !== '') {
@@ -188,7 +190,7 @@ export default {
         } else {
           console.log(res.msg)
         }
-        $('.selectpicker').selectpicker()
+        self.reSelect()
         self.loading = false
       })
     },
@@ -210,16 +212,16 @@ export default {
             self.getBatch(i, res.data.apply_type, item.major_unq_id, 'edit')
           })
         } else {
-          console.log(res.msg)
+          self.layer.alert(res.msg, {icon: 2})
         }
         self.reSelect()
       })
     },
     // 重置select下拉框
     reSelect () {
-      setTimeout(() => {
+      _.delay(() => {
         $('.selectpicker').selectpicker('refresh')
-      }, 300)
+      }, 500)
     },
     // 获取申请材料列表
     getMaterial (id) {
@@ -371,6 +373,18 @@ export default {
       if (str !== undefined || str !== '') {
         return str.replace('-', '')
       }
+    },
+    // 设置申请类型
+    setApplyType () {
+      let self = this
+      _.delay(() => {
+        self.materialList.map((item) => {
+          if (item.id === self.materialId) {
+            self.applyType = item.apply_type
+            self.reSelect()
+          }
+        })
+      }, 100)
     }
   },
   components: {

@@ -412,7 +412,10 @@ export default {
         // 删除部门
         $(document).on('click', '.deleteDepartment', function () {
           $('.popovers').popover('hide')
-          self.deleteDepartment(self.depId)
+          self.layer.confirm('您确定要删除此部门？', { icon: 3 }, function (i) {
+            self.layer.close(i)
+            self.deleteDepartment(self.depId)
+          })
         })
 
         // 点击展开收起部门列表

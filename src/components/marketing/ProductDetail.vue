@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">产品名称</label>
                         <div class="col-sm-8">
-                            <input name="name" type="text" class="form-control" v-model="info.prod_name" placeholder="请输入新品名称(不超过6个字)" v-validate="'required'" data-vv-as="产品名称">
+                            <input name="name" type="text" class="form-control" v-model="info.prod_name" placeholder="请输入新品名称(不超过20个字)" maxlength="20" v-validate="'required|max:20'" data-vv-as="产品名称">
                             <div class="validateTip" v-show="errors.has('name')">
                                 {{ errors.first('name') }}
                             </div>
@@ -57,7 +57,7 @@
                         <label class="col-sm-4 control-label">产品价格</label>
                         <div class="col-sm-8">
                             <input type="text" name="fee" class="form-control" v-model="info.fee_cny"
-                                   placeholder="请输入产品价格" v-validate="'required|money'" data-vv-as="产品价格" />
+                                   placeholder="请输入产品价格" maxlength="8" v-validate="'required|money|max:8'" data-vv-as="产品价格" />
                             <div class="validateTip" v-show="errors.has('fee')">
                                 {{ errors.first('fee') }}
                             </div>

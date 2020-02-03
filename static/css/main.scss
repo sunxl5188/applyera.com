@@ -886,3 +886,11 @@ span[contenteditable], div[contenteditable]{
 		}
 	}
 }
+
+.pagination{
+  & > li{
+    &.total{
+      line-height:34px;padding:0 5px;color:#666;
+    }
+  }
+}

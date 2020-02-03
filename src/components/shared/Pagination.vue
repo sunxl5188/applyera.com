@@ -21,6 +21,7 @@
                         <span class="glyphicon glyphicon-menu-right"></span>
                     </a>
                 </li>
+                <li class="total">本页共{{total}}条</li>
             </ul>
         </nav>
         <!--<v-pagination :total="total" :current-page='current' @pagechange="pagechange"></v-pagination>-->

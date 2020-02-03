@@ -735,21 +735,7 @@ export default {
         self.getInfo()
       } else {
         // 获取机构信息
-        let params = new URLSearchParams()
-        params.append('sid', self.sid)
-        self.loading = true
-        db.getRequest('Institution/Plan/getCompanyInfo', params).then(res => {
-          if (res.status === 1) {
-            self.insInfo = res.data.company
-            if (res.data.student !== null) {
-              self.studentInfo = res.data.student
-              self.setApplyType(res.data.student.ins_student_apply_degree)
-            }
-          } else {
-            console.log(res.msg)
-          }
-          self.loading = false
-        })
+        self.getCompanyInfo(self.sid, true)
       }
 
       setTimeout(function () {
@@ -778,6 +764,29 @@ export default {
     })
   },
   methods: {
+    // 获取机构信息
+    getCompanyInfo (sid, boole) {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('sid', sid)
+      if (boole === true) {
+        self.loading = true
+      }
+      db.getRequest('Institution/Plan/getCompanyInfo', params).then(res => {
+        if (res.status === 1) {
+          self.insInfo = res.data.company
+          if (res.data.student !== null) {
+            self.studentInfo = res.data.student
+            self.setApplyType(res.data.student.ins_student_apply_degree)
+          }
+        } else {
+          console.log(res.msg)
+        }
+        if (boole === true) {
+          self.loading = false
+        }
+      })
+    },
     // 编辑时获取信息
     getInfo () {
       let self = this
@@ -978,9 +987,7 @@ export default {
     },
     // 回调学生档案
     setStuden (obj) {
-      this.studentInfo.ins_student_id = obj.id
-      this.studentInfo['ins_student_name'] = obj.name
-      this.studentInfo.ins_student_phone = obj.phone
+      this.getCompanyInfo(obj.id, false)
     },
     // 自定义字段
     addCustomField () {
