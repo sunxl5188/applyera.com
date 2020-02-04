@@ -49,7 +49,7 @@
             <div class="clearfix font12 text-center">
               <i class="iconfont cded">&#xe610;</i>
               如果该生尚未填写申请资料，请先前往"
-              <router-link to="/functions/applyInfo/detail" class="cded">申请资料</router-link>
+              <router-link to="/functions/applyInfo/applyType" class="cded">申请资料</router-link>
               "填写
             </div>
           </div>
@@ -60,11 +60,11 @@
               <th class="w5">
                 <i class="iconfont handPower cded" @click="addSchool">&#xe622;</i>
               </th>
-              <th class="w20"><span class="pl-15">院校名称</span></th>
-              <th class="w20"><span class="pl-15">专业名称</span></th>
-              <th class="w15">专业网址</th>
-              <th class="w25"><span class="pl-10">申请批次</span></th>
-              <th><span class="pl-10">可得佣金</span></th>
+              <th class="w25"><span class="pl-15">院校名称</span></th>
+              <th class="w25"><span class="pl-15">专业名称</span></th>
+              <th class="w20"><span class="pl-10">专业网址</span></th>
+              <th class="w15"><span class="pl-10">申请批次</span></th>
+              <th class="w10"><span class="pl-10">可得佣金</span></th>
             </tr>
             </thead>
             <tbody>
@@ -73,7 +73,7 @@
               <td>
                 <div v-show="item.school_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
                   <select name="major_list[school_unq_id][]" class="form-control selectpicker show-tick"
-                          data-size="10" data-live-search="true" data-width="190px"
+                          data-size="10" data-live-search="true"
                           v-model="item.school_unq_id"
                           @change="getMajorList(i, applyType, item.school_unq_id)">
                     <option value="">请选择</option>
@@ -90,7 +90,7 @@
               <td>
                 <div v-show="item.major_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
                   <select name="major_list[major_unq_id][]" class="form-control selectpicker show-tick"
-                          data-size="10" data-live-search="true" data-width="190px"
+                          data-size="10" data-live-search="true"
                           v-model="item.major_unq_id" @change="getBatch(i, applyType, item.major_unq_id)">
                     <option value="">请选择</option>
                     <option value="custom">自定义专业</option>
@@ -104,7 +104,7 @@
               </td>
               <td>
                 <input type="hidden" name="major_list[major_website][]" v-model="item.major_website" />
-                <a :href="item.major_website" target="_blank" class="cded lh34" v-if="item.major_unq_id !=='custom'">点击前往</a>
+                <a :href="item.major_website" target="_blank" class="cded lh34 pl-10" v-if="item.major_unq_id !=='custom'">点击前往</a>
                 <span v-if="item.major_unq_id === 'custom'" class="c999">
                             <input type="text" name="name" class="form-control" v-model="item.major_website" placeholder="请输入专业网址" />
                         </span>
@@ -423,5 +423,12 @@ export default {
 }
 .schoolList{
     [type="text"]{border:none;background-color:transparent !important;}
+}
+</style>
+<style lang="scss">
+#schoolApply{
+  .filter-option-inner-inner{
+    word-break:break-all;
+  }
 }
 </style>

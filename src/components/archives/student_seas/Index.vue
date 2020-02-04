@@ -16,7 +16,7 @@
                             <i class="iconfont" style="right: auto;left: 0;">&#xe741;</i>
                             <i class="iconfont handPower clearSearch" v-if="keywords" @click="keywords=''">&#xe7f6;</i>
                             <input type="text" v-model="keywords" class="form-control"
-                                   placeholder="搜索所有内容"
+                                   placeholder="请输入学生名字搜索"
                                    style="padding-left:30px;">
                         </div>
                         <div class="form-group ml-10">
@@ -135,7 +135,7 @@
                 <tr v-for="(item,i) in list" :key="i">
                     <td><input type="checkbox" name="id[]" :value="item.id" @click="setActiveId($event, item.id)"/></td>
                     <td>
-                        <router-link :to="{path:'/archives/student_seas/edit',query:{id:item.id,isCommon:1}}" class="cded">{{item.name}}</router-link>
+                        <router-link :to="{path:'/archives/student_seas/edit',query:{id:item.id,isCommon:1}}" class="cded" v-html="highlight(item.name, keywords)"></router-link>
                     </td>
                     <td>{{item.student_type}}</td>
                     <td>{{item.operator_name}}</td>
@@ -186,7 +186,7 @@
                             <div class="recordingContent">
                                 <div class="media" v-for="(item,i) in followObj" :key="i">
                                     <a class="media-left" href="javascript:void(0);">
-                                        <img :src="item.head_img || '../../../static/images/defaultface.png'"
+                                        <img :src="item.head_img || '/manage/static/images/defaultface.png'"
                                              style="width:50px; height:50px;" class="img-circle">
                                     </a>
                                     <div class="media-body">
@@ -244,7 +244,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">选择字段</label>
                                 <div class="col-sm-7">
-                                    <select name="" class="form-control">
+                                    <select name="" class="form-control selectpicker show-tick">
                                         <option value=""> 学生类型</option>
                                     </select>
                                 </div>
@@ -252,7 +252,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">批量修改为</label>
                                 <div class="col-sm-7">
-                                    <select name="" class="form-control" v-model="studentType">
+                                    <select name="" class="form-control selectpicker show-tick" v-model="studentType">
                                         <option value="">请选择</option>
                                         <option :value="item.id" v-for="(item,i) in studentTypeArr.type" :key="i">{{item.stu_type}}
                                         </option>
@@ -283,7 +283,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">新负责人</label>
                                 <div class="col-sm-7">
-                                    <select name="" class="form-control" v-model="adviserId">
+                                    <select name="" class="form-control selectpicker show-tick" data-size="10" data-live-search="true" v-model="adviserId">
                                         <option value=""> 请选择用户</option>
                                         <option :value="item.id" v-for="(item,i) in adviserArr" :key="i">{{item.name}}</option>
                                     </select>
@@ -373,8 +373,6 @@ export default {
       self.pagechange()
 
       setTimeout(function () {
-        $('.selectpicker').selectpicker()
-
         self.createUpload()
 
         $('#recording-id').on('hidden.bs.modal', function () {
@@ -406,6 +404,7 @@ export default {
         }
         self.current = p || 1
         self.loading = false
+        self.reSelect()
       })
     },
     listSort () {
@@ -596,6 +595,7 @@ export default {
         params.append('student_id[]', item)
       })
       params.append('student_type', self.studentType)
+      params.append('field', 'type')
       db.postRequest('/Institution/Student/batchChangeType', params).then(res => {
         if (res.status === 1) {
           self.studentType = ''
@@ -679,6 +679,11 @@ export default {
           })
         }
       })
+    },
+    reSelect () {
+      _.delay(() => {
+        $('.selectpicker').selectpicker('refresh')
+      }, 1000)
     }
   },
   components: {

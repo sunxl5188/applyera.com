@@ -221,7 +221,7 @@
 
         <div class="modal fade" id="modalRemind">
             <div class="modal-dialog ">
-                <div class="modal-content">
+                <div class="modal-content" style="max-height:650px;overflow-y:auto;">
                     <div style="background: #39f;height: 250px;-webkit-border-radius: 6px 6px 0 0;-moz-border-radius: 6px 6px 0 0;border-radius: 6px 6px 0 0;"></div>
                     <div class="modal-body text-center">
                         <div v-for="(item, i) in remindInfo" :key="i">

@@ -88,7 +88,7 @@ export default {
     }
   },
   mounted () {
-    this.source = this.$route.query.source || ''
+    this.source = parseInt(this.$route.query.source) || ''
     this.$nextTick(() => {
       $('[data-toggle="tooltip"]').tooltip()
     })

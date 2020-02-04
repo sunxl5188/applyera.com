@@ -54,7 +54,7 @@
                                     <div class="pr-15">
                                         <div class="form-group">
                                             <label>曾用名</label>
-                                            <select name="is_old_name" class="form-control selectpicker"
+                                            <select name="is_old_name" class="form-control selectpicker show-tick"
                                                     v-model.number="personal.is_old_name">
                                                 <option value="0">否</option>
                                                 <option value="1">是</option>
@@ -161,7 +161,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>国籍 <font class="cf00">*</font></label>
-                                <select name="nationality" class="form-control selectpicker" data-live-search="true" data-size="10"
+                                <select name="nationality" class="form-control selectpicker show-tick" data-live-search="true" data-size="10"
                                         v-validate="'required'"
                                         data-vv-as="国籍" v-model="personal.nationality">
                                     <option value="">请选择</option>
@@ -392,7 +392,7 @@
                             <div class="checkbox" style="display:inline-block;">
                                 <label>
                                     <input type="checkbox" name="foreign_live_is" data-obj="personal"
-                                           data-name="foreign_live_is"
+                                           data-name="foreign_live_is" data-size="10"
                                            v-model="personal.foreign_live_is">&nbsp;
                                 </label>
                             </div>
@@ -402,12 +402,13 @@
                                         <div class="form-group">
                                             <label>国家</label>
                                             <select name="foreign_live_country"
-                                                    class="form-control selectpicker" data-live-search="true" data-size="15"
+                                                    class="form-control selectpicker show-tick" data-live-search="true" data-size="10"
                                                     v-model="personal.foreign_live_country">
                                                 <option value="">请选择</option>
-                                                <option :value="item.id" v-for="(item,i) in nation" :key="i">
-                                                    {{item.cn}}
-                                                </option>
+                                                <option value="164">美国</option>
+                                                <option value="163">英国</option>
+                                                <option value="27">加拿大</option>
+                                                <option value="7">澳洲</option>
                                             </select>
                                         </div>
                                     </div>
@@ -416,7 +417,7 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>居住时长</label>
-                                            <select name="foreign_live_time" class="form-control selectpicker"
+                                            <select name="foreign_live_time" class="form-control selectpicker show-tick"
                                                     v-model="personal.foreign_live_time">
                                                 <option value="">请选择</option>
                                                 <option :value="item.id" v-for="(item,i) in liveTime" :key="i">
@@ -458,12 +459,13 @@
                                         <div class="form-group">
                                             <label>国家</label>
                                             <select name="foreign_identity_country"
-                                                    class="form-control selectpicker" data-live-search="true" data-size="15"
+                                                    class="form-control selectpicker show-tick" data-live-search="true" data-size="10"
                                                     v-model="personal.foreign_identity_country">
                                                 <option value="">请选择</option>
-                                                <option :value="item.id" v-for="(item,i) in nation" :key="i">
-                                                    {{item.cn}}
-                                                </option>
+                                                <option value="164">美国</option>
+                                                <option value="163">英国</option>
+                                                <option value="27">加拿大</option>
+                                                <option value="7">澳洲</option>
                                             </select>
                                         </div>
                                     </div>
@@ -473,7 +475,7 @@
                                         <div class="form-group">
                                             <label>身份类型</label>
                                             <select name="foreign_identity_type"
-                                                    class="form-control selectpicker"
+                                                    class="form-control selectpicker show-tick"
                                                     v-model="personal.foreign_identity_type">
                                                 <option value="">请选择</option>
                                                 <option :value="item.id" v-for="(item,i) in idType" :key="i">
@@ -515,7 +517,7 @@
                                         <div class="form-group">
                                             <label>国家</label>
                                             <select name="dual_nationality_country"
-                                                    class="form-control selectpicker" data-live-search="true" data-size="15"
+                                                    class="form-control selectpicker show-tick" data-live-search="true" data-size="15"
                                                     v-model="personal.dual_nationality_country">
                                                 <option value="">请选择</option>
                                                 <option :value="item.id" v-for="(item,i) in nation" :key="i">
@@ -558,7 +560,7 @@
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label>国家</label>
-                                                <select name="visa_country" class="form-control selectpicker"
+                                                <select name="visa_country" class="form-control selectpicker show-tick"
                                                         v-model.number="personal.visa_country"
                                                         @change="RefreshSelect()">
                                                     <option value="">请选择</option>
@@ -574,7 +576,7 @@
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label>签证类型</label>
-                                                <select name="visa_type" class="form-control selectpicker"
+                                                <select name="visa_type" class="form-control selectpicker show-tick"
                                                         v-model="personal.visa_type">
                                                     <option value="">请选择</option>
                                                     <option :value="item.val"
@@ -666,7 +668,7 @@
                                                 <div class="form-group">
                                                     <label>工作类型</label>
                                                     <select :name="'work_exp[type]['+i+']'"
-                                                            class="form-control selectpicker"
+                                                            class="form-control selectpicker show-tick"
                                                             v-validate="'required'" data-vv-as="工作类型"
                                                             v-model="item.type">
                                                         <option value="">请选择</option>
@@ -686,7 +688,7 @@
                                                 <div class="form-group">
                                                     <label>工作性质</label>
                                                     <select :name="'work_exp[nature]['+i+']'"
-                                                            class="form-control selectpicker"
+                                                            class="form-control selectpicker show-tick"
                                                             v-validate="'required'" data-vv-as="工作性质"
                                                             v-model="item.nature">
                                                         <option value="">请选择</option>
