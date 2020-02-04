@@ -6,6 +6,16 @@
                     <div class="headerTitle">发起申请</div>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
+                  <div class="form-group">
+                    <a href="javascript:void(0);" class="btn btn-default ml-10" v-if="source===1" @click="$router.back()">
+                      <i class="iconfont">&#xe64f;</i>
+                      返回
+                    </a>
+                    <router-link :to="{path:'/functions/initApply'}" exact class="btn btn-default ml-10" v-if="source===''">
+                      <i class="iconfont">&#xe64f;</i>
+                      返回
+                    </router-link>
+                  </div>
                 </div>
             </div>
         </div>

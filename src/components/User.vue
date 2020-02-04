@@ -59,7 +59,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">联系地址</label>
                 <div class="col-sm-4">
-                  <div v-html="address"></div>
+                  <div v-html="address" style="padding-top:8px;"></div>
                 </div>
                 <div class="col-sm-6 lh34"><a href="#" data-toggle="modal"
                                               data-backdrop="static" data-target="#editUserInfo"
@@ -237,7 +237,7 @@
                       <div class="col-sm-9 imageCode">
                         <input type="text" name="code" class="form-control" v-model="imgCodeVal"
                                placeholder="请输入图形验证码">
-                        <img :src="imgVerify" alt="" @click="imgCode()" height="34">
+                        <img :src="imgVerify" alt="" @click="imgCode()" height="34" class="handPower">
                       </div>
                     </div>
                     <div class="form-group">
@@ -274,7 +274,7 @@
                       <div class="col-sm-9 imageCode">
                         <input type="text" name="code" class="form-control" v-model="imgCodeVal"
                                placeholder="请输入图形验证码">
-                        <img :src="imgVerify" alt="" @click="imgCode()" height="34">
+                        <img :src="imgVerify" alt="" @click="imgCode()" height="34" class="handPower">
                       </div>
                     </div>
                     <div class="form-group">
@@ -346,7 +346,7 @@
                       <div class="col-sm-9 imageCode">
                         <input type="text" name="code" class="form-control" v-model="imgCodeVal"
                                placeholder="请输入图形验证码">
-                        <img :src="imgVerify" height="34" alt="" @click="imgCode()">
+                        <img :src="imgVerify" height="34" alt="" @click="imgCode()" class="handPower">
                       </div>
                     </div>
                     <div class="form-group">

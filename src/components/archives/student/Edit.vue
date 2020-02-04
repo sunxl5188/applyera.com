@@ -164,9 +164,9 @@
 
                                 <div class="panel panel-default">
                                     <div class="panel-heading clearfix">
-                                        <span class="pull-left">申请跟踪</span>
+                                        <span class="pull-left">申请资料</span>
                                         <span class="pull-right">
-                                             <router-link :to="{path:'/functions/initApply/ChooseSchool', query:{sid:id}}">
+                                             <router-link :to="{path:'/functions/applyInfo/applyType'}">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
@@ -179,7 +179,7 @@
                                                 <td width="20%">{{item.status}}</td>
                                                 <td>
                                                     <router-link
-                                                            :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.apply_material_id,source:1}}"
+                                                            :to="{path:'/functions/applyInfo/detail',query:{id:item.apply_material_id}}"
                                                             class="cded">{{item.apply_num}}
                                                     </router-link>
                                                 </td>
@@ -188,7 +188,7 @@
                                         </table>
                                         <div class="panel-noData" v-if="tab1.material.length === 0">
                                             <p class="c999">该学生还没有申请中的院校</p>
-                                            <router-link :to="{path:'/functions/initApply/ChooseSchool', query:{sid:id}}" class="cded">点击前往创建
+                                            <router-link :to="{path:'/functions/applyInfo/applyType'}" class="cded">点击前往创建
                                             </router-link>
                                         </div>
                                     </div>
@@ -229,9 +229,9 @@
 
                                 <div class="panel panel-default">
                                     <div class="panel-heading clearfix">
-                                        <span class="pull-left">院校申请</span>
+                                        <span class="pull-left">发起申请</span>
                                         <span class="pull-right">
-                                             <router-link to="/functions/initApply/ChooseSchool">
+                                             <router-link :to="{path:'/functions/initApply/ChooseSchool', query:{sid:id,source:1}}">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
@@ -244,7 +244,7 @@
                                                 <td width="20%">{{item.country}}</td>
                                                 <td>
                                                     <router-link
-                                                            :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.apply_id}}"
+                                                            :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.apply_id,source:1}}"
                                                             class="cded">{{item.school}}
                                                     </router-link>
                                                 </td>
@@ -253,8 +253,8 @@
                                             </tbody>
                                         </table>
                                         <div class="panel-noData" v-if="tab1.apply.length === 0">
-                                            <p class="c999">该学生还没有院校申请</p>
-                                            <router-link to="/functions/initApply/ChooseSchool" class="cded">
+                                            <p class="c999">该学生还没有申请中的院校</p>
+                                            <router-link :to="{path:'/functions/initApply/ChooseSchool', query:{sid:id,source:1}}" class="cded">
                                                 点击前往创建
                                             </router-link>
                                         </div>
@@ -263,7 +263,7 @@
 
                                 <div class="panel panel-default">
                                     <div class="panel-heading clearfix">
-                                        <span class="pull-left">申请进程</span>
+                                        <span class="pull-left">申请跟踪</span>
                                     </div>
                                     <div class="panel-body">
                                         <table class="table" v-if="tab1.apply_process.length > 0">
@@ -280,7 +280,7 @@
                                             </tbody>
                                         </table>
                                         <div class="panel-noData" v-if="tab1.apply_process.length===0">
-                                            <p class="c999">该学生申请中的院校</p>
+                                            <p class="c999">该学生还没有申请中的院校</p>
                                             <router-link to="/functions/track" class="cded">点击前往创建
                                             </router-link>
                                         </div>

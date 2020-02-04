@@ -96,7 +96,7 @@
                                     </li>
                                     <li>
                                         <a href="javascript:void(0);" @click="setDisable(item.id,2)"
-                                           v-if="item.status===1">禁用</a>
+                                           v-if="item.status===1">停用</a>
                                         <a href="javascript:void(0);" @click="setDisable(item.id,1)"
                                            v-if="item.status===2">启用</a>
                                     </li>

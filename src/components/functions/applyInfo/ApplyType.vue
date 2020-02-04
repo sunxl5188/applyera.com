@@ -35,7 +35,6 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.back()">取消</button>
                             <button type="submit" class="btn btn-primary">保存</button>
                         </div>
                     </div>
