@@ -132,6 +132,12 @@ a{
 	&.active{
 		color:#39f;
 	}
+  &.blue{
+    &:link{color:#39f;}
+    &:visited{color:#333;}
+    &:hover{color:#39f;text-decoration:dashed;}
+    &:active{color:#f60;}
+  }
 }
 
 textarea{

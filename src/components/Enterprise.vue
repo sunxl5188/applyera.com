@@ -27,9 +27,6 @@
                          <div class="clearfix text-center">
                              <div class="lh34 font16 pt-15">{{list.left_name}}</div>
                              <div class="lh24">{{list.left_service}}</div>
-                             <div class="clearfix lh24">
-                                 还有<span class="cded">{{list.left_last}}</span>到期
-                             </div>
                          </div>
                      </div>
                      <div class="clearfix pl-30">
@@ -88,8 +85,8 @@
                              <i class="iconfont">&#xe635;</i>
                              <span v-if="list.is_uploads===1">
                                     <a :href="url +'/Institution/Company/archiveDownload?id='+list.id"
-                                       class="cded ml-15" target="_blank">下载</a>
-                                    <a href="javascript:void(0);" class="cded ml-15" @click="viewImage(list.uploads)">查看</a>
+                                       class="ml-15" target="_blank">下载</a>
+                                    <a href="javascript:void(0);" class="ml-15" @click="viewImage(list.uploads)">查看</a>
                                 </span>
                              <span v-if="list.is_uploads===0">
                                     <a href="javascript:void(0);" class="c999">下载</a>
@@ -299,6 +296,7 @@ export default {
             self.layer.close(i)
           })
         } else {
+          self.getCompany()
           self.layer.alert(res.msg, {
             icon: 2
           })

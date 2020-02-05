@@ -279,6 +279,7 @@ export default {
       loading: true,
       studentId: '',
       tabStatus: [0, 0, 0, 0],
+      modify: 0, // 表单是否修改过 大于1是修改过
       result1: false,
       formChild1: [],
       result2: false,
@@ -323,6 +324,50 @@ export default {
         brother_is: false,
         brother_info: [{type: 1, schoolLv: '', birthday: '', schoolTime: '', name: '', schoolName: '', reason: ''}]
       }
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    let self = this
+    if (self.modify > 1) {
+      self.layer.confirm('您将离开当前页面，是否保存已填写的内容？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        let formdata1 = ''
+        let formdata2 = ''
+        if (self.family.guardian === 1 || self.family.guardian === 3 || self.family.guardian === 4) {
+          formdata1 = $('#familyChild').serializeArray()
+        }
+        if (self.family.guardian === 2 || self.family.guardian === 3) {
+          formdata2 = $('#familyChild2').serializeArray()
+        }
+        setTimeout(() => {
+          let formData = $('#FamilyForm').serializeArray()
+          if (self.family.guardian === 3) {
+            formData.push.apply(formData, formdata1)
+            formData.push.apply(formData, formdata2)
+          } else if (self.family.guardian === 2) {
+            formData.push.apply(formData, formdata2)
+          } else if (self.family.guardian === 1 || self.family.guardian === 4) {
+            formData.push.apply(formData, formdata1)
+          }
+          let params = new URLSearchParams()
+          formData.map(item => {
+            params.append(item.name, item.value)
+          })
+          db.postRequest('/Institution/ApplyMaterial/saveFamily', params).then(res => {
+            if (res.status === 1) {
+              next(true)
+            } else {
+              next(false)
+              self.layer.alert(res.msg, {icon: 2})
+            }
+          })
+        }, 100)
+      }, function () {
+        next(true)
+      })
+      self.modify = 0
+    } else {
+      next(true)
     }
   },
   mounted: function () {
@@ -543,6 +588,14 @@ export default {
   },
   components: {
     HeaderNav, Father, Mother
+  },
+  watch: {
+    family: {
+      handler: function () {
+        this.modify += 1
+      },
+      deep: true
+    }
   }
 }
 </script>

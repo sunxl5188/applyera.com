@@ -1285,6 +1285,7 @@ export default {
       loading: true,
       studentId: '',
       tabStatus: [0, 0, 0, 0],
+      modify: 0, // 表单是否修改过 大于1是修改过
       languageScore: 1,
       educationType: 1,
       exam: {
@@ -1304,6 +1305,32 @@ export default {
         btec: [],
         ib: []
       }
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    let self = this
+    if (self.modify > 1) {
+      self.layer.confirm('您将离开当前页面，是否保存已填写的内容？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        let formData = $('#ExamForm').serializeArray()
+        let params = new URLSearchParams()
+        for (let i = 0; i < formData.length; i++) {
+          params.append(formData[i]['name'], formData[i]['value'])
+        }
+        db.postRequest('/Institution/ApplyMaterial/saveExam', params).then(res => {
+          if (res.status === 1) {
+            next(true)
+          } else {
+            next(false)
+            self.layer.alert(res.msg, {icon: 2})
+          }
+        })
+      }, function () {
+        next(true)
+      })
+      self.modify = 0
+    } else {
+      next(true)
     }
   },
   mounted () {
@@ -1451,8 +1478,14 @@ export default {
       }, 500)
     }
   },
-  components: {
-    HeaderNav
+  components: { HeaderNav },
+  watch: {
+    exam: {
+      handler: function () {
+        this.modify += 1
+      },
+      deep: true
+    }
   }
 }
 </script>
