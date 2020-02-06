@@ -24,7 +24,7 @@
                 <label class="col-sm-4 control-label">申请材料</label>
                 <div class="col-sm-8">
                   <select name="apply_id" class="form-control selectpicker show-tick" data-live-serach="true"
-                          data-size="15" v-model="materialId" @change="setApplyType">
+                          data-size="15" v-model="schoolDetail.materialId" @change="setApplyType">
                     <option value="">请选择</option>
                     <option :value="item.id" v-for="(item, i) in materialList" :key="i">
                       {{item.apply_num}}({{item.apply_type}})
@@ -38,7 +38,7 @@
                 <label class="col-sm-4 control-label">申报类型</label>
                 <div class="col-sm-8">
                   <select name="apply_type" class="form-control selectpicker show-tick" data-live-serach="true"
-                          data-size="15" v-model="applyType">
+                          data-size="15" v-model="schoolDetail.applyType">
                     <option value="">请选择</option>
                     <option value="1">本科</option>
                     <option value="2">硕士</option>
@@ -62,20 +62,20 @@
               </th>
               <th class="w25"><span class="pl-15">院校名称</span></th>
               <th class="w25"><span class="pl-15">专业名称</span></th>
-              <th class="w20"><span class="pl-10">专业网址</span></th>
+              <th class="w20"><span class="pl-10">专业官网</span></th>
               <th class="w15"><span class="pl-10">申请批次</span></th>
               <th class="w10"><span class="pl-10">可得佣金</span></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item, i) in schoolArr" :key="i">
+            <tr v-for="(item, i) in schoolDetail.schoolArr" :key="i">
               <td><i class="iconfont handPower cded lh38" @click="deleteSchool(i)">&#xe61f5;</i></td>
               <td>
                 <div v-show="item.school_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
                   <select name="major_list[school_unq_id][]" class="form-control selectpicker show-tick"
                           data-size="10" data-live-search="true"
                           v-model="item.school_unq_id"
-                          @change="getMajorList(i, applyType, item.school_unq_id)">
+                          @change="getMajorList(i, schoolDetail.applyType, item.school_unq_id)">
                     <option value="">请选择</option>
                     <option value="custom">自定义学校</option>
                     <option :value="items.unq_id" v-for="(items, k) in schoolList" :key="k">
@@ -91,7 +91,7 @@
                 <div v-show="item.major_unq_id !== 'custom'" class="bootstrapSelectBorderNone">
                   <select name="major_list[major_unq_id][]" class="form-control selectpicker show-tick"
                           data-size="10" data-live-search="true"
-                          v-model="item.major_unq_id" @change="getBatch(i, applyType, item.major_unq_id)">
+                          v-model="item.major_unq_id" @change="getBatch(i, schoolDetail.applyType, item.major_unq_id)">
                     <option value="">请选择</option>
                     <option value="custom">自定义专业</option>
                     <option :value="items.unq_id" v-for="(items, k) in item.majorList" :key="k">
@@ -104,7 +104,7 @@
               </td>
               <td>
                 <input type="hidden" name="major_list[major_website][]" v-model="item.major_website" />
-                <a :href="item.major_website" target="_blank" class="cded lh34 pl-10" v-if="item.major_unq_id !=='custom'">点击前往</a>
+                <a :href="item.major_website" target="_blank" class="lh34 pl-10" v-if="item.major_unq_id !=='custom' && item.major_website">点击前往</a>
                 <span v-if="item.major_unq_id === 'custom'" class="c999">
                             <input type="text" name="name" class="form-control" v-model="item.major_website" placeholder="请输入专业网址" />
                         </span>
@@ -149,25 +149,54 @@ export default {
       id: '',
       loading: true,
       state: [0, 0, 0, 0],
+      modify: 0, // 如果大于1 那么修改过
       schoolList: [],
       studentList: [],
       materialList: [],
       // --------------------
       studentId: '',
-      materialId: '',
-      applyType: '',
-      applyEmail: '',
-      schoolArr: [{
-        school_unq_id: '',
-        school_name: '',
-        major_unq_id: '',
-        major_name: '',
-        major_website: '',
-        term: '',
-        comm: '',
-        majorList: [],
-        batchList: []
-      }]
+      schoolDetail: {
+        materialId: '',
+        applyType: '',
+        applyEmail: '',
+        schoolArr: [{
+          school_unq_id: '',
+          school_name: '',
+          major_unq_id: '',
+          major_name: '',
+          major_website: '',
+          term: '',
+          comm: '',
+          majorList: [],
+          batchList: []
+        }]
+      }
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    let self = this
+    if (self.modify > 1) {
+      self.layer.confirm('您正在离开当前页面，系统检测到您编辑的内容尚未保存，是否保存？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        let formData = $('#schoolApply').serializeArray()
+        let params = new URLSearchParams()
+        formData.map(item => {
+          params.append(item.name, item.value)
+        })
+        db.postRequest('Institution/Apply/choseSchoolSave', params).then(res => {
+          if (res.status === 1) {
+            next(true)
+          } else {
+            next(false)
+            self.layer.alert(res.msg, {icon: 2})
+          }
+        })
+      }, function () {
+        next(true)
+      })
+      self.modify = 0
+    } else {
+      next(true)
     }
   },
   mounted () {
@@ -209,10 +238,10 @@ export default {
         if (res.status === 1) {
           self.getMaterial(res.data.student_id)
           self.studentId = res.data.student_id
-          self.materialId = res.data.apply_id
-          self.applyEmail = res.data.apply_email
-          self.applyType = res.data.apply_type
-          self.schoolArr = res.data.major_list
+          self.schoolDetail.materialId = res.data.apply_id
+          self.schoolDetail.applyEmail = res.data.apply_email
+          self.schoolDetail.applyType = res.data.apply_type
+          self.schoolDetail.schoolArr = res.data.major_list
           res.data.major_list.map((item, i) => {
             self.getMajorList(i, res.data.apply_type, item.school_unq_id, 'edit')
             self.getBatch(i, res.data.apply_type, item.major_unq_id, 'edit')
@@ -233,7 +262,7 @@ export default {
     getMaterial (id) {
       let self = this
       let params = new URLSearchParams()
-      self.materialId = ''
+      self.schoolDetail.materialId = ''
       if (id === '') {
         self.materialList = []
         self.reSelect()
@@ -253,13 +282,13 @@ export default {
       let self = this
       let params = new URLSearchParams()
       if (type !== 'edit') {
-        self.schoolArr[i].major_unq_id = ''
-        self.schoolArr[i].major_website = ''
-        self.schoolArr[i].comm = ''
-        self.schoolArr[i].major_name = ''
+        self.schoolDetail.schoolArr[i].major_unq_id = ''
+        self.schoolDetail.schoolArr[i].major_website = ''
+        self.schoolDetail.schoolArr[i].comm = ''
+        self.schoolDetail.schoolArr[i].major_name = ''
       }
       if (applyType === '') {
-        self.schoolArr[i].school_unq_id = ''
+        self.schoolDetail.schoolArr[i].school_unq_id = ''
         self.reSelect()
         self.layer.alert('请选择申报类型', {icon: 2})
         return false
@@ -271,7 +300,7 @@ export default {
       params.append('school_unq_id', schoolId)
       db.postRequest('Institution/Apply/majorList', params).then(res => {
         if (res.status === 1) {
-          self.schoolArr[i].majorList = res.data
+          self.schoolDetail.schoolArr[i].majorList = res.data
         } else {
           console.log(res.msg)
         }
@@ -283,10 +312,10 @@ export default {
       let self = this
       let params = new URLSearchParams()
       if (type !== 'edit') {
-        self.schoolArr[i].batchList = []
-        self.schoolArr[i].term = ''
-        self.schoolArr[i].major_website = ''
-        self.schoolArr[i].comm = ''
+        self.schoolDetail.schoolArr[i].batchList = []
+        self.schoolDetail.schoolArr[i].term = ''
+        self.schoolDetail.schoolArr[i].major_website = ''
+        self.schoolDetail.schoolArr[i].comm = ''
       }
       if (applyType === '') {
         self.layer.alert('请选择申报类型', {icon: 2})
@@ -295,17 +324,17 @@ export default {
       if (majorId === 'custom') {
         return false
       }
-      self.schoolArr[i].majorList.map((item) => {
+      self.schoolDetail.schoolArr[i].majorList.map((item) => {
         if (item.unq_id === majorId) {
-          self.schoolArr[i].major_website = item.major_website
-          self.schoolArr[i].comm = item.comm
+          self.schoolDetail.schoolArr[i].major_website = item.major_website
+          self.schoolDetail.schoolArr[i].comm = item.comm
         }
       })
       params.append('apply_type', applyType)
       params.append('major_unq_id', majorId)
       db.postRequest('Institution/Apply/termList', params).then(res => {
         if (res.status === 1) {
-          self.schoolArr[i].batchList = res.data
+          self.schoolDetail.schoolArr[i].batchList = res.data
         } else {
           console.log(res.msg)
         }
@@ -313,7 +342,7 @@ export default {
     },
     // 添加学校列表
     addSchool () {
-      this.schoolArr.push({
+      this.schoolDetail.schoolArr.push({
         school_unq_id: '',
         school_name: '',
         major_unq_id: '',
@@ -327,8 +356,12 @@ export default {
       this.reSelect()
     },
     // 删除学校列表
-    deleteSchool (i) {
-      this.schoolArr.splice(i, 1)
+    deleteSchool (k) {
+      let self = this
+      self.layer.confirm('您确定要删除此信息？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        self.schoolDetail.schoolArr.splice(k, 1)
+      })
     },
     // 保存数据
     validateBeforeSubmit () {
@@ -340,6 +373,7 @@ export default {
           formData.map(item => {
             params.append(item.name, item.value)
           })
+          self.modify = 0
           db.postRequest('Institution/Apply/choseSchoolSave', params).then(res => {
             if (res.status === 1) {
               if (!self.id) {
@@ -364,6 +398,7 @@ export default {
       formData.map(item => {
         params.append(item.name, item.value)
       })
+      self.modify = 0
       db.postRequest('Institution/Apply/choseSchoolSave', params).then(res => {
         if (res.status === 1) {
           if (self.id) {
@@ -385,16 +420,22 @@ export default {
       let self = this
       _.delay(() => {
         self.materialList.map((item) => {
-          if (item.id === self.materialId) {
-            self.applyType = item.apply_type
+          if (item.id === self.schoolDetail.materialId) {
+            self.schoolDetail.applyType = item.apply_type
             self.reSelect()
           }
         })
       }, 100)
     }
   },
-  components: {
-    InitApplyNav
+  components: {InitApplyNav},
+  watch: {
+    schoolDetail: {
+      handler: function () {
+        this.modify += 1
+      },
+      deep: true
+    }
   }
 }
 </script>

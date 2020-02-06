@@ -8,10 +8,10 @@
         <div class="clearfix lh24">
                 <span class="tipsys mr-10">成绩单<i class="iconfont handPower c999" data-toggle="tooltip"
                                                  data-placement="top"
-                                                 title="在读生请提供现有6个学期中英文完整成绩单； 毕业生请提供大学4年完整中英文成绩单）">&#xe999;</i></span>,
+                                                 title="在读生请提供现有6个学期中英文完整成绩单； 毕业生请提供大学4年完整中英文成绩单">&#xe999;</i></span>,
             <span class="tipsys mr-10">毕业证书 or 学位证书 or 在读证明<i class="iconfont handPower c999" data-toggle="tooltip"
                                                               data-placement="top"
-                                                              title="如已毕业，请提供毕业证书或这位证书，请注意证书要打印在学校的信纸上，有中英文对照且加盖学校公章。如尚未毕业，请提供在读证明，在读证明需要打印在学校的信纸上，有中英文对照且加盖学校公章。">&#xe999;</i></span>,
+                                                              title="如已毕业，请提供毕业证书或学位证书，请注意证书要打印在学校的信纸上，有中英文对照且加盖学校公章。如尚未毕业，请提供在读证明，在读证明需要打印在学校的信纸上，有中英文对照且加盖学校公章。">&#xe999;</i></span>,
             <span class="tipsys mr-10">推荐信<i class="iconfont handPower c999" data-toggle="tooltip"
                                              data-placement="top"
                                              title="推荐信请用学校信签纸打印，必须包含推荐人的姓名、电话、邮箱、地址信息、日期，推荐人亲笔签名">&#xe999;</i></span>,
