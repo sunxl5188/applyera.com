@@ -94,35 +94,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <div class="form-group">
                             <label>详细地址 <font class="cf00">*</font></label>
-                            <div class="form-inline" id="citys">
-                                <CitySelect
-                                        :p="item.prov"
-                                        :c="item.city"
-                                        :a="item.district"
-                                        :pName="'rcmder[prov]['+i+']'"
-                                        :cName="'rcmder[city]['+i+']'"
-                                        :aName="'rcmder[district]['+i+']'"
-                                        @cityCallback="cityCallback"/>
-                                <input type="hidden" :name="'ReDer[prov]['+i+']'" :value="item.prov" v-validate="'required'" data-vv-as="省" />
-                                <input type="hidden" :name="'ReDer[city]['+i+']'" :value="item.city" v-validate="'required'" data-vv-as="市" />
-                                <input type="hidden" :name="'ReDer[district]['+i+']'" :value="item.district" v-validate="'required'" data-vv-as="区" />
-                                <input type="text" :name="'rcmder[details]['+i+']'" v-model="item.details" class="form-control" placeholder="请用英文或拼音输入推荐人地址" v-validate="'required'" data-vv-as="详细地址">
-                                <div class="validateTip" v-show="errors.has('ReDer[prov]['+i+']')">
-                                    {{ errors.first('ReDer[prov]['+i+']') }}
-                                </div>
-                                <div class="validateTip" v-show="errors.has('ReDer[city]['+i+']')">
-                                    {{ errors.first('ReDer[city]['+i+']') }}
-                                </div>
-                                <div class="validateTip" v-show="errors.has('ReDer[district]['+i+']')">
-                                    {{ errors.first('ReDer[district]['+i+']') }}
-                                </div>
-                                <div class="validateTip" v-show="errors.has('rcmder[details]['+i+']')">
-                                    {{ errors.first('rcmder[details]['+i+']') }}
-                                </div>
-                            </div>
+                            <input type="text" :name="'rcmder[details]['+i+']'" v-model="item.details" class="form-control" placeholder="请用英文或拼音输入推荐人地址" v-validate="'required'" data-vv-as="详细地址">
+                            <div class="validateTip" v-show="errors.has('rcmder[details]['+i+']')">
+                            {{ errors.first('rcmder[details]['+i+']') }}
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -431,7 +409,6 @@
 import '@~/js/VeeValidateConfig'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
-import CitySelect from '@#/shared/CitySelect'
 import career from '@@/json/career.json'
 import degree from '@@/json/degree.json'
 import db from '@~/js/request'
@@ -519,6 +496,7 @@ export default {
             params.append(formData[i]['name'], formData[i]['value'])
           }
           params.append('verify', 1)
+          self.$parent.$data.modify = 0
           db.postRequest('/Institution/ApplyMaterial/saveEducation', params).then(res => {
             if (res.status === 1) {
               self.$router.push('/functions/applyInfo/exam?id=' + self.id)
@@ -541,6 +519,7 @@ export default {
       for (let i = 0; i < formData.length; i++) {
         params.append(formData[i]['name'], formData[i]['value'])
       }
+      self.$parent.$data.modify = 0
       db.postRequest('/Institution/ApplyMaterial/saveEducation', params).then(res => {
         if (res.status === 1) {
           self.layer.alert(res.msg, {icon: 1}, function (i) {
@@ -601,31 +580,21 @@ export default {
       }, 100)
     },
     addReCommend () {
-      this.education.rcmder.push(this.defaultRe)
+      let self = this
+      self.education.rcmder.push(self.defaultRe)
+      self.RefreshSelect()
     },
-    delRecommend (i) {
-      this.education.rcmder.splice(i, 1)
+    delRecommend (k) {
+      let self = this
+      self.layer.confirm('您确定要删除此信息？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        self.education.rcmder.splice(k, 1)
+      })
     }
-  },
-  components: {
-    CitySelect
   }
 }
 </script>
 
 <style scoped lang="scss">
 .form-group {margin-left:0 !important;margin-right:0 !important;}
-</style>
-<style lang="scss">
-#citys{
-    & .form-inline{
-        width:55%;float:left;
-        & .bootstrap-select{
-            width:32%;
-        }
-    }
-    & input{
-        width:45% !important;float:right;
-    }
-}
 </style>

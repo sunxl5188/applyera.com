@@ -1024,6 +1024,9 @@ export default {
             range: true,
             done (value) {
               self.personal.work_experience[index]['time'] = value
+              element.value = value
+              element.focus()
+              element.blur()
             }
           })
         })
@@ -1072,6 +1075,7 @@ export default {
         params.append(formData[i]['name'], formData[i]['value'])
       }
       params.append('verify', 1)
+      self.modify = 0
       self.$validator.validateAll().then((result) => {
         if (result) {
           db.postRequest('/Institution/ApplyMaterial/savePersonal', params).then(res => {
@@ -1102,6 +1106,7 @@ export default {
       formData.map(item => {
         params.append(item.name, item.value)
       })
+      self.modify = 0
       db.postRequest('/Institution/ApplyMaterial/savePersonal', params).then(res => {
         if (res.status === 1) {
           self.layer.alert(res.msg, {icon: 1}, function (i) {
@@ -1142,8 +1147,12 @@ export default {
       self.RefreshSelect()
     },
     // 删除工作背景
-    delWorkExp (i) {
-      this.personal.work_experience.splice(i, 1)
+    delWorkExp (k) {
+      let self = this
+      self.layer.confirm('您确定要删除此信息？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        self.personal.work_experience.splice(k, 1)
+      })
     },
     RefreshSelect () {
       setTimeout(function () {

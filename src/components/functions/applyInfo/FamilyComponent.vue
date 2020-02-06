@@ -5,86 +5,84 @@
             <form id="FamilyForm" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
                 <input type="hidden" name="id" v-model="id" />
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <label>父母婚姻状况 <font class="cf00">*</font></label>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="parents_marriage" data-obj="family"
-                                           data-name="parents_marriage" v-model.number="family.parents_marriage"
-                                           value="1"
-                                           checked> 已婚
-                                </label>
-                                <label>
-                                    <input type="radio" name="parents_marriage" data-obj="family"
-                                           data-name="parents_marriage" v-model.number="family.parents_marriage"
-                                           value="2">
-                                    未婚
-                                </label>
-                                <label>
-                                    <input type="radio" name="parents_marriage" data-obj="family"
-                                           data-name="parents_marriage" v-model.number="family.parents_marriage"
-                                           value="3">
-                                    丧偶
-                                </label>
-                                <label>
-                                    <input type="radio" name="parents_marriage" data-obj="family"
-                                           data-name="parents_marriage" v-model.number="family.parents_marriage"
-                                           value="4">
-                                    分居
-                                </label>
-                                <label>
-                                    <input type="radio" name="parents_marriage" data-obj="family"
-                                           data-name="parents_marriage" v-model.number="family.parents_marriage"
-                                           value="5"
-                                           @change="showTime"> 离婚
-                                </label>
-                                <input type="text" name="parents_marriage_time" class="form-control times"
-                                       placeholder="请选择时间"
-                                       style="display: inline-block;width: 200px; margin-left: 15px;"
-                                       v-if="family.parents_marriage===5"
-                                       v-validate="'required'" data-vv-as="离婚时间" v-model="family.parents_marriage_time">
-                                <div class="validateTip" v-show="errors.has('parents_marriage_time')">
-                                    {{ errors.first("parents_marriage_time") }}
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label>父母婚姻状况 <font class="cf00">*</font></label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="parents_marriage" data-obj="family"
+                               data-name="parents_marriage" v-model.number="family.parents_marriage"
+                               value="1"
+                               checked> 已婚
+                      </label>
+                      <label>
+                        <input type="radio" name="parents_marriage" data-obj="family"
+                               data-name="parents_marriage" v-model.number="family.parents_marriage"
+                               value="2">
+                        未婚
+                      </label>
+                      <label>
+                        <input type="radio" name="parents_marriage" data-obj="family"
+                               data-name="parents_marriage" v-model.number="family.parents_marriage"
+                               value="3">
+                        丧偶
+                      </label>
+                      <label>
+                        <input type="radio" name="parents_marriage" data-obj="family"
+                               data-name="parents_marriage" v-model.number="family.parents_marriage"
+                               value="4">
+                        分居
+                      </label>
+                      <label>
+                        <input type="radio" name="parents_marriage" data-obj="family"
+                               data-name="parents_marriage" v-model.number="family.parents_marriage" value="5"> 离婚
+                      </label>
+                      <input type="text" name="parents_marriage_time" class="form-control" id="divorceTime"
+                             placeholder="请选择时间"
+                             style="display: inline-block;width: 200px; margin-left: 15px;"
+                             v-if="family.parents_marriage===5"
+                             v-validate="'required'" data-vv-as="离婚时间" v-model="family.parents_marriage_time">
+                      <div class="validateTip" v-show="errors.has('parents_marriage_time')">
+                        {{ errors.first("parents_marriage_time") }}
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
 
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <label>您的法定监护人 <font class="cf00">*</font></label>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="guardian" v-model.number="family.guardian" value="1"
-                                           data-obj="family" data-name="guardian"> 父亲
-                                </label>
-                                <label>
-                                    <input type="radio" name="guardian" v-model.number="family.guardian" value="2"
-                                           data-obj="family" data-name="guardian"> 母亲
-                                </label>
-                                <label>
-                                    <input type="radio" name="guardian" v-model.number="family.guardian" value="3"
-                                           data-obj="family" data-name="guardian"> 父母双方
-                                </label>
-                                <label>
-                                    <input type="radio" name="guardian" v-model.number="family.guardian" value="4"
-                                           data-obj="family" data-name="guardian"> 其他
-                                </label>
-                                <input type="text" name="guardian_other" class="form-control"
-                                       placeholder="请用用英文填写与您的关系"
-                                       style="display: inline-block;width: 200px; margin-left: 15px;"
-                                       v-if="family.guardian===4"
-                                       v-validate="'required|en'" data-vv-as="其他关系" v-model="family.guardian_other">
-                                <div class="validateTip" v-show="errors.has('guardian_other')">
-                                    {{ errors.first("guardian_other") }}
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label>您的法定监护人 <font class="cf00">*</font></label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="guardian" v-model.number="family.guardian" value="1"
+                               data-obj="family" data-name="guardian"> 父亲
+                      </label>
+                      <label>
+                        <input type="radio" name="guardian" v-model.number="family.guardian" value="2"
+                               data-obj="family" data-name="guardian"> 母亲
+                      </label>
+                      <label>
+                        <input type="radio" name="guardian" v-model.number="family.guardian" value="3"
+                               data-obj="family" data-name="guardian"> 父母双方
+                      </label>
+                      <label>
+                        <input type="radio" name="guardian" v-model.number="family.guardian" value="4"
+                               data-obj="family" data-name="guardian"> 其他
+                      </label>
+                      <input type="text" name="guardian_other" class="form-control"
+                             placeholder="请用用英文填写与您的关系"
+                             style="display: inline-block;width: 200px; margin-left: 15px;"
+                             v-if="family.guardian===4"
+                             v-validate="'required|en'" data-vv-as="其他关系" v-model="family.guardian_other">
+                      <div class="validateTip" v-show="errors.has('guardian_other')">
+                        {{ errors.first("guardian_other") }}
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
 
                 <div class="clearfix bdb mb-15" v-if="family.guardian===1 || family.guardian===3"><h4><b>监护人（父亲）</b></h4>
                 </div>
@@ -262,6 +260,7 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import HeaderNav from '@/components/functions/applyInfo/HeaderNav'
@@ -398,8 +397,15 @@ export default {
   methods: {
     showTime () {
       let self = this
-      self.id = self.$route.query.id || ''
-      setTimeout(function () {
+      _.delay(() => {
+        if ($('#divorceTime').length > 0) {
+          self.laydate.render({
+            elem: '#divorceTime',
+            done (v) {
+              self.family.parents_marriage_time = v
+            }
+          })
+        }
         $('#brotherWrap .times').each(function (index, element) {
           self.laydate.render({
             elem: this,
@@ -415,6 +421,9 @@ export default {
             range: true,
             done (v) {
               self.family.brother_info[index][element.getAttribute('data-name')] = v
+              element.value = v
+              element.focus()
+              element.blur()
             }
           })
         })
@@ -434,10 +443,15 @@ export default {
         type: 1
       })
       self.showTime()
+      self.RefreshSelect()
     },
     // 删除兄弟姐妹
-    delbrother (i) {
-      this.family.brother_info.splice(i, 1)
+    delbrother (k) {
+      let self = this
+      self.layer.confirm('您确定要删除此信息？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        self.family.brother_info.splice(k, 1)
+      })
     },
     // 验证保存
     validateBeforeSubmit () {
@@ -465,6 +479,7 @@ export default {
         } else {
           isTrue = false
         }
+        self.modify = 0
         self.$validator.validateAll().then((result) => {
           if (result && isTrue) {
             let params = new URLSearchParams()
@@ -512,6 +527,7 @@ export default {
         formData.map(item => {
           params.append(item.name, item.value)
         })
+        self.modify = 0
         db.postRequest('/Institution/ApplyMaterial/saveFamily', params).then(res => {
           if (res.status === 1) {
             self.layer.alert(res.msg, {icon: 1}, function (i) {
@@ -541,7 +557,7 @@ export default {
     // 设置单、多选样式
     setIcheck () {
       let self = this
-      setTimeout(function () {
+      _.delay(() => {
         $('#FamilyForm [type="checkbox"]').each(function () {
           $(this).iCheck({
             labelHover: false,
@@ -579,6 +595,9 @@ export default {
                 self.showTime()
                 self.formChild1 = []
                 self.formChild2 = []
+              }
+              if (thisName === 'parents_marriage') {
+                self.showTime()
               }
             }
           })

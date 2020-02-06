@@ -23,20 +23,18 @@
                 <table class="table table-customize">
                     <thead>
                     <tr>
-                        <th>角色编号</th>
                         <th>角色名称</th>
-                        <th>创建时间</th>
-                        <th>状态</th>
-                        <th width="5%"></th>
+                        <th class="w15">创建时间</th>
+                        <th class="w10">状态</th>
+                        <th class="w10"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(item,i) in list" :key="i">
-                        <td>{{item.number}}</td>
                         <td>{{item.name}}</td>
                         <td>{{item.created_time}}</td>
                         <td>{{item.status}}</td>
-                        <td>
+                        <td class="text-center">
                             <div class="dropdown">
                                 <a href="javascript:void(0);" data-toggle="dropdown"><i
                                         class="iconfont">&#xe66b;</i></a>

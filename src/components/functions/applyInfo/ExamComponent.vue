@@ -1393,6 +1393,7 @@ export default {
             params.append(formData[i]['name'], formData[i]['value'])
           }
           params.append('verify', 1)
+          self.modify = 0
           db.postRequest('/Institution/ApplyMaterial/saveExam', params).then(res => {
             if (res.status === 1) {
               self.layer.alert(res.msg, {icon: 1}, function (i) {
@@ -1417,6 +1418,7 @@ export default {
       for (let i = 0; i < formData.length; i++) {
         params.append(formData[i]['name'], formData[i]['value'])
       }
+      self.modify = 0
       db.postRequest('/Institution/ApplyMaterial/saveExam', params).then(res => {
         if (res.status === 1) {
           self.layer.alert(res.msg, {icon: 1}, function (i) {
@@ -1436,8 +1438,12 @@ export default {
       self.showTimeD()
       self.RefreshSelect()
     },
-    delElement (name, i) {
-      this.exam[name].splice(i, 1)
+    delElement (name, k) {
+      let self = this
+      self.layer.confirm('您确定要删除此信息？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        self.exam[name].splice(k, 1)
+      })
     },
     RefreshSelect () {
       setTimeout(function () {
