@@ -424,10 +424,14 @@
                                 </button>
                             </div>
                         </div>
-                        <table class="table table-bordered table-customize">
+                        <table class="table table-bordered table-customize" id="Enclosure">
                             <thead>
                             <tr>
                                 <th>
+                                    <label for="EnclosureAll" class="mr-10">
+                                      <input type="checkbox" name="EnclosureAll" id="EnclosureAll" value="sAll" style="vertical-align:top;"/>
+                                      全选
+                                    </label>
                                     <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
                                     <span class="div_vm">学生端</span>
                                 </th>
@@ -440,7 +444,7 @@
                             <tr v-for="(item, i) in tab3.student" :key="i">
                                 <td>
                                     <div class="checkbox">
-                                        <label>
+                                        <label style="padding-left: 0;">
                                             <input type="checkbox" name="fid[]" :value="item.id"/>
                                             {{item.file_name}}
                                         </label>
@@ -463,10 +467,14 @@
                             </tbody>
                         </table>
                         <!--机构端-->
-                        <table class="table table-bordered table-customize">
+                        <table class="table table-bordered table-customize" id="Enclosure2">
                             <thead>
                             <tr>
                                 <th>
+                                    <label for="EnclosureAll2" class="mr-10">
+                                      <input type="checkbox" name="EnclosureAll" id="EnclosureAll2" value="cAll" style="vertical-align:top;"/>
+                                      全选
+                                    </label>
                                     <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
                                     <span class="div_vm">机构端</span>
                                 </th>
@@ -479,7 +487,7 @@
                             <tr v-for="(item, i) in tab3.user" :key="i">
                                 <td>
                                     <div class="checkbox">
-                                        <label>
+                                        <label style="padding-left: 0;">
                                             <input type="checkbox" name="fid[]" :value="item.id"/>
                                             {{item.file_name}}
                                         </label>
@@ -1132,8 +1140,8 @@ import nation from '@@/json/nation.json'
 import city from '@@/json/city.json'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
-
 let WebUploader = require('@@/js/webuploader/webuploader')
+require('icheck')
 
 export default {
   name: 'Edit',
@@ -1241,18 +1249,6 @@ export default {
     self.getDetail()
     self.$nextTick(() => {
       setTimeout(function () {
-        $(document).on('click', '[name="fid[]"]', function () {
-          if ($(this).is(':checked') === true) {
-            self.fid.push($(this).val())
-          } else {
-            self.fid.map((item, i) => {
-              if (item === $(this).val()) {
-                self.fid.splice(i, 1)
-              }
-            })
-          }
-        })
-
         $(document).on('focusout', '[contenteditable="true"]', function () {
           let $this = $(this)
           if (self.studentSource === $this.text()) {
@@ -1363,6 +1359,7 @@ export default {
           }
           $('.selectpicker').selectpicker('refresh')
           self.createUpload()
+          self.setIcheck()
         })
       })
     },
@@ -1846,6 +1843,59 @@ export default {
     referrerBack (data) {
       let self = this
       self.tab2.rcmder_list = data
+    },
+    // 设置单、多选样式
+    setIcheck () {
+      let self = this
+      setTimeout(function () {
+        $('#Enclosure [type="checkbox"], #Enclosure2 [type="checkbox"]').each(function () {
+          $(this).iCheck({
+            labelHover: false,
+            cursor: true,
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue',
+            increaseArea: '20%'
+          })
+          $(this).on('ifChanged', function (event) {
+            let _this = $(event.target)
+            let name = _this.attr('name')
+            if (name === 'EnclosureAll') {
+              if (_this.val() === 'sAll') {
+                if (_this.is(':checked') === true) {
+                  $('#Enclosure [name="fid[]"]').each(function () {
+                    $(this).iCheck('check')
+                  })
+                } else {
+                  $('#Enclosure [name="fid[]"]').each(function () {
+                    $(this).iCheck('uncheck')
+                  })
+                }
+              }
+              if (_this.val() === 'cAll') {
+                if (_this.is(':checked') === true) {
+                  $('#Enclosure2 [name="fid[]"]').each(function () {
+                    $(this).iCheck('check')
+                  })
+                } else {
+                  $('#Enclosure2 [name="fid[]"]').each(function () {
+                    $(this).iCheck('uncheck')
+                  })
+                }
+              }
+            } else {
+              if (_this.is(':checked') === true) {
+                self.fid.push(_this.val())
+              } else {
+                self.fid.map((item, i) => {
+                  if (item === _this.val()) {
+                    self.fid.splice(i, 1)
+                  }
+                })
+              }
+            }
+          })
+        })
+      }, 500)
     }
   },
   components: {

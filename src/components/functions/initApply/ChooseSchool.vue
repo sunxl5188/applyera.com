@@ -175,7 +175,7 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     let self = this
-    if (self.modify > 1) {
+    if (self.modify > 3) {
       self.layer.confirm('您正在离开当前页面，系统检测到您编辑的内容尚未保存，是否保存？', {icon: 3}, function (i) {
         self.layer.close(i)
         let formData = $('#schoolApply').serializeArray()

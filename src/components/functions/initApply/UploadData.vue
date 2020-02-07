@@ -7,43 +7,37 @@
         <div class="clearfix lh30">建议上传附件：</div>
         <div class="clearfix lh24">
                 <span class="tipsys mr-10">成绩单<i class="iconfont handPower c999" data-toggle="tooltip"
-                                                 data-placement="top"
+                                                 data-placement="top" data-container="body"
                                                  title="在读生请提供现有6个学期中英文完整成绩单； 毕业生请提供大学4年完整中英文成绩单">&#xe999;</i></span>,
             <span class="tipsys mr-10">毕业证书 or 学位证书 or 在读证明<i class="iconfont handPower c999" data-toggle="tooltip"
-                                                              data-placement="top"
+                                                              data-placement="top" data-container="body"
                                                               title="如已毕业，请提供毕业证书或学位证书，请注意证书要打印在学校的信纸上，有中英文对照且加盖学校公章。如尚未毕业，请提供在读证明，在读证明需要打印在学校的信纸上，有中英文对照且加盖学校公章。">&#xe999;</i></span>,
             <span class="tipsys mr-10">推荐信<i class="iconfont handPower c999" data-toggle="tooltip"
-                                             data-placement="top"
+                                             data-placement="top" data-container="body"
                                              title="推荐信请用学校信签纸打印，必须包含推荐人的姓名、电话、邮箱、地址信息、日期，推荐人亲笔签名">&#xe999;</i></span>,
             <span class="tipsys mr-10">语言成绩</span>,
             <span class="tipsys mr-10">护照</span>,
             <span class="tipsys mr-10">材料真实性声明<a :href="siteUrl + '/Public/xls_temp/Declaration_of_Authenticity.doc'"
                                                  target="_blank" class="cded"
                                                  download="Declaration_of_Authenticity">下载</a><i
-                    class="iconfont handPower c999" data-toggle="tooltip" data-placement="top"
+                    class="iconfont handPower c999" data-toggle="tooltip" data-placement="top" data-container="body"
                     title="用于声明材料的真实性，请下载后打印">&#xe999;</i></span>,
             <span class="tipsys mr-10">个人简历</span>,
             <span class="tipsys mr-10">实习证明或工作证明<i class="iconfont handPower c999" data-toggle="tooltip"
-                                                   data-placement="top"
+                                                   data-placement="top" data-container="body"
                                                    title="请尽量提供中英文对照的实习证明或工作证明，打印在单位抬头纸上，并加盖上单位公章">&#xe999;</i></span>
             ,
             <span class="tipsys mr-10">奖状及证书<i class="iconfont handPower c999" data-toggle="tooltip"
-                                               data-placement="top"
+                                               data-placement="top" data-container="body"
                                                title="如有证书或获奖请上传相关的扫描件，如奖学金，资格证书等。">&#xe999;</i></span>,
             <span class="tipsys mr-10">作品集<i class="iconfont handPower c999" data-toggle="tooltip"
-                                             data-placement="top" title="艺术生提供，具体要求根据专业和学校而定">&#xe999;</i></span>,
+                                             data-placement="top" data-container="body" title="艺术生提供，具体要求根据专业和学校而定">&#xe999;</i></span>,
             <span class="tipsys mr-10">课程列表<i class="iconfont handPower c999" data-toggle="tooltip"
-                                              data-placement="top"
+                                              data-placement="top" data-container="body"
                                               title="在校大四学生尽量提供最后一学年的课程列表（module list）">&#xe999;</i></span>
         </div>
         <!--上传列表-->
         <div class="clearfix pb-15 pt-15 pl-45">
-            <div class="pull-left">
-                <label for="selectAll" class="checkbox">
-                    <input type="checkbox" name="all" id="selectAll" value="all"/>
-                    全选
-                </label>
-            </div>
             <div class="pull-right">
                 <button type="button" class="btn btn-default ml-10" @click="downfile()">下载</button>
                 <button type="button" class="btn btn-default ml-10" @click="delfile()">删除</button>
@@ -54,6 +48,10 @@
             <thead>
             <tr>
                 <th colspan="5">
+                  <label for="selectAll" class="mr-10">
+                    <input type="checkbox" name="selectAll" id="selectAll" value="sAll" style="vertical-align:top;"/>
+                    全选
+                  </label>
                     <img src="../../../../static/images/007.png" width="20" alt="" class="div_vm">
                     <span class="div_vm">学生端</span>
                 </th>
@@ -90,6 +88,10 @@
             <thead>
             <tr>
                 <th colspan="5">
+                    <label for="selectAll2" class="mr-10">
+                      <input type="checkbox" name="selectAll" id="selectAll2" value="cAll" style="vertical-align:top;"/>
+                      全选
+                    </label>
                     <img src="../../../../static/images/007.png" width="20" alt="" class="div_vm">
                     <span class="div_vm">机构端</span>
                 </th>
@@ -141,6 +143,7 @@ import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import webupload from '@~/js/webupload'
 import InitApplyNav from '@#/functions/initApply/InitApplyNav'
 import db from '@~/js/request'
+require('icheck')
 
 export default {
   name: 'UploadData',
@@ -167,29 +170,6 @@ export default {
       } else {
         self.getAnnex()
       }
-      $(document).on('click', '#selectAll', function () {
-        let boole = $(this).is(':checked')
-        $('#uploadTable [type="checkbox"], #uploadTable2 [type="checkbox"]').each(function (index, element) {
-          element.checked = boole
-          if (boole) {
-            self.idArr.push(element.value)
-          } else {
-            self.idArr = []
-          }
-        })
-      })
-      $(document).on('click', '#uploadTable [type="checkbox"], #uploadTable2 [type="checkbox"]', function (ev) {
-        let boole = ev.target.checked
-        if (boole) {
-          self.idArr.push(ev.target.value)
-        } else {
-          self.idArr.map((item, i) => {
-            if (item === ev.target.value) {
-              self.idArr.splice(i, 1)
-            }
-          })
-        }
-      })
       // *****************************
       setTimeout(function () {
         // 上传
@@ -234,6 +214,7 @@ export default {
           console.log(res.msg)
         }
         self.reSelect()
+        self.setIcheck()
         self.loading = false
       })
     },
@@ -244,7 +225,7 @@ export default {
         self.layer.alert('请选择要操作的编号')
         return false
       }
-      let url = window.ajaxBaseUrl + '/Institution/Apply/uplodaDataDownload?ids=' + self.idArr + '&token=' + self.$cookies.get('token')
+      let url = window.ajaxBaseUrl + '/Institution/Apply/uplodaDataDownload?id=' + self.id + '&ids=' + self.idArr + '&token=' + self.$cookies.get('token')
       let element = document.querySelector('#downfile')
       element.href = url
       element.target = '_blank'
@@ -289,11 +270,62 @@ export default {
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh')
       }, 500)
+    },
+    // 设置单、多选样式
+    setIcheck () {
+      let self = this
+      setTimeout(function () {
+        $('#uploadTable [type="checkbox"], #uploadTable2 [type="checkbox"]').each(function () {
+          $(this).iCheck({
+            labelHover: false,
+            cursor: true,
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue',
+            increaseArea: '20%'
+          })
+          $(this).on('ifChanged', function (event) {
+            let _this = $(event.target)
+            let name = _this.attr('name')
+            if (name === 'selectAll') {
+              if (_this.val() === 'sAll') {
+                if (_this.is(':checked') === true) {
+                  $('#uploadTable [name="id[]"]').each(function () {
+                    $(this).iCheck('check')
+                  })
+                } else {
+                  $('#uploadTable [name="id[]"]').each(function () {
+                    $(this).iCheck('uncheck')
+                  })
+                }
+              }
+              if (_this.val() === 'cAll') {
+                if (_this.is(':checked') === true) {
+                  $('#uploadTable2 [name="id[]"]').each(function () {
+                    $(this).iCheck('check')
+                  })
+                } else {
+                  $('#uploadTable2 [name="id[]"]').each(function () {
+                    $(this).iCheck('uncheck')
+                  })
+                }
+              }
+            } else {
+              if (_this.is(':checked') === true) {
+                self.idArr.push(_this.val())
+              } else {
+                self.idArr.map((item, i) => {
+                  if (item === _this.val()) {
+                    self.idArr.splice(i, 1)
+                  }
+                })
+              }
+            }
+          })
+        })
+      }, 500)
     }
   },
-  components: {
-    InitApplyNav
-  }
+  components: {InitApplyNav}
 }
 </script>
 

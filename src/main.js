@@ -7,7 +7,7 @@ import '@@/js/bootstrap'
 import laydate from '@@/js/laydate/laydate'
 import layer from 'layui-layer'
 import vueCookie from 'vue-cookies'
-import { VueMasonryPlugin } from 'vue-masonry'
+// import { VueMasonryPlugin } from 'vue-masonry'
 import '@~/js/vueFilter'
 import '@@/css/main.scss'
 let $ = require('jquery')
@@ -16,7 +16,7 @@ window.$ = window.jQuery = $
 Vue.prototype.layer = layer
 Vue.prototype.laydate = laydate
 Vue.use(vueCookie)
-Vue.use(VueMasonryPlugin)
+// Vue.use(VueMasonryPlugin)
 
 Vue.config.productionTip = false
 

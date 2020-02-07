@@ -390,6 +390,8 @@ export default {
       db.postRequest('/Institution/Apply/questionAnswerSave', params).then(res => {
         if (res.status === 1) {
           self.$router.push('/functions/initApply/ConfirmSubmission?id=' + self.id)
+        } else {
+          self.layer.alert(res.msg, {icon: 2})
         }
       })
     }
