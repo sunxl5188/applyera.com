@@ -50,7 +50,6 @@
                 <th colspan="5">
                   <label for="selectAll" class="mr-10">
                     <input type="checkbox" name="selectAll" id="selectAll" value="sAll" style="vertical-align:top;"/>
-                    全选
                   </label>
                     <img src="../../../../static/images/007.png" width="20" alt="" class="div_vm">
                     <span class="div_vm">学生端</span>
@@ -90,7 +89,6 @@
                 <th colspan="5">
                     <label for="selectAll2" class="mr-10">
                       <input type="checkbox" name="selectAll" id="selectAll2" value="cAll" style="vertical-align:top;"/>
-                      全选
                     </label>
                     <img src="../../../../static/images/007.png" width="20" alt="" class="div_vm">
                     <span class="div_vm">机构端</span>
@@ -181,14 +179,14 @@ export default {
             mimeTypes: '*!/!*'
           },
           formData: { apply_order_id: self.id, func: 'student_attachment' },
-          uploadSuccess: (file, response) => {
-            if (response.status === 0) {
-              self.layer.alert(response.msg, {icon: 2})
-              return false
+          uploadSuccess: (file, response) => {},
+          uploadFinished: (msg) => {
+            if (msg === '') {
+              self.layer.alert('上传成功！', {icon: 1})
             } else {
-              self.layer.msg('上传成功')
-              self.getAnnex()
+              self.layer.alert(msg, {icon: 2})
             }
+            self.getAnnex()
           },
           error: (e) => {
             if (e === 'Q_TYPE_DENIED' || e === 'F_EXCEED_SIZE') {

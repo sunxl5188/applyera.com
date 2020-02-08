@@ -33,7 +33,7 @@
                                 </select>
                             </div>
                             <a class="btn btn-default" @click="getReferrer(item.id, item.rcmd_id_list)" v-if="item.rcmd_id_list.length > 0">编辑推荐人</a>
-                            <a href="#" class="cded" v-if="rcmdList.length === 0" data-toggle="modal" data-backdrop="static" data-target="#addReferrer">创建推荐人</a>
+                            <a href="#" class="btn btn-default" data-toggle="modal" data-backdrop="static" data-target="#addReferrer">创建推荐人</a>
                         </td>
                     </tr>
                     <tr>
@@ -270,7 +270,6 @@ export default {
       let self = this
       let params = new URLSearchParams()
       params.append('id', self.id)
-      self.loading = true
       db.postRequest('Institution/Apply/questionAnswer', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.list
@@ -281,7 +280,7 @@ export default {
           console.log(res.msg)
         }
         setTimeout(() => {
-          $('.selectpicker').selectpicker()
+          $('.selectpicker').selectpicker('refresh')
         }, 500)
         self.loading = false
       })

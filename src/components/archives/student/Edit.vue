@@ -430,7 +430,6 @@
                                 <th>
                                     <label for="EnclosureAll" class="mr-10">
                                       <input type="checkbox" name="EnclosureAll" id="EnclosureAll" value="sAll" style="vertical-align:top;"/>
-                                      全选
                                     </label>
                                     <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
                                     <span class="div_vm">学生端</span>
@@ -473,7 +472,6 @@
                                 <th>
                                     <label for="EnclosureAll2" class="mr-10">
                                       <input type="checkbox" name="EnclosureAll" id="EnclosureAll2" value="cAll" style="vertical-align:top;"/>
-                                      全选
                                     </label>
                                     <img src="../../../../static/images/007.png" alt="" width="20" class="div_vm">
                                     <span class="div_vm">机构端</span>
@@ -1140,7 +1138,7 @@ import nation from '@@/json/nation.json'
 import city from '@@/json/city.json'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
-let WebUploader = require('@@/js/webuploader/webuploader')
+import webupload from '@~/js/webupload'
 require('icheck')
 
 export default {
@@ -1152,6 +1150,7 @@ export default {
       nation: nation,
       city: city,
       id: '',
+      file_id: [],
       country: '',
       student_types: '',
       adviserId: '',
@@ -1248,7 +1247,7 @@ export default {
     self.id = self.$route.query.id || ''
     self.getDetail()
     self.$nextTick(() => {
-      setTimeout(function () {
+      _.delay(() => {
         $(document).on('focusout', '[contenteditable="true"]', function () {
           let $this = $(this)
           if (self.studentSource === $this.text()) {
@@ -1305,6 +1304,45 @@ export default {
             remark: ''
           }
         })
+        // 上传
+        webupload(self.file_id, {
+          accept: {
+            title: '',
+            extensions: 'rar,zip,doc,docx,pdf,jpg',
+            mimeTypes: '*!/!*'
+          },
+          formData: { func: 'student_attachment', student_id: self.id },
+          uploadSuccess: (file, res) => {
+            self.tab3.user.unshift({
+              id: res.data.id,
+              file_name: res.data.file_name,
+              file_size: bytesToSize(res.data.file_size),
+              date: res.data.date,
+              file_type: '',
+              add_time: self.currentTime()
+            })
+            _.delay(() => {
+              $('.selectpicker').selectpicker('refresh')
+              self.setIcheck()
+            }, 500)
+          },
+          uploadFinished: (msg) => {
+            if (msg === '') {
+              self.layer.alert('上传成功！', {icon: 1})
+            } else {
+              self.layer.alert(msg, {icon: 2})
+            }
+            self.getDetail()
+          },
+          error: (e) => {
+            if (e === 'Q_TYPE_DENIED') {
+              self.layer.alert('文件类型不正确！', { icon: 2 })
+            }
+            if (e === 'F_EXCEED_SIZE') {
+              self.layer.alert('文件大小超过2MB限制！', { icon: 2 })
+            }
+          }
+        })
       }, 1000)
     })
   },
@@ -1313,7 +1351,6 @@ export default {
       let self = this
       let params = new URLSearchParams()
       params.append('id', self.id)
-      self.loading = true
       db.getRequest('Institution/Student/stuManageDetail', params).then(res => {
         if (res.status === 1) {
           self.header_info = res.data.header_info
@@ -1358,7 +1395,6 @@ export default {
             })
           }
           $('.selectpicker').selectpicker('refresh')
-          self.createUpload()
           self.setIcheck()
         })
       })
@@ -1389,45 +1425,6 @@ export default {
     },
     uploadStart () {
       $('#picker .webuploader-element-invisible').click()
-    },
-    createUpload () {
-      let self = this
-      let uploader = WebUploader.create({
-        auto: true,
-        swf: 'static/js/webuploader/Uploader.swf',
-        server: window.ajaxBaseUrl + '/Institution/Upload/UploadOne',
-        fileVal: 'file',
-        pick: '#picker',
-        file_id: 'file_ids',
-        fileSingleSizeLimit: 1024 * 1024 * 2,
-        duplicate: true,
-        accept: {
-          title: '',
-          extensions: 'rar,zip,doc,docx,pdf,jpg',
-          mimeTypes: '*/*'
-        },
-        formData: { func: 'student_attachment', student_id: self.id }
-      })
-      uploader.on('uploadSuccess', function (file, res) {
-        self.tab3.user.unshift({
-          file_name: res.data.file_name,
-          file_size: bytesToSize(res.data.file_size),
-          date: res.data.date,
-          file_type: '',
-          add_time: self.currentTime()
-        })
-        setTimeout(() => {
-          $('.selectpicker').selectpicker('refresh')
-        }, 500)
-      })
-      uploader.on('error', function (handler) {
-        if (handler === 'Q_TYPE_DENIED') {
-          self.layer.alert('文件类型不正确！', { icon: 2 })
-        }
-        if (handler === 'F_EXCEED_SIZE') {
-          self.layer.alert('文件大小超过2MB限制！', { icon: 2 })
-        }
-      })
     },
     validateBeforeSubmitStudentInfo (scope) {
       let self = this
@@ -1622,18 +1619,11 @@ export default {
       })
       db.postRequest('Institution/Student/batchDelAttach', params).then(res => {
         if (res.status === 1) {
+          self.layer.alert(res.msg, {icon: 1})
           self.fid = []
-          $('#tabs3 input').each(function () {
-            $(this)[0].checked = false
-          })
-          self.tab3 = (res.data).sort(self.sortNumber('id'))
-          self.layer.alert(res.msg, { icon: 1 }, function (i) {
-            self.layer.close(i)
-          })
+          self.getDetail()
         } else {
-          self.layer.alert(res.msg, {
-            icon: 2
-          })
+          self.layer.alert(res.msg, {icon: 2})
         }
       })
     },

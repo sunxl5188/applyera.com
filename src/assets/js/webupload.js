@@ -39,6 +39,7 @@ export default function webUpload (assign, options) {
     uploadSuccess: undefined, // 上传成功后触发
     error: undefined // 上传报错
   }
+  let errorMsg = ''
   let opts = $.extend({}, config, options)
   // eslint-disable-next-line
   let uploader = new WebUploader.Uploader.create(opts)
@@ -100,6 +101,9 @@ export default function webUpload (assign, options) {
   // 上传成功
   uploader.on('uploadSuccess', function (file, response) {
     let $this = $('#' + file.id)
+    if (response.status === 0) {
+      errorMsg += file.name + ': ' + response.msg
+    }
     if (opts.uploadSuccess !== undefined && Object.prototype.toString.call(opts.uploadSuccess) === '[object Function]') {
       opts.uploadSuccess(file, response)
     } else {
@@ -112,7 +116,8 @@ export default function webUpload (assign, options) {
   // 所有文件上传结束后触发
   uploader.on('uploadFinished', function () {
     if (opts.uploadFinished !== undefined && Object.prototype.toString.call(opts.uploadFinished) === '[object Function]') {
-      opts.uploadFinished()
+      opts.uploadFinished(errorMsg)
+      errorMsg = ''
     }
   })
 

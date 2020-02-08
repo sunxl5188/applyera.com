@@ -22,9 +22,6 @@
         </div>
         <div class="row">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 bdr-d leftBox">
-                <div class="clearfix pb-30">
-                    <input type="text" name="title" v-model="title" class="form-control title" placeholder="请输入文书标题"/>
-                </div>
                 <table class="table">
                     <tbody>
                     <tr>
@@ -117,7 +114,7 @@
                              v-html="topic.custom_ps" class="wordwrap"></div>
                     </div>
                     <div class="clearfix bdt pt-15">
-                        <div :class="{notebook:id&&status!==2}" class="wordwrap" :contenteditable="status!==2?true:false" data-placeholder="请用英文作答" id="answer_ps" v-html="topic.answer_ps"></div>
+                        <div :class="{notebook:id&&status!==2}" class="wordwrap" :contenteditable="status!==2?true:false" :data-placeholder="topic.answer_ps_tips" id="answer_ps" v-html="topic.answer_ps"></div>
                     </div>
                     <div class="clearfix lh50 font16 fontB mt-30">Writing Sample</div>
                     <div class="clearfix lh22 pb-15">
@@ -125,7 +122,7 @@
                              v-html="topic.custom_ws"></div>
                     </div>
                     <div class="clearfix bdt pt-15 mt-15">
-                        <div :class="{notebook:id&&status!==2}" class="wordwrap" :contenteditable="status!==2?true:false" data-placeholder="请用英文作答" id="answer_ws" v-html="topic.answer_ws"></div>
+                        <div :class="{notebook:id&&status!==2}" class="wordwrap" :contenteditable="status!==2?true:false" :data-placeholder="topic.answer_ws_tips" id="answer_ws" v-html="topic.answer_ws"></div>
                     </div>
                 </div>
             </div>
@@ -149,9 +146,7 @@
                                     <div class="media-item" :class="{gtTwo:item.length>1}"
                                          v-for="(items, k) in item" :key="k" :data-id="items.id">
                                         <div class="media-left">
-                                            <img src="../../../../static/images/defaultface.png" alt="">
-                                            <img :src="items.head_img || '../../static/images/defaultface.png'"
-                                                 width="30" height="30" class="img-circle"/>
+                                            <img :src="items.head_img || '../../static/images/defaultface.png'" class="img-circle userHeader"/>
                                         </div>
                                         <div class="media-body">
                                             <div class="media-heading">
@@ -171,8 +166,7 @@
                                 </div>
                                 <div class="media" v-show="item[0]['solve_status']===0">
                                     <div class="media-left">
-                                        <img :src="userInfo.headphoto  || '../../static/images/defaultface.png'"
-                                             width="30" height="30" class="img-circle"/>
+                                        <img :src="userInfo.headphoto  || '../../static/images/defaultface.png'" class="img-circle userHeader"/>
                                     </div>
                                     <div class="media-body">
                                         <div class="clearfix pb-10 pt-5">
@@ -224,7 +218,6 @@ export default {
     return {
       id: '',
       status: 0,
-      title: '',
       stu_id: '',
       apply_type: 1,
       school_unq_id: '',
@@ -239,7 +232,9 @@ export default {
         custom_ps: '',
         custom_ws: '',
         answer_ps: '',
-        answer_ws: ''
+        answer_ws: '',
+        answer_ps_tips: '',
+        answer_ws_tips: ''
       },
       sendStudentString: {},
       commentArr: [],
@@ -288,8 +283,12 @@ export default {
         if (i.closest('.mediaItem').length === 0 && txt.toString() === '') {
           self.commentArr.map((item, i) => {
             if (item[0].id === '') {
+              let noteThis = $('.notebook [data-id="' + self.commentId + '"]')
+              let text = noteThis.text()
+              noteThis.after(text)
+              noteThis.remove()
               self.commentArr.splice(i, 1)
-              $('.notebook [data-id="' + self.commentId + '"]').removeAttr('style').removeClass('comment-extra-inner-span').removeAttr('data-id')
+              // $('.notebook [data-id="' + self.commentId + '"]').removeAttr('style').removeClass('comment-extra-inner-span').removeAttr('data-id')
             }
           })
         }
@@ -451,7 +450,6 @@ export default {
       db.postRequest('/Institution/Document/qsEdit', params).then(res => {
         if (res.status === 1) {
           self.status = res.data.status
-          self.title = res.data.title
           self.apply_type = res.data.apply_type
           self.stu_id = res.data.ins_student_id
           self.school_unq_id = res.data.school_unq_id
@@ -462,6 +460,8 @@ export default {
           self.topic.custom_ws = res.data.custom_ws
           self.topic.answer_ps = res.data.answer_ps
           self.topic.answer_ws = res.data.answer_ws
+          self.topic.answer_ps_tips = res.data.answer_ps_tips
+          self.topic.answer_ws_tips = res.data.answer_ws_tips
           self.getProfession('auto')
         } else {
           self.layer.alert(res.msg, {
@@ -558,7 +558,11 @@ export default {
         let $this = $(event.target).parents('.mediaItem')
         $this.removeClass('stateEdit')
       } else {
-        $('.notebook [data-id="' + self.commentId + '"]').removeAttr('style').removeClass('comment-extra-inner-span').removeAttr('data-id')
+        let noteThis = $('.notebook [data-id="' + self.commentId + '"]')
+        let text = noteThis.text()
+        noteThis.after(text)
+        noteThis.remove()
+        // $('.notebook [data-id="' + self.commentId + '"]').removeAttr('style').removeClass('comment-extra-inner-span').removeAttr('data-id')
         self.commentArr.map((item, i) => {
           if (item[0]['id'] === '') {
             self.commentArr.splice(i, 1)
@@ -572,7 +576,6 @@ export default {
       let self = this
       let params = new URLSearchParams()
       params.append('id', self.id)
-      params.append('title', self.title)
       params.append('stu_id', self.stu_id)
       params.append('apply_type', self.apply_type)
       params.append('school_unq_id', self.school_unq_id)
@@ -762,8 +765,6 @@ export default {
 }
 </style>
 <style scoped lang="scss">
-.title {border:none;padding-left:0;padding-right:0;}
-
 .leftBox {position:initial;}
 
 .table {
@@ -878,8 +879,9 @@ export default {
             }
         }
     }
+  & .userHeader{width:30px;height:30px;}
 }
 .wordwrap{
-    word-wrap: break-word; word-break: normal;
+    word-wrap: break-word; word-break: normal;width:100%; display:block;
 }
 </style>

@@ -27,7 +27,7 @@
                           data-size="15" v-model="schoolDetail.materialId" @change="setApplyType">
                     <option value="">请选择</option>
                     <option :value="item.id" v-for="(item, i) in materialList" :key="i">
-                      {{item.apply_num}}({{item.apply_type}})
+                      {{item.apply_num}}
                     </option>
                   </select>
                 </div>
