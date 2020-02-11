@@ -24,8 +24,8 @@
                     <thead>
                     <tr>
                         <th>角色名称</th>
-                        <th class="w15">创建时间</th>
-                        <th class="w10">状态</th>
+                        <th class="w25">创建时间</th>
+                        <th class="w20">状态</th>
                         <th class="w10"></th>
                     </tr>
                     </thead>

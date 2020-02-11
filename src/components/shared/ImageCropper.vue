@@ -35,7 +35,9 @@ export default {
     return {
       fileName: '',
       fileBlob: '',
-      axis: {}
+      axis: {},
+      imagesW: 0,
+      imagesH: 0
     }
   },
   props: ['func'],
@@ -64,6 +66,12 @@ export default {
         } else {
           data = e.target.result
         }
+        let img = new Image()
+        img.src = data
+        img.onload = function () {
+          self.imagesW = this.width
+          self.imagesH = this.height
+        }
         self.fileName = data
       }
       // 转化为base64
@@ -79,6 +87,10 @@ export default {
       params.append('func', self.func)
       params.append('file', self.fileBlob)
       params.append('axis', JSON.stringify(self.axis))
+      if (self.imagesW > 2000 || self.imagesH > 2000) {
+        self.layer.alert('图片宽度与高度已超出2000PX,设缩小图片尺寸后上传', {icon: 2})
+        return false
+      }
       db.postRequest('Institution/Upload/uploadOne', params).then(res => {
         if (res.status === 1) {
           self.$emit('cropperCallBack', res.data)

@@ -166,7 +166,7 @@
                                     <div class="panel-heading clearfix">
                                         <span class="pull-left">申请资料</span>
                                         <span class="pull-right">
-                                             <router-link :to="{path:'/functions/applyInfo/applyType'}">
+                                             <router-link :to="{path:'/functions/applyInfo/applyType',query:{sid:id}}">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
@@ -188,7 +188,7 @@
                                         </table>
                                         <div class="panel-noData" v-if="tab1.material.length === 0">
                                             <p class="c999">该学生还没有申请中的院校</p>
-                                            <router-link :to="{path:'/functions/applyInfo/applyType'}" class="cded">点击前往创建
+                                            <router-link :to="{path:'/functions/applyInfo/applyType',query:{sid:id}}" class="cded">点击前往创建
                                             </router-link>
                                         </div>
                                     </div>

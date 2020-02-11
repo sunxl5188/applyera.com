@@ -105,7 +105,7 @@ Validator.extend('pa', {
 // 验证钱
 Validator.extend('money', {
   'getMessage': (field, args) => `${args}` || `${field}格式不正确`,
-  'validate': value => /^[1-9]\d+\.([0-9]{2})$|^[1-9]\d+$|^[1-9]$|^[1-9]\.(\d{2})|^0\.(\d{2})/.test(value)
+  'validate': value => /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(value)
 })
 
 // 验证英文内容

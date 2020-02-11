@@ -653,7 +653,10 @@ export default {
     // 查看跟进状态
     viewFollow (obj) {
       this.followObj = obj
-      $('#recording-id').modal('show')
+      $('#recording-id').modal({
+        backdrop: 'static',
+        show: true
+      })
     },
     // 领取
     receive () {

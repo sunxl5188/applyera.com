@@ -41,7 +41,7 @@
             <div class="pull-right">
                 <button type="button" class="btn btn-default ml-10" @click="downfile()">下载</button>
                 <button type="button" class="btn btn-default ml-10" @click="delfile()">删除</button>
-                <div id="picker">上传</div>
+                <div id="picker" v-if="submitStatus===0">上传</div>
             </div>
         </div>
         <table class="table table-bordered table-customize" id="uploadTable">
@@ -126,7 +126,7 @@
             <div style="text-indent:4em;">2. 同一种类文件的中英文（如在读证明，成绩单，实习证明）请务必把中英文合并放在同一个PDF文件里。</div>
         </div>
         <div class="blk20"></div>
-        <div class="clearfix text-center">
+        <div class="clearfix text-center" v-if="submitStatus===0">
             <router-link to="/functions/initApply/QuestionAnswer" class="btn btn-default" v-if="!id">下一页</router-link>
             <router-link :to="{path:'/functions/initApply/QuestionAnswer',query:{id:id}}" class="btn btn-default" v-if="id">下一页</router-link>
         </div>
@@ -150,6 +150,7 @@ export default {
       id: '',
       siteUrl: window.ajaxBaseUrl,
       loading: true,
+      submitStatus: 0,
       list: [],
       state: [0, 0, 0, 0],
       idArr: [],
@@ -169,32 +170,34 @@ export default {
         self.getAnnex()
       }
       // *****************************
-      setTimeout(function () {
-        // 上传
-        webupload(self.file_id, {
-          fileList: { id: '#fileList', type: 'file' },
-          accept: {
-            title: '',
-            extensions: 'pdf',
-            mimeTypes: '*!/!*'
-          },
-          formData: { apply_order_id: self.id, func: 'student_attachment' },
-          uploadSuccess: (file, response) => {},
-          uploadFinished: (msg) => {
-            if (msg === '') {
-              self.layer.alert('上传成功！', {icon: 1})
-            } else {
-              self.layer.alert(msg, {icon: 2})
+      if (self.submitStatus === 0) {
+        setTimeout(function () {
+          // 上传
+          webupload(self.file_id, {
+            fileList: { id: '#fileList', type: 'file' },
+            accept: {
+              title: '',
+              extensions: 'pdf',
+              mimeTypes: '*!/!*'
+            },
+            formData: { apply_order_id: self.id, func: 'student_attachment' },
+            uploadSuccess: (file, response) => {},
+            uploadFinished: (msg) => {
+              if (msg === '') {
+                self.layer.alert('上传成功！', {icon: 1})
+              } else {
+                self.layer.alert(msg, {icon: 2})
+              }
+              self.getAnnex()
+            },
+            error: (e) => {
+              if (e === 'Q_TYPE_DENIED' || e === 'F_EXCEED_SIZE') {
+                self.layer.alert('请上传PDF格式的文件', { icon: 2 })
+              }
             }
-            self.getAnnex()
-          },
-          error: (e) => {
-            if (e === 'Q_TYPE_DENIED' || e === 'F_EXCEED_SIZE') {
-              self.layer.alert('请上传PDF格式的文件', { icon: 2 })
-            }
-          }
-        })
-      }, 500)
+          })
+        }, 500)
+      }
     })
   },
   methods: {
@@ -208,6 +211,7 @@ export default {
           self.list = res.data.list
           self.typeMapping = res.data.file_type_list
           self.schoolText = res.data.school_rcmd_list
+          self.submitStatus = res.data.submit_status
         } else {
           console.log(res.msg)
         }

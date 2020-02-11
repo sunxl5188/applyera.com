@@ -2,6 +2,7 @@ import vueCookie from 'vue-cookies'
 import { bytesToSize } from '@~/js/utils'
 import layer from 'layui-layer'
 import WebUploader from 'webuploader'
+import * as _ from 'lodash'
 
 /**
  * 图片上传
@@ -43,7 +44,6 @@ export default function webUpload (assign, options) {
   let opts = $.extend({}, config, options)
   // eslint-disable-next-line
   let uploader = new WebUploader.Uploader.create(opts)
-
   // 显示被添加的图片列表
   if (opts.fileList.id !== '' && opts.fileList.type !== '') {
     uploader.on('fileQueued', function (file) {
@@ -52,7 +52,7 @@ export default function webUpload (assign, options) {
       // 图片列表
       if (opts.fileList.type === 'image') {
         $li = $(
-          '<div id="' + file.id + '" class="image-item ' + opts.thumbnail.className + 'fid=""><img><div class="image-panel"><span class="data"></span><a href="javascript:void(0);" class="cancel">删除</a></div><div class="uploadIfy-progress"><div class="uploadIfy-progress-bar"></div></div></div>'
+          '<div id="' + file.id + '" class="image-item ' + opts.thumbnail.className + '"><img><div class="image-panel"><span class="data"></span><a href="javascript:void(0);" class="cancel">删除</a></div><div class="uploadIfy-progress"><div class="uploadIfy-progress-bar"></div></div></div>'
         )
         $img = $li.find('img')
 
@@ -73,9 +73,8 @@ export default function webUpload (assign, options) {
       }
       // 文件列表
       if (opts.fileList.type === 'file') {
-        $li = $('<div class="uploadIfy-queue-item" id="' + file.id + '" fid=""><div class="cancel"><a href="javascript:void(0);">X</a></div><span class="fileName">' + file.name + ' (' + bytesToSize(file.size) + ')</span><span class="data"></span><div class="uploadIfy-progress"><div class="uploadIfy-progress-bar"></div></div></div>')
+        $li = $('<div class="uploadIfy-queue-item" id="' + file.id + '"><div class="cancel"><a href="javascript:void(0);">X</a></div><span class="fileName">' + file.name + ' (' + bytesToSize(file.size) + ')</span><span class="data"></span><div class="uploadIfy-progress"><div class="uploadIfy-progress-bar"></div></div></div>')
       }
-
       // $list为容器jQuery实例
       $(opts.fileList.id).append($li)
 
@@ -84,14 +83,19 @@ export default function webUpload (assign, options) {
         let fid = $li.attr('fid')
         uploader.removeFile(file)
         $li.remove()
+        assign.map((item, j) => {
+          if (item === fid) {
+            assign.splice(j, 1)
+          }
+        })
         console.log(fid)
       })
     })
-
-    uploader.on('uploadComplete', function (file) {
-      $('#' + file.id).find('.uploadIfy-progress').fadeOut()
-    })
   }
+  // 文件上传完成时触发
+  uploader.on('uploadComplete', function (file) {
+    $('#' + file.id).find('.uploadIfy-progress').fadeOut()
+  })
 
   // 上传文件时进度条
   uploader.on('uploadProgress', function (file, percentage) {
@@ -143,11 +147,23 @@ export default function webUpload (assign, options) {
       }
     }
   })
-}
-setTimeout(function () {
-  // 删除编辑时所输出的默认文件
-  $(document).on('click', '[id^=EDIT_WU_FILE] .cancel', function () {
-    let fid = $(this).parents('[id^=EDIT_WU_FILE]').attr('fid')
-    console.log(fid)
+
+  // 当某个文件上传到服务端响应后
+  uploader.on('uploadAccept', function (obj, ret) {
+    // console.log(ret)
   })
-}, 1000)
+
+  // 删除编辑时所输出的默认文件
+  _.delay(() => {
+    $(document).on('click', '[id^=EDIT_WU_FILE] .cancel', function () {
+      let $this = $(this).parents('[id^=EDIT_WU_FILE]')
+      let fid = $this.attr('fid')
+      assign.map((item, j) => {
+        if (item === fid) {
+          assign.splice(j, 1)
+        }
+      })
+      console.log(fid)
+    })
+  }, 1000)
+}

@@ -31,7 +31,8 @@
             </tbody>
         </table>
         <div class="clearfix text-center">
-            <button type="button" class="btn btn-primary" @click="saveData">确认提交</button>
+            <button type="button" class="btn btn-primary" @click="saveData" v-if="submitStatus===0">确认提交</button>
+            <button type="button" class="btn disabled" v-if="submitStatus===1">已提交</button>
         </div>
     </div>
 </template>
@@ -46,6 +47,7 @@ export default {
     return {
       id: '',
       loading: true,
+      submitStatus: 0,
       list: [],
       state: [0, 0, 0, 0]
     }
@@ -67,7 +69,8 @@ export default {
       self.loading = true
       db.postRequest('/Institution/Apply/confirmSubmit', params).then(res => {
         if (res.status === 1) {
-          self.list = res.data
+          self.list = res.data.list
+          self.submitStatus = res.data.submit_status
         } else {
           console.log(res.msg)
         }
@@ -77,18 +80,18 @@ export default {
     // 提交确认学校
     saveData () {
       let self = this
-      let params = new URLSearchParams()
-      params.append('id', self.id)
-      db.postRequest('/Institution/Apply/confirmSubmitSave', params).then(res => {
-        if (res.status === 1) {
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
-            self.layer.close(i)
-          })
-        } else {
-          self.layer.alert(res.msg, {
-            icon: 2
-          })
-        }
+      self.layer.confirm('提交后申请将无法更改，您是否确认提交？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        let params = new URLSearchParams()
+        params.append('id', self.id)
+        db.postRequest('/Institution/Apply/confirmSubmitSave', params).then(res => {
+          if (res.status === 1) {
+            self.submitStatus = 1
+            self.layer.alert(res.msg, {icon: 1})
+          } else {
+            self.layer.alert(res.msg, {icon: 2})
+          }
+        })
       })
     }
   },

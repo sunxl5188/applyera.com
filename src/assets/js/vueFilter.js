@@ -111,6 +111,10 @@ Vue.prototype.checkNumber = (event, len) => {
   }
 }
 
+Vue.prototype.fileSuffix = (name) => {
+  return (name.substring(name.lastIndexOf('.') + 1)).toLocaleLowerCase()
+}
+
 Vue.filter('state', function (i) {
   let text = ''
   switch (i) {

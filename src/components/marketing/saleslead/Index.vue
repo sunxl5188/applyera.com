@@ -39,8 +39,8 @@
                 </div>
             </div>
             <ul class="nav nav-tabs"><!--nav-justified-->
-                <li :class="{active:tab===1}" @click="setTabs(1)"><a href="javascript:void(0);">渠道管理</a></li>
-                <li :class="{active:tab===2}" @click="setTabs(2)"><a href="javascript:void(0);">线索跟进</a></li>
+                <li :class="{active:tab===1}" @click="setTabs(1)"><a href="javascript:void(0);">线索跟进</a></li>
+                <li :class="{active:tab===2}" @click="setTabs(2)"><a href="javascript:void(0);">渠道管理</a></li>
                 <li :class="{active:tab===3}" @click="setTabs(3)"><a href="javascript:void(0);">线索结算</a></li>
             </ul>
             <div class="blk20"></div>
@@ -67,7 +67,7 @@ export default {
       name: 'saleslead',
       linkUrl: '',
       tab: 1,
-      currentComponent: Tentacle
+      currentComponent: Follow
     }
   },
   mounted () {
@@ -95,10 +95,10 @@ export default {
       let self = this
       switch (type) {
         case 1:
-          self.currentComponent = Tentacle
+          self.currentComponent = Follow
           break
         case 2:
-          self.currentComponent = Follow
+          self.currentComponent = Tentacle
           break
         case 3:
           self.currentComponent = Settlement

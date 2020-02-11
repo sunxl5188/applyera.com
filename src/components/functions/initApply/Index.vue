@@ -191,7 +191,6 @@ export default {
       params.append('payStatus', self.payStatus)
       params.append('createdTime', self.createdTime)
       params.append('page', p || 1)
-      self.loading = true
       db.postRequest('Institution/Apply/orderList', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.list

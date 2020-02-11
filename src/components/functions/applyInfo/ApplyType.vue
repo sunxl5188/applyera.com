@@ -61,8 +61,9 @@ export default {
   },
   mounted () {
     let self = this
-    self.setSelect()
+    self.studentId = self.$route.query.sid || ''
     self.$nextTick(() => {
+      self.setSelect()
       $('#applyType').height($(window).height() - 150)
       let params = new URLSearchParams()
       db.postRequest('/Institution/Apply/studentList', params).then(res => {

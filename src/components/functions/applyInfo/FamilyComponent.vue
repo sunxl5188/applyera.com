@@ -112,7 +112,7 @@
                                  v-if="family.brother_is">
                                 <div class="clearfix bdb mb-15">
                                     <h4 style="display: inline-block;">亲属({{i+1}})</h4>
-                                    <a href="javascript:void(0);" class="cf00 ml-30" @click="delbrother(i)"
+                                    <a href="javascript:void(0);" class="ml-30" @click="delbrother(i)"
                                        v-if="i > 0"><i class="iconfont">&#xe656;</i> 删除</a>
                                 </div>
                                 <div class="row">

@@ -45,10 +45,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, 'E:/www/vue/manage/index.html'),
+    index: path.resolve(__dirname, 'E:/www/test.applyera.com/manage/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, 'E:/www/vue/manage'),
+    assetsRoot: path.resolve(__dirname, 'E:/www/test.applyera.com/manage'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/manage/',
 

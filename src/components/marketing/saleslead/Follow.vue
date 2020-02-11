@@ -91,7 +91,7 @@
       <tr v-for="(item, i) in list" :key="i" v-if="!loading">
         <td><input type="checkbox" :value="item.id" @click="setActiveId($event, item.id)"></td>
         <td>
-          <a href="javascript:void(0);" class="cded" v-html="highlight(item.name, keyword)"></a>
+          <router-link :to="{path:'/archives/student/edit',query:{id:item.id}}" class="cded" v-html="highlight(item.name, keyword)"></router-link>
         </td>
         <td>{{item.phone}}</td>
         <td>{{item.from_user}}</td>

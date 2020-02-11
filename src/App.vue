@@ -225,7 +225,7 @@
                     <div style="background: #39f;height: 250px;-webkit-border-radius: 6px 6px 0 0;-moz-border-radius: 6px 6px 0 0;border-radius: 6px 6px 0 0;"></div>
                     <div class="modal-body text-center">
                         <div v-for="(item, i) in remindInfo" :key="i">
-                            <p>您有一个日历提醒标题为：{{item.title}}</p>
+                            <p>您有一个（{{item.stu_name}}）的日历提醒，标题为：{{item.title}}</p>
                             <p>开始明间:{{item.time_start}}</p>
                         </div>
                         <div class="clearfix pt-15 pb-50">
@@ -285,7 +285,7 @@ export default {
             getUserInfo.access = res.data
             self.$store.dispatch('login', getUserInfo)
           } else {
-            console.log(res.msg)
+            self.layer.alert(res.msg, {icon: 2})
           }
         })
       }

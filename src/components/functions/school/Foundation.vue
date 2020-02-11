@@ -13,7 +13,7 @@
                     <th>专业名称</th>
                     <th class="w10">课程时长</th>
                     <th class="w20">语言要求</th>
-                    <th class="w15">
+                    <th class="w15" v-if="userInfo.access.show_commission===1">
                         预计返佣
                         <a href="javascript:void(0);"
                            :class="sortComm===''?'icon-sort': (sortComm===1?'icon-sort up':'icon-sort down')"
@@ -34,17 +34,17 @@
                     </td>
                     <td>{{item.duration}}</td>
                     <td>{{item.lang_req}}</td>
-                    <td>{{item.commission}}</td>
+                    <td v-if="userInfo.access.show_commission===1">{{item.commission}}</td>
                     <td>
                         <button type="button" class="btn btn-primary btn-sm is-round" v-if="item.is_clt===0" @click="addCollection(1, item.unq_id, item.type)">加入收藏</button>
                         <button type="button" class="btn btn-default btn-sm is-round" v-if="item.is_clt===1" @click="addCollection(2, item.unq_id, item.type)">移出收藏</button>
                     </td>
                 </tr>
                 <tr v-if="loading">
-                    <td colspan="5" v-html="LoadingImg"></td>
+                    <td :colspan="show_commission===1?5:4" v-html="LoadingImg"></td>
                 </tr>
                 <tr v-if="!loading && list.length===0">
-                    <td colspan="5" v-html="NoData"></td>
+                    <td :colspan="show_commission===1?5:4" v-html="NoData"></td>
                 </tr>
                 </tbody>
             </table>
@@ -55,11 +55,13 @@
 
 <script>
 import pagination from '@#/shared/Pagination'
+import store from '@/vuex/Store'
 import _ from 'lodash'
 import db from '@~/js/request'
 
 export default {
   name: 'Foundation',
+  store,
   props: {
     id: String
   },
@@ -75,6 +77,11 @@ export default {
   },
   created () {
     this.debouncedPagechange = _.debounce(this.pageChange, 1000)
+  },
+  computed: {
+    userInfo () {
+      return store.state.userInfo
+    }
   },
   mounted () {
     this.pageChange()

@@ -181,21 +181,33 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">材料提交</label>
                                         <div class="col-sm-9">
-                                            <select name="material_status[]" class="form-control selectpicker show-tick" data-container="body" data-size="10"
-                                                    data-width="fit" v-model="item.material_status">
-                                                <option value="">请选择</option>
-                                                <option value="1">已提交</option>
-                                                <option value="2">已接收</option>
-                                            </select>
-                                            <input type="hidden" name="material_uploads[]" v-model="item.material_uploads" />
-                                            <button type="button" class="btn btn-default" @click="uploadClick(i)">上传凭证
-                                            </button>
-                                            <button type="button" class="btn btn-default" data-toggle="modal"
-                                                    data-backdrop="static" data-index="1051" data-target="#pasteModal" @click="pasteObj=[i, 'material_uploads']">
-                                                从剪贴板添加
-                                            </button>
-                                            <button type="button" class="btn btn-default addAnnotation">添加批注
-                                            </button>
+                                            <div class="clearfix">
+                                                <select name="material_status[]" class="form-control selectpicker show-tick" data-container="body" data-size="10"
+                                                        data-width="fit" v-model="item.material_status">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">已提交</option>
+                                                    <option value="2">已接收</option>
+                                                </select>
+                                                <input type="hidden" name="material_uploads[]" v-model="item.material_uploads" />
+                                                <button type="button" class="btn btn-default" @click="uploadClick(i)">上传凭证
+                                                </button>
+                                                <button type="button" class="btn btn-default" data-toggle="modal"
+                                                        data-backdrop="static" data-index="1051" data-target="#pasteModal" @click="pasteObj=[i, 'material_uploads']">
+                                                    从剪贴板添加
+                                                </button>
+                                                <button type="button" class="btn btn-default addAnnotation">添加批注</button>
+                                            </div>
+                                            <!--图片列表1-->
+                                            <div :id="'fileList_'+i" class="webUploader pt-10">
+                                                <div :id="'EDIT_WU_FILE'+u" class="image-item " :fid="item_p" v-for="(item_p, u) in item.material_uploads" :key="u">
+                                                    <img :src="siteUrl+item_p" width="100" height="100" v-if="fileSuffix(item_p)!=='pdf'" />
+                                                    <img src="../../../../static/images/pdf.jpg" width="100" height="100" v-if="fileSuffix(item_p)==='pdf'" />
+                                                    <div class="image-panel" style="display: block;">
+                                                        <span class="data">上传成功</span>
+                                                        <a href="javascript:void(0);" class="cancel">删除</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'hidden':item.material_remark===''}">
@@ -218,19 +230,33 @@
                                     <div class="form-group" v-show="item.pay_has===1">
                                         <label class="col-sm-3 control-label"></label>
                                         <div class="col-sm-9">
-                                            <select name="pay_unit[]" class="form-control selectpicker show-tick" data-container="body" data-width="fit" v-model="item.pay_unit">
-                                                <option value="">请选择</option>
-                                                <option value="UK">英镑</option>
-                                                <option value="US">美元</option>
-                                                <option value="AU">澳币</option>
-                                                <option value="CA">加币</option>
-                                            </select>
-                                            <input type="number" min="0.01" step="0.01" name="pay_fee[]" class="form-control div_vm" placeholder="请输入金额"
-                                                   style="display:inline-block;width:100px;" v-model="item.pay_fee"/>
-                                            <input type="number" min="0.01" step="0.01" name="pay_fee_cny[]" class="form-control div_vm" placeholder="请输入金额"
-                                                   style="display:inline-block;width:100px;" v-model="item.pay_fee_cny"/>
-                                            <input type="hidden" name="pay_uploads[]" v-model="item.pay_uploads" />
-                                            <button type="button" class="btn btn-default" @click="uploadClick('s'+i)">上传凭证</button>
+                                            <div class="clearfix">
+                                                <select name="pay_unit[]" class="form-control selectpicker show-tick" data-container="body" data-width="fit" v-model="item.pay_unit">
+                                                    <option value="">请选择</option>
+                                                    <option value="UK">英镑</option>
+                                                    <option value="US">美元</option>
+                                                    <option value="AU">澳币</option>
+                                                    <option value="CA">加币</option>
+                                                </select>
+                                                <input type="text" :name="'pay_fee['+i+']'" class="form-control div_vm" placeholder="请输入金额"
+                                                       style="display:inline-block;width:100px;" v-model="item.pay_fee" v-validate="'required|money'" data-vv-as="金额" />
+                                                <input type="hidden" name="pay_uploads[]" v-model="item.pay_uploads" />
+                                                <button type="button" class="btn btn-default" @click="uploadClick('s'+i)">上传凭证</button>
+                                                <div class="validateTip" v-show="errors.has('pay_fee['+i+']')">
+                                                    {{ errors.first('pay_fee['+i+']') }}
+                                                </div>
+                                            </div>
+                                            <!--图片列表2-->
+                                            <div :id="'fileList_s'+i" class="webUploader pt-10">
+                                                <div :id="'EDIT_WU_FILE'+u" class="image-item " :fid="item_p" v-for="(item_p, u) in item.pay_uploads" :key="u">
+                                                    <img :src="siteUrl+item_p" width="100" height="100" v-if="fileSuffix(item_p)!=='pdf'" />
+                                                    <img src="../../../../static/images/pdf.jpg" width="100" height="100" v-if="fileSuffix(item_p)==='pdf'" />
+                                                    <div class="image-panel" style="display: block;">
+                                                        <span class="data">上传成功</span>
+                                                        <a href="javascript:void(0);" class="cancel">删除</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -253,20 +279,32 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">申请结果</label>
                                         <div class="col-sm-9">
-                                            <select name="res_status[]" class="form-control selectpicker show-tick" data-container="body" data-size="10"
-                                                    data-width="fit" v-model="item.res_status">
-                                                <option value="">请选择</option>
-                                                <option value="1">offer</option>
-                                                <option value="2">拒信</option>
-                                            </select>
-                                            <input type="hidden" name="res_uploads[]" v-model="item.res_uploads" />
-                                            <button type="button" class="btn btn-default" @click="uploadClick('f'+i)">上传附件</button>
-                                            <button type="button" class="btn btn-default" data-toggle="modal"
-                                                    data-backdrop="static" data-index="1051" data-target="#pasteModal" @click="pasteObj=[i, 'res_uploads']">
-                                                从剪贴板添加
-                                            </button>
-                                            <button type="button" class="btn btn-default addAnnotation">添加批注
-                                            </button>
+                                            <div class="clearfix">
+                                                <select name="res_status[]" class="form-control selectpicker show-tick" data-container="body" data-size="10"
+                                                        data-width="fit" v-model="item.res_status">
+                                                    <option value="">请选择</option>
+                                                    <option value="1">offer</option>
+                                                    <option value="2">拒信</option>
+                                                </select>
+                                                <input type="hidden" name="res_uploads[]" v-model="item.res_uploads" />
+                                                <button type="button" class="btn btn-default" @click="uploadClick('f'+i)">上传附件</button>
+                                                <button type="button" class="btn btn-default" data-toggle="modal"
+                                                        data-backdrop="static" data-index="1051" data-target="#pasteModal" @click="pasteObj=[i, 'res_uploads']">
+                                                    从剪贴板添加
+                                                </button>
+                                                <button type="button" class="btn btn-default addAnnotation">添加批注</button>
+                                            </div>
+                                            <!--图片列表3-->
+                                            <div :id="'fileList_f'+i" class="webUploader pt-10">
+                                                <div :id="'EDIT_WU_FILE'+u" class="image-item " :fid="item_p" v-for="(item_p, u) in item.res_uploads" :key="u">
+                                                    <img :src="siteUrl+item_p" width="100" height="100" v-if="fileSuffix(item_p)!=='pdf'" />
+                                                    <img src="../../../../static/images/pdf.jpg" width="100" height="100" v-if="fileSuffix(item_p)==='pdf'" />
+                                                    <div class="image-panel" style="display: block;">
+                                                        <span class="data">上传成功</span>
+                                                        <a href="javascript:void(0);" class="cancel">删除</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group" :class="{'hidden':item.material_remark===''}">
@@ -314,6 +352,7 @@
     </div>
 </template>
 <script>
+import '@~/js/VeeValidateConfig'
 import 'bootstrap-select/dist/js/bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import webupload from '@~/js/webupload'
@@ -325,6 +364,7 @@ export default {
     return {
       loading: true,
       id: '',
+      siteUrl: window.ajaxBaseUrl,
       idArr: [],
       fArr: [],
       file_id: [],
@@ -407,9 +447,8 @@ export default {
           $('.selectpicker').selectpicker('refresh')
           $('#modalFollow').modal({
             backdrop: 'static',
-            keyboard: true, // 键盘上的 esc 键被按下时关闭模态框
-            show: true// 模态框初始化之后就立即显示出来
-            // remote:'http://www.'
+            keyboard: true,
+            show: true
           })
         }
       })
@@ -419,9 +458,9 @@ export default {
       setTimeout(() => {
         // 上传凭证、上传附件
         self.list.major_list.map((item, i) => {
-          self.formUpload(i, 'material_uploads', i)
-          self.formUpload('f' + i, 'res_uploads', i)
-          self.formUpload('s' + i, 'pay_uploads', i)
+          self.formUpload(i, item.material_uploads)
+          self.formUpload('s' + i, item.pay_uploads)
+          self.formUpload('f' + i, item.res_uploads)
         })
       }, 3000)
     })
@@ -431,7 +470,6 @@ export default {
     getDetail () {
       let self = this
       let params = new URLSearchParams()
-      self.loading = true
       params.append('id', self.id)
       db.postRequest('Institution/Apply/admOrderDetails', params).then(res => {
         if (res.status === 1) {
@@ -465,9 +503,9 @@ export default {
     uploadClick (id) {
       document.querySelector('#picker' + id + ' label').click()
     },
-    formUpload (id, field, i) {
+    formUpload (id, field) {
       let self = this
-      webupload(self.file_id, {
+      webupload(field, {
         pick: '#picker' + id,
         accept: {
           title: '',
@@ -477,7 +515,11 @@ export default {
         fileSingleSizeLimit: 1024 * 1024 * 2,
         formData: { func: 'apply_order', order_id: self.id },
         uploadSuccess: (file, response) => {
-          self.list.major_list[i][field].push(response.data)
+          let $this = $('#' + file.id)
+          $this.find('.image-panel').show() // 显示图片时
+          $this.find('.data').text('上传成功')
+          $this.attr('fid', response.data)
+          field.push(response.data)
         },
         error: (e) => {
           if (e === 'Q_TYPE_DENIED') {

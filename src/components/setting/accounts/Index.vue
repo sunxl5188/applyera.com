@@ -387,27 +387,27 @@ export default {
         // 新建一级分类
         $(document).on('click', '.addClassParent', function () {
           $('.popovers').popover('hide')
-          $('#departmentId').modal('show')
+          $('#departmentId').modal({show: true, backdrop: 'static'})
         })
         // 新建下级
         $(document).on('click', '.addChildDepartment', function () {
           self.department_id = self.depId
           self.level = 2
           $('.popovers').popover('hide')
-          $('#departmentId').modal('show')
+          $('#departmentId').modal({show: true, backdrop: 'static'})
         })
         // 新建同级
         $(document).on('click', '.addDepartment', function () {
           self.department_id = self.parentId
           $('.popovers').popover('hide')
-          $('#departmentId').modal('show')
+          $('#departmentId').modal({show: true, backdrop: 'static'})
         })
         // 修改部门分类
         $(document).on('click', '.editDepartment', function () {
           self.edit = true
           self.department_id = self.depId
           $('.popovers').popover('hide')
-          $('#departmentId').modal('show')
+          $('#departmentId').modal({show: true, backdrop: 'static'})
         })
         // 删除部门
         $(document).on('click', '.deleteDepartment', function () {
@@ -617,7 +617,10 @@ export default {
         if (res.status === 1) {
           self.accounts = res.data
           self.layTitle = '编辑账号信息'
-          $('#addAccounts').modal('show')
+          $('#addAccounts').modal({
+            backdrop: 'static',
+            show: true
+          })
         } else {
           self.layer.alert(res.msg, {
             icon: 2

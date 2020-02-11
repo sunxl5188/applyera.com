@@ -60,11 +60,11 @@
               <th class="w5">
                 <i class="iconfont handPower cded" @click="addSchool">&#xe622;</i>
               </th>
-              <th class="w25"><span class="pl-15">院校名称</span></th>
+              <th><span class="pl-15">院校名称</span></th>
               <th class="w25"><span class="pl-15">专业名称</span></th>
               <th class="w20"><span class="pl-10">专业官网</span></th>
               <th class="w15"><span class="pl-10">申请批次</span></th>
-              <th class="w10"><span class="pl-10">可得佣金</span></th>
+              <th class="w10" v-if="userInfo.access.show_commission===1"><span class="pl-10">可得佣金</span></th>
             </tr>
             </thead>
             <tbody>
@@ -116,7 +116,7 @@
                   <option :value="items" v-for="(items, i) in item.batchList" :key="i"></option>
                 </datalist>
               </td>
-              <td>
+              <td v-if="userInfo.access.show_commission===1">
                         <span class="lh34">
                             <input type="text" name="major_list[comm][]" class="form-control" v-model="item.comm"
                                    readonly />
@@ -125,7 +125,7 @@
             </tr>
             </tbody>
           </table>
-          <div class="clearfix text-center">
+          <div class="clearfix text-center" v-if="submitStatus===0">
             <button type="button" class="btn btn-default" @click="nextPage">下一页</button>
             <button type="submit" class="btn btn-primary ml-20">保存</button>
           </div>
@@ -135,6 +135,7 @@
 </template>
 
 <script>
+import store from '@/vuex/Store'
 import '@~/js/VeeValidateConfig'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
@@ -144,10 +145,12 @@ import db from '@~/js/request'
 
 export default {
   name: 'ChooseSchool',
+  store,
   data () {
     return {
       id: '',
       loading: true,
+      submitStatus: 0,
       state: [0, 0, 0, 0],
       modify: 0, // 如果大于1 那么修改过
       schoolList: [],
@@ -173,9 +176,14 @@ export default {
       }
     }
   },
+  computed: {
+    userInfo () {
+      return store.state.userInfo
+    }
+  },
   beforeRouteLeave (to, from, next) {
     let self = this
-    if (self.modify > 3) {
+    if (self.modify > 3 && self.submitStatus === 0) {
       self.layer.confirm('您正在离开当前页面，系统检测到您编辑的内容尚未保存，是否保存？', {icon: 3}, function (i) {
         self.layer.close(i)
         let formData = $('#schoolApply').serializeArray()
@@ -238,6 +246,7 @@ export default {
         if (res.status === 1) {
           self.getMaterial(res.data.student_id)
           self.studentId = res.data.student_id
+          self.submitStatus = res.data.submit_status
           self.schoolDetail.materialId = res.data.apply_id
           self.schoolDetail.applyEmail = res.data.apply_email
           self.schoolDetail.applyType = res.data.apply_type
@@ -411,8 +420,8 @@ export default {
     },
     // 过滤-
     replaceStr (str) {
-      if (str !== undefined || str !== '') {
-        return str.replace('-', '')
+      if (str !== null && str !== '') {
+        return str.replace(/-/g, '')
       }
     },
     // 设置申请类型

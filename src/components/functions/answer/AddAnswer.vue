@@ -171,7 +171,7 @@
                                     <div class="media-body">
                                         <div class="clearfix pb-10 pt-5">
                                         <span contenteditable="true"
-                                              :data-placeholder="item[0]['id']?'@回复':'最新回复'"
+                                              :data-placeholder="item[0]['id']?'@回复':'添加批注'"
                                               data-label="content"></span>
                                         </div>
                                         <div class="editBtn" v-if="commentId===''">
@@ -206,6 +206,7 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import ShareIt from '@#/functions/applyInfo/ShareIt'
@@ -701,7 +702,8 @@ export default {
     // 删除批注
     delComment (id, type, cid) {
       let self = this
-      let $this = $('#answer_ps [data-id="' + cid + '"], #answer_ws [data-id="' + cid + '"]')
+      let $this = $('#answer_ps [data-id="' + cid + '"]')
+      let _this = $('#answer_ws [data-id="' + cid + '"]')
       let params = new URLSearchParams()
       params.append('type', type)
       params.append('note_id', id)
@@ -709,11 +711,21 @@ export default {
       db.postRequest('/Institution/Document/noteAction', params).then(res => {
         if (res.status === 1) {
           if (res.data.del_all === 1) {
-            $this.before($this.text())
-            $this.remove()
-            self.saveData(true)
+            if ($this.length > 0) {
+              let text = $this.text()
+              $this.after(text)
+              $this.remove()
+            }
+            if (_this.length > 0) {
+              let text = _this.text()
+              _this.after(text)
+              _this.remove()
+            }
+            _.delay(() => {
+              self.saveData(true)
+            }, 100)
           }
-          setTimeout(() => {
+          _.delay(() => {
             self.getComment()
           }, 500)
         } else {

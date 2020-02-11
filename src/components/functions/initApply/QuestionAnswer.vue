@@ -51,7 +51,7 @@
                     </tbody>
                 </table>
                 <div class="blk20"></div>
-                <div class="clearfix text-center">
+                <div class="clearfix text-center" v-if="submitStatus===0">
                     <button type="button" class="btn btn-default" @click="nextPage">下一页</button>
                     <button type="submit" class="btn btn-primary ml-20">保存</button>
                 </div>
@@ -225,6 +225,7 @@ export default {
     return {
       id: '',
       loading: true,
+      submitStatus: 0,
       ReIndex: '',
       omId: '',
       studentId: '',
@@ -276,6 +277,7 @@ export default {
           self.docList = res.data.doc_list
           self.rcmdList = res.data.rcmd_list
           self.studentId = res.data.student_id
+          self.submitStatus = res.data.submit_status
         } else {
           console.log(res.msg)
         }
