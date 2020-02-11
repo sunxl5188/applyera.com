@@ -272,7 +272,7 @@
                                                 <td width="20%">{{item.country}}</td>
                                                 <td>{{item.school_major}}</td>
                                                 <td width="25%">
-                                                    <router-link to="/functions/process" class="cded">
+                                                    <router-link to="/functions/track" class="cded">
                                                         {{item.status}}
                                                     </router-link>
                                                 </td>

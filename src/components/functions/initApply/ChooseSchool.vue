@@ -478,7 +478,7 @@ export default {
 <style lang="scss">
 #schoolApply{
   .filter-option-inner-inner{
-    word-break:break-all;
+    word-wrap: break-word; word-break: normal;
   }
 }
 </style>

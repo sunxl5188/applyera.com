@@ -22,7 +22,7 @@
                     <ul class="nav navbar-nav">
                         <li>
                             <router-link to="/home/workProcess" class="iconLink">
-                                <i class="iconfont" data-toggle="tooltip" title="工作流" data-placement="bottom">&#xe64c;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="服务进度" data-placement="bottom">&#xe64c;</i>
                             </router-link>
                         </li>
                         <li>
@@ -33,7 +33,7 @@
                         <li>
                             <router-link to="/setting/message" class="iconLink">
                                 <i class="number" v-if="msgNum>0">{{msgNum}}</i>
-                                <i class="iconfont" data-toggle="tooltip" title="消息" data-placement="bottom">&#xe67d;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="系统公告" data-placement="bottom">&#xe67d;</i>
                             </router-link>
                         </li>
                         <li class="dropdown" id="userBtnList">
