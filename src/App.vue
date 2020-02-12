@@ -225,7 +225,8 @@
                     <div style="background: #39f;height: 250px;-webkit-border-radius: 6px 6px 0 0;-moz-border-radius: 6px 6px 0 0;border-radius: 6px 6px 0 0;"></div>
                     <div class="modal-body text-center">
                         <div v-for="(item, i) in remindInfo" :key="i">
-                            <p>您有一个（{{item.stu_name}}）的日历提醒，标题为：{{item.title}}</p>
+                            <p v-if="item.stu_name!==''">您有一个（{{item.stu_name}}）的日历提醒，标题为：{{item.title}}</p>
+                            <p v-if="item.stu_name===''">您有一个日历提醒，标题为：{{item.title}}</p>
                             <p>开始明间:{{item.time_start}}</p>
                         </div>
                         <div class="clearfix pt-15 pb-50">
@@ -371,7 +372,7 @@ export default {
       db.postRequest('Institution/Home/getRemind', {}).then(res => {
         if (res.status === 1 && res.data.length > 0) {
           self.remindInfo = res.data
-          $('#modalRemind').modal('show')
+          $('#modalRemind').modal({ backdrop: 'static', show: true })
         } else if (res.status === 402 || res.status === 403) {
           clearInterval(remindTime)
         } else {
@@ -400,7 +401,7 @@ export default {
     ...mapActions(['login']),
     logOut () {
       let self = this
-      self.layer.confirm('您确定要退出登录吗？', function (e) {
+      self.layer.confirm('您确定要退出登录吗？', {icon: 3}, function (e) {
         store.dispatch('logOut')
         self.nav = 0
         self.layer.close(e)

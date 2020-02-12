@@ -176,9 +176,13 @@
                   <i class="iconfont font60 cded">&#xe6a8;</i>
                 </a>
                 <div class="media-body">
-                  <h4 class="media-heading"><a href="/binding" target="_blank">绑定微信</a></h4>
-                  <p>{{list.wechat_account}} <a href="javascript:void(0);" class="cded ml-15"
-                                                @click="ReleaseWeChat" v-if="list.is_bind_wx===1">解除绑定</a></p>
+                  <h4 class="media-heading">
+                    <a href="javascript:void(0);" @click="weChatShow" v-if="list.is_bind_wx!==1">绑定微信</a>
+                    <a href="javascript:void(0);"  v-if="list.is_bind_wx===1">绑定微信</a>
+                  </h4>
+                  <p>{{list.wechat_account}}
+                    <a href="javascript:void(0);" class="cded" @click="ReleaseWeChat" v-if="list.is_bind_wx===1">解除绑定</a>
+                  </p>
                   <p class="textOver">绑定后可以通过微信扫码登录</p>
                 </div>
               </div>
@@ -407,6 +411,20 @@
             </div>
           </div>
         </div>
+        <!--微信绑定-->
+        <div class="modal fade" id="weChat">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">微信绑定</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center" id="login_container" style="height: 350px;overflow: hidden;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
 </template>
@@ -568,16 +586,20 @@ export default {
     },
     ReleaseWeChat () {
       let self = this
-      db.getRequest('Institution/User/unBindWx', {}).then(res => {
-        if (res.status === 1) {
-          self.layer.alert(res.msg, {icon: 1}, function (i) {
-            self.layer.close(i)
-          })
-        } else {
-          self.layer.alert(res.msg, {
-            icon: 2
-          })
-        }
+      self.layer.confirm('是否确认解绑该微信？', {icon: 3}, function (i) {
+        self.layer.close(i)
+        db.getRequest('Institution/User/unBindWx', {}).then(res => {
+          if (res.status === 1) {
+            self.list.is_bind_wx = 0
+            self.layer.alert(res.msg, {icon: 1}, function (i) {
+              self.layer.close(i)
+            })
+          } else {
+            self.layer.alert(res.msg, {
+              icon: 2
+            })
+          }
+        })
       })
     },
     // 发送短信验证码
@@ -678,6 +700,27 @@ export default {
       this.list.province_id = data.province
       this.list.city_id = data.city
       this.list.area_id = data.area
+    },
+    // 显示微信绑定弹窗
+    weChatShow () {
+      let self = this
+      self.WXcode()
+      $('#weChat').modal({ backdrop: 'static', show: true })
+    },
+    // 微信登录
+    WXcode () {
+      let state = new Date().getTime()
+      /*eslint-disable*/
+      new WxLogin({
+        self_redirect: false, // true：手机点击确认登录后可以在 iframe 内跳转到 redirect_uri，false：手机点击确认登录后可以在 top window 跳转到 redirect_uri。默认为 false。
+        id: 'login_container', // 第三方页面显示二维码的容器id
+        appid: 'wxebd64df32b9e4bd0', // 应用唯一标识，在微信开放平台提交应用审核通过后获得
+        scope: 'snsapi_login', // 应用授权作用域，拥有多个作用域用逗号（,）分隔，网页应用目前仅填写snsapi_login即可
+        redirect_uri: 'https://www.applyera.com/wechat', // 重定向地址，需要进行UrlEncode
+        state: state, // 用于保持请求和回调的状态，授权请求后原样带回给第三方。该参数可用于防止csrf攻击（跨站请求伪造攻击），建议第三方带上该参数，可设置为简单的随机数加session进行校验
+        style: 'black', // 提供"black"、"white"可选，默认为黑色文字描述。详见文档底部FAQ
+        href: 'https://www.applyoversea.com/Public/css/jgdweixin.css'// 自定义样式链接，第三方可根据实际需求覆盖默认样式。详见文档底部FAQ
+      })
     }
   },
   components: {ImageCropper, CitySelect}
