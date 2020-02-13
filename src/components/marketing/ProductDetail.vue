@@ -23,15 +23,17 @@
                 </div>
             </div>
         </div>
-        <form action="" id="productFormData" method="POST" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
-            <input type="hidden" name="id" :value="id" v-if="id" />
+        <form action="" id="productFormData" method="POST" class="form-horizontal"
+              @submit.prevent="validateBeforeSubmit">
+            <input type="hidden" name="id" :value="id" v-if="id"/>
             <div class="row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">所属国家</label>
                         <div class="col-sm-8">
                             <select name="country" class="form-control selectpicker show-tick" data-size="10"
-                                    data-live-search="true" v-model="info.country" v-validate="'required'" data-vv-as="所属国家">
+                                    data-live-search="true" v-model="info.country" v-validate="'required'"
+                                    data-vv-as="所属国家">
                                 <option value="">请选择</option>
                                 <option :value="item.id" v-for="(item, i) in nation" :key="i">{{item.cn}}</option>
                             </select>
@@ -45,7 +47,9 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">产品名称</label>
                         <div class="col-sm-8">
-                            <input name="name" type="text" class="form-control" v-model="info.prod_name" placeholder="请输入新品名称(不超过20个字)" maxlength="20" v-validate="'required|max:20'" data-vv-as="产品名称">
+                            <input name="name" type="text" class="form-control" v-model="info.prod_name"
+                                   placeholder="请输入新品名称(不超过20个字)" maxlength="20" v-validate="'required|max:20'"
+                                   data-vv-as="产品名称">
                             <div class="validateTip" v-show="errors.has('name')">
                                 {{ errors.first('name') }}
                             </div>
@@ -57,7 +61,8 @@
                         <label class="col-sm-4 control-label">产品价格</label>
                         <div class="col-sm-8">
                             <input type="text" name="fee" class="form-control" v-model="info.fee_cny"
-                                   placeholder="请输入产品价格" maxlength="8" v-validate="'required|money|max:8'" data-vv-as="产品价格" />
+                                   placeholder="请输入产品价格" maxlength="8" v-validate="'required|money|max:8'"
+                                   data-vv-as="产品价格"/>
                             <div class="validateTip" v-show="errors.has('fee')">
                                 {{ errors.first('fee') }}
                             </div>
@@ -70,7 +75,41 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label" style="width: 11.2%;">产品介绍</label>
                         <div class="col-sm-11" style="width: 88.8%;">
-                            <textarea name="intro" class="form-control" v-model="info.prod_intro" placeholder="请输入产品介绍"></textarea>
+                            <textarea name="intro" class="form-control" v-model="info.prod_intro"
+                                      placeholder="请输入产品介绍"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label" style="width: 11.2%;">
+                            是否需要<br>签署合同
+                        </label>
+                        <div class="col-sm-11" style="width: 88.8%;">
+                            <div class="custom-radio-box">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" name="need"  class="custom-control-input" id="need1" :value=1 v-model="info.need" :checked="info.need===1">
+                                    <label class="custom-control-label" for="need1">需要</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" name="need" class="custom-control-input" id="need2" :value=2 v-model="info.need" :checked="info.need===2">
+                                    <label class="custom-control-label" for="need2">不需要</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" v-if="info.need===1">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label" style="width: 11.2%;">
+                            关联合同
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text" name="contract" class="form-control" v-model="info.contract" placeholder="请选择该产品需要签署的合同"/>
                         </div>
                     </div>
                 </div>
@@ -97,8 +136,9 @@ export default {
         fee_cny: '',
         id: '',
         prod_intro: '',
-        prod_name: ''
-
+        prod_name: '',
+        need: 1,
+        contract: ''
       }
     }
   },
@@ -106,7 +146,6 @@ export default {
     let self = this
     self.id = self.$route.query.id || ''
     self.$nextTick(() => {
-      $('.selectpicker').selectpicker()
       if (self.id !== '') {
         self.getDetail(self.id)
       }
@@ -140,15 +179,14 @@ export default {
           db.postRequest('/Institution/PayProd/save', params).then(res => {
             if (res.status === 1) {
               if (self.id === '') {
-                console.log(1111)
                 self.$emit('pageChange')
               }
-              self.layer.alert(res.msg, { icon: 1 }, function (i) {
+              self.layer.alert(res.msg, {icon: 1}, function (i) {
                 self.layer.close(i)
                 self.$router.push('/marketing/product')
               })
             } else {
-              self.layer.alert(res.msg, { icon: 2 })
+              self.layer.alert(res.msg, {icon: 2})
             }
           })
         }

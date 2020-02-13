@@ -21,15 +21,15 @@
                                    @keyup.enter="pageChange()">
                         </div>
                         <div class="form-group ml-10">
-                            <div class="dropdown">
+                            <div class="customizeDropdown">
                                 <button class="btn filter" :class="country || date || userId ? 'btn-primary' : 'btn-default'"
-                                        type="button" data-toggle="dropdown"></button>
+                                        type="button" data-toggle="customizeDropdown"></button>
                                 <ul class="dropdown-menu dropdown-menu-right filterOption" style="padding:15px 20px;">
                                     <div class="pl-15 pr-15" style="width:180px;">
                                         <form action="" method="POST" class="form-horizontal">
                                             <div class="form-group">
                                                 <label>所属国家</label>
-                                                <select class="form-control" v-model="country">
+                                                <select class="form-control selectpicker show-tick" data-live-search="true" data-size="10" v-model="country">
                                                     <option value="">请选择</option>
                                                     <option :value="item.id" v-for="(item, i) in nation" :key="i">{{item.cn}}</option>
                                                 </select>
@@ -40,7 +40,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>发布者</label>
-                                                <select class="form-control" v-model="userId">
+                                                <select class="form-control selectpicker show-tick" data-live-search="true" data-size="10" v-model="userId">
                                                     <option value="">请选择</option>
                                                     <option :value="item.id" v-for="(item, i) in userList" :key="i">{{item.user_name}}</option>
                                                 </select>
@@ -154,6 +154,8 @@
 </template>
 
 <script>
+import 'bootstrap-select'
+import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import nation from '@@/json/nation.json'
 import Clipboard from 'clipboard'
 import Pagination from '@#/shared/Pagination'
@@ -252,6 +254,9 @@ export default {
         }
         self.current = p
         self.loading = false
+        _.delay(() => {
+          $('.selectpicker').selectpicker('refresh')
+        }, 200)
       })
     },
     clearData () {
@@ -259,6 +264,9 @@ export default {
       this.country = ''
       this.date = ''
       this.userId = ''
+      _.delay(() => {
+        $('.selectpicker').selectpicker('refresh')
+      }, 200)
     },
     deleteId (type) {
       let self = this

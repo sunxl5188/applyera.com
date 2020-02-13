@@ -655,6 +655,32 @@ export default new Router({
               }
             }
           ]
+        },
+        {
+          path: 'contract',
+          name: 'contract',
+          component: resolve => require(['@#/marketing/Contract'], resolve),
+          meta: {
+            title: '合同管理', requiresAuth: true, group: ['marketing', 2, '']
+          },
+          children: [
+            {
+              path: 'detail',
+              name: 'contractDetail',
+              component: resolve => require(['@#/marketing/ContractDetail'], resolve),
+              meta: {
+                title: '合同详情', requiresAuth: true, group: ['marketing', 2, 0]
+              }
+            }
+          ]
+        },
+        {
+          path: 'OrderRecord',
+          name: 'OrderRecord',
+          component: resolve => require(['@#/marketing/OrderRecord'], resolve),
+          meta: {
+            title: '订单记录', requiresAuth: true, group: ['marketing', 3, '']
+          }
         }
       ]
     },

@@ -134,6 +134,8 @@
                             <router-link to="/marketing/product" class="list-group-item"
                                          v-if="userInfo.access.marketing.child[1]===1">产品管理
                             </router-link>
+                            <router-link to="/marketing/contract" class="list-group-item">合同管理</router-link>
+                            <router-link to="/marketing/OrderRecord" class="list-group-item">订单记录</router-link>
                         </div>
                     </li>
                     <li class="list-group-item" v-if="userInfo.access.setting.show===1">

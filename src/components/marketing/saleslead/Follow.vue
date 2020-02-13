@@ -349,7 +349,7 @@ export default {
       } else if (self.time_sort === 2) {
         self.time_sort = 1
       }
-      self.pageChange()
+      self.pageChange(self.current)
     },
     // 审核线索
     review (id) {
