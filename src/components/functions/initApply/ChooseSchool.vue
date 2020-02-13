@@ -105,7 +105,7 @@
               <td>
                 <input type="hidden" name="major_list[major_website][]" v-model="item.major_website" />
                 <a :href="item.major_website" target="_blank" class="lh34 pl-10" v-if="item.major_unq_id !=='custom' && item.major_website">点击前往</a>
-                <span v-if="item.major_unq_id === 'custom'" class="c999">
+                <span v-if="item.major_unq_id === 'custom' || item.major_website===''" class="c999">
                             <input type="text" name="name" class="form-control" v-model="item.major_website" placeholder="请输入专业网址" />
                         </span>
               </td>
