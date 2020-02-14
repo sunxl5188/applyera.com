@@ -34,7 +34,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>生成日期</label>
-                                            <input type="text" name="date" class="form-control times"
+                                            <input type="text" name="date" class="form-control times" v-model="date"
                                                    placeholder="请选择"/>
                                         </div>
                                         <div class="form-group text-center">
@@ -128,9 +128,17 @@ export default {
   mounted () {
     let self = this
     self.$nextTick(() => {
+      self.laydate.render({
+        elem: '.times',
+        type: 'date',
+        range: true,
+        done: (value) => {
+          self.date = value
+        }
+      })
       _.delay(() => {
         $('.selectpicker').selectpicker('refresh')
-      }, 2000)
+      }, 500)
     })
   },
   methods: {

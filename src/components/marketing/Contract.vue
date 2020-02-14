@@ -35,7 +35,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>生成日期</label>
-                                                <input type="text" name="date" class="form-control times"
+                                                <input type="text" name="date" class="form-control times" v-model="date"
                                                        placeholder="请选择"/>
                                             </div>
                                             <div class="form-group">
@@ -161,10 +161,15 @@ export default {
     let self = this
     self.name = self.$route.name
     self.$nextTick(() => {
+      self.laydate.render({
+        elem: '.times',
+        type: 'date',
+        range: true,
+        done: (value) => {
+          self.date = value
+        }
+      })
       self.getUserList()
-      _.delay(() => {
-        $('.selectpicker').selectpicker('refresh')
-      }, 2000)
     })
   },
   methods: {
@@ -177,6 +182,9 @@ export default {
         } else {
           console.log(res.msg)
         }
+        _.delay(() => {
+          $('.selectpicker').selectpicker('refresh')
+        }, 500)
       })
     },
     pageChange (page) {
