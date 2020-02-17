@@ -10,6 +10,9 @@ import vueCookie from 'vue-cookies'
 // import { VueMasonryPlugin } from 'vue-masonry'
 import '@~/js/vueFilter'
 import '@@/css/main.scss'
+import '@@/js/ueditor/ueditor.config'
+import '@@/js/ueditor/ueditor.all'
+import '@@/js/ueditor/lang/zh-cn/zh-cn'
 let $ = require('jquery')
 window.$ = window.jQuery = $
 
