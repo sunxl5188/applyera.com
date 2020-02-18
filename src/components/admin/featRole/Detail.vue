@@ -397,7 +397,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .list-group {
         border:1px solid #ddd;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;min-height:400px;
 

@@ -449,7 +449,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .thumbnail {
     & .state {
         width:30px;height:60px;display:block;overflow:hidden;background-image:url(../../../../static/images/001.png); background-repeat:no-repeat;position:absolute;right:15px;top:0;z-index:10;
@@ -475,7 +475,7 @@ export default {
     [type="text"]{border:none;background-color:transparent !important;}
 }
 </style>
-<style lang="scss">
+<style lang="less">
 #schoolApply{
   .filter-option-inner-inner{
     word-wrap: break-word; word-break: normal;

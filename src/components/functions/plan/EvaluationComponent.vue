@@ -129,7 +129,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .btn {
         &.btn-info {
             background-color:#cee7fb;color:#428bca;border-color:#cee7fb;

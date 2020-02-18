@@ -248,6 +248,6 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .list-group-item {border-top:none;border-left:none;border-right:none;margin-bottom:0;}
 </style>

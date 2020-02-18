@@ -4,8 +4,7 @@
 @import "../../node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
 @import "animate.min.css";
 @import "../js/laydate/theme/default/laydate.css";
-@import "bootstrap-select";
-@import "../js/webuploader/webuploader";
+@import "bootstrap-select.min.css";
 @import "../js/tipsy/tipsy.css";
 @import "../js/kindeditor/themes/default/default.css";
 @import "../../node_modules/icheck/skins/all.css";
@@ -14,32 +13,31 @@ html, body {width:100%;min-width:1200px;background:#fff; font-family:"Microsoft 
 
 #app {width:100%; min-width:1200px;}
 
-$color:#333 #666 #999 #f00;
-$border-color:#dedede;
-$font-color:(
-    cfff:#fff,
-    c333:#333,
-    c666:#666,
-    c999:#999,
-    cf00:#f00,
-    cffd:#fffd30,
-    cded:#39f,
-    c52c:#52c41a,
-    cfad:#f0ad4e,
-    cf90:#f90
-);
+@border-color:#dedede;
+
+.cfff{color:#fff;}
+.c333{color:#333;}
+.c666{color:#666;}
+.c999{color:#999;}
+.cf00{color:#f00;}
+.cffd{color:#fffd30;}
+.cded{color:#39f;}
+.c52c{color:#52c41a;}
+.cfad{color:#f0ad4e;}
+.cf90{color:#f90;}
+
 
 .bgWhite {background:#fff;}
 
 .bgGray {background:#f1f2f7;}
 
-
-@for $i from 1 through 7 {
-  .fillet-#{$i + 3} {-webkit-border-radius:$i+3+px;-moz-border-radius:$i+3+px;border-radius:$i+3+px;}
+.fillets(@i) when (@i > 0){
+  .fillets((@i - 1));
+  @k: @i + 3;
+  .fillet-@{k} {-webkit-border-radius:unit(@k, px);-moz-border-radius:unit(@k, px);border-radius:unit(@k, px);}
 }
 
 .vl-notify {z-index:9999999 !important;}
-
 .vl-notify-mask {
   background-color:#000 !important;
   filter:Alpha(Opacity=70) !important;
@@ -50,56 +48,54 @@ $font-color:(
 input, select, textarea, button {
   box-shadow:none !important; outline:none !important;
 }
-
-@for $i from 1 through 40 {
-  .blk#{$i * 5} {
-    font-size:0;line-height:0;clear:both;overflow:hidden;
-    height:$i*5 +px;
-  }
-  .mar-#{$i*5} {margin:$i*5 +px;}
-  .ml-#{$i*5} {margin-left:$i*5 +px;}
-  .mt-#{$i*5} {margin-top:$i*5 +px;}
-  .mr-#{$i*5} {margin-right:$i*5 +px;}
-  .mb-#{$i*5} {margin-bottom:$i*5 +px;}
-  .pad-#{$i*5} {padding:$i*5 +px;}
-  .pl-#{$i*5} {padding-left:$i*5 +px;}
-  .pt-#{$i*5} {padding-top:$i*5 +px;}
-  .pr-#{$i*5} {padding-right:$i*5 +px;}
-  .pb-#{$i*5} {padding-bottom:$i*5 +px;}
-  .font#{10+$i*2} {font-size:10+$i*2+px;}
-  .lh#{10+$i*2} {line-height:10+$i*2+px;}
+.loop(@i) when (@i > 0){
+  .loop(@i - 1);
+  @k:@i*5;
+  @z:@i*2 + 10;
+  .mar-@{k} {margin:unit(@k, px);}
+  .ml-@{k} {margin-left:unit(@k, px);}
+  .mt-@{k} {margin-top:unit(@k, px);}
+  .mr-@{k} {margin-right:unit(@k, px);}
+  .mb-@{k} {margin-bottom:unit(@k, px);}
+  .pad-@{k} {padding:unit(@k, px);}
+  .pl-@{k} {padding-left:unit(@k, px);}
+  .pt-@{k} {padding-top:unit(@k, px);}
+  .pr-@{k} {padding-right:unit(@k, px);}
+  .pb-@{k} {padding-bottom:unit(@k, px);}
+  .blk#-@{k} { font-size:0;line-height:0;clear:both;overflow:hidden; height:unit(@k, px); }
+  .font@{z} {font-size:unit(@z, px);}
+  .lh@{z} {line-height:unit(@z, px);}
 }
-
-@each $i, $c in $font-color {
-  .#{$i} {color:$c}
+.widths(@i) when (@i > 0){
+  .widths(@i - 1);
+  @k: @i*5;
+  .w@{k} {width:unit(@k, %);}
 }
+.loop(40);
+.widths(20);
 
-@for $i from 1 through 20 {
-  .w#{$i*5} {width:$i*5 * 1%;}
-}
+.bdl {border-left:1px solid @border-color;}
 
-.bdl {border-left:1px solid $border-color;}
+.bdt {border-top:1px solid @border-color;}
 
-.bdt {border-top:1px solid $border-color;}
+.bdb {border-bottom:1px solid @border-color;}
 
-.bdb {border-bottom:1px solid $border-color;}
+.bdr {border-right:1px solid @border-color;}
 
-.bdr {border-right:1px solid $border-color;}
+.bda {border:1px solid @border-color;}
 
-.bda {border:1px solid $border-color;}
+.bdl-d {border-left:1px dashed @border-color;}
 
-.bdl-d {border-left:1px dashed $border-color;}
+.bdt-d {border-top:1px dashed @border-color;}
 
-.bdt-d {border-top:1px dashed $border-color;}
+.bdb-d {border-bottom:1px dashed @border-color;}
 
-.bdb-d {border-bottom:1px dashed $border-color;}
+.bdr-d {border-right:1px dashed @border-color;}
 
-.bdr-d {border-right:1px dashed $border-color;}
-
-.bda-d {border:1px dashed $border-color;}
+.bda-d {border:1px dashed @border-color;}
 
 .validateTip {
-  clear:both;color:nth($color, 4); font-size:12px;line-height:24px;position:relative;text-indent:1.5em;
+  clear:both;color:#f00; font-size:12px;line-height:24px;position:relative;text-indent:1.5em;
 
   &:before {
     content:'\e667f'; font-family:'iconfont';font-size:16px;font-weight:bold;position:absolute;top:0;left:0; display:block;line-height:28px;width:24px;height:24px;text-indent:0;overflow:hidden;
@@ -1073,4 +1069,38 @@ span[contenteditable], div[contenteditable] {
       }
     }
   }
+}
+/*webuploader 图片上传*/
+.webuploader-container {
+  position:relative;
+}
+.webuploader-element-invisible {
+  position:absolute !important;
+  clip:rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip:rect(1px, 1px, 1px, 1px);
+}
+.webuploader-pick {
+  position:relative;
+  display:inline-block;
+  cursor:pointer;
+  color:#428bca;
+  text-align:center;
+  border-radius:3px;
+  overflow:hidden;
+  padding-left:22px;
+  height:22px;
+  line-height:22px;
+  &:before {
+    content:'\ea53';font-family:"iconfont";display:inline-block;position:absolute;left:0;top:50%;margin-top:-10px;color:#428bca;width:22px;height:22px;
+  }
+}
+.webuploader-pick-hover {
+  color:#428bca;
+  &:before {
+    color:#428bca;
+  }
+}
+.webuploader-pick-disable {
+  opacity:0.6;
+  pointer-events:none;
 }

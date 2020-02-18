@@ -832,7 +832,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .containerBody {
   margin:-20px -15px;overflow:auto;
 
@@ -963,7 +963,7 @@ export default {
   width:240px;margin:0 15px;float:left;
 }
 </style>
-<style lang="scss">
+<style lang="less">
 #workStudent-id {
   & .dropdown-toggle {
     border:none;background:#fff !important;

@@ -954,7 +954,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .functionList {
         padding:15px;
 

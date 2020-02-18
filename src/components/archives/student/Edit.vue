@@ -1894,7 +1894,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .modal-lg {width:1000px;}
 
 .studentInfo {
@@ -2064,7 +2064,7 @@ export default {
     }
 }
 </style>
-<style lang="scss">
+<style lang="less">
 .editStudentLayer {
     .bootstrap-select {
         max-width:100%;display:block;

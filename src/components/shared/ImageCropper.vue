@@ -126,7 +126,7 @@ export default {
 <style lang="css">
     @import "../../../static/js/cropper/cropper.css";
 </style>
-<style scoped lang="scss">
+<style scoped lang="less">
     .uploadBtn{
         background-color:#fff;border:1px solid #ccc;position:relative;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;padding:6px 15px;cursor:pointer;
 

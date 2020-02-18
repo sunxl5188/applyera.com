@@ -370,7 +370,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .navbar-wrapper{
         &.stuckMenu{
             position:fixed;z-index:100;box-shadow:1px 1px 5px #ccc;right:15px;top:50px;background-color:#fff;

@@ -635,7 +635,7 @@ export default {
     @import '../../node_modules/@fullcalendar/daygrid/main.css';
     @import '../../node_modules/@fullcalendar/timegrid/main.css';
 </style>
-<style lang="scss">
+<style lang="less">
     .fc-button-group{
         & button{
             &.fc-button-primary{
@@ -707,7 +707,7 @@ export default {
         }
     }
 </style>
-<style scoped lang="scss">
+<style scoped lang="less">
     #createSch{
         & .priority{
             & label{

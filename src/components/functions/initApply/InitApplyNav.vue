@@ -96,7 +96,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .progress{
     &.step1{
         & .progress-bar{margin-left:0;}

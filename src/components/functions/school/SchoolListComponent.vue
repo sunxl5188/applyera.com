@@ -449,7 +449,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 #screenTable {
     border:1px solid #dedede;padding-right:5px;
 
@@ -500,7 +500,7 @@ export default {
     & .width100 {width:100px;}
 }
 </style>
-<style lang="scss">
+<style lang="less">
 #screenTable {
     & .bootstrapSelectBorderNone {
         & .bootstrap-select .dropdown-toggle .filter-option-inner-inner {color:#39f;}

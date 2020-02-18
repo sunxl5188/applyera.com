@@ -173,7 +173,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .kangbang{
         .commissionTip {
             width:100%;padding:15px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-webkit-box-shadow:0 0 5px#ccc;-moz-box-shadow:0 0 5px #ccc;box-shadow:0 0 5px #ccc;position:relative;

@@ -424,7 +424,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="less">
 #userBtnList {
     position:relative;
 

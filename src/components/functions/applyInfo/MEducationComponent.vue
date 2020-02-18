@@ -595,6 +595,6 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .form-group {margin-left:0 !important;margin-right:0 !important;}
 </style>

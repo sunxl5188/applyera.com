@@ -431,7 +431,7 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
     .fileList{
         line-height:35px;border-bottom:1px dashed #dedede;
 

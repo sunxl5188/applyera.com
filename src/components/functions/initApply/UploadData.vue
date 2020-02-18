@@ -331,7 +331,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 #picker{
     display:inline-block;vertical-align:middle;height:34px;margin-left:10px;
     & .webuploader-pick{

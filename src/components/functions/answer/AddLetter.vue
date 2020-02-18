@@ -176,7 +176,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .title {border:none;padding-left:0;padding-right:0;}
 
 .table {

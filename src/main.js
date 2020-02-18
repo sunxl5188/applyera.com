@@ -9,11 +9,11 @@ import layer from 'layui-layer'
 import vueCookie from 'vue-cookies'
 // import { VueMasonryPlugin } from 'vue-masonry'
 import '@~/js/vueFilter'
-import '@@/css/main.scss'
+import '@@/css/main.less'
 import '@@/js/ueditor/ueditor.config'
 import '@@/js/ueditor/ueditor.all'
 import '@@/js/ueditor/lang/zh-cn/zh-cn'
-let $ = require('jquery')
+import * as $ from 'jquery'
 window.$ = window.jQuery = $
 
 Vue.prototype.layer = layer

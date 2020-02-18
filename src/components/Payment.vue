@@ -208,7 +208,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .text-justify {
         text-align:justify; text-align-last:justify; line-height:0; height:70px;width:80%;margin:0 auto;
         &:after {

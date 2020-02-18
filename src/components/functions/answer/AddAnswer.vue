@@ -752,7 +752,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="less">
 .addAnswer {
     .bootstrap-select {
         -webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;
@@ -776,7 +776,7 @@ export default {
     }
 }
 </style>
-<style scoped lang="scss">
+<style scoped lang="less">
 .leftBox {position:initial;}
 
 .table {

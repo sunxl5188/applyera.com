@@ -727,7 +727,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .userBox {
     box-shadow:1px 1px 5px #ddd;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;padding:25px;height:140px;
     & .media-body {
@@ -763,7 +763,7 @@ export default {
     & button {position:absolute;right:15px;top:0;z-index:2;-webkit-border-radius:0 4px 4px 0;-moz-border-radius:0 4px 4px 0;border-radius:0 4px 4px 0;background-color:#e6e6e6;}
 }
 </style>
-<style lang="scss">
+<style lang="less">
 .mycitySelect{
   & .form-inline{display:block !important;width:100%;}
   & .bootstrap-select{

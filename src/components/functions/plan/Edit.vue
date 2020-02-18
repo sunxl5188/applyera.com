@@ -1075,7 +1075,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="less">
     #editplan{
         position:relative;margin:-25px -15px;
 

@@ -1237,7 +1237,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
     #addApply {
         & .bornArea {
             & .form-inline {

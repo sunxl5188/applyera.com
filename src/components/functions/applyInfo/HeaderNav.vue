@@ -123,7 +123,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .studentNav {
         position:relative;width:100%;height:65px;
         &:after {

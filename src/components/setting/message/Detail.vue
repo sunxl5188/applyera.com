@@ -113,7 +113,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .panel {
         &.panel-default {
             border:none;

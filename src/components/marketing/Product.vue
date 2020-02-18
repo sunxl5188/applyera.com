@@ -150,6 +150,20 @@
             <Pagination :total="total" :currentPage="current" @pagechange="pageChange"></Pagination>
         </div>
         <router-view @pageChange="pageChange"></router-view>
+
+        <div class="modal fade" id="modal-id">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width: 350px;margin:0 auto;">
+                    <div class="modal-body text-center  pt-50 pb-50">
+                        <p>开通线上支付功能需完成实名认证并由申学纪</p>
+                        <p>为你开通微信支付商户号，请联系客服开通</p>
+                        <div class="clearfix pt-15">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">前往认证</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -189,6 +203,7 @@ export default {
     self.name = self.$route.name
     self.copyBtn = new Clipboard('.copyBtn')
     self.$nextTick(() => {
+      $('#modal-id').modal({ backdrop: 'static', show: true })
       self.getUserList()
       self.pageChange()
       self.laydate.render({
