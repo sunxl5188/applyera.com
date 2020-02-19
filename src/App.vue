@@ -1,6 +1,147 @@
 <template>
     <div id="app" v-if="!loading">
-        <div class="fullScreen">
+        <!--Left///////////////-->
+        <div class="fullLeft">
+            <div class="logo">
+                <a href="/">
+                    <img :src="userInfo.logo?userInfo.logo:'/manage/static/images/logo.png'" v-show="!leftClose">
+                    <img :src="userInfo.logo?userInfo.logo:'/manage/static/images/logo-2.png'" v-show="leftClose">
+                </a>
+            </div>
+            <ul class="list-group" v-if="userInfo.hasOwnProperty('access')">
+                <li class="list-group-item" v-if="userInfo.access.home.show===1">
+                    <router-link to="/" exact><i class="iconfont">&#xe6c2;</i><span>首页</span></router-link>
+                </li>
+                <li class="list-group-item" v-if="userInfo.access.student.show===1">
+                    <a href="javascript:void(0);"><i class="iconfont">&#xe603;</i><span>学生</span></a>
+                    <div class="list-group">
+                        <router-link to="/archives/student" class="list-group-item"
+                                     v-if="userInfo.access.student.child[0]===1">学生管理
+                        </router-link>
+                        <router-link to="/archives/student_seas" class="list-group-item"
+                                     v-if="userInfo.access.student.child[1]===1"
+                        >学生公海
+                        </router-link>
+                        <router-link to="/archives/student_statistics" class="list-group-item"
+                                     v-if="userInfo.access.student.child[2]===1"
+                        >统计分析
+                        </router-link>
+                    </div>
+                </li>
+                <li class="list-group-item" v-if="userInfo.access.function.show===1">
+                    <a href="javascript:void(0);"><i class="iconfont">&#xe614;</i><span>功能</span></a>
+                    <div class="list-group">
+                        <router-link to="/functions/schoollist" class="list-group-item"
+                                     v-if="userInfo.access.function.child[0]===1">校查查
+                        </router-link>
+                        <router-link to="/functions/plan" class="list-group-item"
+                                     v-if="userInfo.access.function.child[1]===1">留学规划
+                        </router-link>
+                        <router-link to="/functions/applyInfo" class="list-group-item"
+                                     v-if="userInfo.access.function.child[2]===1">申请资料
+                        </router-link>
+                        <router-link to="/functions/answer" class="list-group-item"
+                                     v-if="userInfo.access.function.child[6]===1"
+                        >文书作答
+                        </router-link>
+                        <router-link to="/functions/initApply" class="list-group-item"
+                                     v-if="userInfo.access.function.child[3]===1">发起申请
+                        </router-link>
+                        <router-link to="/functions/track" class="list-group-item"
+                                     v-if="userInfo.access.function.child[4]===1">申请跟踪
+                        </router-link>
+                        <router-link to="/functions/commission" class="list-group-item"
+                                     v-if="userInfo.access.function.child[5]===1">佣金管理
+                        </router-link>
+                    </div>
+                </li>
+                <li class="list-group-item" v-if="userInfo.access.marketing.show===1">
+                    <a href="javascript:void(0);"><i class="iconfont">&#xe6e4;</i><span>市场</span></a>
+                    <div class="list-group">
+                        <router-link to="/marketing/saleslead" class="list-group-item"
+                                     v-if="userInfo.access.marketing.child[0]===1">渠道工具
+                        </router-link>
+                        <router-link to="/marketing/product" class="list-group-item"
+                                     v-if="userInfo.access.marketing.child[1]===1">产品管理
+                        </router-link>
+                        <router-link to="/marketing/contract" class="list-group-item">合同管理</router-link>
+                        <router-link to="/marketing/OrderRecord" class="list-group-item">订单记录</router-link>
+                    </div>
+                </li>
+                <li class="list-group-item" v-if="userInfo.access.setting.show===1">
+                    <a href="javascript:void(0);"><i class="iconfont">&#xe600;</i><span>设置</span></a>
+                    <div class="list-group">
+                        <router-link to="/setting/accounts" class="list-group-item"
+                                     v-if="userInfo.access.setting.child[0]===1">帐号管理
+                        </router-link>
+                        <router-link to="/setting/rolePermit" class="list-group-item"
+                                     v-if="userInfo.access.setting.child[1]===1">角色权限
+                        </router-link>
+                        <router-link to="/setting/ability" class="list-group-item"
+                                     v-if="userInfo.access.setting.child[2]===1">能力考评
+                        </router-link>
+                        <router-link to="/setting/budget" class="list-group-item"
+                                     v-if="userInfo.access.setting.child[3]===1">费用预算
+                        </router-link>
+                        <router-link to="/setting/student_type" class="list-group-item"
+                                     v-if="userInfo.access.setting.child[4]===1">学生类型
+                        </router-link>
+                        <router-link to="/setting/follow" class="list-group-item"
+                                     v-if="userInfo.access.setting.child[5]===1">跟进状态
+                        </router-link>
+                        <router-link to="/setting/contact" class="list-group-item"
+                                     v-if="userInfo.access.setting.child[7]===1">联系人
+                        </router-link>
+                    </div>
+                </li>
+                <li class="list-group-item" v-if="userInfo.access.applyoversea.show===1">
+                    <a href="javascript:void(0);"><i class="iconfont">&#xe697;</i><span>易申学</span></a>
+                    <div class="list-group">
+                        <router-link to="/admin/commarrival" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[0]===1">佣金到账
+                        </router-link>
+                        <router-link to="/admin/commapply" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[1]===1">佣金提现
+                        </router-link>
+                        <router-link to="/admin/agency" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[2]===1">中介机构
+                        </router-link>
+                        <router-link to="/admin/bank" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[3]===1">银行档案
+                        </router-link>
+                        <router-link to="/admin/user" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[4]===1">操作用户
+                        </router-link>
+                        <router-link to="/admin/featRole" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[5]===1">功能角色
+                        </router-link>
+                        <router-link to="/admin/dataRole" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[6]===1">数据角色
+                        </router-link>
+                        <router-link to="/admin/range" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[7]===1">数据范围
+                        </router-link>
+                        <router-link to="/admin/message/list" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[8]===1">公告发布
+                        </router-link>
+                        <router-link to="/admin/message/config" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[9]===1">消息配置
+                        </router-link>
+                        <router-link to="/admin/application" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[10]===1">院校申请
+                        </router-link>
+                        <router-link to="/admin/topic" class="list-group-item"
+                                     v-if="userInfo.access.applyoversea.child[11]===1">题目更新
+                        </router-link>
+                        <router-link to="/admin/payRecording" class="list-group-item">支付记录</router-link>
+                        <router-link to="/admin/authReview" class="list-group-item">认证审核</router-link>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!--Left End-->
+        <div class="fullRight">
             <header>
                 <nav class="navbar navbar-default" role="navigation">
                     <i class="iconfont c999 handPower ml-20 navExpanded">&#xe663;</i>
@@ -10,7 +151,8 @@
                             <li class="breadcrumb-item">
                                 <router-link to="/" exact>首页</router-link>
                             </li>
-                            <li class="breadcrumb-item" :class="{active:(i+1) === breadArr.length}" v-for="(item, i) in breadArr" :key="i">
+                            <li class="breadcrumb-item" :class="{active:(i+1) === breadArr.length}"
+                                v-for="(item, i) in breadArr" :key="i">
                                 <router-link :to="{path:item.path}" v-if="(i+1) < breadArr.length">
                                     {{item.meta.title}}
                                 </router-link>
@@ -22,25 +164,29 @@
                     <ul class="nav navbar-nav">
                         <li>
                             <router-link to="/home/workProcess" class="iconLink">
-                                <i class="iconfont" data-toggle="tooltip" title="服务进度" data-placement="bottom">&#xe64c;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="服务进度"
+                                   data-placement="bottom">&#xe64c;</i>
                             </router-link>
                         </li>
                         <li>
                             <router-link to="/home/taskdate" class="iconLink">
-                                <i class="iconfont" data-toggle="tooltip" title="日历" data-placement="bottom">&#xe63b;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="日历"
+                                   data-placement="bottom">&#xe63b;</i>
                             </router-link>
                         </li>
                         <li>
                             <router-link to="/setting/message" class="iconLink">
                                 <i class="number" v-if="msgNum>0">{{msgNum}}</i>
-                                <i class="iconfont" data-toggle="tooltip" title="系统公告" data-placement="bottom">&#xe67d;</i>
+                                <i class="iconfont" data-toggle="tooltip" title="系统公告"
+                                   data-placement="bottom">&#xe67d;</i>
                             </router-link>
                         </li>
                         <li class="dropdown" id="userBtnList">
                             <a class="dropdown-toggle" href="#">
                                 <i class="iconfont font22" v-if="userInfo.headphoto===''">&#xe62a;</i>
                                 <p v-if="userInfo.headphoto!==''"><img :src="userInfo.headphoto" alt=""></p>
-                                <span v-text="userInfo.company +','+ userInfo.name" class="div_vm" v-if="userInfo.company"></span>
+                                <span v-text="userInfo.company +','+ userInfo.name" class="div_vm"
+                                      v-if="userInfo.company"></span>
                                 <span class="caret"></span>
                             </a>
                             <div class="popover fade bottom in">
@@ -69,160 +215,13 @@
                     </ul>
                 </nav>
             </header>
-            <!--Left///////////////-->
-            <div class="fullLeft">
-                <div class="logo">
-                    <a href="/">
-                        <img :src="userInfo.logo?userInfo.logo:'/manage/static/images/logo.png'" alt=""
-                             v-show="!leftClose">
-                        <img src="../static/images/logo-2.png" alt="" v-show="leftClose">
-                    </a>
-                </div>
-                <ul class="list-group" v-if="userInfo.hasOwnProperty('access')">
-                    <li class="list-group-item" v-if="userInfo.access.home.show===1">
-                        <router-link to="/" exact><i class="iconfont">&#xe6c2;</i><span>首页</span></router-link>
-                    </li>
-                    <li class="list-group-item" v-if="userInfo.access.student.show===1">
-                        <a href="javascript:void(0);"><i class="iconfont">&#xe603;</i><span>学生</span></a>
-                        <div class="list-group">
-                            <router-link to="/archives/student" class="list-group-item"
-                                         v-if="userInfo.access.student.child[0]===1">学生管理
-                            </router-link>
-                            <router-link to="/archives/student_seas" class="list-group-item"
-                                         v-if="userInfo.access.student.child[1]===1"
-                            >学生公海
-                            </router-link>
-                            <router-link to="/archives/student_statistics" class="list-group-item"
-                                         v-if="userInfo.access.student.child[2]===1"
-                            >统计分析
-                            </router-link>
-                        </div>
-                    </li>
-                    <li class="list-group-item" v-if="userInfo.access.function.show===1">
-                        <a href="javascript:void(0);"><i class="iconfont">&#xe614;</i><span>功能</span></a>
-                        <div class="list-group">
-                            <router-link to="/functions/schoollist" class="list-group-item"
-                                         v-if="userInfo.access.function.child[0]===1">校查查
-                            </router-link>
-                            <router-link to="/functions/plan" class="list-group-item"
-                                         v-if="userInfo.access.function.child[1]===1">留学规划
-                            </router-link>
-                            <router-link to="/functions/applyInfo" class="list-group-item"
-                                         v-if="userInfo.access.function.child[2]===1">申请资料
-                            </router-link>
-                            <router-link to="/functions/answer" class="list-group-item"
-                                         v-if="userInfo.access.function.child[6]===1"
-                            >文书作答
-                            </router-link>
-                            <router-link to="/functions/initApply" class="list-group-item"
-                                         v-if="userInfo.access.function.child[3]===1">发起申请
-                            </router-link>
-                            <router-link to="/functions/track" class="list-group-item"
-                                         v-if="userInfo.access.function.child[4]===1">申请跟踪
-                            </router-link>
-                            <router-link to="/functions/commission" class="list-group-item"
-                                         v-if="userInfo.access.function.child[5]===1">佣金管理
-                            </router-link>
-                        </div>
-                    </li>
-                    <li class="list-group-item" v-if="userInfo.access.marketing.show===1">
-                        <a href="javascript:void(0);"><i class="iconfont">&#xe6e4;</i><span>市场</span></a>
-                        <div class="list-group">
-                            <router-link to="/marketing/saleslead" class="list-group-item"
-                                         v-if="userInfo.access.marketing.child[0]===1">渠道工具
-                            </router-link>
-                            <router-link to="/marketing/product" class="list-group-item"
-                                         v-if="userInfo.access.marketing.child[1]===1">产品管理
-                            </router-link>
-                            <router-link to="/marketing/contract" class="list-group-item">合同管理</router-link>
-                            <router-link to="/marketing/OrderRecord" class="list-group-item">订单记录</router-link>
-                        </div>
-                    </li>
-                    <li class="list-group-item" v-if="userInfo.access.setting.show===1">
-                        <a href="javascript:void(0);"><i class="iconfont">&#xe600;</i><span>设置</span></a>
-                        <div class="list-group">
-                            <router-link to="/setting/accounts" class="list-group-item"
-                                         v-if="userInfo.access.setting.child[0]===1">帐号管理
-                            </router-link>
-                            <router-link to="/setting/rolePermit" class="list-group-item"
-                                         v-if="userInfo.access.setting.child[1]===1">角色权限
-                            </router-link>
-                            <router-link to="/setting/ability" class="list-group-item"
-                                         v-if="userInfo.access.setting.child[2]===1">能力考评
-                            </router-link>
-                            <router-link to="/setting/budget" class="list-group-item"
-                                         v-if="userInfo.access.setting.child[3]===1">费用预算
-                            </router-link>
-                            <router-link to="/setting/student_type" class="list-group-item"
-                                         v-if="userInfo.access.setting.child[4]===1">学生类型
-                            </router-link>
-                            <router-link to="/setting/follow" class="list-group-item"
-                                         v-if="userInfo.access.setting.child[5]===1">跟进状态
-                            </router-link>
-                            <router-link to="/setting/contact" class="list-group-item"
-                                         v-if="userInfo.access.setting.child[7]===1">联系人
-                            </router-link>
-                        </div>
-                    </li>
-                    <li class="list-group-item" v-if="userInfo.access.applyoversea.show===1">
-                        <a href="javascript:void(0);"><i class="iconfont">&#xe697;</i><span>易申学</span></a>
-                        <div class="list-group">
-                            <router-link to="/admin/commarrival" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[0]===1">佣金到账
-                            </router-link>
-                            <router-link to="/admin/commapply" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[1]===1">佣金提现
-                            </router-link>
-                            <router-link to="/admin/agency" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[2]===1">中介机构
-                            </router-link>
-                            <router-link to="/admin/bank" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[3]===1">银行档案
-                            </router-link>
-                            <router-link to="/admin/user" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[4]===1">操作用户
-                            </router-link>
-                            <router-link to="/admin/featRole" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[5]===1">功能角色
-                            </router-link>
-                            <router-link to="/admin/dataRole" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[6]===1">数据角色
-                            </router-link>
-                            <router-link to="/admin/range" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[7]===1">数据范围
-                            </router-link>
-                            <router-link to="/admin/message/list" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[8]===1">公告发布
-                            </router-link>
-                            <router-link to="/admin/message/config" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[9]===1">消息配置
-                            </router-link>
-                            <router-link to="/admin/application" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[10]===1">院校申请
-                            </router-link>
-                            <router-link to="/admin/topic" class="list-group-item"
-                                         v-if="userInfo.access.applyoversea.child[11]===1">题目更新
-                            </router-link>
-                            <router-link to="/admin/payRecording" class="list-group-item">支付记录</router-link>
-                            <router-link to="/admin/authReview" class="list-group-item">认证审核</router-link>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <!--Left End-->
-            <div class="fullRight">
-                <div class="fullRightContent">
-                    <div class="container-fluid">
-                        <transition name="custom-classes-transition" enter-active-class="animated fadeIn"
-                                    leave-class="animated fadeOut" :duration="{ enter: 200, leave: 0 }">
-                            <router-view></router-view>
-                        </transition>
-                    </div>
-                </div>
+            <div class="container-fluid">
+                <transition name="custom-classes-transition" enter-active-class="animated fadeIn"
+                            leave-class="animated fadeOut" :duration="{ enter: 200, leave: 0 }">
+                    <router-view></router-view>
+                </transition>
             </div>
         </div>
-
         <div class="modal fade" id="modalRemind">
             <div class="modal-dialog ">
                 <div class="modal-content" style="max-height:650px;overflow-y:auto;">
@@ -324,13 +323,16 @@ export default {
       })
 
       $(document).on('click', '.navExpanded', function () {
-        let obj = $('.fullScreen')
-        if (obj.hasClass('expanded')) {
-          obj.removeClass('expanded')
+        let obj = $('.fullLeft')
+        let rig = $('.fullRight')
+        if (obj.hasClass('zoomOut')) {
+          obj.removeClass('zoomOut')
+          rig.removeClass('zoomOut')
           $(this).html('&#xe663;')
           self.leftClose = false
         } else {
-          obj.addClass('expanded')
+          obj.addClass('zoomOut')
+          rig.addClass('zoomOut')
           $(this).html('&#xe6680;')
           self.leftClose = true
         }
@@ -376,7 +378,7 @@ export default {
       db.postRequest('Institution/Home/getRemind', {}).then(res => {
         if (res.status === 1 && res.data.length > 0) {
           self.remindInfo = res.data
-          $('#modalRemind').modal({ backdrop: 'static', show: true })
+          $('#modalRemind').modal({backdrop: 'static', show: true})
         } else if (res.status === 402 || res.status === 403) {
           clearInterval(remindTime)
         } else {
@@ -415,7 +417,7 @@ export default {
     setView () {
       let $this = $('.fullRightContent')
       let viewH = $(window).height() - 51
-      $this.css({ 'min-height': viewH + 'px' })
+      $this.css({'min-height': viewH + 'px'})
     }
   },
   watch: {
@@ -427,38 +429,38 @@ export default {
 }
 </script>
 <style lang="less">
-#userBtnList {
+#userBtnList{
     position:relative;
 
-    & > a {
+    & > a{
         padding-top:10px;padding-bottom:10px;
 
-        & p, & i {
+        & p, & i{
             display:inline-block;margin-bottom:0;width:30px;height:30px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;overflow:hidden;vertical-align:middle;line-height:30px;text-align:center;
 
-            & img {width:100%;height:100%;}
+            & img{width:100%;height:100%;}
         }
     }
 
-    & .popover {
+    & .popover{
         top:50px;left:50%;margin-left:-44px;
 
-        & .popover-content {
-            & dl {
+        & .popover-content{
+            & dl{
                 margin-bottom:0;
 
-                & dd {line-height:24px;}
+                & dd{line-height:24px;}
             }
         }
     }
 
 }
 
-#modalRemind {
-    & .modal-content {
-        &:before {content:'';width:404px;height:312px;background:url("../static/images/004.png") no-repeat 0 0; display:block;position:absolute;left:50%;top:-95px;margin-left:-202px;z-index:1;}
+#modalRemind{
+    & .modal-content{
+        &:before{content:'';width:404px;height:312px;background:url("../static/images/004.png") no-repeat 0 0; display:block;position:absolute;left:50%;top:-95px;margin-left:-202px;z-index:1;}
 
-        &:after {content:'';width:100%;height:122px;background:url("../static/images/003.png") no-repeat 0 0; display:block;position:absolute;left:0;top:128px;z-index:2;}
+        &:after{content:'';width:100%;height:122px;background:url("../static/images/003.png") no-repeat 0 0; display:block;position:absolute;left:0;top:128px;z-index:2;}
     }
 }
 </style>
