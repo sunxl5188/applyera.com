@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="po_re">
         <div v-show="name==='product'">
             <div class="clearfix pb-30">
                 <div class="row">
@@ -151,9 +151,9 @@
         </div>
         <router-view @pageChange="pageChange"></router-view>
 
-        <div class="modal fade" id="modal-id">
+        <div class="modal fade show">
             <div class="modal-dialog">
-                <div class="modal-content" style="width: 350px;margin:0 auto;">
+                <div class="modal-content">
                     <div class="modal-body text-center  pt-50 pb-50">
                         <p>开通线上支付功能需完成实名认证并由申学纪</p>
                         <p>为你开通微信支付商户号，请联系客服开通</p>
@@ -203,7 +203,6 @@ export default {
     self.name = self.$route.name
     self.copyBtn = new Clipboard('.copyBtn')
     self.$nextTick(() => {
-      $('#modal-id').modal({ backdrop: 'static', show: true })
       self.getUserList()
       self.pageChange()
       self.laydate.render({
@@ -338,6 +337,13 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+.modal{
+    &.show{
+        display:block;filter: Alpha(Opacity=100); opacity:1;position:absolute;background:rgba(0,0,0,.5);
+        & .modal-dialog{
+            position:absolute;width:350px;height:220px;left:50%;margin-left:-175px;top:50%;margin-top:-80px;
+        }
+    }
+}
 </style>

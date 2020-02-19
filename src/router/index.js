@@ -44,12 +44,30 @@ export default new Router({
           }
         },
         {
-          path: 'home/enterprise',
-          name: 'enterprise',
-          component: resolve => require(['@#/Enterprise'], resolve),
+          path: 'home/company',
+          name: 'company',
+          component: resolve => require(['@#/Company'], resolve),
           meta: {
             title: '我的企业', requiresAuth: true, group: ['home', 3, '']
-          }
+          },
+          children: [
+            {
+              path: 'authentic',
+              name: 'CompanyAuth',
+              component: resolve => require(['@#/CompanyAuth'], resolve),
+              meta: {
+                title: '实名认证', requiresAuth: true, group: ['home', 3, 0]
+              }
+            },
+            {
+              path: 'authDetail',
+              name: 'authDetail',
+              component: resolve => require(['@#/CompanyAuthDetail'], resolve),
+              meta: {
+                title: '认证信息', requiresAuth: true, group: ['home', 3, 1]
+              }
+            }
+          ]
         },
         {
           path: 'home/workProcess',
@@ -950,6 +968,38 @@ export default new Router({
             requiresAuth: true,
             group: ['applyoversea', 11, '']
           }
+        },
+        {
+          path: 'payRecording',
+          name: 'payRecording',
+          component: resolve => require(['@#/admin/PayRecording'], resolve),
+          meta: {
+            title: '支付记录',
+            requiresAuth: true,
+            group: ['applyoversea', 12, '']
+          }
+        },
+        {
+          path: 'authReview',
+          name: 'authReview',
+          component: resolve => require(['@#/admin/AuthReview'], resolve),
+          meta: {
+            title: '认证审核',
+            requiresAuth: true,
+            group: ['applyoversea', 13, '']
+          },
+          children: [
+            {
+              path: 'detail',
+              name: 'authReviewDetail',
+              component: resolve => require(['@#/admin/authReviewDetail'], resolve),
+              meta: {
+                title: '审核详情',
+                requiresAuth: true,
+                group: ['applyoversea', 13, 0]
+              }
+            }
+          ]
         }
       ]
     },

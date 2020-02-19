@@ -53,7 +53,7 @@
                                             </router-link>
                                         </dd>
                                         <dd>
-                                            <router-link to="/home/enterprise">
+                                            <router-link to="/home/company">
                                                 <span>我的企业</span>
                                             </router-link>
                                         </dd>
@@ -203,6 +203,8 @@
                             <router-link to="/admin/topic" class="list-group-item"
                                          v-if="userInfo.access.applyoversea.child[11]===1">题目更新
                             </router-link>
+                            <router-link to="/admin/payRecording" class="list-group-item">支付记录</router-link>
+                            <router-link to="/admin/authReview" class="list-group-item">认证审核</router-link>
                         </div>
                     </li>
                 </ul>
