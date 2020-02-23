@@ -6,11 +6,11 @@
                     <div class="headerTitle div_vm">提交资料</div>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                    申请号: X0920i23904i3209
+                    <span v-if="company.auth_status!==0">申请号: {{company.apply_no}}</span>
                 </div>
             </div>
         </div>
-        <div v-if="isEdit">
+        <div v-if="company.auth_status===0 || company.auth_status===1">
             <form id="companyData" method="POST" class="form-horizontal pl-50 pr-50" role="form" @submit.prevent="validateBeforeSubmit">
                 <div class="commonTitle">营业执照</div>
                 <div class="form-group">
@@ -18,50 +18,79 @@
                     <div class="col-sm-10 form-inline">
                         <div class="clearfix c999">需年检章齐全(当年成立公司除外)<br />必须为彩色图片且小于2M，文件格式为bmp、png、jpge、jpg或gif</div>
                         <div class="clearfix">
-                            <input type="hidden" name="picker1" v-model="picker1" v-validate="'required'" data-vv-as="营业执照照片" />
+                            <div class="webUploader" id="theList1">
+                                <div id="my_WU_FILE_0" class="image-item" v-if="picker1">
+                                    <img :src="siteUrl + picker1">
+                                </div>
+                            </div>
+                            <input type="hidden" name="trading_cert_path" v-model="picker1" v-validate="'required'" data-vv-as="营业执照照片" />
                             <div id="picker1" class="webuploader-btn">上传文件</div>
                         </div>
-                        <div class="validateTip" v-show="errors.has('picker1')">
-                            {{ errors.first('picker1') }}
+                        <div class="validateTip" v-show="errors.has('trading_cert_path')">
+                            {{ errors.first('trading_cert_path') }}
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label"><font class="cf00">*</font> 营业执照注册号</label>
+                    <label class="col-sm-2 control-label"><font class="cf00">*</font> 社会信用代码</label>
                     <div class="col-sm-5">
-                        <input type="text" name="" class="form-control" placeholder="">
+                        <input type="text" name="credit_code" v-model="company.credit_code" class="form-control" placeholder="请输入社会信用代码" v-validate="'required'" data-vv-as="社会信用代码">
+                        <div class="validateTip" v-show="errors.has('credit_code')">
+                            {{ errors.first('credit_code') }}
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 营业期限</label>
                     <div class="col-sm-10 form-inline">
-                        <input type="text" name="" class="form-control dataTime" placeholder="">
-                        至
-                        <input type="text" name="" class="form-control dataTime" placeholder="">
+                        <div v-if="!company.trading_long_time" class="div_vm">
+                            <input type="text" name="trading_start" v-model="company.trading_start" class="form-control dataTime" placeholder="请选择营业期限开始时间" v-validate="'required'" data-vv-as="营业期限开始时间">
+                            至
+                            <input type="text" name="trading_end" v-model="company.trading_end" class="form-control dataTime" placeholder="请选择营业期限结束时间" v-validate="'required'" data-vv-as="营业期限结束时间">
+                        </div>
+                        <div v-if="company.trading_long_time" class="div_vm">
+                            <input type="text" name="trading_start" class="form-control" disabled placeholder="请选择营业期限开始时间" />
+                            至
+                            <input type="text" name="trading_end" class="form-control" disabled placeholder="请选择营业期限结束时间" />
+                        </div>
                         <div class="custom-control custom-checkbox custom-control-inline ml-15">
-                            <input type="checkbox" name="" id="long" value="" class="custom-control-input">
+                            <input type="checkbox" name="trading_long_time" id="long" :value=1 class="custom-control-input" v-model="company.trading_long_time">
                             <label class="custom-control-label" for="long">长期</label>
                         </div>
                         <div class="c999 clearfix pt-5">
                             证件有效期限需与上传文件上所示期限一致，若有效期限超过2100年，请选择“长期”
+                        </div>
+                        <div v-if="!company.trading_long_time">
+                            <div class="validateTip" v-show="errors.has('trading_start')">
+                                {{ errors.first('trading_start') }}
+                            </div>
+                            <div class="validateTip" v-show="errors.has('trading_end')">
+                                {{ errors.first('trading_end') }}
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 经营范围</label>
                     <div class="col-sm-10">
-                        <textarea name="" class="form-control" placeholder=""></textarea>
+                        <textarea name="business_scope" v-model="company.business_scope" class="form-control" placeholder="" v-validate="'required'" data-vv-as="经营范围"></textarea>
                         <div class="clearfix c999 pt-5">
                             与企业工商营业执照上一致
+                        </div>
+                        <div class="validateTip" v-show="errors.has('business_scope')">
+                            {{ errors.first('business_scope') }}
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 注册地址</label>
                     <div class="col-sm-5">
-                        <input type="text" name="" class="form-control"/>
+                        <input type="text" name="reg_address" v-model="company.reg_address" class="form-control" v-validate="'required'" data-vv-as="注册地址"/>
                         <div class="clearfix c999 pt-5">
                             注册地址需与营业执照登记住所一致
+                        </div>
+                        <div class="validateTip" v-show="errors.has('reg_address')">
+                            {{ errors.first('reg_address') }}
                         </div>
                     </div>
                 </div>
@@ -69,20 +98,30 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 证件持有人类型</label>
                     <div class="col-sm-10">
-                        <select name="" class="form-control selectpicker show-tick" data-size="10" data-width="fit">
-                            <option value="">请选择</option>
-                            <option value="">法人</option>
-                        </select>
+                        <div class="clearfix">
+                            <select name="cert_holder_type" v-model="company.cert_holder_type" class="form-control selectpicker show-tick" data-size="10" data-width="fit" v-validate="'required'" data-vv-as="证件持有人类型">
+                                <option value="">请选择</option>
+                                <option :value=1>法人</option>
+                            </select>
+                        </div>
+                        <div class="validateTip" v-show="errors.has('cert_holder_type')">
+                            {{ errors.first('cert_holder_type') }}
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 证件类型</label>
                     <div class="col-sm-10">
-                        <select name="" class="form-control selectpicker show-tick" data-size="10" data-width="fit">
-                            <option value="">请选择</option>
-                            <option value="">身份证(限中国大陆居民)</option>
-                            <option value="">护照(限境外人士)</option>
-                        </select>
+                        <div class="clearfix">
+                            <select name="cert_type" v-model="company.cert_type" class="form-control selectpicker show-tick" data-size="10" data-width="fit" v-validate="'required'" data-vv-as="证件类型">
+                                <option value="">请选择</option>
+                                <option :value=1>身份证(限中国大陆居民)</option>
+                                <option :value=2>护照(限境外人士)</option>
+                            </select>
+                        </div>
+                        <div class="validateTip" v-show="errors.has('cert_type')">
+                            {{ errors.first('cert_type') }}
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -90,8 +129,16 @@
                     <div class="col-sm-10">
                         <div class="clearfix c999">必须为彩色图片且小于2M，文件格式为bmp、png、jpge、jpg或gif</div>
                         <div class="clearfix">
-                            <input type="hidden" name="picker2" v-model="picker2" />
+                            <div class="webUploader" id="theList2">
+                                <div id="my_WU_FILE_2" class="image-item" v-if="picker2">
+                                    <img :src="siteUrl + picker2">
+                                </div>
+                            </div>
+                            <input type="hidden" name="cert_front_path" v-model="picker2" v-validate="'required'" data-vv-as="身份证正面照片" />
                             <div id="picker2" class="webuploader-btn">上传文件</div>
+                        </div>
+                        <div class="validateTip" v-show="errors.has('cert_front_path')">
+                            {{ errors.first('cert_front_path') }}
                         </div>
                     </div>
                 </div>
@@ -100,35 +147,64 @@
                     <div class="col-sm-10">
                         <div class="clearfix c999">必须为彩色图片且小于2M，文件格式为bmp、png、jpge、jpg或gif</div>
                         <div class="clearfix">
-                            <input type="hidden" name="picker3" v-model="picker3" />
+                            <div class="webUploader" id="theList3">
+                                <div id="my_WU_FILE_3" class="image-item" v-if="picker3">
+                                    <img :src="siteUrl + picker3">
+                                </div>
+                            </div>
+                            <input type="hidden" name="cert_back_path" v-model="picker3" v-validate="'required'" data-vv-as="身份证反面照片" />
                             <div id="picker3" class="webuploader-btn">上传文件</div>
+                        </div>
+                        <div class="validateTip" v-show="errors.has('cert_back_path')">
+                            {{ errors.first('cert_back_path') }}
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 证件号码</label>
                     <div class="col-sm-3">
-                        <input type="text" name="" class="form-control"/>
+                        <input type="text" name="cert_no" v-model="company.cert_no" class="form-control" v-validate="'required|idCard'" data-vv-as="证件号码"/>
+                        <div class="validateTip" v-show="errors.has('cert_no')">
+                            {{ errors.first('cert_no') }}
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 证件持有人姓名</label>
                     <div class="col-sm-3">
-                        <input type="text" name="" class="form-control"/>
+                        <input type="text" name="cert_holder_name" v-model="company.cert_holder_name" class="form-control" v-validate="'required'" data-vv-as="证件持有人姓名"/>
+                        <div class="validateTip" v-show="errors.has('cert_holder_name')">
+                            {{ errors.first('cert_holder_name') }}
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 证件有效期</label>
                     <div class="col-sm-10 form-inline">
-                        <input type="text" name="" class="form-control dataTime"/>
-                        至
-                        <input type="text" name="" class="form-control dataTime"/>
+                        <div v-if="!company.cert_long_time" class="div_vm">
+                            <input type="text" name="cert_start" v-model="company.cert_start" class="form-control dataTime" placeholder="请选择证件有效期开始时间" v-validate="'required'" data-vv-as="证件有效期开始时间"/>
+                            至
+                            <input type="text" name="cert_end" v-model="company.cert_end" class="form-control dataTime" placeholder="请选择证件有效期结束时间" v-validate="'required'" data-vv-as="证件有效期结束时间"/>
+                        </div>
+                        <div v-if="company.cert_long_time" class="div_vm">
+                            <input type="text" name="cert_start" class="form-control" disabled placeholder="请选择证件有效期开始时间"/>
+                            至
+                            <input type="text" name="cert_end" class="form-control" disabled placeholder="请选择证件有效期结束时间"/>
+                        </div>
                         <div class="custom-control custom-checkbox custom-control-inline ml-15">
-                            <input type="checkbox" name="" id="Certificate" value="" class="custom-control-input">
+                            <input type="checkbox" name="cert_long_time" id="Certificate" :value=1 class="custom-control-input" v-model="company.cert_long_time">
                             <label class="custom-control-label" for="Certificate">长期</label>
                         </div>
                         <div class="c999 clearfix pt-5">
                             证件有效期限需与上传文件上所示期限一致，若有效期限超过2100年，请选择“长期”
+                        </div>
+                        <div v-if="!company.cert_long_time">
+                            <div class="validateTip" v-show="errors.has('cert_start')">
+                                {{ errors.first('cert_start') }}
+                            </div>
+                            <div class="validateTip" v-show="errors.has('cert_end')">
+                                {{ errors.first('cert_end') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,50 +216,48 @@
             </form>
         </div>
         <!--查看详情-->
-        <div v-if="!isEdit" class="form-horizontal pl-50 pr-50">
+        <div v-if="company.auth_status===2 || company.auth_status===3" class="form-horizontal pl-50 pr-50">
             <div class="commonTitle">营业执照</div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">营业执照照片</label>
                 <div class="col-sm-10 form-inline">
-                    <img src="https://via.placeholder.com/100x100/FF5733/ffffff" />
+                    <span class="div_vm bda"><img :src="siteUrl + company.trading_cert_path" width="100" height="100" /></span>
                 </div>
             </div>
             <div class="form-group clearfix">
-                <label class="col-sm-2 control-label">营业执照注册号</label>
-                <div class="col-sm-5 control-text">XXXXXXXX</div>
+                <label class="col-sm-2 control-label">社会信用代码</label>
+                <div class="col-sm-5 control-text">{{company.credit_code}}</div>
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">营业期限</label>
                 <div class="col-sm-10 form-inline control-text">
-                    <div class="c999 clearfix pt-5">
+                    <div class="c999 clearfix">
                         证件有效期限需与上传文件上所示期限一致，若有效期限超过2100年，请选择“长期”
                     </div>
-                    <div class="clearfix">2020-20-20 至 2020-20-20</div>
+                    <div class="clearfix" v-if="company.trading_long_time===0">{{company.trading_start}} 至 {{company.trading_end}}</div>
+                    <div class="clearfix" v-if="company.trading_long_time===1">长期有效</div>
                 </div>
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">经营范围</label>
-                <div class="col-sm-10 control-text">
-                    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象使用xhr请求图片,并设置返回的文件类型为Blob对象
-                </div>
+                <div class="col-sm-10 control-text">{{company.business_scope}} </div>
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">注册地址</label>
-                <div class="col-sm-5 control-text">
-                    注册地址需与营业执照登记住所一致
-                </div>
+                <div class="col-sm-5 control-text">{{company.reg_address}}</div>
             </div>
             <div class="commonTitle">企业法人</div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">证件持有人类型</label>
                 <div class="col-sm-10 control-text">
-                    法人
+                    <span v-if="company.cert_holder_type===1">法人</span>
                 </div>
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">证件类型</label>
                 <div class="col-sm-10 control-text">
-                    身份证(限中国大陆居民)
+                    <span v-if="company.cert_type===1">身份证(限中国大陆居民)</span>
+                    <span v-if="company.cert_type===2">护照(限境外人士)</span>
                 </div>
             </div>
             <div class="form-group clearfix">
@@ -200,23 +274,20 @@
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">证件号码</label>
-                <div class="col-sm-3 control-text">
-                    XXXXXXXXXX
-                </div>
+                <div class="col-sm-3 control-text">{{company.cert_no|plusXin(4,4)}}</div>
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">证件持有人姓名</label>
-                <div class="col-sm-3 control-text">
-                    XXXX
-                </div>
+                <div class="col-sm-3 control-text">{{company.cert_holder_name}}</div>
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">证件有效期</label>
                 <div class="col-sm-10 form-inline control-text">
-                    <div class="c999 clearfix pt-5">
+                    <div class="c999 clearfix5">
                         证件有效期限需与上传文件上所示期限一致，若有效期限超过2100年，请选择“长期”
                     </div>
-                    <div class="clearfix">2020-20-20 至 2020-20-20</div>
+                    <div class="clearfix" v-if="company.cert_long_time===0">{{company.cert_start}} 至 {{company.cert_end}}</div>
+                    <div class="clearfix" v-if="company.cert_long_time===1">长期有效</div>
                 </div>
             </div>
         </div>
@@ -236,7 +307,7 @@ export default {
   data () {
     return {
       loading: true,
-      isEdit: true,
+      siteUrl: window.ajaxBaseUrl,
       modify: 0,
       company: {},
       picker1: [],
@@ -254,7 +325,8 @@ export default {
         formData.map(item => {
           params.append(item.name, item.value)
         })
-        db.postRequest('', params).then(res => {
+        params.append('audit_status', 1)
+        db.postRequest('/Institution/Company/authSave', params).then(res => {
           if (res.status === 1) {
             next(true)
           } else {
@@ -273,30 +345,49 @@ export default {
   mounted () {
     let self = this
     self.$nextTick(() => {
-      self.createUpload('picker1', self.picker1)
-      self.createUpload('picker2', self.picker2)
-      self.createUpload('picker3', self.picker3)
-      _.delay(() => {
-        $('.dataTime').each(function (index, element) {
-          self.laydate.render({
-            elem: element,
-            type: 'date',
-            done: (value) => {
-              element.value = value
-              element.focus()
-              element.blur()
-            }
-          })
-        })
-        $('.selectpicker').selectpicker()
-      }, 1000)
+      self.getAuthDetail()
     })
   },
   methods: {
+    getAuthDetail () {
+      let self = this
+      let params = new URLSearchParams()
+      db.postRequest('/Institution/Company/authEdit', params).then(res => {
+        if (res.status === 1) {
+          self.company = res.data
+          self.picker1 = [res.data.trading_cert_path]
+          self.picker2 = [res.data.cert_front_path]
+          self.picker3 = [res.data.cert_back_path]
+          self.$nextTick(() => {
+            self.loading = false
+          })
+          _.delay(() => {
+            self.createUpload('picker1', self.picker1)
+            self.createUpload('picker2', self.picker2)
+            self.createUpload('picker3', self.picker3)
+            $('.dataTime').each(function (index, element) {
+              self.laydate.render({
+                elem: element,
+                type: 'date',
+                done: (value) => {
+                  element.value = value
+                  element.focus()
+                  element.blur()
+                }
+              })
+            })
+            $('.selectpicker').selectpicker('refresh')
+          }, 500)
+        } else {
+          self.layer.alert(res.msg, {icon: 2})
+        }
+      })
+    },
     createUpload (id, fid) {
       let self = this
       _.delay(() => {
-        webupload(fid, {
+        webupload({
+          assign: fid,
           pick: {
             id: '#' + id,
             multiple: false
@@ -304,15 +395,14 @@ export default {
           accept: {
             title: '',
             extensions: 'bmp,png,jpge,jpg,gif',
-            mimeTypes: '*!/!*'
+            mimeTypes: 'image/*'
           },
-          formData: {},
-          uploadSuccess: (file, res) => { },
-          uploadFinished: (msg) => {
-            if (msg === '') {
-              self.layer.alert('上传成功！', {icon: 1})
+          formData: {func: 'auth'},
+          uploadSuccess: (file, res) => {
+            if (res.status === 1) {
+              fid.splice(0, 1, res.data)
             } else {
-              self.layer.alert(msg, {icon: 2})
+              self.layer.alert(res.msg, {icon: 2})
             }
           },
           error: (e) => {
@@ -335,9 +425,14 @@ export default {
           formData.map(item => {
             params.append(item.name, item.value)
           })
-          db.postRequest('', params).then(res => {
+          params.append('audit_status', 2)
+          db.postRequest('/Institution/Company/authSave', params).then(res => {
             if (res.status === 1) {
-              self.layer.alert(res.msg, {icon: 1})
+              self.modify = 0
+              self.layer.alert(res.msg, {icon: 1}, function (i) {
+                self.layer.close(i)
+                self.$router.push('/home/company/authentic')
+              })
             } else {
               self.layer.alert(res.msg, {icon: 2})
             }

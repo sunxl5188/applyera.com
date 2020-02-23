@@ -494,7 +494,8 @@ export default {
     },
     formUpload (id, field) {
       let self = this
-      webupload(field, {
+      webupload({
+        assign: field,
         pick: '#picker' + id,
         accept: {
           title: '',

@@ -1305,7 +1305,8 @@ export default {
           }
         })
         // 上传
-        webupload(self.file_id, {
+        webupload({
+          assign: self.file_id,
           accept: {
             title: '',
             extensions: 'rar,zip,doc,docx,pdf,jpg',

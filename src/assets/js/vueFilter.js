@@ -172,3 +172,12 @@ Vue.filter('countryActive', (value) => {
   let resArr = _.filter(nation, (item) => item.id === parseInt(value))
   return resArr[0]['cn']
 })
+
+Vue.filter('plusXin', function (str, frontLen, endLen) {
+  let len = str.length - frontLen - endLen
+  let xin = ''
+  for (let i = 0; i < len; i++) {
+    xin += '*'
+  }
+  return str.substr(0, frontLen) + xin + str.substr(str.length - endLen)
+})

@@ -11,8 +11,7 @@
                         <i class="iconfont handPower clearSearch" @click="keywords=''" v-if="keywords">&#xe7f6;</i>
                         <input type="text" name="keywords" v-model="keywords" class="form-control"
                                placeholder="请输入关键字搜索"
-                               style="padding-left:30px;"
-                               @keyup.enter="pageChange()">
+                               style="padding-left:30px;">
                     </div>
                     <div class="form-group ml-10">
                         <div class="customizeDropdown">
@@ -50,13 +49,6 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="form-group ml-10">
-                            <button type="button" class="btn btn-default" @click="deleteId('all')"><i
-                                    class="iconfont">&#xe656;</i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -79,21 +71,27 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr v-for="(item, i) in list" :key="i">
                 <td>
                     <div class="custom-control custom-checkbox custom-control-inline pt-5">
-                        <input type="checkbox" name="id[]" id="id" value="" class="custom-control-input">
+                        <input type="checkbox" name="id[]" id="id" :value=item.id class="custom-control-input">
                         <label class="custom-control-label" for="id">&nbsp;</label>
                     </div>
                 </td>
-                <td>3r353</td>
-                <td>美国</td>
-                <td>--</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>退款</td>
+                <td v-html="highlight(item.trade_no, keywords)"></td>
+                <td>{{item.country_name}}</td>
+                <td v-html="highlight(item.prod_name, keywords)"></td>
+                <td>{{item.stu_name}}</td>
+                <td>{{item.stu_phone}}</td>
+                <td>{{item.total_fee}}</td>
+                <td>{{item.pay_time}}</td>
+                <td>---</td>
+            </tr>
+            <tr v-if="loading">
+                <td colspan="9" v-html="LoadingImg"></td>
+            </tr>
+            <tr v-if="!loading && list.length===0">
+                <td colspan="9" v-html="NoData"></td>
             </tr>
             </tbody>
         </table>
@@ -112,6 +110,7 @@ export default {
   name: 'OrderRecord',
   data () {
     return {
+      loading: true,
       keywords: '',
       country: '',
       date: '',
@@ -136,6 +135,7 @@ export default {
           self.date = value
         }
       })
+      self.pageChange()
       _.delay(() => {
         $('.selectpicker').selectpicker('refresh')
       }, 500)
@@ -146,9 +146,12 @@ export default {
       let self = this
       let p = page || 1
       let params = new URLSearchParams()
-      self.loading = true
       params.append('page', p)
-      db.postRequest('', params).then(res => {
+      params.append('keywords', self.keywords)
+      params.append('country', self.country)
+      params.append('time', self.date)
+      params.append('time_sort', self.time_sort)
+      db.postRequest('Institution/PayProd/orderList', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.list
           self.total = res.data.total
@@ -159,8 +162,13 @@ export default {
         self.loading = false
       })
     },
-    clearData () {},
-    deleteId () {},
+    clearData () {
+      this.keywords = ''
+      this.country = ''
+      this.date = ''
+      this.time_sort = 0
+      this.debouncePagechange()
+    },
     listSort () {
       let self = this
       if (self.time_sort === 0) {

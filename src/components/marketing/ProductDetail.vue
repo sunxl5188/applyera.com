@@ -90,26 +90,29 @@
                         <div class="col-sm-11" style="width: 88.8%;">
                             <div class="custom-radio-box">
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" name="need"  class="custom-control-input" id="need1" :value=1 v-model="info.need" :checked="info.need===1">
-                                    <label class="custom-control-label" for="need1">需要</label>
+                                    <input type="radio" name="yht_status"  class="custom-control-input" id="yht_status1" :value=1 v-model="info.yht_status" :checked="info.yht_status===1">
+                                    <label class="custom-control-label" for="yht_status1">需要</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" name="need" class="custom-control-input" id="need2" :value=2 v-model="info.need" :checked="info.need===2">
-                                    <label class="custom-control-label" for="need2">不需要</label>
+                                    <input type="radio" name="yht_status" class="custom-control-input" id="yht_status2" :value=0 v-model="info.yht_status" :checked="info.yht_status===0">
+                                    <label class="custom-control-label" for="yht_status2">不需要</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="info.need===1">
+            <div class="row" v-if="info.yht_status===1">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label class="col-sm-1 control-label" style="width: 11.2%;">
                             关联合同
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" name="contract" class="form-control" v-model="info.contract" placeholder="请选择该产品需要签署的合同"/>
+                            <input type="text" name="yht_id" class="form-control" list="cars" v-model="info.yht_id" placeholder="请选择该产品需要签署的合同"/>
+                            <datalist id="cars">
+                                <option :value="item.yht_name" v-for="(item, i) in info.yht_list" :key="i" />
+                            </datalist>
                         </div>
                     </div>
                 </div>
@@ -137,8 +140,9 @@ export default {
         id: '',
         prod_intro: '',
         prod_name: '',
-        need: 1,
-        contract: ''
+        yht_id: '',
+        yht_status: 0,
+        yht_list: []
       }
     }
   },

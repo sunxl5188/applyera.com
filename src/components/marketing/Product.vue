@@ -148,22 +148,21 @@
                 </tbody>
             </table>
             <Pagination :total="total" :currentPage="current" @pagechange="pageChange"></Pagination>
-        </div>
-        <router-view @pageChange="pageChange"></router-view>
-
-        <div class="modal fade modalShow">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body text-center  pt-50 pb-50">
-                        <p>开通线上支付功能需完成实名认证并由申学纪</p>
-                        <p>为你开通微信支付商户号，请联系客服开通</p>
-                        <div class="clearfix pt-15">
-                            <router-link to="/home/company/authDetail" class="btn btn-primary">前往认证</router-link>
+            <div class="modal fade modalShow" v-if="auth_status===0">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body text-center  pt-50 pb-50">
+                            <p>开通线上支付功能需完成实名认证并由申学纪</p>
+                            <p>为你开通微信支付商户号，请联系客服开通</p>
+                            <div class="clearfix pt-15">
+                                <router-link to="/home/company/authDetail" class="btn btn-primary">前往认证</router-link>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <router-view @pageChange="pageChange"></router-view>
     </div>
 </template>
 
@@ -173,7 +172,7 @@ import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
 import nation from '@@/json/nation.json'
 import Clipboard from 'clipboard'
 import Pagination from '@#/shared/Pagination'
-import _ from 'lodash'
+import * as _ from 'lodash'
 import db from '@~/js/request'
 
 export default {
@@ -192,7 +191,8 @@ export default {
       total: 0,
       list: [],
       arrId: [],
-      userList: []
+      userList: [],
+      auth_status: 1
     }
   },
   created () { // 在实例创建完成后
@@ -203,7 +203,6 @@ export default {
     self.name = self.$route.name
     self.copyBtn = new Clipboard('.copyBtn')
     self.$nextTick(() => {
-      $('.modalShow').height($(window).height())
       self.getUserList()
       self.pageChange()
       self.laydate.render({
@@ -264,6 +263,16 @@ export default {
         if (res.status === 1) {
           self.list = res.data.list
           self.total = res.data.total
+          self.auth_status = res.data.auth_status
+          _.delay(() => {
+            if (res.data.auth_status === 0) {
+              $('.modalShow').css({
+                display: 'block',
+                opacity: 1,
+                height: $(window).height()
+              })
+            }
+          }, 200)
         } else {
           console.log(res.msg)
         }
@@ -341,7 +350,7 @@ export default {
 <style scoped lang="less">
 .modal{
     &.modalShow{
-        display:block;filter: Alpha(Opacity=100); opacity:1;position:absolute;background:rgba(0,0,0,.5);
+        position:absolute;background:rgba(0,0,0,.5);
         & .modal-dialog{
             position:absolute;width:350px;height:220px;left:50%;margin-left:-175px;top:50%;margin-top:-80px;
         }

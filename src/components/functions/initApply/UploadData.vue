@@ -173,7 +173,8 @@ export default {
       if (self.submitStatus === 0) {
         setTimeout(function () {
           // 上传
-          webupload(self.file_id, {
+          webupload({
+            assign: self.file_id,
             fileList: { id: '#fileList', type: 'file' },
             accept: {
               title: '',

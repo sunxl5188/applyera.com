@@ -6,12 +6,12 @@ import * as _ from 'lodash'
 
 /**
  * 图片上传
- * @param assign Vue 要赋值的对象
  * @param options 上传配置参数
  * @调用方法 webupload(self.file_id, {...})
  */
-export default function webUpload (assign, options) {
+export default function webUpload (options) {
   let config = {
+    assign: '', // 上传赋值的数组，必须是数组
     auto: true,
     swf: '/static/Uploader.swf',
     server: window.ajaxBaseUrl + '/Institution/Upload/UploadOne',
@@ -83,9 +83,9 @@ export default function webUpload (assign, options) {
         let fid = $li.attr('fid')
         uploader.removeFile(file)
         $li.remove()
-        assign.map((item, j) => {
+        opts.assign.map((item, j) => {
           if (item === fid) {
-            assign.splice(j, 1)
+            opts.assign.splice(j, 1)
           }
         })
         console.log(fid)
@@ -108,21 +108,28 @@ export default function webUpload (assign, options) {
     if (response.status === 0) {
       errorMsg += file.name + ': ' + response.msg
     }
+    if (opts.fileList.id !== '' && opts.fileList.type !== '') {
+      if (response.status === 0) {
+        $this.find('.image-panel').show() // 显示图片时
+        $this.find('.data').text('上传失败')
+      } else {
+        $this.find('.image-panel').show() // 显示图片时
+        $this.find('.data').text('上传成功')
+        $this.attr('fid', response.data)
+      }
+    }
     if (opts.uploadSuccess !== undefined && Object.prototype.toString.call(opts.uploadSuccess) === '[object Function]') {
       opts.uploadSuccess(file, response)
     } else {
-      $this.find('.image-panel').show() // 显示图片时
-      $this.find('.data').text('上传成功')
-      $this.attr('fid', response.data.id)
-      assign.push(response.data)
+      opts.assign.push(response.data)
     }
   })
   // 所有文件上传结束后触发
   uploader.on('uploadFinished', function () {
     if (opts.uploadFinished !== undefined && Object.prototype.toString.call(opts.uploadFinished) === '[object Function]') {
       opts.uploadFinished(errorMsg)
-      errorMsg = ''
     }
+    errorMsg = ''
   })
 
   // 上传出错时
@@ -158,12 +165,12 @@ export default function webUpload (assign, options) {
     $(document).on('click', '[id^=EDIT_WU_FILE] .cancel', function () {
       let $this = $(this).parents('[id^=EDIT_WU_FILE]')
       let fid = $this.attr('fid')
-      assign.map((item, j) => {
+      opts.assign.map((item, j) => {
         if (item === fid) {
-          assign.splice(j, 1)
+          opts.assign.splice(j, 1)
         }
       })
-      console.log(fid)
+      // console.log(assign)
     })
   }, 1000)
 }

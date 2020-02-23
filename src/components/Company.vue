@@ -35,7 +35,12 @@
                                     v-if="list.type===2">工作室</span></div>
                             <div class="lh30">企 业 I D：{{list.number}}</div>
                             <div class="lh30">创建时间：{{list.create_time}}</div>
-                            <div class="lh30">实名认证：<router-link to="/home/company/authentic" class="cf00">未认证</router-link></div>
+                            <div class="lh30">实名认证：
+                                <router-link to="/home/company/authentic" class="cf00" v-if="list.auth_status===0">未认证</router-link>
+                                <router-link to="/home/company/authentic" class="cf00" v-if="list.auth_status===1">未通过认证</router-link>
+                                <router-link to="/home/company/authentic" class="c52c" v-if="list.auth_status===2">审核中</router-link>
+                                <router-link to="/home/company/authentic" class="c52c" v-if="list.auth_status===3">已审核</router-link>
+                            </div>
                         </div>
 
                     </div>

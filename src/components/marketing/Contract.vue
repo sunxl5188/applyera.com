@@ -123,21 +123,21 @@
                 </tbody>
             </table>
             <Pagination :total="total" :currentPage="current" @pagechange="pageChange"></Pagination>
-        </div>
-        <router-view></router-view>
-        <div class="modal fade modalShow">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body text-center  pt-50 pb-50">
-                        <p>开通线上支付功能需完成实名认证并由申学纪</p>
-                        <p>为你开通微信支付商户号，请联系客服开通</p>
-                        <div class="clearfix pt-15">
-                            <router-link to="/home/company/authDetail" class="btn btn-primary">前往认证</router-link>
+            <div class="modal fade modalShow" v-if="auth_status===0">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body text-center  pt-50 pb-50">
+                            <p>开通线上支付功能需完成实名认证并由申学纪</p>
+                            <p>为你开通微信支付商户号，请联系客服开通</p>
+                            <div class="clearfix pt-15">
+                                <router-link to="/home/company/authDetail" class="btn btn-primary">前往认证</router-link>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -164,7 +164,8 @@ export default {
       userList: [],
       current: 1,
       total: 0,
-      list: []
+      list: [],
+      auth_status: 1
     }
   },
   created () {
@@ -174,7 +175,6 @@ export default {
     let self = this
     self.name = self.$route.name
     self.$nextTick(() => {
-      $('.modalShow').height($(window).height())
       self.laydate.render({
         elem: '.times',
         type: 'date',
@@ -211,6 +211,16 @@ export default {
         if (res.status === 1) {
           self.list = res.data.list
           self.total = res.data.total
+          self.auth_status = res.data.auth_status
+          _.delay(() => {
+            if (res.data.auth_status === 0) {
+              $('.modalShow').css({
+                display: 'block',
+                opacity: 1,
+                height: $(window).height()
+              })
+            }
+          }, 200)
         } else {
           console.log(res.msg)
         }
@@ -248,7 +258,7 @@ export default {
 <style scoped lang="less">
 .modal{
     &.modalShow{
-        display:block;filter: Alpha(Opacity=100); opacity:1;position:absolute;background:rgba(0,0,0,.5);
+        position:absolute;background:rgba(0,0,0,.5);
         & .modal-dialog{
             position:absolute;width:350px;height:220px;left:50%;margin-left:-175px;top:50%;margin-top:-80px;
         }

@@ -215,7 +215,7 @@
                     </ul>
                 </nav>
             </header>
-            <div class="container-fluid">
+            <div class="container-fluid mb-15">
                 <transition name="custom-classes-transition" enter-active-class="animated fadeIn"
                             leave-class="animated fadeOut" :duration="{ enter: 200, leave: 0 }">
                     <router-view></router-view>

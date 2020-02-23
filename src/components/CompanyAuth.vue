@@ -20,10 +20,10 @@
                         </div>
                         <div class="clearfix pt-15">
                             <router-link to="/home/company/authDetail" class="font16">个体工商户/企业实名认证</router-link>
-                            <div class="c666">未认证</div>
-                            <div class="c52c hide">(审核中)</div>
-                            <div class="c52c hide">认证成功</div>
-                            <div class="cf00 hide">驳回，请修改后提交</div>
+                            <div class="c666" v-if="auth_status===0">未认证</div>
+                            <div class="c52c" v-if="auth_status===2">(审核中)</div>
+                            <div class="c52c" v-if="auth_status===3">认证成功</div>
+                            <div class="cf00" v-if="auth_status===1">驳回，请修改后提交</div>
                         </div>
                     </div>
                 </div>
@@ -35,13 +35,26 @@
 </template>
 
 <script>
+import db from '@~/js/request'
 export default {
   name: 'CompanyAuth',
   data () {
-    return {}
+    return {
+      auth_status: ''
+    }
   },
   mounted () {
-    // let self = this
+    let self = this
+    self.$nextTick(() => {
+      let params = new URLSearchParams()
+      db.postRequest('/Institution/Company/authStatus', params).then(res => {
+        if (res.status === 1) {
+          self.auth_status = res.data.auth_status
+        } else {
+          console.log(res.msg)
+        }
+      })
+    })
   },
   methods: {},
   components: {},
