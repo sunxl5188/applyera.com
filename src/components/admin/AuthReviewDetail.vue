@@ -19,7 +19,7 @@
                 <label class="col-sm-2 control-label">营业执照照片</label>
                 <div class="col-sm-10 form-inline">
                     <span class="div_vm bda"><img :src="siteUrl + company.trading_cert_path" width="100" height="100" /></span>
-                    <a href="javascript:void(0);" class="div_vm ml-20" @click="downImage(siteUrl + company.trading_cert_path)">下载</a>
+                    <a href="javascript:void(0);" class="div_vm ml-20" @click="downFile(siteUrl + company.trading_cert_path)">下载</a>
                 </div>
             </div>
             <div class="form-group clearfix">
@@ -62,14 +62,14 @@
                 <label class="col-sm-2 control-label">身份证正面照片</label>
                 <div class="col-sm-10 control-text">
                     <span class="div_vm bda"><img :src="siteUrl + company.cert_front_path" width="100" height="100"></span>
-                    <a href="javascript:void(0);" class="div_vm ml-20">下载</a>
+                    <a href="javascript:void(0);" class="div_vm ml-20" @click="downFile(siteUrl + company.cert_front_path)">下载</a>
                 </div>
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">身份证反面照片</label>
                 <div class="col-sm-10 control-text">
                     <span class="div_vm bda"><img :src="siteUrl + company.cert_back_path" width="100" height="100"></span>
-                    <a href="javascript:void(0);" class="div_vm ml-20">下载</a>
+                    <a href="javascript:void(0);" class="div_vm ml-20" @click="downFile(siteUrl + company.cert_back_path)">下载</a>
                 </div>
             </div>
             <div class="form-group clearfix">
@@ -101,6 +101,8 @@
 </template>
 
 <script>
+import JsZip from 'jszip'
+import saveAs from 'file-saver'
 import db from '@~/js/request'
 export default {
   name: 'AuthReviewDetail',
@@ -151,37 +153,33 @@ export default {
         }
       })
     },
-    downImage (url) {
-      window.URL = window.URL || window.webkitURL
-      let xhr = new XMLHttpRequest()
-      xhr.open('get', 'http://www.js.me/demo/images/001.jpg', true)
-      // 至关重要
-      xhr.responseType = 'blob'
-      xhr.onload = function () {
-        if (this.status === 200) {
-          // 得到一个blob对象
-          let blob = this.response
-          console.log('blob', blob)
-          // 至关重要
-          let oFileReader = new FileReader()
-          oFileReader.onloadend = function (e) {
-            // 此处拿到的已经是 base64的图片了
-            let base64 = e.target.result
-            console.log('方式一》》》》》》》》》', base64)
-          }
-          oFileReader.readAsDataURL(blob)
-          // ====为了在页面显示图片，可以删除====
-          var img = document.createElement('img')
-          img.onload = function (e) {
-            window.URL.revokeObjectURL(img.src) // 清除释放
-          }
-          let src = window.URL.createObjectURL(blob)
-          img.src = src
-          // document.getElementById("container1").appendChild(img);
-          // ====为了在页面显示图片，可以删除====
-        }
+    downFile (imgUrl) {
+      let xhr
+      if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest()
+      } else if (window.ActiveXObject) {
+        /*eslint-disable*/
+        xhr = new ActiveXObject('Microsoft.XMLHTTP')
       }
-      xhr.send()
+      if (xhr != null) {
+        xhr.open('get', imgUrl, true)
+        xhr.responseType = 'blob'
+        xhr.onload = function () {
+          if (this.status === 200) {
+            let fineUrl = this.responseURL
+            let fileName = fineUrl.substr(fineUrl.lastIndexOf('/') + 1, fineUrl.length)
+            let zip = new JsZip()
+            zip.file(fileName, this.response)
+            zip.generateAsync({type: "blob"})
+            .then(function (content) {
+              saveAs(content, "download.zip")
+            })
+          }
+        }
+        xhr.send()
+      } else {
+        console.log('浏览器不支持XMLHTTP')
+      }
     }
   },
   components: {},

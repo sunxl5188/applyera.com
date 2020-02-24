@@ -92,8 +92,8 @@
 </template>
 
 <script>
-import JSZip from 'jszip'
-import fileSave from 'file-saver'
+import JsZip from 'jszip'
+import saveAs from 'file-saver'
 import db from '@~/js/request'
 
 export default {
@@ -217,12 +217,12 @@ export default {
         let x = xhr.currentTarget
         let fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1, fileUrl.length)
         if (x.readyState === 4) {
-          let zip = new JSZip()
+          let zip = new JsZip()
           zip.file(fileName, x.response)
           zip.generateAsync({ type: 'blob' })
             .then(function (content) {
               self.layer.close(index)
-              fileSave.saveAs(content, 'download.zip')
+              saveAs(content, 'download.zip')
             })
         }
       })
