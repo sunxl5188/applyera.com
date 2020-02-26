@@ -32,6 +32,24 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label"><font class="cf00">*</font> 企业名称</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="company_name" v-model="company.company_name" class="form-control" placeholder="请输入企业名称" v-validate="'required'" data-vv-as="企业名称">
+                        <div class="validateTip" v-show="errors.has('company_name')">
+                            {{ errors.first('company_name') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><font class="cf00">*</font> 手机号</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="phone_num" v-model="company.phone_num" class="form-control" placeholder="请输入手机号" v-validate="'required'" data-vv-as="手机号">
+                        <div class="validateTip" v-show="errors.has('phone_num')">
+                            {{ errors.first('phone_num') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 社会信用代码</label>
                     <div class="col-sm-5">
                         <input type="text" name="credit_code" v-model="company.credit_code" class="form-control" placeholder="请输入社会信用代码" v-validate="'required'" data-vv-as="社会信用代码">
@@ -223,6 +241,14 @@
                 <div class="col-sm-10 form-inline">
                     <span class="div_vm bda"><img :src="siteUrl + company.trading_cert_path" width="100" height="100" /></span>
                 </div>
+            </div>
+            <div class="form-group clearfix">
+                <label class="col-sm-2 control-label">企业名称</label>
+                <div class="col-sm-5 control-text">{{company.company_name}}</div>
+            </div>
+            <div class="form-group clearfix">
+                <label class="col-sm-2 control-label">手机号</label>
+                <div class="col-sm-5 control-text">{{company.phone_num}}</div>
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">社会信用代码</label>

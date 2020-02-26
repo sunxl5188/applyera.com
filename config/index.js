@@ -45,10 +45,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, 'E:/www/test.applyera.com/manage/index.html'),
+    index: path.resolve(__dirname, '../dist/manage/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, 'E:/www/test.applyera.com/manage'),
+    assetsRoot: path.resolve(__dirname, '../dist/manage'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/manage/',
 

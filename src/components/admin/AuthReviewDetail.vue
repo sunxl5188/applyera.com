@@ -23,6 +23,14 @@
                 </div>
             </div>
             <div class="form-group clearfix">
+                <label class="col-sm-2 control-label">企业名称</label>
+                <div class="col-sm-5 control-text">{{company.company_name}}</div>
+            </div>
+            <div class="form-group clearfix">
+                <label class="col-sm-2 control-label">手机号</label>
+                <div class="col-sm-5 control-text">{{company.phone_num}}</div>
+            </div>
+            <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">社会信用代码</label>
                 <div class="col-sm-5 control-text">{{company.credit_code}}</div>
             </div>
@@ -92,8 +100,8 @@
             </div>
             <div class="form-group clearfix">
                 <label class="col-sm-10 col-sm-offset-2">
-                    <button type="button" class="btn btn-primary">通过</button>
-                    <button type="button" class="btn btn-default ml-20">驳回</button>
+                    <button type="button" class="btn btn-primary" @click="Certification(3)">通过</button>
+                    <button type="button" class="btn btn-default ml-20" @click="Certification(4)">驳回</button>
                 </label>
             </div>
         </div>
@@ -110,9 +118,12 @@ export default {
     return {
       loading: true,
       siteUrl: window.ajaxBaseUrl,
+      id: '',
       company: {
         apply_no: '',
         trading_cert_path: '',
+        company_name: '',
+        phone_num: '',
         credit_code: '',
         trading_start: '',
         trading_end: '',
@@ -134,6 +145,7 @@ export default {
   },
   mounted () {
     let self = this
+    self.id = self.$route.query.id || ''
     self.$nextTick(() => {
       self.getAuthDetail()
     })
@@ -142,6 +154,7 @@ export default {
     getAuthDetail () {
       let self = this
       let params = new URLSearchParams()
+      params.append('id', self.id)
       db.postRequest('/Institution/Company/authEdit', params).then(res => {
         if (res.status === 1) {
           self.company = res.data
@@ -180,6 +193,21 @@ export default {
       } else {
         console.log('浏览器不支持XMLHTTP')
       }
+    },
+    Certification (state) {
+      let self = this
+      let params = new URLSearchParams()
+      params.append('id', self.id)
+      params.append('audit_status', state)
+      db.postRequest('/Institution/Company/admAuthPass', params).then(res => {
+        if (res.status === 1) {
+          self.layer.alert(res.msg, {icon: 1}, function (i) {
+            self.layer.close(i)
+          })
+        } else {
+          self.layer.alert(res.msg, {icon: 2})
+        }
+      })
     }
   },
   components: {},

@@ -35,9 +35,9 @@ Vue.prototype.countdown = function (objName, wait) {
   if (_this) {
     if (parseInt(vueCookie.get(_this.id)) >= 0) {
       wait = parseInt(vueCookie.get(_this.id))
-      vueCookie.set(_this.id, wait - 1, {expires: date})
+      vueCookie.set(_this.id, wait - 1, { expires: date })
     } else {
-      vueCookie.set(_this.id, wait - 1, {expires: date})
+      vueCookie.set(_this.id, wait - 1, { expires: date })
     }
     if (parseInt(vueCookie.get(_this.id)) < 0) {
       vueCookie.remove(_this.id)
@@ -54,14 +54,13 @@ Vue.prototype.countdown = function (objName, wait) {
       wait--
       setTimeout(function () {
         $this.countdown(objName, wait)
-      },
-      1000)
+      }, 1000)
     }
   } else {
     let cTime = setInterval(function () {
       if (wait > 0) {
         wait--
-        vueCookie.set(objName, wait, {expires: date})
+        vueCookie.set(objName, wait, { expires: date })
       } else {
         vueCookie.remove(objName)
         clearInterval(cTime)
@@ -75,7 +74,7 @@ Vue.prototype.highlight = function (str, keys) {
   // let re = new RegExp('' + keys + '', 'gi')
   if (str && keys) {
     string = str.replace(keys, function (word) {
-      return "<span class='cf90'>" + word + '</span>'
+      return '<span class=\'cf90\'>' + word + '</span>'
     })
   } else {
     string = str
