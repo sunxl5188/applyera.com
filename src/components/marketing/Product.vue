@@ -148,7 +148,7 @@
                 </tbody>
             </table>
             <Pagination :total="total" :currentPage="current" @pagechange="pageChange"></Pagination>
-            <div class="modal fade modalShow" v-if="auth_status===0">
+            <div class="modal fade modalShow" v-if="audit_status===0">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-body text-center  pt-50 pb-50">
@@ -192,7 +192,7 @@ export default {
       list: [],
       arrId: [],
       userList: [],
-      auth_status: 1
+      audit_status: 1
     }
   },
   created () { // 在实例创建完成后
@@ -263,9 +263,9 @@ export default {
         if (res.status === 1) {
           self.list = res.data.list
           self.total = res.data.total
-          self.auth_status = res.data.auth_status
+          self.audit_status = res.data.audit_status
           _.delay(() => {
-            if (res.data.auth_status === 0) {
+            if (res.data.audit_status === 0) {
               $('.modalShow').css({
                 display: 'block',
                 opacity: 1,

@@ -49,7 +49,7 @@ export default {
       let params = new URLSearchParams()
       db.postRequest('/Institution/Company/authStatus', params).then(res => {
         if (res.status === 1) {
-          self.auth_status = res.data.auth_status
+          self.auth_status = res.data.audit_status
         } else {
           console.log(res.msg)
         }

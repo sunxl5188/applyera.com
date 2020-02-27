@@ -8108,7 +8108,7 @@ UE.Editor.defaultOptions = function(editor){
         });
 
         function showErrorMsg(msg) {
-            console && console.error(msg);
+            console && console.warn(msg);
             //me.fireEvent('showMessage', {
             //    'title': msg,
             //    'type': 'error'
@@ -8297,7 +8297,7 @@ UE.ajax = function() {
             scr.setAttribute('type', 'text/javascript');
             scr.setAttribute('defer', 'defer');
             charset && scr.setAttribute('charset', charset);
-            scr.setAttribute('src', url);
+            scr.setAttribute('src', url+'&token='+$cookies.get('token'));
             document.getElementsByTagName('head')[0].appendChild(scr);
         }
 
