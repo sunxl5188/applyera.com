@@ -12,27 +12,16 @@
                             <i class="iconfont handPower clearSearch" @click="keywords=''" v-if="keywords">&#xe7f6;</i>
                             <input type="text" name="keywords" v-model="keywords" class="form-control"
                                    placeholder="请输入关键字搜索"
-                                   style="padding-left:30px;"
-                                   @keyup.enter="pageChange()">
+                                   style="padding-left:30px;">
                         </div>
                         <div class="form-group ml-10">
                             <div class="customizeDropdown">
                                 <button class="btn filter"
-                                        :class="country || date || userId ? 'btn-primary' : 'btn-default'"
+                                        :class="date || userId ? 'btn-primary' : 'btn-default'"
                                         type="button" data-toggle="customizeDropdown"></button>
                                 <ul class="dropdown-menu dropdown-menu-right filterOption" style="padding:15px 20px;">
                                     <div class="pl-15 pr-15" style="width:180px;">
                                         <form action="" method="POST" class="form-horizontal">
-                                            <div class="form-group">
-                                                <label>所属国家</label>
-                                                <select class="form-control selectpicker show-tick" data-live-search="true"
-                                                        data-size="10" v-model="country">
-                                                    <option value="">请选择</option>
-                                                    <option :value="item.id" v-for="(item, i) in nation" :key="i">
-                                                        {{item.cn}}
-                                                    </option>
-                                                </select>
-                                            </div>
                                             <div class="form-group">
                                                 <label>生成日期</label>
                                                 <input type="text" name="date" class="form-control times" v-model="date"
@@ -83,7 +72,6 @@
                     <th class="w5"></th>
                     <th>合同编号</th>
                     <th>合同标题</th>
-                    <th>合同状态</th>
                     <th>发布者</th>
                     <th>更新时间
                         <a href="javascript:void(0);"
@@ -94,36 +82,41 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr v-for="(item, i) in list" :key="i">
                     <td>
                         <div class="custom-control custom-checkbox custom-control-inline pt-5">
-                            <input type="checkbox" name="id[]" id="id" value="" class="custom-control-input">
-                            <label class="custom-control-label" for="id">&nbsp;</label>
+                            <input type="checkbox" name="id[]" :id="'id'+i" :value="item.id" class="custom-control-input">
+                            <label class="custom-control-label" :for="'id'+i">&nbsp;</label>
                         </div>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td v-html="highlight(item.yht_no,keywords)"></td>
+                    <td v-html="highlight(item.yht_name,keywords)"></td>
+                    <td v-html="highlight(item.user_name,keywords)"></td>
+                    <td>{{item.add_time}}</td>
                     <td class="text-center">
                         <div class="dropdown">
                             <a href="javascript:void(0);" data-toggle="dropdown"><i
                                     class="iconfont">&#xe66b;</i></a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
-                                    <router-link :to="{path:'/marketing/contract/detail', query:{ id:1 }}">查看
+                                    <router-link :to="{path:'/marketing/contract/detail', query:{ id:item.id }}">查看
                                     </router-link>
                                 </li>
-                                <li><a href="javascript:void(0);" @click="deleteId(1)">删除</a></li>
+                                <li><a href="javascript:void(0);" @click="deleteId(item.id)">删除</a></li>
                             </ul>
                         </div>
                     </td>
                 </tr>
+                <tr v-if="loading">
+                    <td colspan="6" v-html="LoadingImg"></td>
+                </tr>
+                <tr v-if="!loading && list.length===0">
+                    <td colspan="6" v-html="NoData"></td>
+                </tr>
                 </tbody>
             </table>
             <Pagination :total="total" :currentPage="current" @pagechange="pageChange"></Pagination>
-            <div class="modal fade modalShow" v-if="auth_status===0">
+            <div class="modal fade modalShow" v-if="audit_status===0">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-body text-center  pt-50 pb-50">
@@ -144,7 +137,6 @@
 <script>
 import 'bootstrap-select'
 import 'bootstrap-select/dist/js/i18n/defaults-zh_CN'
-import nation from '@@/json/nation.json'
 import db from '@~/js/request'
 import Pagination from '@#/shared/Pagination'
 import * as _ from 'lodash'
@@ -157,15 +149,13 @@ export default {
       name: 'contract',
       time_sort: 0,
       keywords: '',
-      country: '',
       date: '',
       userId: '',
-      nation: nation,
       userList: [],
       current: 1,
       total: 0,
       list: [],
-      auth_status: 1
+      audit_status: 1
     }
   },
   created () {
@@ -184,6 +174,7 @@ export default {
         }
       })
       self.getUserList()
+      self.pageChange()
     })
   },
   methods: {
@@ -205,15 +196,18 @@ export default {
       let self = this
       let p = page || 1
       let params = new URLSearchParams()
-      self.loading = true
       params.append('page', p)
-      db.postRequest('', params).then(res => {
+      params.append('keywords', self.keywords)
+      params.append('time', self.date)
+      params.append('user_id', self.userId)
+      params.append('time_sort', self.time_sort)
+      db.postRequest('/Institution/PayProd/tempList', params).then(res => {
         if (res.status === 1) {
           self.list = res.data.list
           self.total = res.data.total
-          self.auth_status = res.data.auth_status
+          self.audit_status = res.data.audit_status
           _.delay(() => {
-            if (res.data.auth_status === 0) {
+            if (res.data.audit_status === 0) {
               $('.modalShow').css({
                 display: 'block',
                 opacity: 1,

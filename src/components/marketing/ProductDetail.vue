@@ -102,17 +102,17 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="info.yht_status===1">
+            <div class="row" v-show="info.yht_status===1">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="form-group">
                         <label class="col-sm-1 control-label" style="width: 11.2%;">
                             关联合同
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" name="yht_id" class="form-control" list="cars" v-model="info.yht_id" placeholder="请选择该产品需要签署的合同"/>
-                            <datalist id="cars">
-                                <option :value="item.yht_name" v-for="(item, i) in info.yht_list" :key="i" />
-                            </datalist>
+                            <select name="yht_id" v-model="info.yht_id" class="form-control selectpicker show-tick" data-size="10" data-width="fit" data-live-search="true">
+                                <option value="">请选择该产品需要签署的合同</option>
+                                <option :value="item.yht_id" v-for="(item, i) in info.yht_list" :key="i" >{{item.yht_name}}</option>
+                            </select>
                         </div>
                     </div>
                 </div>
