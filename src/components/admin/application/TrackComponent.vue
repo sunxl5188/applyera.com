@@ -230,6 +230,10 @@ import db from '@~/js/request'
 export default {
   name: 'TrackComponent',
   props: {
+    id: {
+      type: Number,
+      default: 0
+    },
     majorList: {
       type: Array,
       default: () => {}
@@ -280,7 +284,7 @@ export default {
       let self = this
       webupload({
         assign: field,
-        pick: '#picker' + id,
+        pick: { id: '#picker' + id, multiple: false },
         accept: {
           title: '',
           extensions: 'pdf,jpg,png',
@@ -289,11 +293,15 @@ export default {
         fileSingleSizeLimit: 1024 * 1024 * 2,
         formData: { func: 'apply_order', order_id: self.id },
         uploadSuccess: (file, response) => {
-          let $this = $('#' + file.id)
-          $this.find('.image-panel').show() // 显示图片时
-          $this.find('.data').text('上传成功')
-          $this.attr('fid', response.data)
-          field.push(response.data)
+          if (response.status === 1) {
+            let $this = $('#' + file.id)
+            $this.find('.image-panel').show() // 显示图片时
+            $this.find('.data').text('上传成功')
+            $this.attr('fid', response.data)
+            field.push(response.data)
+          } else {
+            self.layer.alert(response.msg, { icon: 2 })
+          }
         },
         error: (e) => {
           if (e === 'Q_TYPE_DENIED') {

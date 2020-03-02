@@ -71,11 +71,11 @@
         </div>
 
         <div class="clearfix">
-            <span class="pull-left pl-45">
-                <label class="checkbox">
-                    <input type="checkbox" name="all" value="all" @click="selectAll($event)"/>
-                    全选
-                </label>
+            <span class="pull-left pl-25">
+                <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" name="all" id="all" value="all" class="custom-control-input" @click="selectAll($event)">
+                    <label class="custom-control-label" for="all">全选</label>
+                </div>
             </span>
             <span class="pull-right">
                 <button type="button" class="btn btn-default" @click="downFile(1)">下载</button>
@@ -148,16 +148,21 @@
                             <thead>
                             <tr>
                                 <th colspan="5">
-                                    <label>
-                                        <input type="checkbox" name="Fall"/>
-                                        全选
-                                    </label>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="Fall" id="fall" class="custom-control-input">
+                                        <label class="custom-control-label" for="fall">全选</label>
+                                    </div>
                                 </th>
                             </tr>
                             </thead>
                             <tbody id="annexId">
                             <tr v-for="(item, i) in list.upload_list" :key="i">
-                                <td class="w5"><input type="checkbox" name="id[]" :value="item.id"/></td>
+                                <td class="w5">
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="id[]" :id="'id-fj'+i" :value="item.id" class="custom-control-input">
+                                        <label class="custom-control-label" :for="'id-fj'+i"></label>
+                                    </div>
+                                </td>
                                 <td>{{item.file_name}}</td>
                                 <td>{{item.file_type}}</td>
                                 <td>{{item.file_size}}</td>
@@ -174,7 +179,7 @@
             </div>
         </div>
         <!--跟进状态窗口-->
-        <component :is="component" :majorList="majorList"/>
+        <component :is="component" :majorList="majorList" :id="id"/>
         <a href="" id="saveFile"></a>
     </div>
 </template>
