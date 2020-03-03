@@ -281,8 +281,10 @@ export default {
         element.checked = boole
         if (boole) {
           self.idArr.push(parseInt($(this).val()))
+          self.majorList = self.list.major_list
         } else {
           self.idArr = []
+          self.majorList = []
         }
       })
     },
