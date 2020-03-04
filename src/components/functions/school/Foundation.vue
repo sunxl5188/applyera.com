@@ -41,10 +41,10 @@
                     </td>
                 </tr>
                 <tr v-if="loading">
-                    <td :colspan="show_commission===1?5:4" v-html="LoadingImg"></td>
+                    <td :colspan="userInfo.access.show_commission===1?5:4" v-html="LoadingImg"></td>
                 </tr>
                 <tr v-if="!loading && list.length===0">
-                    <td :colspan="show_commission===1?5:4" v-html="NoData"></td>
+                    <td :colspan="userInfo.access.show_commission===1?5:4" v-html="NoData"></td>
                 </tr>
                 </tbody>
             </table>

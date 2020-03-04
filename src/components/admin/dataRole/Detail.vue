@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="blk30"></div>
+                <div class="blk-30"></div>
                 <ul class="nav nav-tabs"><!--nav-justified-->
                     <li role="presentation" class="active"><a href="#Addjuese1" data-toggle="tab">关联用户</a></li>
                     <li role="presentation"><a href="#Addjuese2" data-toggle="tab">权限分配</a></li>

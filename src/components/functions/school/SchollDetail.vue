@@ -23,7 +23,7 @@
               <a href="javascript:void(0);">过往案例</a>
             </li>
           </ul>
-          <div class="blk15"></div>
+          <div class="blk-15"></div>
           <div class="tab-content">
             <keep-alive>
               <component :is="component" :id="id" :detailInfo="detailInfo"></component>

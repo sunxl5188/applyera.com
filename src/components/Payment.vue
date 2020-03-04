@@ -76,7 +76,7 @@
                     <button type="button" class="btn btn-default btn-md ml-20" @click="$router.back()">取消支付</button>
                 </div>
             </div>
-            <div class="blk100"></div>
+            <div class="blk-100"></div>
         </div>
 
         <div class="modal fade bs-example-modal-sm" id="weixinLay">

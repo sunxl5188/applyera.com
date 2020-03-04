@@ -279,7 +279,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="blk20"></div>
+                    <div class="blk-20"></div>
 
                     <!--自定义-->
                     <div class="schoolMajorCustom" v-for="(item, i) in customObject" :key="'c'+i">

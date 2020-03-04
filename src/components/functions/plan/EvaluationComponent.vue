@@ -28,7 +28,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="blk20"></div>
+                        <div class="blk-20"></div>
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered table-condensed table-text-over">
                                 <thead>

@@ -125,7 +125,7 @@
             <div>小贴士：1. 申请材料请尽量上传PDF文件，大小不超过2MB。</div>
             <div style="text-indent:4em;">2. 同一种类文件的中英文（如在读证明，成绩单，实习证明）请务必把中英文合并放在同一个PDF文件里。</div>
         </div>
-        <div class="blk20"></div>
+        <div class="blk-20"></div>
         <div class="clearfix text-center" v-if="submitStatus===0">
             <router-link to="/functions/initApply/QuestionAnswer" class="btn btn-default" v-if="!id">下一页</router-link>
             <router-link :to="{path:'/functions/initApply/QuestionAnswer',query:{id:id}}" class="btn btn-default" v-if="id">下一页</router-link>

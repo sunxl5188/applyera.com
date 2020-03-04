@@ -4,7 +4,7 @@
         <div v-if="!loading">
             <MajorDetailHeader :schoolInfo="schoolInfo"/>
 
-            <div class="blk30"></div>
+            <div class="blk-30"></div>
             <div class="navbar-wrapper">
                 <ul class="nav nav-tabs"><!--nav-justified-->
                     <li class="menuItem active"><a href="javascript:void(0);">专业信息</a></li>
@@ -146,7 +146,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="blk20"></div>
+                    <div class="blk-20"></div>
                     <div class="row">
                         <div :class="counrty==='澳大利亚'?'col-xs-3 col-sm-3 col-md-3 col-lg-3':'col-xs-12 col-sm-12 col-md-12 col-lg-12'"
                              v-for="(item, i) in applyInfo.apply_date" :key="i">
@@ -154,7 +154,7 @@
                                 <div class="font24 text-center lh30" style="position: relative;">
                                     <span class="fontB">{{item.title}}</span>
                                 </div>
-                                <div class="blk10"></div>
+                                <div class="blk-10"></div>
                                 <div class="bgWhite pt-20 pb-20 pl-10 pr-10 applyDateList">
                                     <div class="lh22" v-for="(items, i) in item.file" :key="i" v-html="items"></div>
                                 </div>
@@ -162,7 +162,7 @@
                         </div>
 
                     </div>
-                    <div class="blk20"></div>
+                    <div class="blk-20"></div>
 
                     <div class="bgGray pl-25 pr-25 pt-10 pb-10">
                         <div class="row lh40 bdWhite">

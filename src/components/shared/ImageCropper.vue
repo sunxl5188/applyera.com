@@ -20,7 +20,7 @@
                 <div class="avatar-preview preview-sm"></div>
             </div>
         </div>
-        <div class="blk30"></div>
+        <div class="blk-30"></div>
     </div>
 </template>
 

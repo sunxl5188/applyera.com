@@ -132,7 +132,7 @@
                     <div class="col-sm-11 lh34" v-text="list.remark"></div>
                 </div>
 
-                <div class="blk30"></div>
+                <div class="blk-30"></div>
 
                 <ul class="nav nav-tabs"><!--nav-justified-->
                     <li role="presentation" class="active"><a href="#ShowAgency1" data-toggle="tab">财务信息</a></li>

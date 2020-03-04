@@ -89,7 +89,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="blk30"></div>
+                <div class="blk-30"></div>
                 <ul class="nav nav-tabs"><!--nav-justified-->
                     <li role="presentation" class="active"><a href="javascript:void(0);">范围明细</a></li>
                 </ul>

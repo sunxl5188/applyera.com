@@ -6,7 +6,7 @@
             <MajorDetailHeader :schoolInfo="schoolInfo"></MajorDetailHeader>
             <!--header end-->
 
-            <div class="blk30"></div>
+            <div class="blk-30"></div>
             <div class="navbar-wrapper">
                 <ul class="nav nav-tabs"><!--nav-justified-->
                     <li class="menuItem active"><a href="javascript:void(0);">专业信息</a></li>
@@ -193,7 +193,7 @@
                         </div>
                     </div>
 
-                    <div class="blk20"></div>
+                    <div class="blk-20"></div>
                     <div class="schoolTitle">申请时间</div>
 
                     <div class="bgGray pl-25 pr-25 pt-10 pb-10">

@@ -47,7 +47,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="blk15"></div>
+                    <div class="blk-15"></div>
                     <div class="form-group">
                         <div class="col-sm-3 col-sm-offset-4">
                             <button type="submit" class="btn btn-primary btn-block">提现</button>
@@ -69,7 +69,7 @@
                     <h3 style="margin-top:0;">提交成功</h3>
                     <p class="c999">提现申请已提交，等待易申学工作人员处理。</p>
                 </div>
-                <div class="blk30"></div>
+                <div class="blk-30"></div>
                 <div class="text-justify mb-20">
                     <span>{{info.user_name}}<br>{{info.user_time}}</span>
                     <span>{{info.service_name}}<br>{{info.service_time}}</span>
@@ -99,7 +99,7 @@
                     <h3 style="margin-top:0;">提交失败</h3>
                     <p class="c999">请核对以下信息后，如有疑惑请咨询易申学工作人员（电话：0592-5093666 ）。</p>
                 </div>
-                <div class="blk30"></div>
+                <div class="blk-30"></div>
                 <div class="clearfix" style="display: none;">
                     <h4><b>您提交的内容有如下错误：</b></h4>
                     <div class="clearfix">

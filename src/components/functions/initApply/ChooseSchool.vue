@@ -29,6 +29,7 @@
                     <option :value="item.id" v-for="(item, i) in materialList" :key="i">
                       {{item.apply_num}}
                     </option>
+                    <option value="custom">申请材料通过上传提交</option>
                   </select>
                 </div>
               </div>
@@ -53,7 +54,7 @@
               "填写
             </div>
           </div>
-          <div class="blk30"></div>
+          <div class="blk-30"></div>
           <table class="table table-customize schoolList">
             <thead>
             <tr>

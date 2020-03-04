@@ -17,7 +17,7 @@
               <img :src="list.head_img" alt="" data-toggle="modal"
                    data-backdrop="static"
                    data-target="#userFace" class="img-circle handPower" style="width: 100px;height: 100px;display: inline-block;" v-if="list.head_img!==''">
-              <img :src="'http://placehold.it/100x100'" alt="" data-toggle="modal"
+              <img :src="avatarUrl" data-toggle="modal"
                    data-backdrop="static"
                    data-target="#userFace" class="img-circle handPower" style="width: 100px;height: 100px;display: inline-block;" v-if="list.head_img===''">
               <div class="caption">
@@ -133,7 +133,7 @@
           </div>
         </div>
 
-        <div class="blk50"></div>
+        <div class="blk-50"></div>
 
         <div class="row" style="min-width:970px;">
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -226,7 +226,7 @@
                     <li :class="{active:step>=2}"><a href="#">2.设置新手机</a></li>
                     <li :class="{active:step===3}"><a href="#">3.修改成功</a></li>
                   </ul>
-                  <div class="blk35"></div>
+                  <div class="blk-35"></div>
 
                   <form action="" method="POST" class="form-horizontal" autocomplete="off" v-show="step===1">
                     <div class="form-group">
@@ -262,7 +262,7 @@
                         </button>
                       </div>
                     </div>
-                    <div class="blk30"></div>
+                    <div class="blk-30"></div>
                   </form>
                   <!--第二步-->
                   <form action="" method="POST" class="form-horizontal" autocomplete="off" v-show="step===2">
@@ -299,7 +299,7 @@
                         </button>
                       </div>
                     </div>
-                    <div class="blk30"></div>
+                    <div class="blk-30"></div>
                   </form>
                   <div class="clearfix text-center" v-show="step===3">
                     <i class="iconfont cded font60">&#xe719;</i>
@@ -310,7 +310,7 @@
                         确定
                       </button>
                     </div>
-                    <div class="blk30"></div>
+                    <div class="blk-30"></div>
                   </div>
                 </div>
               </div>
@@ -335,7 +335,7 @@
                     <li :class="{active:STEP>=2}"><a href="#">2.设置新密码</a></li>
                     <li :class="{active:STEP===3}"><a href="#">3.修改成功</a></li>
                   </ul>
-                  <div class="blk35"></div>
+                  <div class="blk-35"></div>
 
                   <form action="" method="POST" class="form-horizontal" autocomplete="off" v-show="STEP===1">
                     <div class="form-group">
@@ -403,7 +403,7 @@
                         确定
                       </button>
                     </div>
-                    <div class="blk30"></div>
+                    <div class="blk-30"></div>
                   </div>
 
                 </div>

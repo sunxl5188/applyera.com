@@ -47,17 +47,17 @@
                                             <input type="text" name="language_score[total_score]" class="form-control"
                                                    placeholder="请输入成绩满分120分"
                                                    v-validate={required:true,regex:/^120$|(^[1-9][0-9])$|^([1-9]){1}$|^[1][0-1][0-9]{1}$/}
-                                                   data-vv-as="总分" v-if="languageScore===1"
+                                                   data-vv-as="总分" v-if="exam.language_score['type']===1"
                                                    v-model="exam.language_score['total_score']">
                                             <input type="text" name="language_score[total_score]" class="form-control"
                                                    placeholder="请输入成绩，满分9分"
                                                    v-validate={required:true,regex:/^([1-9]){1}$|^([1-9].[1-9])$/}
-                                                   data-vv-as="总分" v-if="languageScore===2"
+                                                   data-vv-as="总分" v-if="exam.language_score['type']===2"
                                                    v-model="exam.language_score['total_score']">
                                             <input type="text" name="toefl[total_score]" class="form-control"
                                                    placeholder="请输入成绩,满分90分"
                                                    v-validate={required:true,regex:/^90$|^[1-8][0-9]$|^[1-9]$/}
-                                                   data-vv-as="总分" v-if="languageScore===3"
+                                                   data-vv-as="总分" v-if="exam.language_score['type']===3"
                                                    v-model="exam.language_score['total_score']">
                                             <div class="validateTip" v-show="errors.has('language_score[total_score]')">
                                                 {{ errors.first("language_score[total_score]") }}
@@ -74,17 +74,17 @@
                                                     <input type="text" name="language_score[listen]" class="form-control"
                                                            placeholder="请输入分数，满分30分"
                                                            v-validate="{required:true,regex:/^30$|(^[1-2][0-9])$|^([1-9]){1}$/}"
-                                                           data-vv-as="听" v-if="languageScore ===1"
+                                                           data-vv-as="听" v-if="exam.language_score['type']===1"
                                                            v-model="exam.language_score['listen']">
                                                     <input type="text" name="toefl[listen]" class="form-control"
                                                            placeholder="请输入成绩，满分9分"
                                                            v-validate="{required:true,regex:/^([1-9]){1}$|^([1-9].[1-9])$/}"
-                                                           data-vv-as="听" v-if="languageScore ===2"
+                                                           data-vv-as="听" v-if="exam.language_score['type']===2"
                                                            v-model="exam.language_score['listen']">
                                                     <input type="text" name="toefl[listen]" class="form-control"
                                                            placeholder="请输入成绩,满分90分"
                                                            v-validate="{required:true,regex:/^90$|^[1-8][0-9]$|^[1-9]$/}"
-                                                           data-vv-as="听" v-if="languageScore ===3"
+                                                           data-vv-as="听" v-if="exam.language_score['type']===3"
                                                            v-model="exam.language_score['listen']">
                                                     <div class="validateTip" v-show="errors.has('language_score[listen]')">
                                                         {{ errors.first("language_score[listen]") }}
@@ -97,17 +97,17 @@
                                                     <input type="text" name="language_score[speak]" class="form-control"
                                                            placeholder="请输入分数，满分30分"
                                                            v-validate="{required:true,regex:/^30$|(^[1-2][0-9])$|^([1-9]){1}$/}"
-                                                           data-vv-as="说" v-if="languageScore===1"
+                                                           data-vv-as="说" v-if="exam.language_score['type']===1"
                                                            v-model="exam.language_score['speak']">
                                                     <input type="text" name="toefl[speak]" class="form-control"
                                                            placeholder="请输入成绩，满分9分"
                                                            v-validate="{required:true,regex:/^([1-9]){1}$|^([1-9].[1-9])$/}"
-                                                           data-vv-as="说" v-if="languageScore===2"
+                                                           data-vv-as="说" v-if="exam.language_score['type']===2"
                                                            v-model="exam.language_score['speak']">
                                                     <input type="text" name="toefl[speak]" class="form-control"
                                                            placeholder="请输入成绩,满分90分"
                                                            v-validate="{required:true,regex:/^90$|^[1-8][0-9]$|^[1-9]$/}"
-                                                           data-vv-as="说" v-if="languageScore===3"
+                                                           data-vv-as="说" v-if="exam.language_score['type']===3"
                                                            v-model="exam.language_score['speak']">
                                                     <div class="validateTip" v-show="errors.has('language_score[speak]')">
                                                         {{ errors.first("language_score[speak]") }}
@@ -124,17 +124,17 @@
                                                     <input type="text" name="language_score[read]" class="form-control"
                                                            placeholder="请输入分数，满分30分"
                                                            v-validate="{required:true,regex:/^30$|(^[1-2][0-9])$|^([1-9]){1}$/}"
-                                                           data-vv-as="读" v-if="languageScore===1"
+                                                           data-vv-as="读" v-if="exam.language_score['type']===1"
                                                            v-model="exam.language_score['read']">
                                                     <input type="text" name="toefl[read]" class="form-control"
                                                            placeholder="请输入成绩，满分9分"
                                                            v-validate="{required:true,regex:/^([1-9]){1}$|^([1-9].[1-9])$/}"
-                                                           data-vv-as="读" v-if="languageScore===2"
+                                                           data-vv-as="读" v-if="exam.language_score['type']===2"
                                                            v-model="exam.language_score['read']">
                                                     <input type="text" name="toefl[read]" class="form-control"
                                                            placeholder="请输入成绩,满分90分"
                                                            v-validate="{required:true,regex:/^90$|^[1-8][0-9]$|^[1-9]$/}"
-                                                           data-vv-as="读" v-if="languageScore===3"
+                                                           data-vv-as="读" v-if="exam.language_score['type']===3"
                                                            v-model="exam.language_score['read']">
                                                     <div class="validateTip" v-show="errors.has('language_score[read]')">
                                                         {{ errors.first("language_score[read]") }}
@@ -147,17 +147,17 @@
                                                     <input type="text" name="language_score[write]" class="form-control"
                                                            placeholder="请输入分数，满分30分"
                                                            v-validate="{required:true,regex:/^30$|(^[1-2][0-9])$|^([1-9]){1}$/}"
-                                                           data-vv-as="写" v-if="languageScore===1"
+                                                           data-vv-as="写" v-if="exam.language_score['type']===1"
                                                            v-model="exam.language_score['write']">
                                                     <input type="text" name="toefl[write]" class="form-control"
                                                            placeholder="请输入成绩，满分9分"
                                                            v-validate="{required:true,regex:/^([1-9]){1}$|^([1-9].[1-9])$/}"
-                                                           data-vv-as="写" v-if="languageScore===2"
+                                                           data-vv-as="写" v-if="exam.language_score['type']===2"
                                                            v-model="exam.language_score['write']">
                                                     <input type="text" name="toefl[write]" class="form-control"
                                                            placeholder="请输入成绩,满分90分"
                                                            v-validate="{required:true,regex:/^90$|^[1-8][0-9]$|^[1-9]$/}"
-                                                           data-vv-as="写" v-if="languageScore===3"
+                                                           data-vv-as="写" v-if="exam.language_score['type']===3"
                                                            v-model="exam.language_score['write']">
                                                     <div class="validateTip" v-show="errors.has('language_score[write]')">
                                                         {{ errors.first("language_score[write]") }}
@@ -1304,7 +1304,6 @@ export default {
       studentId: '',
       tabStatus: [0, 0, 0, 0],
       modify: 0, // 表单是否修改过 大于1是修改过
-      languageScore: 1,
       educationType: 1,
       exam: {
         is_language_score: true,

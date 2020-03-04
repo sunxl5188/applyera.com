@@ -183,7 +183,9 @@
                         </li>
                         <li class="dropdown" id="userBtnList">
                             <a class="dropdown-toggle" href="#">
-                                <i class="iconfont font22" v-if="userInfo.headphoto===''">&#xe62a;</i>
+                                <span class="div_vm" v-if="userInfo.headphoto===''">
+                                    <img :src="avatarUrl" style="width: 30px;height: 30px;">
+                                </span>
                                 <p v-if="userInfo.headphoto!==''"><img :src="userInfo.headphoto" alt=""></p>
                                 <span v-text="userInfo.company +','+ userInfo.name" class="div_vm"
                                       v-if="userInfo.company"></span>

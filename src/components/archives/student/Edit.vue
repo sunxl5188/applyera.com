@@ -120,8 +120,8 @@
                     <ul class="nav nav-tabs"><!--nav-justified-->
                         <li class="active"><a href="#tabs1" data-toggle="tab">学生概况</a></li>
                         <li><a href="#tabs2" data-toggle="tab">附件管理</a></li>
-                        <li><a href="#tabs3" data-toggle="tab">操作日志</a></li>
                         <li><a href="#tabs4" data-toggle="tab">其他资料</a></li>
+                        <li><a href="#tabs3" data-toggle="tab">操作日志</a></li>
                     </ul>
                 </div>
 
@@ -344,7 +344,7 @@
                                         <ul class="media-list bdb pb-15">
                                             <div class="media" v-for="(item,i) in tab1.follow" :key="i">
                                                 <a class="media-left" href="#">
-                                                    <img :src="item.head_img || 'http://placehold.it/50x50/FF5733/ffffff'"
+                                                    <img :src="item.head_img || avatarUrl"
                                                          style="width:50px; height:50px;" class="img-circle">
                                                 </a>
                                                 <div class="media-body">
@@ -508,29 +508,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane fade bgWhite pad-15" id="tabs3">
-                        <table class="table table-hover table-bordered">
-                            <thead>
-                            <tr>
-                                <th width="15%">操作时间</th>
-                                <th width="15%">操作人员</th>
-                                <th width="15%">操作类型</th>
-                                <th>操作内容</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item,i) in tab4" :key="i">
-                                <td>{{item.time}}</td>
-                                <td>{{item.operator}}</td>
-                                <td>{{item.type}}</td>
-                                <td>{{item.detail}}</td>
-                            </tr>
-                            <tr v-if="tab4.length===0">
-                                <td colspan="4" v-html="NoData"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
                     <div class="tab-pane fade bgWhite pad-15" id="tabs4">
                         <div class="commonTitle">
                             <span>推荐人</span>
@@ -582,7 +559,7 @@
                                 <i class="iconfont handPower" @click="addCommon">&#xe73e;</i>
                             </span>
                         </div>
-                        <div class="blk20"></div>
+                        <div class="blk-20"></div>
                         <div class="row">
                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb-15"
                                  v-for="(item,i) in tab2.other_contacts" :key="i">
@@ -612,11 +589,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="blk20"></div>
+                        <div class="blk-20"></div>
                         <div class="commonTitle">
                             <span>更多信息</span>
                         </div>
-                        <div class="blk20"></div>
+                        <div class="blk-20"></div>
                         <div class="row">
                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                 <div class="form-group">
@@ -651,6 +628,29 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tab-pane fade bgWhite pad-15" id="tabs3">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="15%">操作时间</th>
+                                <th width="15%">操作人员</th>
+                                <th width="15%">操作类型</th>
+                                <th>操作内容</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item,i) in tab4" :key="i">
+                                <td>{{item.time}}</td>
+                                <td>{{item.operator}}</td>
+                                <td>{{item.type}}</td>
+                                <td>{{item.detail}}</td>
+                            </tr>
+                            <tr v-if="tab4.length===0">
+                                <td colspan="4" v-html="NoData"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

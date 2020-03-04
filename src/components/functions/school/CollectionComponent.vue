@@ -6,7 +6,7 @@
       <a href="#majortab3" data-toggle="tab" class="btn btn-default">硕士专业</a>
       <!--<a href="#majortab4" data-toggle="tab" class="btn btn-default">预科语言</a>-->
     </div>
-    <div class="blk15"></div>
+    <div class="blk-15"></div>
     <div class="tab-content">
       <div class="tab-pane fade in active" id="majortab1">
         <div class="row">

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="blk50"></div>
+        <div class="blk-50"></div>
         <div class="login">
             <form action="" method="POST" class="form-horizontal" @submit.prevent="validateBeforeSubmit"
                   autocomplete="off">

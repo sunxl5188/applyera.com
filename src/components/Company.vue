@@ -15,7 +15,7 @@
 
                 <div class="row">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <div class="blk50"></div>
+                        <div class="blk-50"></div>
                         <div class="clearfix pb-25">
                             <div class="clearfix text-center">
                                 <a href="#" data-toggle="modal" data-backdrop="static" data-target="#CompanyImage">

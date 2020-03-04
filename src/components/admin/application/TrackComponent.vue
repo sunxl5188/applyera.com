@@ -123,8 +123,9 @@
                                                 data-size="10"
                                                 data-width="fit" v-model.number="item.interview_status">
                                             <option value="">请选择</option>
-                                            <option value="2">无需面试</option>
                                             <option value="1">待面试</option>
+                                            <option value="2">无需面试</option>
+                                            <option value="3">已完成</option>
                                         </select>
                                     </div>
                                 </div>
@@ -231,8 +232,8 @@ export default {
   name: 'TrackComponent',
   props: {
     id: {
-      type: Number,
-      default: 0
+      type: String,
+      default: ''
     },
     majorList: {
       type: Array,

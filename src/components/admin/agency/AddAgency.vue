@@ -176,7 +176,7 @@
                     </div>
                 </div>
 
-                <div class="blk30"></div>
+                <div class="blk-30"></div>
 
                 <AgencyTabs :type="type" :picList="picList" :oldBank="oldBank" :logo="logo" ref="agencyTabs"
                             @setChildForm="setChildForm"/>

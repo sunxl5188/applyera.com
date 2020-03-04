@@ -43,7 +43,7 @@
                 <li :class="{active:tab===2}" @click="setTabs(2)"><a href="javascript:void(0);">渠道管理</a></li>
                 <li :class="{active:tab===3}" @click="setTabs(3)"><a href="javascript:void(0);">线索结算</a></li>
             </ul>
-            <div class="blk20"></div>
+            <div class="blk-20"></div>
         </div>
         <div class="tab-content">
             <div class="tab-pane fade in active">

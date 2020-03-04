@@ -22,7 +22,7 @@
                             <p class="cded font18">{{detail.header.duration}}</p>
                             <p>课程时长</p>
                         </div>
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"><!--权限查看-->
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" v-if="userInfo.access.show_commission===1"><!--权限查看-->
                             <p class="cded font18">{{detail.header.commission}}</p>
                             <p>预计返佣</p>
                         </div>
@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import JsZip from 'jszip'
 import saveAs from 'file-saver'
 import db from '@~/js/request'
@@ -112,6 +113,9 @@ export default {
       },
       siteUrl: window.ajaxBaseUrl
     }
+  },
+  computed: {
+    ...mapState(['userInfo'])
   },
   mounted () {
     let self = this

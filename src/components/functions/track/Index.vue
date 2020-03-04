@@ -110,6 +110,7 @@
                                 <span>资料接收(<span v-if="item.material_status===0" class="c999">等待</span><span
                                         v-if="item.material_status===1" class="cded">已提交</span><span
                                         v-if="item.material_status===2" class="cded">已接收</span>)</span>
+                                <div class="clearfix c999 font12">{{item.material_status_time}}</div>
                             </div>
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="clearfix">
@@ -119,6 +120,7 @@
                                     <i class="iconfont cded" v-if="item.pay_has===2">&#xe719;</i>
                                 </div>
                                 <span>申请费(<span v-if="item.pay_has===1 && item.pay_status===0" class="c999">待支付</span><span v-if="item.pay_has===1 && item.pay_status===1" class="cded">已支付</span><span v-if="item.pay_has===2" class="cded">无需支付</span><span v-if="item.pay_has===0" class="c999">待确定</span>)</span>
+                                <div class="clearfix c999 font12">{{item.pay_time}}</div>
                             </div>
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="clearfix">
@@ -128,6 +130,7 @@
                                 </div>
                                 <span>学生面试(<span v-if="item.interview_status===0" class="c999">待确定</span><span v-if="item.interview_status===1" class="cded">待面试</span><span v-if="item.interview_status===2" class="cded">无需面试</span>)
                                 </span>
+                                <div class="clearfix c999 font12">{{item.interview_status_time}}</div>
                             </div>
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="clearfix">
@@ -137,6 +140,7 @@
                                 </div>
                                 <span>结果发放(<span v-if="item.res_status===0" class="c999">等待</span><span
                                         v-if="item.res_status===1" class="cded">offer</span><span v-if="item.res_status===2" class="cf00">拒信</span>)</span>
+                                <div class="clearfix c999 font12">{{item.res_status_time}}</div>
                             </div>
                         </div>
                     </td>

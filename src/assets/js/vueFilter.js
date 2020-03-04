@@ -5,6 +5,7 @@ import vueCookie from 'vue-cookies'
 
 Vue.prototype.LoadingImg = '<div class="clearfix text-center Loading"><i></i><span>数据加载中...</span></div>'
 Vue.prototype.NoData = '<div class="clearfix text-center"><i class="iconfont font26">&#xe6d8;</i><div>暂无数据</div></div>'
+Vue.prototype.avatarUrl = window.location.host.indexOf('localhost') >= 0 ? '/static/images/defaultface.png' : '/manage/static/images/defaultface.png'
 
 Vue.prototype.currentTime = function (type) {
   let date = new Date()

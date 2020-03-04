@@ -466,7 +466,7 @@
                         </div>
                     </div>
 
-                    <div class="blk20"></div>
+                    <div class="blk-20"></div>
                     <button type="button" class="btn btn-block btn-info" data-target="#schoolMajor"
                             @click="viewSchoolModal">
                         <i class="iconfont font22">&#xe73e;</i>
@@ -497,7 +497,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="blk20"></div>
+                        <div class="blk-20"></div>
                         <EvaluationComponent @evaluaCallbacks="evaluaCallbacks"></EvaluationComponent>
                     </div>
 
@@ -517,7 +517,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="blk20"></div>
+                    <div class="blk-20"></div>
                     <button type="button" class="btn btn-block" data-backdrop="static" data-target="addBtn"
                             @click="addPlanTime">
                         <i class="iconfont font22">&#xe73e;</i>
@@ -542,7 +542,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="blk20"></div>
+                    <div class="blk-20"></div>
                     <BudgetComponent @budgetCallbacks="budgetCallbacks"/>
                 </div>
                 <!--添加自定义学校-->
@@ -892,15 +892,16 @@ export default {
       db.postRequest('/Institution/Plan/planEdit', params).then(res => {
         if (res.status === 1) {
           if (self.id === '') {
+            self.id = res.data
             self.layer.alert('保存成功', {icon: 1}, function (i) {
               self.layer.close(i)
-              self.$router.push('/functions/plan/view?id=' + res.data)
+              // self.$router.push('/functions/plan/view?id=' + res.data)
             })
           } else {
             if (state !== 'focusout') {
               self.layer.alert('保存成功', {icon: 1}, function (i) {
                 self.layer.close(i)
-                self.$router.push('/functions/plan/view?id=' + self.id)
+                // self.$router.push('/functions/plan/view?id=' + self.id)
               })
             }
           }

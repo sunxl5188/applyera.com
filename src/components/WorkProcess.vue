@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <div class="blk65"></div>
+    <div class="blk-65"></div>
 
     <div class="row" :style="'width:'+list.length * 270+'px;'">
       <div v-for="(item, i) in list" :key="i" class="masonryItem">

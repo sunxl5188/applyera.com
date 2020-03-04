@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-group ml-10">
-                                <router-link to="/functions/answer/addAnswer" class="btn btn-default dropdown-toggle">添加文书</router-link>
+                                <router-link to="/functions/answer/addAnswer" class="btn btn-default dropdown-toggle"><i class="iconfont">&#xe73e;</i> 添加文书</router-link>
                             </div>
                         </div>
                     </div>

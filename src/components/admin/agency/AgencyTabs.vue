@@ -163,7 +163,7 @@
                                 <button type="button" class="btn btn-primary ml-15" @click="pagechange(1)">搜索</button>
                                 <button type="button" class="btn btn-default ml-15" @click="clearData">清空</button>
                             </form>
-                            <div class="blk20"></div>
+                            <div class="blk-20"></div>
                             <div class="table-responsive">
                                 <table class="table table-hover table-text-over table-bordered table-customize">
                                     <thead>

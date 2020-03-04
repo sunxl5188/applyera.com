@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="blk15"></div>
+        <div class="blk-15"></div>
         <div class="clearfix">
             <div class="student_statistics">
                 <div class="student_statistics_left">
@@ -34,7 +34,7 @@
             <div id="myChartsTow"></div>
         </div>
 
-        <div class="blk30"></div>
+        <div class="blk-30"></div>
 
         <table class="table table-customize">
             <thead>

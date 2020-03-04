@@ -64,7 +64,7 @@
         <div class="progress progress-4" :class="step">
             <div class="progress-bar" aria-valuemax="100" style="width:25%;"></div>
         </div>
-        <div class="blk30"></div>
+        <div class="blk-30"></div>
     </div>
 </template>
 

@@ -152,7 +152,7 @@
                 </div>
             </div>
 
-            <div class="blk15"></div>
+            <div class="blk-15"></div>
 
             <ul class="nav nav-tabs"><!--nav-justified-->
                 <li role="presentation" class="active"><a href="#tabs1" data-toggle="tab">附件管理</a></li>

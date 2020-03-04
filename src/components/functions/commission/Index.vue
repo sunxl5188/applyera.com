@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <div class="blk30"></div>
+                <div class="blk-30"></div>
 
                 <div class="commonTitle Landscape">
                     <span class="pull-left">预计返佣列表</span>

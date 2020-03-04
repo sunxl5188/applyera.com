@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="blk30"></div>
+                <div class="blk-30"></div>
                 <ul class="nav nav-tabs"><!--nav-justified-->
                     <li role="presentation" class="active"><a href="#Addgongneng1" data-toggle="tab">关联用户</a></li>
                     <li role="presentation"><a href="#Addgongneng2" data-toggle="tab">权限分配</a></li>
@@ -175,7 +175,7 @@
                                                                            v-model="child.check"> {{child.name}}
                                                                 </label>
                                                             </div>
-                                                            <div class="blk20"></div>
+                                                            <div class="blk-20"></div>
                                                         </div>
                                                     </div>
                                                 </div>

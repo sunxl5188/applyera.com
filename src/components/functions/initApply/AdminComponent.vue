@@ -11,7 +11,7 @@
                     </div>
                 </div>
             </div>
-            <div class="blk15"></div>
+            <div class="blk-15"></div>
 
             <div class="panel panel-default">
                 <div class="panel-heading">01-上传院校回执</div>

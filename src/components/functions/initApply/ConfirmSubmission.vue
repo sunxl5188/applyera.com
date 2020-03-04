@@ -5,7 +5,7 @@
             <img src="../../../../static/images/011.jpg" alt="">
             <span class="ml-10">请确认您填写的资料以及院校题目是否无误。若确认无误，请选择院校进行提交，申学纪将会把您的资料递交给申报院校。</span>
         </div>
-        <div class="blk20"></div>
+        <div class="blk-20"></div>
         <table class="table table-bordered table-customize" id="confirmTable">
             <thead>
             <tr>

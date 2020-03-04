@@ -58,7 +58,7 @@
                 </router-link>
             </div>
         </div>
-        <div class="blk30"></div>
+        <div class="blk-30"></div>
         <!-- 发送信息给学生start-->
         <ShareIt :info="sendStudentString" v-if="id"></ShareIt>
         <!-- 发送信息给学生end-->

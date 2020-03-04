@@ -192,7 +192,7 @@
                     </div>
                 </div>
 
-                <div class="blk30"></div>
+                <div class="blk-30"></div>
 
                 <AgencyTabs :type="type" :oldBank="oldBank" :picList="picList" :logo="logo"
                             :bank_account="bank_account" ref="agencyTabs"

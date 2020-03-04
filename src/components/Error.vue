@@ -1,6 +1,6 @@
 <template>
     <div class="text-center pt-80 pb-80">
-        <div class="blk50"></div>
+        <div class="blk-50"></div>
         <div class="clearfix"><img src="../../static/images/404.png" alt=""></div>
         <div class="clearfix pt-40">
             <h4>糟糕！您访问的页面找不到啦！程序猿小哥哥正在赶来..</h4>

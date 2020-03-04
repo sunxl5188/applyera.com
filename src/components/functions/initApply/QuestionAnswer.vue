@@ -8,7 +8,7 @@
                     <img src="../../../../static/images/011.jpg" alt="">
                     <span class="ml-10">请您确认院校要求的文书材料已完成并已提交，申请提交后文书将不可修改</span>
                 </div>
-                <div class="blk20"></div>
+                <div class="blk-20"></div>
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -50,7 +50,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="blk20"></div>
+                <div class="blk-20"></div>
                 <div class="clearfix text-center" v-if="submitStatus===0">
                     <button type="button" class="btn btn-default" @click="nextPage">下一页</button>
                     <button type="submit" class="btn btn-primary ml-20">保存</button>

@@ -41,7 +41,7 @@
                 <div class="lh22">{{item.name}}</div>
             </div>
         </div>
-        <div class="blk25"></div>
+        <div class="blk-25"></div>
     </div>
 </template>
 

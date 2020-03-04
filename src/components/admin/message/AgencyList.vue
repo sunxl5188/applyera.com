@@ -24,7 +24,7 @@
                                 <button type="button" class="btn btn-primary ml-15" @click="pagechange">搜索</button>
                                 <button type="reset" class="btn btn-default ml-15" @click="clearData">清空</button>
                             </form>
-                            <div class="blk20"></div>
+                            <div class="blk-20"></div>
                             <table class="table table-condensed table-hover table-bordered">
                                 <thead>
                                 <tr>
