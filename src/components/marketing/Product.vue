@@ -105,9 +105,9 @@
                 <thead>
                 <tr>
                     <th class="w5"></th>
-                    <th>订单号</th>
+                    <th>产品编号</th>
                     <th>国家</th>
-                    <th>名称</th>
+                    <th>产品名称</th>
                     <th>价格</th>
                     <th class="w10">发布者</th>
                     <th class="w20">发布时间</th>
@@ -119,7 +119,7 @@
                     <td>
                         <input type="checkbox" name="id[]" :value="item.id">
                     </td>
-                    <td>{{item.order_no}}</td>
+                    <td v-html="highlight(item.order_no,keywords)"></td>
                     <td>{{item.country|countryActive}}</td>
                     <td>{{item.prod_name}}</td>
                     <td>￥{{item.fee_cny}}</td>

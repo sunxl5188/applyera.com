@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="pull-left w30">联系微信</div>
+                                    <div class="pull-left w30">顾问微信</div>
                                     <div class="pull-left w70">
                                         <span v-text="insInfo.wechat"></span>
                                     </div>

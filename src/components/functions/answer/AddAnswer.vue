@@ -146,7 +146,7 @@
                                     <div class="media-item" :class="{gtTwo:item.length>1}"
                                          v-for="(items, k) in item" :key="k" :data-id="items.id">
                                         <div class="media-left">
-                                            <img :src="items.head_img || '../../static/images/defaultface.png'" class="img-circle userHeader"/>
+                                            <img :src="items.head_img || avatarUrl" class="img-circle userHeader"/>
                                         </div>
                                         <div class="media-body">
                                             <div class="media-heading">
@@ -166,7 +166,7 @@
                                 </div>
                                 <div class="media" v-show="item[0]['solve_status']===0">
                                     <div class="media-left">
-                                        <img :src="userInfo.headphoto  || '../../static/images/defaultface.png'" class="img-circle userHeader"/>
+                                        <img :src="userInfo.headphoto  || avatarUrl" class="img-circle userHeader"/>
                                     </div>
                                     <div class="media-body">
                                         <div class="clearfix pb-10 pt-5">

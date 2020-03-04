@@ -643,7 +643,7 @@ export default new Router({
           name: 'saleslead',
           component: resolve => require(['@#/marketing/saleslead/Index'], resolve),
           meta: {
-            title: '渠道管理', requiresAuth: true, group: ['marketing', 0, '']
+            title: '渠道工具', requiresAuth: true, group: ['marketing', 0, '']
           },
           children: [
             {
@@ -651,7 +651,7 @@ export default new Router({
               name: 'TentacleDetail',
               component: resolve => require(['@#/marketing/saleslead/TentacleDetail'], resolve),
               meta: {
-                title: '渠道管理详情', requiresAuth: true, group: ['marketing', 0, 0]
+                title: '渠道工具详情', requiresAuth: true, group: ['marketing', 0, 0]
               }
             }
           ]
