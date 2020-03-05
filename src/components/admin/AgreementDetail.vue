@@ -104,6 +104,7 @@ export default {
       let self = this
       _.delay(() => {
         window.KindEditor.create('#agreement-content', {
+          width: 800,
           height: 400,
           resizeType: 0, // 2或1或0，2时可以拖动改变宽度和高度，1时只能改变高度，0时不能拖动
           basePath: '/static/js/kindeditor/',
