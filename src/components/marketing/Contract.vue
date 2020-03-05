@@ -59,7 +59,7 @@
                             <div class="form-group ml-10">
                                 <router-link to="/marketing/contract/detail" class="btn btn-default"><i
                                         class="iconfont">&#xe73e;</i>
-                                    创建合同
+                                    添加
                                 </router-link>
                             </div>
                         </div>
@@ -90,7 +90,9 @@
                         </div>
                     </td>
                     <td v-html="highlight(item.yht_no,keywords)"></td>
-                    <td v-html="highlight(item.yht_name,keywords)"></td>
+                    <td>
+                        <router-link :to="{path:'/marketing/contract/detail', query:{ id:item.id }}" v-html="highlight(item.yht_name,keywords)"></router-link>
+                    </td>
                     <td v-html="highlight(item.user_name,keywords)"></td>
                     <td>{{item.add_time}}</td>
                     <td class="text-center">
@@ -223,6 +225,15 @@ export default {
       })
     },
     clearData () {
+      let self = this
+      self.keywords = ''
+      self.date = ''
+      self.userId = ''
+      self.time_sort = 0
+      self.pageChange()
+      _.delay(() => {
+        $('.selectpicker').selectpicker('refresh')
+      }, 500)
     },
     deleteId () {},
     listSort () {

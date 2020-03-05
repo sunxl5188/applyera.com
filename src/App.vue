@@ -135,6 +135,7 @@
                         </router-link>
                         <router-link to="/admin/payRecording" class="list-group-item">支付记录</router-link>
                         <router-link to="/admin/authReview" class="list-group-item">认证审核</router-link>
+                        <router-link to="/admin/agreement" class="list-group-item">服务条款</router-link>
                     </div>
                 </li>
             </ul>

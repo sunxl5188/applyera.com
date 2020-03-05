@@ -1000,6 +1000,28 @@ export default new Router({
               }
             }
           ]
+        },
+        {
+          path: 'agreement',
+          name: 'agreement',
+          component: resolve => require(['@#/admin/Agreement'], resolve),
+          meta: {
+            title: '服务协议',
+            requiresAuth: true,
+            group: ['applyoversea', 14, '']
+          },
+          children: [
+            {
+              path: 'detail',
+              name: 'agreementDetail',
+              component: resolve => require(['@#/admin/AgreementDetail'], resolve),
+              meta: {
+                title: '审核详情',
+                requiresAuth: true,
+                group: ['applyoversea', 14, 0]
+              }
+            }
+          ]
         }
       ]
     },

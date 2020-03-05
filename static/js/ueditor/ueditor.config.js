@@ -19,9 +19,6 @@
      * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
      */
   var baseURL = '//' + window.location.host + '/'
-  if (window.location.port) {
-    baseURL = baseURL + window.location.port + '/'
-  }
   if (baseURL.indexOf('localhost') >= 0) {
     window.UEDITOR_HOME_URL = baseURL + 'static/js/ueditor/'
   } else {

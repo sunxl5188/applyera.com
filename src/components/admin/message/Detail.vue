@@ -312,7 +312,7 @@ export default {
         window.KindEditor.create('#content', {
           height: 200,
           resizeType: 0, // 2或1或0，2时可以拖动改变宽度和高度，1时只能改变高度，0时不能拖动
-          themesPath: '/static/js/kindeditor/themes/',
+          basePath: '/static/js/kindeditor/',
           allowPreviewEmoticons: false, // true时鼠标放在表情上可以预览表情。
           allowImageUpload: false, // true时显示图片上传按钮。
           uploadJson: '', // 指定上传文件的服务器端程序

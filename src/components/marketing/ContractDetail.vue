@@ -6,12 +6,12 @@
                     <div class="headerTitle div_vm">合同详情</div>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline text-right">
-                    <button type="button" class="btn btn-default" @click="startUpload"><i class="iconfont">&#xe640;</i>本地上传
+                    <button type="button" class="btn btn-default ml-10" @click="startUpload"><i class="iconfont">&#xe640;</i>本地上传
                     </button>
-                    <button type="button" class="btn btn-default"><i class="iconfont">&#xe637;</i>选择模板</button>
-                    <button type="button" class="btn btn-default" @click="saveContract"><i class="iconfont">&#xe637;</i>保存
+                    <button type="button" class="btn btn-default ml-10"><i class="iconfont">&#xe637;</i>选择模板</button>
+                    <button type="button" class="btn btn-default ml-10" @click="saveContract"><i class="iconfont">&#xe637;</i>保存
                     </button>
-                    <button type="button" class="btn btn-default" @click="$router.back()"><i
+                    <button type="button" class="btn btn-default ml-10" @click="$router.back()"><i
                             class="iconfont">&#xe64f;</i>返回
                     </button>
                 </div>

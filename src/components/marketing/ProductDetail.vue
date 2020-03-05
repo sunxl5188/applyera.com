@@ -93,7 +93,7 @@
                                     <input type="radio" name="yht_status"  class="custom-control-input" id="yht_status1" :value=1 v-model="info.yht_status" :checked="info.yht_status===1">
                                     <label class="custom-control-label" for="yht_status1">需要</label>
                                 </div>
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div class="custom-control custom-radio custom-control-inline ml-15">
                                     <input type="radio" name="yht_status" class="custom-control-input" id="yht_status2" :value=0 v-model="info.yht_status" :checked="info.yht_status===0">
                                     <label class="custom-control-label" for="yht_status2">不需要</label>
                                 </div>
@@ -152,6 +152,8 @@ export default {
     self.$nextTick(() => {
       if (self.id !== '') {
         self.getDetail(self.id)
+      } else {
+        $('.selectpicker').selectpicker('refresh')
       }
     })
   },
