@@ -187,7 +187,7 @@
                                             </tbody>
                                         </table>
                                         <div class="panel-noData" v-if="tab1.material.length === 0">
-                                            <p class="c999">该学生还没有申请中的院校</p>
+                                            <p class="c999">该学生还没有申请资料</p>
                                             <router-link :to="{path:'/functions/applyInfo/applyType',query:{sid:id}}" class="cded">点击前往创建
                                             </router-link>
                                         </div>
