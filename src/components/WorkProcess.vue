@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid containerBody" :style="'height:'+wh+'px;'">
+  <div class="container-fluid containerBody">
     <div class="childHeader bgGray">
       <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -503,7 +503,6 @@ export default {
   data () {
     return {
       loading: true,
-      wh: 0,
       nation: nation,
       // 筛选
       keywords: '',
@@ -557,7 +556,6 @@ export default {
   },
   mounted () {
     let self = this
-    self.wh = $(window).height() - 50
     self.$nextTick(() => {
       // PinYin.getCamelChars("中")
       self.pagechange()
@@ -834,10 +832,8 @@ export default {
 
 <style scoped lang="less">
 .containerBody {
-  margin:-20px -15px;overflow:auto;
-
   & .childHeader {
-    position:fixed;right:0;top:50px;z-index:10;width:100%;padding:15px;height:65px;
+    /* position:fixed;right:0;top:50px;z-index:10;width:100%;padding:15px;height:65px; */
   }
 }
 

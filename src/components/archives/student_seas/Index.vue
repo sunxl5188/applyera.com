@@ -83,7 +83,7 @@
                     <button type="button" class="btn btn-default ml-10" @click="receive()">领取</button>
                     <div class="dropdown ml-10" style="display: inline-block;">
                         <button class="btn btn-default dropdown-toggle" type="button"
-                                data-toggle="dropdown">编辑
+                                data-toggle="dropdown">操作
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
