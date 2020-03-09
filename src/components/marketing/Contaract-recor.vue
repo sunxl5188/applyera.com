@@ -9,10 +9,10 @@
         </div>
         <ul class="nav nav-tabs"><!--nav-justified-->
             <li :class="{active:tab===1}">
-                <router-link to="/marketing/contract">合同模板</router-link>
+                <router-link to="/marketing/contract" exact>合同模板</router-link>
             </li>
             <li :class="{active:tab===2}">
-                <router-link to="/marketing/contractRecor">签署记录</router-link>
+                <router-link to="/marketing/contract/recording">签署记录</router-link>
             </li>
             <span class="pull-right form-inline">
                 <div class="form-group form-search">
@@ -38,13 +38,13 @@
                     <td width="10%" class="text-center"><b>签署时间</b></td>
                     <td>
                         <a href="javascript:void(0);" :class="{'label-primary':type===1 && end_time === ''}"
-                           class="label">不限</a>
+                           class="label" @click="setFilter(1)">不限</a>
                         <a href="javascript:void(0);" :class="{'label-primary':type===2 && end_time === ''}"
-                           class="label">本周</a>
+                           class="label" @click="setFilter(2)">本周</a>
                         <a href="javascript:void(0);" :class="{'label-primary':type===3 && end_time === ''}"
-                           class="label">本月</a>
-                        <a href="javascript:void(0);" :class="{'label-primary':type===3 && end_time === ''}"
-                           class="label">本季度</a>
+                           class="label" @click="setFilter(3)">本月</a>
+                        <a href="javascript:void(0);" :class="{'label-primary':type===4 && end_time === ''}"
+                           class="label" @click="setFilter(4)">本季度</a>
                         <span id="customTime" contenteditable="true" data-placeholder="自定义时间段"
                               :class="type==='' && end_time !== ''?'active':''"></span>
                     </td>
@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 import Pagination from '@#/shared/Pagination'
 import db from '@~/js/request'
 
@@ -130,7 +131,7 @@ export default {
       appKey: '',
       tab: 2,
       keywords: '',
-      type: '',
+      type: 1,
       start_time: '',
       end_time: '',
       time_sort: 0,
@@ -139,6 +140,9 @@ export default {
       current: 1,
       contractUrl: ''
     }
+  },
+  created () {
+    this.debouncePagechange = _.debounce(this.pageChange, 1000)
   },
   mounted () {
     let self = this
@@ -159,6 +163,13 @@ export default {
     })
   },
   methods: {
+    setFilter (i) {
+      let self = this
+      self.type = i
+      self.start_time = ''
+      self.end_time = ''
+      self.debouncePagechange()
+    },
     pageChange (page) {
       let self = this
       let p = page || 1
@@ -175,7 +186,19 @@ export default {
         self.loading = false
       })
     },
-    retract () {},
+    retract () {
+      let $this = $('.filterFollow')
+      if ($this.attr('style') === undefined) {
+        $this.height($this.outerHeight())
+      }
+      if ($this.height() > 0) {
+        $this.addClass('hiddenS')
+        $('.btn-Collapse').html('展开筛选<i class="iconfont">&#xe630;</i>')
+      } else {
+        $this.removeClass('hiddenS')
+        $('.btn-Collapse').html('收起筛选<i class="iconfont">&#xe688;</i>')
+      }
+    },
     listSort () {
       let self = this
       if (self.time_sort === 0) {
@@ -231,7 +254,7 @@ export default {
         }
       })
     },
-    downFile (imgUrl) {
+    downFile (imgUrl, downName) {
       let xhr
       if (window.XMLHttpRequest) {
         xhr = new XMLHttpRequest()
@@ -250,8 +273,11 @@ export default {
             zip.file(fileName, this.response)
             zip.generateAsync({ type: 'blob' })
             .then(function (content) {
-              saveAs(content, 'download.zip')
+              saveAs(content, downName + '.zip')
             })
+          }
+          if (this.status === 404) {
+            self.layer.alert('未找到相关文件', { icon: 2 })
           }
         }
         xhr.send()
@@ -260,15 +286,34 @@ export default {
       }
     },
     batchDown () {
-
     }
   },
   components: { Pagination },
-  watch: {}
+  watch: {
+    keywords () {
+      this.debouncePagechange()
+    }
+  }
 }
 </script>
 
 <style scoped lang="less">
+.filterFollow {
+    -webkit-transition: all .3s ease 0s;
+    -moz-transition: all .3s ease 0s;
+    -ms-transition: all .3s ease 0s;
+    transition: all .3s ease 0s;
+
+    &.hiddenS {
+        height: 1px !important;
+        overflow: hidden;
+    }
+
+    & table {
+        margin-bottom: 0;
+    }
+}
+
 .nav.nav-tabs {
     border: none;
 

@@ -392,9 +392,7 @@ export default {
               }
               self.layer.alert(res.msg, {icon: 1})
             } else {
-              self.layer.alert(res.msg, {
-                icon: 2
-              })
+              self.layer.alert(res.msg, {icon: 2})
             }
           })
         }
@@ -416,6 +414,8 @@ export default {
           } else {
             self.$router.push('/functions/initApply/UploadData?id=' + res.data)
           }
+        } else {
+          self.layer.alert(res.msg, {icon: 2})
         }
       })
     },

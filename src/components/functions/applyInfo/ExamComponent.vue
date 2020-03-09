@@ -51,7 +51,7 @@
                                                    v-model="exam.language_score['total_score']">
                                             <input type="text" name="language_score[total_score]" class="form-control"
                                                    placeholder="请输入成绩，满分9分"
-                                                   v-validate={required:true,regex:/^([1-9]){1}$|^([1-9].[1-9])$/}
+                                                   v-validate={required:true,regex:/^([1-9]){1}$|^([0-9].[1-9])$/}
                                                    data-vv-as="总分" v-if="exam.language_score['type']===2"
                                                    v-model="exam.language_score['total_score']">
                                             <input type="text" name="toefl[total_score]" class="form-control"

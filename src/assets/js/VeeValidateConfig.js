@@ -111,7 +111,7 @@ Validator.extend('money', {
 // 验证英文内容
 Validator.extend('ens', {
   'getMessage': (field, args) => `${args}` || `${field}格式不正确`,
-  'validate': value => /^(?![0-9_])(?!.*?_$)[a-zA-Z0-9_,.\s-()?!;:\-@$%*&#%+=']{1,}$/.test(value)
+  'validate': value => /^\w[\w\s-()?!;:\-@$%*&#%+=,.]+[\w-()?!;:\-@$%*&#%+=,.]{1,}$/.test(value)
 })
 
 // 验证正数与正浮点数
