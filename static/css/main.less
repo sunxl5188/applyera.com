@@ -707,11 +707,19 @@ textarea {
   z-index: 1;
   position: relative;
   margin: 0 0 0 auto;
+  padding-top: 65px;
 
   & > header {
-    width: 100%;
+    width: calc(100% - 200px);
+    -webkit-transition: all .3s ease 0s;
+    -moz-transition: all .3s ease 0s;
+    -ms-transition: all .3s ease 0s;
+    transition: all .3s ease 0s;
     height: 50px;
-    margin-bottom: 15px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 100;
 
     & .navbar {
       margin-bottom: 0;
@@ -853,6 +861,10 @@ textarea {
 
   &.zoomOut {
     width: calc(100% - 60px);
+
+    & > header {
+      width: calc(100% - 60px);
+    }
   }
 }
 
@@ -1915,6 +1927,7 @@ span[contenteditable], div[contenteditable] {
     text-indent: 25px;
     min-width: 18px;
     height: 18px;
+
     &:before {
       position: absolute;
       top: 0;

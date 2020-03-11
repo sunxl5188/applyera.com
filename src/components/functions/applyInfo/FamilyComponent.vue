@@ -5,6 +5,16 @@
             <form id="FamilyForm" class="form-horizontal" @submit.prevent="validateBeforeSubmit">
                 <input type="hidden" name="id" v-model="id" />
                 <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <label>我要申请美国的学校</label>
+                            <span class="checkbox" style="display: inline-block;">
+                              <input type="checkbox" name="" value="1">
+                          </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                   <div class="form-group">
                     <label>父母婚姻状况 <font class="cf00">*</font></label>
@@ -99,12 +109,10 @@
                 <div class="row" id="brotherWrap">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="form-group">
-                            <label>我有直属兄弟/姐妹</label>
+                            <label for="brother">我有直属兄弟/姐妹</label>
                             <div class="checkbox" style="display: inline-block;">
-                                <label>
-                                    <input type="checkbox" name="brother_is" data-obj="family" data-name="brother_is"
-                                           v-model="family.brother_is"> &nbsp;
-                                </label>
+                                <input type="checkbox" name="brother_is" id="brother" data-obj="family" data-name="brother_is"
+                                       v-model="family.brother_is"> &nbsp;
                             </div>
 
                             <!--************************************-->

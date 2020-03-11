@@ -117,7 +117,10 @@
                 <tbody>
                 <tr v-for="(item, i) in list" :key="i">
                     <td>
-                        <input type="checkbox" name="id[]" :value="item.id">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" name="id[]" :id="'id'+i" :value="item.id" class="custom-control-input">
+                            <label class="custom-control-label" :for="'id'+i"></label>
+                        </div>
                     </td>
                     <td v-html="highlight(item.order_no,keywords)"></td>
                     <td>{{item.country|countryActive}}</td>
@@ -220,11 +223,7 @@ export default {
         if (isCheck) {
           self.arrId.push(val)
         } else {
-          self.arrId.map((item, i) => {
-            if (item === val) {
-              self.arrId.splice(i, 1)
-            }
-          })
+          _.pull(self.arrId, val)
         }
       })
       // 获取如何设置URL

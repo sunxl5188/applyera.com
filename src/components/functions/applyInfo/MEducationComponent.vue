@@ -122,7 +122,7 @@
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label>就读时间 <font class="cf00">*</font></label>
-                        <input type="text" name="enter_time" data-name="enter_time" class="form-control times2"
+                        <input type="text" name="enter_time" data-name="enter_time" class="form-control"
                                placeholder="请输入学时间"
                                v-validate="'required'" data-vv-as="就读时间"
                                v-model="education.enter_time">
@@ -157,7 +157,7 @@
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label>学位等级 <font class="cf00">*</font></label>
-                        <select name="degree" class="form-control selectpicker" v-validate="'required'" data-vv-as="学位等级"
+                        <select name="degree" class="form-control selectpicker" v-validate="'required'" data-vv-as="学位等级" data-drop-auto="false"
                                 v-model="education.degree">
                             <option value="">请选择</option>
                             <option :value="item.id" v-for="(item, i) in degree" :key="i">{{item.cn}}</option>
@@ -171,7 +171,7 @@
                     <div class="form-group">
                         <label>总课时 </label>
                         <input type="text" name="period" class="form-control"
-                               placeholder="请输入总课时" v-model="education.period">
+                               placeholder="总课时(如成绩单上有体现请填写)" v-model="education.period">
                     </div>
                 </div>
             </div>

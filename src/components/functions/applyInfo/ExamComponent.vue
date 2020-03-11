@@ -185,7 +185,7 @@
                           </span>
 
                             <div class="pt-15" v-if="exam.is_academic_score">
-                                <div v-for="(itemObj, key) in examArr" :key="key">
+                                <div v-for="(itemObj, key) in exam" :key="key">
                                     <div v-if="key==='gre'">
                                         <!--GRE-->
                                         <div class="clearfix elementList" v-for="(item, i) in itemObj" :key="'gre'+i">
@@ -1321,8 +1321,7 @@ export default {
         gcse: [],
         btec: [],
         ib: []
-      },
-      examArr: {}
+      }
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -1363,18 +1362,6 @@ export default {
           if (res.status === 1) {
             self.tabStatus = res.data.tab_status
             self.exam = res.data
-            if (res.data.gre.length > 0) self.examArr.gre = res.data.gre
-            if (res.data.gre_subject.length > 0) self.examArr.gre_subject = res.data.gre_subject
-            if (res.data.gmat.length > 0) self.examArr.gmat = res.data.gmat
-            if (res.data.sat.length > 0) self.examArr.sat = res.data.sat
-            if (res.data.sat_subject.length > 0) self.examArr.sat_subject = res.data.sat_subject
-            if (res.data.college_enter_exam.length > 0) self.examArr.college_enter_exam = res.data.college_enter_exam
-            if (res.data.act.length > 0) self.examArr.act = res.data.act
-            if (res.data.a_level.length > 0) self.examArr.a_level = res.data.a_level
-            if (res.data.o_level.length > 0) self.examArr.o_level = res.data.o_level
-            if (res.data.gcse.length > 0) self.examArr.gcse = res.data.gcse
-            if (res.data.btec.length > 0) self.examArr.btec = res.data.btec
-            if (res.data.ib.length > 0) self.examArr.ib = res.data.ib
             self.showTimeD()
             self.RefreshSelect()
             self.setIcheck()
@@ -1397,20 +1384,20 @@ export default {
           if (name3 === undefined) {
             self.laydate.render({
               elem: this,
-              done (vals) {
-                self.exam[name1][name2] = vals
+              done (val) {
+                self.exam[name1][name2] = val
               }
             })
           } else {
             self.laydate.render({
               elem: this,
-              done (vals) {
-                self.exam[name1][name3][name2] = vals
+              done (val) {
+                self.exam[name1][name3][name2] = val
               }
             })
           }
         })
-      }, 1000)
+      }, 500)
     },
     // 验证保存
     validateBeforeSubmit () {
@@ -1464,10 +1451,11 @@ export default {
     addElement () {
       let self = this
       let i = $('.addType option:selected').val()
-      if (self.examArr.hasOwnProperty(i)) {
-        self.examArr[i].push({})
+      let obj = {}
+      if (self.exam.hasOwnProperty(i)) {
+        self.exam[i].push(obj)
       } else {
-        self.examArr[i] = [{}]
+        self.exam[i] = [obj]
       }
       self.$forceUpdate()
       self.showTimeD()
@@ -1477,7 +1465,7 @@ export default {
       let self = this
       self.layer.confirm('您确定要删除此信息？', {icon: 3}, function (i) {
         self.layer.close(i)
-        self.examArr[name].splice(k, 1)
+        self.exam[name].splice(k, 1)
         self.$forceUpdate()
       })
     },
