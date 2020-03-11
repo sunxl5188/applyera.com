@@ -1895,84 +1895,89 @@ span[contenteditable], div[contenteditable] {
 }
 
 /*自定义单选、多选样式*/
-.custom-radio-box, .custom-checkbox-box {
-  padding-top: 7px;
+.custom-radio-box, .custom-checkbox-box{
+  padding-top:7px;display:inline-block;
+  & .custom-radio, & .custom-checkbox{
+    &:after{margin-right:0;}
+  }
 }
 
-.custom-control {
-  position: relative;
-  display: block;
-  min-height: 27px;
+.custom-control{
+  position:relative;
+  display:block;
+  min-height:20px;
 
-  &.custom-control-inline {
-    display: -ms-inline-flexbox;
-    display: inline-flex;
+  &.custom-control-inline{
+    display:-ms-inline-flexbox;
+    display:inline-flex;
+    vertical-align:top;
   }
 
-  & .custom-control-input {
-    position: absolute;
-    left: 0;
-    z-index: -1;
-    width: 16px;
-    height: 20px;
-    opacity: 0;
+  & .custom-control-input{
+    position:absolute;
+    left:0;
+    z-index:-1;
+    width:16px;
+    height:20px;
+    opacity:0;
   }
 
-  & .custom-control-label {
-    position: relative;
-    margin-bottom: 0;
-    font-weight: 400;
-    vertical-align: top;
-    cursor: pointer;
-    text-indent: 25px;
-    min-width: 18px;
-    height: 18px;
+  & .custom-control-label{
+    position:relative;
+    margin-bottom:0;
+    font-weight:400;
+    vertical-align:top;
+    cursor:pointer;
+    text-indent:22px;
+    min-width:18px;min-height:20px;
 
-    &:before {
-      position: absolute;
-      top: 0;
-      left: 0;
-      display: block;
-      width: 18px;
-      height: 18px;
-      pointer-events: none;
-      content: "";
-      background-image: url("../../static/images/blue.png");
-      background-repeat: no-repeat;
-      background-position: 0 0;
+    &:before{
+      position:absolute;
+      top:1px;
+      left:0;
+      display:block;
+      width:18px;
+      height:18px;
+      pointer-events:none;
+      content:"";
+      background-image:url("../../static/images/blue.png");
+      background-repeat:no-repeat;
+      background-position:0 0;
     }
   }
 
-  &.custom-radio {
-    & .custom-control-label {
-      &:before {
-        background-position: -100px 0;
+  &.custom-radio{
+    margin-right:10px;
+    & .custom-control-label{
+      &:before{
+        background-position:-100px 0;
       }
     }
 
-    & .custom-control-input {
-      &:checked {
-        ~ .custom-control-label {
-          &:before {
-            background-position: -140px 0;
+    & .custom-control-input{
+      &:checked{
+        ~ .custom-control-label{
+          &:before{
+            background-position:-140px 0;
           }
         }
       }
     }
   }
 
-  &.custom-checkbox {
-    & .custom-control-label {
-      &:before {
-        background-position: 0 0;
+  &.custom-checkbox{
+    margin-right:10px;
+    & .custom-control-label{
+      &:before{
+        background-position:0 0;
       }
     }
 
-    & .custom-control-input {
-      &:checked {
-        ~ .custom-control-label {
-          &:before {
-            background-position: -40px 0;
+    & .custom-control-input{
+      &:checked{
+        ~ .custom-control-label{
+          &:before{
+            background-position:-40px 0;
           }
         }
       }
