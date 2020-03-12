@@ -225,25 +225,6 @@
                 </transition>
             </div>
         </div>
-        <div class="modal fade" id="modalRemind">
-            <div class="modal-dialog ">
-                <div class="modal-content" style="max-height:650px;overflow-y:auto;">
-                    <div style="background: #39f;height: 250px;-webkit-border-radius: 6px 6px 0 0;-moz-border-radius: 6px 6px 0 0;border-radius: 6px 6px 0 0;"></div>
-                    <div class="modal-body text-center">
-                        <div v-for="(item, i) in remindInfo" :key="i">
-                            <p v-if="item.stu_name!==''">您有一个（{{item.stu_name}}）的日历提醒，标题为：{{item.title}}</p>
-                            <p v-if="item.stu_name===''">您有一个日历提醒，标题为：{{item.title}}</p>
-                            <p>开始明间:{{item.time_start}}</p>
-                        </div>
-                        <div class="clearfix pt-15 pb-50">
-                            <button type="button" class="btn btn-primary is-round" data-dismiss="modal"
-                                    @click="remindInfo=[]">知 道 啦
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -263,7 +244,6 @@ export default {
       loading: true,
       breadCrumb: [],
       leftClose: false,
-      remindInfo: [],
       RightW: 1000,
       MinW: 1000,
       inter1: 0,
@@ -376,19 +356,7 @@ export default {
         }
       })
     }, 60000)
-    // 每一分钟执行，获取提醒信息
-    let remindTime = setInterval(function () {
-      db.postRequest('Institution/Home/getRemind', {}).then(res => {
-        if (res.status === 1 && res.data.length > 0) {
-          self.remindInfo = res.data
-          $('#modalRemind').modal({backdrop: 'static', show: true})
-        } else if (res.status === 402 || res.status === 403) {
-          clearInterval(remindTime)
-        } else {
-          console.log('获取日历提醒：' + res.msg)
-        }
-      })
-    }, 60000)
+
     // 执行全站自定义下拉菜单
     $(document).on('click', '[data-toggle="customizeDropdown"]', function (event) {
       event.preventDefault()
