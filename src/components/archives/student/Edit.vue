@@ -352,7 +352,7 @@
                                                     </div>
                                                     <div class="clearfix lh22" v-html="item.contact_content"></div>
                                                     <div class="clearfix font12 c999" v-if="item.next_contact_time">
-                                                        设置跟进: {{item.next_contact_time}}
+                                                      下次跟进时间: {{item.next_contact_time}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -377,19 +377,6 @@
                                                             <li @click="setRepeat(item.val, 1)"
                                                                 :class="repeat===item.val?'po_re active':'po_re'"
                                                                 v-for="(item, i) in repeatArr" :key="i">
-                                                                <a href="javascript:void(0);">{{item.title}}</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-
-                                                    <div class="dropdown" style="display: inline-block;" data-toggle="tooltip" title="跟进提醒">
-                                                        <i :class="remind!==0?'iconfont font20 cded':'iconfont font20 c999'"
-                                                           style="cursor:pointer;"
-                                                           data-toggle="dropdown">&#xe6b4;</i>
-                                                        <ul class="dropdown-menu dropdown-menu-right">
-                                                            <li @click="setRepeat(item.val, 2)"
-                                                                :class="remind===item.val?'active':''"
-                                                                v-for="(item, i) in remindArr" :key="i">
                                                                 <a href="javascript:void(0);">{{item.title}}</a>
                                                             </li>
                                                         </ul>
@@ -1204,7 +1191,6 @@ export default {
       fid: [],
       signStatusArr: [],
       repeat: 0,
-      remind: 0,
       repeatArr: [
         { title: '不重复', val: '0' },
         { title: '每天重复', val: '1' },
@@ -1212,14 +1198,6 @@ export default {
         { title: '每月重复', val: '3' },
         { title: '每年重复', val: '4' },
         { title: '工作日重复', val: '5' }
-      ],
-      remindArr: [
-        { title: '关闭提醒', val: '0' },
-        { title: '开始时提醒', val: '1' },
-        { title: '5分钟提醒', val: '2' },
-        { title: '15分钟提醒', val: '3' },
-        { title: '30分钟提醒', val: '4' },
-        { title: '1小时前', val: '5' }
       ],
       otherContact: {
         id: '',

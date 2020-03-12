@@ -1,15 +1,5 @@
 <template>
     <div class="container-fluid bgWhite pt-25 pb-25">
-        <div class="po_re">
-            <div class="checkbox eventType po_ab" style='left:160px;top:0;'>
-                <label>
-                    <input type="checkbox" name="show_remind" value="2" checked> 提醒
-                </label>
-                <label class='ml-10'>
-                    <input type="checkbox" name="show_task" value="1" checked> 日程
-                </label>
-            </div>
-        </div>
         <FullCalendar
                 ref="fullCalendar"
                 defaultView="dayGridMonth"
@@ -41,81 +31,10 @@
 
         <div id="popoverMenu" style="display: none;">
             <dd>
-                <i class='iconfont'>&#xe6b4;</i>
-                <a href='#' class="createRe">创建提醒</a>
-            </dd>
-            <dd>
                 <i class='iconfont'>&#xe600;</i>
                 <a href='#' class="createSch">创建日程</a>
             </dd>
         </div>
-
-        <div class="modal fade" id="createRe">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">创建提醒</h4>
-                    </div>
-                    <form action="" method="POST" class="form-horizontal" id="form1" autocomplete="off">
-                        <input type="hidden" name="id" :value="id" v-if="id!==''"/>
-                        <input type="hidden" name="type" value="2"/>
-                        <div class="modal-body pl-30 pr-30">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">设置标题</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="title" v-model="title"
-                                           placeholder="请输入标题">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">选择时间</label>
-                                <div class="col-sm-5" v-show="!is_full_day">
-                                    <input type="text" name="time" class="form-control dateTime" placeholder="请选择日期">
-                                </div>
-                                <div class="col-sm-5" v-show="is_full_day">
-                                    <input type="text" name="day" class="form-control dateDay"
-                                           placeholder="请选择日期">
-                                </div>
-                                <div class="col-sm-3">
-                                    <select name="repeat" v-model="repeat" class="form-control selectPicker">
-                                        <option value="0">不重复</option>
-                                        <option value="1">每天</option>
-                                        <option value="5">每个工作日</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="is_full_day" value="1" v-model="is_full_day">
-                                            全天
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">提醒状态</label>
-                                <div class="col-sm-4">
-                                    <select name="status" class="form-control selectPicker" v-model="status">
-                                        <option value="1">已完成</option>
-                                        <option value="0">未完成</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" @click="deleteInfo('createRe')" v-if="id!==''">
-                                删除提醒
-                            </button>
-                            <button type="button" class="btn btn-default" @click="createNext(1)">完成并创建下一个</button>
-                            <button type="button" class="btn btn-primary" @click="validateBeforeSubmit()">保存</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
         <div class="modal fade" id="createSch">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -188,34 +107,12 @@
                                                     href="#">工作日重复</a></li>
                                         </ul>
                                     </div>
-
-                                    <div class="dropdown" style="display: inline-block;" data-toggle="tooltip" title="设置提醒">
-                                        <i :class="remind!==0?'iconfont font20 cded ml-15':'iconfont font20 c999 ml-15'"
-                                           style="cursor:pointer;"
-                                           data-toggle="dropdown">&#xe6b4;</i>
-                                        <ul class="dropdown-menu dropdown-menu-right">
-                                            <input type="hidden" name="remind" :value="remind"/>
-                                            <li @click="remind=0" :class="remind===0?'active':''"><a href="#">关闭提醒</a>
-                                            </li>
-                                            <li @click="remind=1" :class="remind===1?'active':''"><a href="#">开始时提醒</a>
-                                            </li>
-                                            <li @click="remind=2" :class="remind===2?'active':''"><a href="#">5分钟提醒</a>
-                                            </li>
-                                            <li @click="remind=3" :class="remind===3?'active':''"><a href="#">15分钟提醒</a>
-                                            </li>
-                                            <li @click="remind=4" :class="remind===4?'active':''"><a href="#">30分钟提醒</a>
-                                            </li>
-                                            <li @click="remind=5" :class="remind===5?'active':''"><a href="#">1小时前</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">参与者</label>
                                 <div class="col-sm-10">
-                                    <select name="participant[]" class="form-control selectPicker" v-model="participant"
+                                    <select name="participant[]" class="form-control selectPicker" data-live-search="true" data-size="10" v-model="participant"
                                             multiple>
                                         <option :value="item.id" v-for="(item,i) in PartList" :key="i">{{item.name}}</option>
                                     </select>
@@ -244,14 +141,13 @@
                             <button type="button" class="btn btn-danger" @click="deleteInfo('createSch')"
                                     v-if="id!==''">删除提醒
                             </button>
-                            <button type="button" class="btn btn-default" @click="createNext(2)">完成并创建下一个</button>
+                            <button type="button" class="btn btn-default" @click="createNext()">完成并创建下一个</button>
                             <button type="button" class="btn btn-primary" @click="validateBeforeSubmitSch()">保存</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -278,7 +174,6 @@ export default {
       priority: 2, // 优先级
       status: 0, // 状态
       repeat: 0, // 重复
-      remind: 0, // 提醒
       is_full_day: false, // 是否全天
 
       dateDay: '',
@@ -342,30 +237,6 @@ export default {
         let Ndate = D.getFullYear() + '-' + MM
         self.getEventInfo(Ndate)
         $('[id^="popover"]').hide()
-      })
-      // 点击头部工具栏
-      $(document).on('click', '.eventType [type="checkbox"]', function () {
-        let showRemind = $('.eventType [name="show_remind"]').is(':checked')
-        let showTask = $('.eventType [name="show_task"]').is(':checked')
-        self.show_remind = showRemind ? 1 : ''
-        self.show_task = showTask ? 1 : ''
-        self.getEventInfo()
-      })
-      // 弹出创建提醒
-      $(document).on('click', '.createRe', function () {
-        self.id = ''
-        self.title = ''
-        self.repeat = 0
-        self.is_full_day = false
-        self.status = 0
-        $('#createRe').modal({
-          backdrop: 'static',
-          show: true
-        })
-        $('.fc-bg td').popover('hide')
-        setTimeout(function () {
-          $('.selectPicker').selectpicker('refresh')
-        }, 500)
       })
       // 弹出创建日程
       $(document).on('click', '.createSch', function () {
@@ -500,35 +371,6 @@ export default {
     changeMonth (start, end, current) {
       console.log('changeMonth', start.format(), end.format(), current.format())
     },
-    validateBeforeSubmit (type) {
-      let self = this
-      self.$validator.validateAll().then((result) => {
-        if (result) {
-          let formData = $('#form1').serializeArray()
-          let params = new URLSearchParams()
-          formData.map(item => {
-            params.append(item.name, item.value)
-          })
-          db.postRequest('Institution/Home/newEditSchedule', params).then(res => {
-            if (res.status === 1) {
-              self.getEventInfo()
-              if (type !== 1) {
-                self.layer.alert(res.msg, {
-                  icon: 1
-                }, function (i) {
-                  self.layer.close(i)
-                  $('#createRe').modal('hide')
-                })
-              }
-            } else {
-              self.layer.alert(res.msg, {
-                icon: 2
-              })
-            }
-          })
-        }
-      })
-    },
     validateBeforeSubmitSch (type) {
       let self = this
       self.$validator.validateAll().then((result) => {
@@ -587,13 +429,9 @@ export default {
         })
       }, 1000)
     },
-    createNext (type) {
+    createNext () {
       let self = this
-      if (type === 1) {
-        self.validateBeforeSubmit(1)
-      } else {
-        self.validateBeforeSubmitSch(1)
-      }
+      self.validateBeforeSubmitSch(1)
       $('.bootstrap-select .filter-option-inner-inner').html('没有选中任何项')
       self.id = ''
       self.title = ''
@@ -604,7 +442,6 @@ export default {
       self.participant = []
       self.content = ''
       self.priority = 2
-      self.remind = 0
       self.dateTime = ''
       self.dateDay = ''
     },
