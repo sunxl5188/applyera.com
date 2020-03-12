@@ -430,6 +430,7 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 import CitySelect from './shared/CitySelect'
 import cityJson from '@@/json/city'
 import ImageCropper from '@#/shared/ImageCropper'
@@ -477,13 +478,6 @@ export default {
   mounted () {
     let self = this
     self.getUserInfo()
-    if (self.$cookies.get('verifyCode1') > 0) {
-      self.countdown('verifyCode1', self.$cookies.get('verifyCode1'))
-    }
-    if (self.$cookies.get('verifyCode2') > 0) {
-      self.countdown('verifyCode2', self.$cookies.get('verifyCode2'))
-    }
-
     self.$nextTick(() => {
       self.laydate.render({
         elem: '#times',
@@ -492,6 +486,11 @@ export default {
           self.list.birthday = value
         }
       })
+      _.delay(() => {
+        self.countdownInit('verifyCode1')
+        self.countdownInit('verifyCode2')
+        self.countdownInit('verifyCode3')
+      }, 1500)
     })
   },
   methods: {

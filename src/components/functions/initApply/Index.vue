@@ -17,7 +17,7 @@
 
                         <div class="form-group ml-10">
                             <div class="dropdown">
-                                <button :class="country || applyType || payStatus || createdTime?'btn btn-primary filter':'btn btn-default filter'"
+                                <button :class="country || applyType || submit_status || createdTime?'btn btn-primary filter':'btn btn-default filter'"
                                         type="button" data-toggle="dropdown"></button>
                                 <ul class="dropdown-menu dropdown-menu-right filterOption" style="padding:15px 20px;">
                                     <div class="pl-15 pr-15" style="width:180px;">
@@ -26,10 +26,10 @@
                                                 <label>申请国家</label>
                                                 <select class="form-control" v-model="country">
                                                     <option value="">请选择</option>
-                                                    <option value="US">美国</option>
-                                                    <option value="UK">英国</option>
-                                                    <option value="AU">澳大利亚</option>
-                                                    <option value="CA">加拿大</option>
+                                                    <option value="美国">美国</option>
+                                                    <option value="英国">英国</option>
+                                                    <option value="澳大利亚">澳大利亚</option>
+                                                    <option value="加拿大">加拿大</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -42,8 +42,8 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label>是否已支付</label>
-                                                <select name="type1" class="form-control" v-model="payStatus"
+                                                <label>是否确认提交</label>
+                                                <select name="submit_status" class="form-control" v-model="submit_status"
                                                         style="width:180px;">
                                                     <option value="">请选择</option>
                                                     <option value="1">是</option>
@@ -152,7 +152,7 @@ export default {
       keywords: '',
       country: '',
       applyType: '',
-      payStatus: '',
+      submit_status: '',
       createdTime: '',
       list: [],
       total: 0,
@@ -188,7 +188,7 @@ export default {
       params.append('keywords', self.keywords)
       params.append('country', self.country)
       params.append('applyType', self.applyType)
-      params.append('payStatus', self.payStatus)
+      params.append('submit_status', self.submit_status)
       params.append('createdTime', self.createdTime)
       params.append('page', p || 1)
       db.postRequest('Institution/Apply/orderList', params).then(res => {
@@ -208,7 +208,7 @@ export default {
       self.studentName = ''
       self.studentNum = ''
       self.applyType = ''
-      self.payStatus = ''
+      self.submit_status = ''
       self.createdTime = ''
       self.pagechange(1)
     },

@@ -1432,22 +1432,13 @@ export default {
           db.postRequest('Institution/Student/stuSave', params).then(res => {
             self.layer.close(index)
             if (res.status === 1) {
-              self.header_info = res.data
-              let countryArr = []
-              res.data.intention_country.map(item => {
-                self.nation.map(items => {
-                  if (items.id === parseInt(item)) {
-                    countryArr.push(items.cn)
-                  }
-                })
-              })
-              self.country = countryArr.join(',')
               self.layer.alert(res.msg, {icon: 1}, function (i) {
                 self.layer.close(i)
                 $('#editStudentInfo').modal('hide')
                 if (self.id === '') {
-                  self.$router.push('/archives/student/edit?id=' + res.data.stu_id)
                   self.id = res.data.stu_id
+                  self.$router.push('/archives/student/edit?id=' + res.data.stu_id)
+                  self.getDetail()
                   self.$nextTick(() => {
                     $('[data-toggle="tooltip"]').tooltip()
                     self.laydate.render({

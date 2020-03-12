@@ -28,22 +28,43 @@ Vue.prototype.currentTime = function (type) {
   }
 }
 
+Vue.prototype.countdownInit = function (objName) {
+  let self = this
+  let dateBegin = vueCookie.get(objName + '-expires')
+  if (dateBegin) {
+    let dateEnd = new Date()
+    let dateDiff = dateBegin - dateEnd.getTime()
+    let leave1 = dateDiff % (24 * 3600 * 1000)
+    let leave2 = leave1 % (3600 * 1000)
+    // let minutes = Math.floor(leave2 / (60 * 1000)) 分
+    let leave3 = leave2 % (60 * 1000)
+    let seconds = Math.round(leave3 / 1000) // 秒
+    if (seconds > 0) {
+      self.countdown(objName, seconds)
+    } else {
+      vueCookie.remove(objName + '-expires')
+    }
+  }
+}
+
 Vue.prototype.countdown = function (objName, wait) {
-  let $this = this
+  let self = this
   let _this = document.getElementById(objName)
   let date = new Date()
-  date.setTime(date.getTime() + wait * 1000)
+  date.setTime(date.getTime() + (wait + 1) * 1000)
+  if (vueCookie.get(objName + '-expires') === null) {
+    vueCookie.set(objName + '-expires', new Date(date).getTime())
+  }
   if (_this) {
-    if (parseInt(vueCookie.get(_this.id)) >= 0) {
-      wait = parseInt(vueCookie.get(_this.id))
-      vueCookie.set(_this.id, wait - 1, { expires: date })
+    if (wait >= 0) {
+      vueCookie.set(objName, wait - 1, date)
     } else {
-      vueCookie.set(_this.id, wait - 1, { expires: date })
+      vueCookie.set(objName, wait - 1, date)
     }
-    if (parseInt(vueCookie.get(_this.id)) < 0) {
-      vueCookie.remove(_this.id)
+    if (wait <= 0) {
+      vueCookie.remove(objName)
+      vueCookie.remove(objName + '-expires')
     }
-
     if (wait === 0) {
       _this.innerHTML = '重获验证码'
       _this.classList.remove('disabled')
@@ -54,33 +75,18 @@ Vue.prototype.countdown = function (objName, wait) {
       _this.setAttribute('disabled', true)
       wait--
       setTimeout(function () {
-        $this.countdown(objName, wait)
+        self.countdown(objName, wait)
       }, 1000)
     }
-  } else {
-    let cTime = setInterval(function () {
-      if (wait > 0) {
-        wait--
-        vueCookie.set(objName, wait, { expires: date })
-      } else {
-        vueCookie.remove(objName)
-        clearInterval(cTime)
-      }
-    }, 1000)
   }
 }
 
 Vue.prototype.highlight = function (str, keys) {
-  let string = ''
-  // let re = new RegExp('' + keys + '', 'gi')
-  if (str && keys) {
-    string = str.replace(keys, function (word) {
-      return '<span class=\'cf90\'>' + word + '</span>'
-    })
+  if (keys) {
+    return str.replace(new RegExp(keys, 'ig'), (matchedTxt) => '<font style="color:#f90;">' + matchedTxt + '</font>')
   } else {
-    string = str
+    return str
   }
-  return string
 }
 
 Vue.prototype.cutString = (strings, k) => {
