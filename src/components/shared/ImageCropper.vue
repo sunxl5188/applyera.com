@@ -69,17 +69,20 @@ export default {
         let img = new Image()
         img.src = data
         img.onload = function () {
+          if (this.width > 2000 || this.height > 2000) {
+            self.layer.alert('图片宽度与高度已超出2000PX,请缩小图片尺寸后上传', {icon: 2})
+            return false
+          }
           self.imagesW = this.width
           self.imagesH = this.height
+          self.fileName = data
+          self.startCropper()
         }
-        self.fileName = data
       }
       // 转化为base64
       // reader.readAsDataURL(file)
       // 转化为blob
       reader.readAsArrayBuffer(file)
-
-      self.startCropper()
     },
     uploadFile () {
       let self = this
@@ -88,7 +91,7 @@ export default {
       params.append('file', self.fileBlob)
       params.append('axis', JSON.stringify(self.axis))
       if (self.imagesW > 2000 || self.imagesH > 2000) {
-        self.layer.alert('图片宽度与高度已超出2000PX,设缩小图片尺寸后上传', {icon: 2})
+        self.layer.alert('图片宽度与高度已超出2000PX,请缩小图片尺寸后上传', {icon: 2})
         return false
       }
       db.postRequest('Institution/Upload/uploadOne', params).then(res => {

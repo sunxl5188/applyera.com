@@ -602,7 +602,6 @@ export default {
             let thisName = $(event.currentTarget).attr('data-name')
             if (thisName !== undefined) {
               self[obj][thisName] = event.currentTarget.checked ? 1 : ''
-              console.log(self[obj][thisName])
               self.RefreshSelect()
               self.setIcheck()
               self.showTime()

@@ -143,7 +143,7 @@
                                             <tbody>
                                             <tr v-for="(item,i) in tab1.plan" :key="i">
                                                 <td width="20%">{{item.create_time}}</td>
-                                                <td width="20%">{{item.ins_student_intention_country}}</td>
+                                                <td width="20%">{{item.ins_student_apply_degree}}</td>
                                                 <td>
                                                     <router-link
                                                             :to="{path:'/functions/plan/view',query:{id:item.plan_id}}"
@@ -175,7 +175,7 @@
                                         <table class="table" v-if="tab1.material.length > 0">
                                             <tbody>
                                             <tr v-for="(item,i) in tab1.material" :key="i">
-                                                <td width="20%">{{item.created_time}}</td>
+                                                <td width="20%">{{item.created_time|dCreateTime('yyyy-MM-dd')}}</td>
                                                 <td width="20%">{{item.status}}</td>
                                                 <td>
                                                     <router-link
@@ -229,41 +229,12 @@
 
                                 <div class="panel panel-default">
                                     <div class="panel-heading clearfix">
-                                        <span class="pull-left">发起申请</span>
+                                        <span class="pull-left">申请院校</span>
                                         <span class="pull-right">
                                              <router-link :to="{path:'/functions/initApply/ChooseSchool', query:{sid:id,source:1}}">
                                                  <span class="iconfont c999">&#xe73e;</span>
                                              </router-link>
                                          </span>
-                                    </div>
-                                    <div class="panel-body">
-                                        <table class="table" v-if="tab1.apply.length > 0">
-                                            <tbody>
-                                            <tr v-for="(item,i) in tab1.apply" :key="i">
-                                                <td width="20%">{{item.time}}</td>
-                                                <td width="20%">{{item.country}}</td>
-                                                <td>
-                                                    <router-link
-                                                            :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.apply_id,source:1}}"
-                                                            class="cded">{{item.school}}
-                                                    </router-link>
-                                                </td>
-                                                <td width="15%">{{item.status}}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="panel-noData" v-if="tab1.apply.length === 0">
-                                            <p class="c999">该学生还没有申请中的院校</p>
-                                            <router-link :to="{path:'/functions/initApply/ChooseSchool', query:{sid:id,source:1}}" class="cded">
-                                                点击前往创建
-                                            </router-link>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel panel-default">
-                                    <div class="panel-heading clearfix">
-                                        <span class="pull-left">申请跟踪</span>
                                     </div>
                                     <div class="panel-body">
                                         <table class="table" v-if="tab1.apply_process.length > 0">
@@ -286,6 +257,29 @@
                                         </div>
                                     </div>
                                 </div>
+
+                              <div class="panel panel-default">
+                                <div class="panel-heading clearfix">
+                                  <span class="pull-left">学生合同</span>
+                                </div>
+                                <div class="panel-body">
+                                  <table class="table" v-if="tab1.contract_list.length > 0">
+                                    <tbody>
+                                    <tr v-for="(item,i) in tab1.contract_list" :key="i">
+                                      <td class="w20">{{item.add_time|dCreateTime('yyyy-MM-dd')}}</td>
+                                      <td>{{item.title}}</td>
+                                      <td class="w20 text-right">
+                                        <a href="javascript:void(0);" @click="showContract(item.yht_contract_id)">查看</a>
+                                        <a href="javascript:void(0);" @click="downFile(item.yht_contract_id)" class="ml-10">下载</a>
+                                      </td>
+                                    </tr>
+                                    </tbody>
+                                  </table>
+                                  <div class="panel-noData" v-if="tab1.contract_list.length === 0">
+                                    <p class="c999">该学生还没有合同</p>
+                                  </div>
+                                </div>
+                              </div>
 
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -1123,6 +1117,20 @@
             <!--添加推荐人-->
             <AddCommend :id="id" :referrer="referrer" @referrerBack="referrerBack"></AddCommend>
             <a href='' target='_blank' id='file_down'></a>
+          <!--查看合同-->
+          <div class="modal fade bs-example-modal-lg" id="modal-student-contract">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">查看合同</h4>
+                </div>
+                <div class="modal-body">
+                  <iframe :src="contractUrl" width="100%" height="100%" frameborder='0'></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
 </template>
@@ -1139,6 +1147,8 @@ import city from '@@/json/city.json'
 import store from '@/vuex/Store'
 import db from '@~/js/request'
 import webupload from '@~/js/webupload'
+import JsZip from 'jszip'
+import saveAs from 'file-saver'
 require('icheck')
 
 export default {
@@ -1150,11 +1160,14 @@ export default {
       nation: nation,
       city: city,
       id: '',
+      appId: '',
+      appKey: '',
       file_id: [],
       country: '',
       student_types: '',
       adviserId: '',
       studentSource: '',
+      contractUrl: '',
       header_info: {
         is_common: '',
         abroad_time: '',
@@ -1247,6 +1260,7 @@ export default {
     self.id = self.$route.query.id || ''
     self.getDetail()
     self.$nextTick(() => {
+      $('#modal-student-contract .modal-body').height($(window).height() - 200)
       _.delay(() => {
         $(document).on('focusout', '[contenteditable="true"]', function () {
           let $this = $(this)
@@ -1887,6 +1901,91 @@ export default {
           })
         })
       }, 500)
+    },
+    // 查看合同
+    showContract (contractId) {
+      let self = this
+      db.postRequest('/Institution/Yht/getYhtConfig', {}).then(res => {
+        if (res.status === 1) {
+          self.appId = res.data.appId
+          self.appKey = res.data.appKey
+          // 初始化YHT
+          /*eslint-disable*/
+          YHT.init(self.appId, self.tokenUnableListener)
+          YHT.queryContract(function successFun (url) {
+            self.contractUrl = url
+            $('#modal-student-contract').modal({ backdrop: 'static', show: true })
+          }, function (error) {
+            self.layer.alert(error, { icon: 2 })
+          }, contractId)
+        } else {
+          console.log(res.msg)
+        }
+      })
+    },
+    tokenUnableListener (obj) {
+      let self = this
+      $.ajax({
+        type: 'POST',
+        url: 'https://api.yunhetong.com/api/auth/login',
+        cache: false,
+        dataType: 'json',
+        data: JSON.stringify({
+          'appId': self.appId,
+          'appKey': self.appKey
+        }), // 第三方获取token需要的参数
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+        },
+        success: function (data, textStatus, request) {
+          /*eslint-disable*/
+          YHT.setToken(request.getResponseHeader('token'))
+          YHT.do(obj)
+        },
+        error: function (data) {
+          console.log(data)
+        }
+      })
+    },
+    // 下载合同
+    downFile (contractId) {
+      let self = this
+      let params = new URLSearchParams()
+      db.postRequest('/Institution/Yht/getYhtToken', params).then(res => {
+        if (res.status === 1) {
+          let xhr
+          if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest()
+          } else if (window.ActiveXObject) {
+            /*eslint-disable*/
+            xhr = new ActiveXObject('Microsoft.XMLHTTP')
+          }
+          if (xhr != null) {
+            xhr.open('POST', 'https://api.yunhetong.com/api/download/contract', true)
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+            xhr.setRequestHeader('token', res.data.yht_token)
+            xhr.responseType = 'blob'
+            xhr.onload = function () {
+              if (this.status === 200) {
+                let zip = new JsZip()
+                zip.file(contractId + '.pdf', this.response)
+                zip.generateAsync({ type: 'blob' })
+                .then(function (content) {
+                  saveAs(content, contractId + '.zip')
+                })
+              }
+            }
+            xhr.send(JSON.stringify({
+              idType: '0',
+              idContent: contractId
+            }))
+          } else {
+            console.log('浏览器不支持XMLHTTP')
+          }
+        } else {
+          self.layer.alert(res.msg, {icon: 2})
+        }
+      })
     }
   },
   components: {
