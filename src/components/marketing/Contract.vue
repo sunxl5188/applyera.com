@@ -63,10 +63,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="(item, i) in list" :key="i">
-                    <td>
-                        <router-link :to="{path:'/marketing/contract/detail', query:{ id:item.id }}">{{item.yht_name}}
-                        </router-link>
-                    </td>
+                    <td>{{item.yht_name}}</td>
                     <td>{{item.sign_count}}</td>
                     <td>{{item.user_name}}</td>
                     <td>{{item.add_time}}</td>
