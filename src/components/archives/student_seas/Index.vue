@@ -63,16 +63,16 @@
                         创建时间：
                     </div>
                     <div class="student_seas_filter_right">
-                        <a href="javascript:void(0);" :class="{active:created_time===''}"
-                           @click="created_time='';pagechange()">不限</a>
-                        <a href="javascript:void(0);" :class="{active:created_time==='本周'}"
-                           @click="created_time='本周';pagechange()">本周</a>
-                        <a href="javascript:void(0);" :class="{active:created_time==='本月'}"
-                           @click="created_time='本月';pagechange()">本月</a>
-                        <a href="javascript:void(0);" :class="{active:created_time==='本季'}"
-                           @click="created_time='本季';pagechange()">本季</a>
-                        <div :class="created_time!=='' && created_time!=='本周' && created_time!=='本月' && created_time!=='本季'? 'active':''"
-                             id="times" data-placeholder="自定义时间段" contenteditable="true"></div>
+                        <a href="javascript:void(0);" :class="{active:type===1 && end_time === ''}"
+                           @click="setFilter(1)">不限</a>
+                        <a href="javascript:void(0);" :class="{active:type===2 && end_time === ''}"
+                           @click="setFilter(2)">本周</a>
+                        <a href="javascript:void(0);" :class="{active:type===3 && end_time === ''}"
+                           @click="setFilter(3)">本月</a>
+                        <a href="javascript:void(0);" :class="{active:type===4 && end_time === ''}"
+                           @click="setFilter(4)">本季</a>
+                        <div id="times" contenteditable="true" data-placeholder="自定义时间段"
+                            :class="{active:type==='' && end_time !== ''}"></div>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                                 <router-link to="/archives/student_seas/edit?isCommon=1">新建学生</router-link>
                             </li>
                             <li><a href="javascript:void(0);" @click="uploadStart">模板导入</a></li>
-                            <li><a :href="siteUrl+'/Public/xls_temp/Student_profile.xlsx'"
+                            <li><a :href="siteUrl+'/Public/xls_temp/students_import.xlsx'"
                                    download="Student_profile.xlsx" target="_blank">下载模板</a></li>
                         </ul>
                     </div>
@@ -110,7 +110,7 @@
             </div>
 
             <div v-if="alert.state > 0">
-                <div :class="alert.state===1?'alert alert-primary':(alert.state===2?'alert alert-success':'alert alert-danger')">
+                <div :class="alert.state===1?'alert alert-info':(alert.state===2?'alert alert-success':'alert alert-danger')">
                     {{alert.msg}}
                 </div>
             </div>
@@ -325,7 +325,9 @@ export default {
       keywords: '',
       student_type: '',
       adviser: '',
-      created_time: '',
+      type: 1,
+      start_time: '',
+      end_time: '',
       sort_by_time: 0,
       studentTypeArr: [],
       adviserArr: [],
@@ -359,7 +361,10 @@ export default {
         type: 'date',
         range: true,
         done: (value) => {
-          self.created_time = value
+          let date = value.split(' - ')
+          self.start_time = date[0]
+          self.end_time = date[1]
+          self.type = ''
           self.pagechange()
         }
       })
@@ -383,6 +388,13 @@ export default {
     })
   },
   methods: {
+    setFilter (i) {
+      let self = this
+      self.type = i
+      self.start_time = ''
+      self.end_time = ''
+      self.debouncePagechange()
+    },
     pagechange (p) {
       let self = this
       let params = new URLSearchParams()
@@ -391,7 +403,9 @@ export default {
       params.append('keywords', self.keywords)
       params.append('student_type', self.student_type)
       params.append('adviser', self.adviser)
-      params.append('created_time', self.created_time)
+      params.append('type', self.type)
+      params.append('start_time', self.start_time)
+      params.append('end_time', self.end_time)
       params.append('sort_by_time', self.sort_by_time)
       db.postRequest('Institution/Student/CommonStudentList', params).then(res => {
         if (res.status === 1) {
@@ -495,9 +509,11 @@ export default {
         swf: 'static/js/webuploader/Uploader.swf',
         server: window.ajaxBaseUrl + '/Institution/Upload/UploadOne',
         fileVal: 'file',
-        pick: '#filePicker',
+        pick: {
+          id: '#filePicker',
+          multiple: false
+        },
         file_id: 'file_id',
-        fileNumLimit: 1,
         fileSingleSizeLimit: 1024 * 1024 * 20,
         duplicate: true,
         accept: {

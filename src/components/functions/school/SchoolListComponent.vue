@@ -156,13 +156,13 @@
                                         <router-link
                                                 :to="{path:'/functions/schoollist/SchollDetail',query:{id:item.unq_id, tab:1}}"
                                                 class="cded">
-                                        <span v-html="highlight(cutString(item.englishname, 30), keywords)"
+                                        <span v-html="highlight(item.englishname, keywords)"
                                               data-toggle="tooltip"
                                               :title="item.englishname+'<br>'+item.schoolname"></span>
                                         </router-link>
                                     </div>
                                     <div class="lh20 c999">
-                                    <span v-html="highlight(cutString(item.schoolname, 30), keywords)"
+                                    <span v-html="highlight(item.schoolname, keywords)"
                                           data-toggle="tooltip" :title="item.englishname+'<br>'+item.schoolname"></span>
                                     </div>
                                 </div>

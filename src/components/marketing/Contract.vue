@@ -165,6 +165,7 @@ export default {
           uploadSuccess: (file, res) => { },
           uploadFinished: (msg) => {
             if (msg === '') {
+              self.pageChange(self.current)
               self.layer.alert('上传成功！', { icon: 1 })
             } else {
               self.layer.alert(msg, { icon: 2 })

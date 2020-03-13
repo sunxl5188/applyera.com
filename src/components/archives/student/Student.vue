@@ -109,7 +109,7 @@
             </div>
 
             <div v-if="alert.state > 0">
-                <div :class="alert.state===1?'alert alert-primary':(alert.state===2?'alert alert-success':'alert alert-danger')">
+                <div :class="alert.state===1?'alert alert-info':(alert.state===2?'alert alert-success':'alert alert-danger')">
                     {{alert.msg}}
                 </div>
             </div>
@@ -444,9 +444,11 @@ export default {
         swf: 'static/js/webuploader/Uploader.swf',
         server: window.ajaxBaseUrl + '/Institution/Upload/UploadOne',
         fileVal: 'file',
-        pick: '#filePicker',
+        pick: {
+          id: '#filePicker',
+          multiple: false
+        },
         file_id: 'file_id',
-        fileNumLimit: 1,
         fileSingleSizeLimit: 1024 * 1024 * 20,
         duplicate: true,
         accept: {
