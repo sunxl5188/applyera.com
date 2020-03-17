@@ -64,8 +64,8 @@
                         <router-link to="/marketing/product" class="list-group-item"
                                      v-if="userInfo.access.marketing.child[1]===1">产品管理
                         </router-link>
-                        <router-link to="/marketing/contract" class="list-group-item">合同管理</router-link>
-                        <router-link to="/marketing/OrderRecord" class="list-group-item">订单记录</router-link>
+                        <router-link to="/marketing/contract" class="list-group-item" v-if="userInfo.access.marketing.child[2]===1">合同管理</router-link>
+                        <router-link to="/marketing/OrderRecord" class="list-group-item" v-if="userInfo.access.marketing.child[3]===1">订单记录</router-link>
                     </div>
                 </li>
                 <li class="list-group-item" v-if="userInfo.access.setting.show===1">
@@ -133,9 +133,9 @@
                         <router-link to="/admin/topic" class="list-group-item"
                                      v-if="userInfo.access.applyoversea.child[11]===1">题目更新
                         </router-link>
-                        <router-link to="/admin/payRecording" class="list-group-item">支付记录</router-link>
-                        <router-link to="/admin/authReview" class="list-group-item">认证审核</router-link>
-                        <router-link to="/admin/agreement" class="list-group-item">服务条款</router-link>
+                        <router-link to="/admin/payRecording" class="list-group-item" v-if="userInfo.access.applyoversea.child[12]===1">支付记录</router-link>
+                        <router-link to="/admin/authReview" class="list-group-item" v-if="userInfo.access.applyoversea.child[13]===1">认证审核</router-link>
+                        <router-link to="/admin/agreement" class="list-group-item" v-if="userInfo.access.applyoversea.child[14]===1">服务条款</router-link>
                     </div>
                 </li>
             </ul>

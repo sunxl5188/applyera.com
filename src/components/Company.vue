@@ -315,7 +315,11 @@ export default {
   components: {ImageCropper},
   watch: {
     $route (to, from) {
-      this.name = to.name
+      let self = this
+      self.name = to.name
+      if (from.name === 'CompanyAuth') {
+        self.getCompany()
+      }
     }
   }
 }

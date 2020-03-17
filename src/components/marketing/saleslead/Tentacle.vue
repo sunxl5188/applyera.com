@@ -49,7 +49,12 @@
         </thead>
         <tbody>
         <tr v-for="(item, i) in list" :key="i" v-if="!loading">
-          <td><input type="checkbox" name="id[]" value=""></td>
+          <td>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input type="checkbox" name="id[]" :id="'idT'+i" :value="item.id" class="custom-control-input">
+              <label class="custom-control-label" :for="'idT'+i">&nbsp;</label>
+            </div>
+          </td>
           <td>
             <router-link :to="{path:'/marketing/saleslead/tentacledetail',query:{id:item.id}}" class="cded"
                          v-html="highlight(item.name, keyword)"></router-link>

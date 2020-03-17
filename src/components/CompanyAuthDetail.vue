@@ -19,7 +19,7 @@
                         <div class="clearfix c999">需年检章齐全(当年成立公司除外)<br />必须为彩色图片且小于2M，文件格式为bmp、png、jpge、jpg或gif</div>
                         <div class="clearfix">
                             <div class="webUploader" id="theList1">
-                                <div id="my_WU_FILE_0" class="image-item" v-if="picker1">
+                                <div id="my_WU_FILE_0" class="image-item" v-if="picker1.length>0">
                                     <img :src="siteUrl + picker1">
                                 </div>
                             </div>
@@ -37,15 +37,6 @@
                         <input type="text" name="company_name" v-model="company.company_name" class="form-control" placeholder="请输入企业名称" v-validate="'required'" data-vv-as="企业名称">
                         <div class="validateTip" v-show="errors.has('company_name')">
                             {{ errors.first('company_name') }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label"><font class="cf00">*</font> 手机号</label>
-                    <div class="col-sm-5">
-                        <input type="text" name="phone_num" v-model="company.phone_num" class="form-control" placeholder="请输入手机号" v-validate="'required'" data-vv-as="手机号">
-                        <div class="validateTip" v-show="errors.has('phone_num')">
-                            {{ errors.first('phone_num') }}
                         </div>
                     </div>
                 </div>
@@ -114,6 +105,15 @@
                 </div>
                 <div class="commonTitle">企业法人</div>
                 <div class="form-group">
+                  <label class="col-sm-2 control-label"><font class="cf00">*</font> 法人手机号</label>
+                  <div class="col-sm-5">
+                    <input type="text" name="phone_num" v-model="company.phone_num" class="form-control" placeholder="请输入手机号" v-validate="'required'" data-vv-as="手机号">
+                    <div class="validateTip" v-show="errors.has('phone_num')">
+                      {{ errors.first('phone_num') }}
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label"><font class="cf00">*</font> 证件持有人类型</label>
                     <div class="col-sm-10">
                         <div class="clearfix">
@@ -148,7 +148,7 @@
                         <div class="clearfix c999">必须为彩色图片且小于2M，文件格式为bmp、png、jpge、jpg或gif</div>
                         <div class="clearfix">
                             <div class="webUploader" id="theList2">
-                                <div id="my_WU_FILE_2" class="image-item" v-if="picker2">
+                                <div id="my_WU_FILE_2" class="image-item" v-if="picker2.length>0">
                                     <img :src="siteUrl + picker2">
                                 </div>
                             </div>
@@ -166,7 +166,7 @@
                         <div class="clearfix c999">必须为彩色图片且小于2M，文件格式为bmp、png、jpge、jpg或gif</div>
                         <div class="clearfix">
                             <div class="webUploader" id="theList3">
-                                <div id="my_WU_FILE_3" class="image-item" v-if="picker3">
+                                <div id="my_WU_FILE_3" class="image-item" v-if="picker3.length>0">
                                     <img :src="siteUrl + picker3">
                                 </div>
                             </div>
@@ -247,10 +247,6 @@
                 <div class="col-sm-5 control-text">{{company.company_name}}</div>
             </div>
             <div class="form-group clearfix">
-                <label class="col-sm-2 control-label">手机号</label>
-                <div class="col-sm-5 control-text">{{company.phone_num}}</div>
-            </div>
-            <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">社会信用代码</label>
                 <div class="col-sm-5 control-text">{{company.credit_code}}</div>
             </div>
@@ -273,6 +269,10 @@
                 <div class="col-sm-5 control-text">{{company.reg_address}}</div>
             </div>
             <div class="commonTitle">企业法人</div>
+          <div class="form-group clearfix">
+            <label class="col-sm-2 control-label">法人手机号</label>
+            <div class="col-sm-5 control-text">{{company.phone_num}}</div>
+          </div>
             <div class="form-group clearfix">
                 <label class="col-sm-2 control-label">证件持有人类型</label>
                 <div class="col-sm-10 control-text">
@@ -381,9 +381,9 @@ export default {
       db.postRequest('/Institution/Company/authEdit', params).then(res => {
         if (res.status === 1) {
           self.company = res.data
-          self.picker1 = [res.data.trading_cert_path]
-          self.picker2 = [res.data.cert_front_path]
-          self.picker3 = [res.data.cert_back_path]
+          self.picker1 = res.data.trading_cert_path ? [res.data.trading_cert_path] : []
+          self.picker2 = res.data.cert_front_path ? [res.data.cert_front_path] : []
+          self.picker3 = res.data.cert_back_path ? [res.data.cert_back_path] : []
           self.$nextTick(() => {
             self.loading = false
           })
@@ -392,13 +392,12 @@ export default {
             self.createUpload('picker2', self.picker2)
             self.createUpload('picker3', self.picker3)
             $('.dataTime').each(function (index, element) {
+              let name = $(this).attr('name')
               self.laydate.render({
                 elem: element,
                 type: 'date',
                 done: (value) => {
-                  element.value = value
-                  element.focus()
-                  element.blur()
+                  self.company[name] = value
                 }
               })
             })

@@ -89,7 +89,12 @@
       </thead>
       <tbody>
       <tr v-for="(item, i) in list" :key="i" v-if="!loading">
-        <td><input type="checkbox" :value="item.id" @click="setActiveId($event, item.id)"></td>
+        <td>
+          <div class="custom-control custom-checkbox custom-control-inline">
+              <input type="checkbox" name="id[]" :id="'id'+i" :value="item.id" class="custom-control-input" @click="setActiveId($event, item.id)">
+              <label class="custom-control-label" :for="'id'+i">&nbsp;</label>
+          </div>
+        </td>
         <td>
           <router-link :to="{path:'/archives/student/edit',query:{id:item.id}}" class="cded" v-html="highlight(item.name, keyword)"></router-link>
         </td>

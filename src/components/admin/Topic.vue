@@ -61,7 +61,12 @@
             </thead>
             <tbody>
             <tr v-for="(item, i) in list" :key="i">
-                <td><input type="checkbox" name="id[]" :value="item.id" /></td>
+                <td>
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" name="id[]" :id="'id'+i" :value="item.id" class="custom-control-input">
+                    <label class="custom-control-label" :for="'id'+i">&nbsp;</label>
+                  </div>
+                </td>
                 <td>
                     {{item.is_custom===0?'题目更新':'自定义更新'}}
                 </td>

@@ -6,15 +6,16 @@
             <!--推荐人-->
             <div class="clearfix lh34 mb-15 bdb">
                 <h4>
-                    <b>推荐人</b>
+                    <b>推荐人(1)</b>
                     <span class="font14 c999">(建议您至少添加一位学术推荐人)</span>
                     <button type="button" class="btn btn-primary btn-sm" @click="addReCommend">新增推荐人</button>
                 </h4>
             </div>
             <div class="clearfix" v-for="(item, i) in education.rcmder" :key="'tjr'+i">
                 <input type="hidden" :name="'rcmder[id]['+i+']'" :value="item.id" />
-                <div class="clearfix pt-10 pb-10 mb-10 text-right bdb" v-if="i > 0">
-                    <button type="button" class="btn btn-default btn-sm" @click="delRecommend(i)">删除</button>
+                <div class="clearfix pt-10 pb-10 mb-10 bdb" v-if="i > 0">
+                  <span class="pull-left font18"><b>推荐人({{i+1}})</b></span>
+                  <span class="pull-right"><button type="button" class="btn btn-default btn-sm" @click="delRecommend(i)">删除</button></span>
                 </div>
                 <div class="row">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">

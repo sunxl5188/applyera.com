@@ -96,10 +96,7 @@
                     <tbody>
                     <tr v-for="(item, i) in list" :key="i">
                         <td>
-                            <router-link :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.id}}">
-                                <span class="cded" v-html="highlight(item.name, keywords)"></span>
-                                (<span v-html="highlight(item.number, keywords)"></span>)
-                            </router-link>
+                            <router-link :to="{path:'/functions/initApply/ChooseSchool',query:{id:item.id}}" class="cded" v-html="highlight(item.name, keywords)"></router-link>
                         </td>
                         <td>{{item.apply_type}}</td>
                         <td>{{item.apply_country}}</td>

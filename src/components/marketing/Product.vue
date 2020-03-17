@@ -82,7 +82,7 @@
                             <h4 class="modal-title">如何设置</h4>
                         </div>
                         <div class="modal-body">
-                            <p>欢迎您使用申学纪线上支付功能，本功能旨在帮助机构及顾问老师将支付线上化，提升用户付费体验及提高机构的管理效率。使用该功能需要开通微信，支付宝支付，请联系申学纪客服开通。</p>
+                            <p>欢迎您使用申学纪线上支付功能，本功能旨在帮助机构及顾问老师将支付线上化，提升用户付费体验及提高机构的管理效率。使用该功能需要开通微信，请联系申学纪客服开通。</p>
                             <p>STEP 1 复制链接</p>
                             <p class="form-inline">
                                 <input type="text" name="linkUrl" id="linkUrl" v-model="linkUrl" class="form-control"
@@ -105,7 +105,6 @@
                 <thead>
                 <tr>
                     <th class="w5"></th>
-                    <th>产品编号</th>
                     <th>国家</th>
                     <th>产品名称</th>
                     <th>价格</th>
@@ -122,7 +121,6 @@
                             <label class="custom-control-label" :for="'id'+i"></label>
                         </div>
                     </td>
-                    <td v-html="highlight(item.order_no,keywords)"></td>
                     <td>{{item.country|countryActive}}</td>
                     <td>{{item.prod_name}}</td>
                     <td>￥{{item.fee_cny}}</td>
@@ -340,7 +338,11 @@ export default {
       this.debouncedPagechange()
     },
     $route (to, from) {
-      this.name = to.name
+      let self = this
+      self.name = to.name
+      if (from.name === 'ProductDetail') {
+        self.pageChange(self.current)
+      }
     }
   }
 }

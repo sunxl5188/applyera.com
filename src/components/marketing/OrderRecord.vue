@@ -56,7 +56,6 @@
             <thead>
             <tr>
                 <th class="w5"></th>
-                <th>订单编号</th>
                 <th>所属国家</th>
                 <th>产品名称</th>
                 <th>学生姓名</th>
@@ -67,7 +66,6 @@
                        :class="time_sort===0?'iconfont sort':(time_sort===1?'iconfont sort up':'iconfont sort down')"
                        @click="listSort"></a>
                 </th>
-                <th class="w10">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -78,14 +76,12 @@
                         <label class="custom-control-label" for="id">&nbsp;</label>
                     </div>
                 </td>
-                <td v-html="highlight(item.trade_no, keywords)"></td>
                 <td>{{item.country_name}}</td>
                 <td v-html="highlight(item.prod_name, keywords)"></td>
                 <td>{{item.stu_name}}</td>
                 <td>{{item.stu_phone}}</td>
                 <td>{{item.total_fee}}</td>
                 <td>{{item.pay_time}}</td>
-                <td>---</td>
             </tr>
             <tr v-if="loading">
                 <td colspan="9" v-html="LoadingImg"></td>
